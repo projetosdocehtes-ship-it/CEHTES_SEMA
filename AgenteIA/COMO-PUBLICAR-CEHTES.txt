@@ -3,9 +3,11 @@ PUBLICACAO CEHTES SEMA
 1. CONFIGURACAO
 Abra o arquivo .env nesta pasta no Bloco de Notas.
 CEHTES_REPOSITORIO: URL HTTPS do repositorio, sem virgula no final.
-CEHTES_BRANCH: branch de destino. Ja aponta para a importacao preparada.
+CEHTES_BRANCH: main para as proximas atualizacoes.
+Publicar-CEHTES.bat fixa -Branch main, mesmo se o .env indicar outra branch.
+O uso direto do PowerShell sem -Branch continua lendo CEHTES_BRANCH.
 CEHTES_ORIGEM: pasta cujas subpastas serao copiadas.
-CEHTES_COPIA_REVISADA: copia temporaria do commit 4629fa1.
+CEHTES_COPIA_REVISADA: caminho de uma copia temporaria previamente revisada.
 GITHUB_USUARIO: preencha com seu login pessoal autorizado no GitHub.
 Nao coloque senha ou token. O .env fica excluido da publicacao.
 Use caminhos literais; variaveis como %USERPROFILE% nao sao expandidas.
@@ -34,7 +36,14 @@ Ele confere se o repositorio e a branch da copia coincidem com o .env.
 Publicar-CEHTES.bat prepara uma nova copia com os arquivos atuais,
 incluindo os scripts novos, mostra a revisao e pede PUBLICAR antes do envio.
 Se a branch ja existe no remoto, a nova copia parte dela e faz push normal,
-sem force. Se quiser outra importacao, altere CEHTES_BRANCH no .env.
+sem force. O BAT publica diretamente na main, sem etapa de integracao.
+Para outra branch, use Publicar-CEHTES.ps1 -Branch NOME explicitamente.
+As subpastas sao copiadas com /E, sem /MIR. Arquivos remotos ausentes na
+origem local sao preservados, incluindo o README.md da pagina inicial.
+README.md e AgenteIA/README.md devem existir e nao podem estar vazios.
+Se houver uma versao local, ela atualiza a correspondente no GitHub.
+Para editar o README inicial localmente, use README.md na CEHTES_ORIGEM;
+o README da pasta AgenteIA fica em AgenteIA/README.md nessa mesma origem.
 Para usar Reenviar, mantenha a branch correspondente a copia revisada.
 Nao apague a copia temporaria antes de concluir o envio do commit revisado.
 

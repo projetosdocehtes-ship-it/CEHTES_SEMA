@@ -5,7 +5,7 @@ param(
     [string]$Repositorio,
     [string]$Branch,
     [string]$Configuracao,
-    [string]$Mensagem = 'Importa estrutura de pastas do projeto CEHTES SEMA',
+    [string]$Mensagem = 'Atualiza projeto CEHTES SEMA mantendo estrutura de pastas',
     [switch]$Publicar,
     [switch]$VerificarConfiguracao
 )
@@ -19,7 +19,7 @@ if (-not $PSBoundParameters.ContainsKey('Repositorio')) { $Repositorio = $config
 if (-not $PSBoundParameters.ContainsKey('Branch')) { $Branch = $config.CEHTES_BRANCH }
 function Invoke-Git {
     param([string[]]$GitArgs)
-    & git @GitArgs
+    & git --no-pager @GitArgs
     if ($LASTEXITCODE -ne 0) { throw "Git falhou (codigo $LASTEXITCODE): $($GitArgs[0])" }
 }
 
@@ -79,6 +79,15 @@ foreach ($arquivo in $ignoradosRastreados) {
     Invoke-Git -GitArgs @('-C', $Destino, 'rm', '--cached', '--', $arquivo)
 }
 Invoke-Git -GitArgs @('-C', $Destino, 'add', '--all')
+# /E conserva os READMEs remotos quando nao existem na origem local.
+# Garante que regras de ignore locais nao retirem a documentacao do indice.
+foreach ($readme in @('README.md', 'AgenteIA/README.md')) {
+    $readmePath = Join-Path $Destino $readme
+    if (-not (Test-Path -LiteralPath $readmePath -PathType Leaf) -or (Get-Item -LiteralPath $readmePath).Length -eq 0) {
+        throw "README ausente ou vazio: $readme. Publicacao interrompida para preservar a documentacao."
+    }
+    Invoke-Git -GitArgs @('-C', $Destino, 'add', '--force', '--', $readme)
+}
 # Verifica o indice inteiro, inclusive arquivos que ja eram rastreados no remoto.
 $indice = @(Invoke-Git -GitArgs @('-C', $Destino, 'ls-files', '--stage'))
 if ($indice | Where-Object { $_ -match '^160000 ' }) {
@@ -94,7 +103,11 @@ if ($objetos.Count -gt 0) {
 
 Write-Host "`nCopia preparada em: $Destino" -ForegroundColor Cyan
 Write-Host "Branch: $Branch"
-Invoke-Git -GitArgs @('-C', $Destino, 'diff', '--cached', '--stat')
+$resumoPath = Join-Path $Destino '.git\arquivos-para-revisao.txt'
+$resumo = @(Invoke-Git -GitArgs @('-C', $Destino, 'diff', '--cached', '--stat', '--no-color'))
+[IO.File]::WriteAllLines($resumoPath, [string[]]$resumo, [Text.UTF8Encoding]::new($false))
+Invoke-Git -GitArgs @('-C', $Destino, 'diff', '--cached', '--shortstat', '--no-color')
+Write-Host "Lista completa dos arquivos: $resumoPath"
 Write-Host "`nPara revisar todo o conteudo: git -C `"$Destino`" diff --cached"
 Write-Host 'Revise dados pessoais, relatorios, imagens, backups e senhas no codigo; as exclusoes nao substituem essa revisao.'
 if (-not $Publicar) {
@@ -111,4 +124,4 @@ if ($LASTEXITCODE -eq 0) { Write-Host 'Nenhuma alteracao para enviar.'; exit 0 }
 if ($LASTEXITCODE -ne 1) { throw 'Falha ao consultar alteracoes.' }
 Invoke-Git -GitArgs @('-C', $Destino, 'commit', '-m', $Mensagem)
 Invoke-Git -GitArgs @('-C', $Destino, 'push', '-u', 'origin', $Branch)
-Write-Host "Concluido. Branch publicada: $Branch. Revise e integre-a pelo GitHub."
+Write-Host "Concluido. Branch publicada: $Branch. Estrutura das subpastas e READMEs preservados."
