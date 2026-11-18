@@ -1,3 +1,9 @@
 # Configuracoes locais de publicacao e credenciais
 .env
 .env.*
+
+# Documentacao e recursos usados pela aba POP / Ajuda
+!GrafosBess/docs/pop/POP_SIM_001_FV_BESS.docx
+!GrafosBess/frontend/public/documentos/POP_SIM_001_FV_BESS.docx
+!GrafosBess/frontend/public/documentos/equipamentos-partida.png
+!GrafosBess/equipamentos-partida.png
