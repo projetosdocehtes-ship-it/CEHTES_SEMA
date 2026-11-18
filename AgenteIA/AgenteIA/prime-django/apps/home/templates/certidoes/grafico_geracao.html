@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>Gráfico: Custo Total vs Geração Total</h4>
+    </div>
+    <div class="card-body text-center">
+        <img src="data:image/png;base64,{{ grafico_base64 }}" class="img-fluid" alt="Gráfico de Geração">
+    </div>
+</div>
+
+{% endblock %}

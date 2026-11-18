@@ -1,0 +1,53 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Lista de EstadoCivil</h5>
+        </div>
+        <div class="card-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                <!--        CABECALHO        -->
+                <h5 class="p-10 mb-10 bg-info text-white">
+                    {{ perguntas_auxiliares }} - Livro 02 (Registros) - pelo Colaborador:  {{ user }}
+                    <br>
+                    <br>
+                    Protocolo:
+                    <a class="btn btn-sm btn-primary text-white "
+                       onclick="get_numero( {{ protocolo.numero_protocolo }} )"
+                       title="Clique para acessar os detalhes"
+                       data-bs-toggle="tooltip">{{ protocolo|protocolo_formatado }}</a>
+                    -  Ato Praticado:  {{ pedido_item.ato.tipo_ato }}
+                    <br>
+                    Número:  {{ pedido_item.tipo_registro }}.{{ pedido_item.numero_registro|formatar_numero_registro }}  -  Número do Ato: {{ pedido_item.numero_ato|default:"" }}
+                    -  Código da Tabela: {{ pedido_item.codigo_tabela }}
+                    <br>
+                </h5>
+                <!--        INICIO DA FICHA DE Checklist        -->
+                <div>
+                    <!--        CABECALHO           -->
+                    <a class="btn bg-warning text-black " onclick="getVoltar()">Voltar</a>
+                    <a class="btn bg-primary text-white f-12"
+                       href="{% url 'home:gerar_minuta_lv2' pedido_item_id=pedido_item.pk %}"
+                       aria-pressed="true"
+                       role="button">Gerar Minuta</a>
+                    {% if pedido_item.pk|get_texto_imovel > 0 %}
+                        <a class="btn bg-success text-white f-12"
+                           href="{% url 'home:texto_lv2' pk=pedido_item.pk pedido_item_id=pedido_item.pk %}"
+                           aria-pressed="true"
+                           role="button"><i class="icon feather icon-file"></i> Texto</a>
+                    {% else %}
+                        <a class="btn bg-success text-white f-12"
+                           href="{% url 'home:minuta_lv2_texto' pedido_item_id=pedido_item.pk %}"
+                           aria-pressed="true"
+                           role="label"><i class="icon feather icon-file"></i> Texto</a>
+                    {% endif %}
+                    <!--        CABECALHO         -->
+                </div>
+                <!--   #######     FIM DA FICHA DE Checklist   #######     -->
+            </form>
+        </div>
+    </div>
+{% endblock content %}

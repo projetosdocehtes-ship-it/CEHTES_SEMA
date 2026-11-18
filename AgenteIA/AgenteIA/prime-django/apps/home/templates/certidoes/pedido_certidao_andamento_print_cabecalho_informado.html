@@ -1,0 +1,10 @@
+{% extends "impressao/base_impressao_a4.html" %}
+{% block content %}
+    <div class="cabecalho">{% include nome_cabecalho %}</div>
+    <br>
+    <div class="conteudo">
+        <div class="ck-content">{{ andamento.descricao|safe }}</div>
+    </div>
+    <div class="carimbo">{% include nome_rodape %}</div>
+    {% comment %} <p>Impresso por {{ user }} em {{ now|date:"d/m/y" }} | {{ user.cartorio }}</p> {% endcomment %}
+{% endblock %}

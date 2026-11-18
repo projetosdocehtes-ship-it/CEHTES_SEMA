@@ -1,0 +1,136 @@
+{
+    "nome_projeto": "Projeto Teste CEHTES",			    //FELIPE: "Nome do Projeto": FAzenda Rural,
+    "Config_Simulacao": [
+        {
+            "Tipo_Sim": "Transiente",
+            "Passo_sim": 2E-5,
+            "Tempo_sim": 1,
+            "Algoritmo_EDO": "RK45",
+            "Tol_relativa": 1E-8
+        }
+    ],
+    "Falhas_sim": [
+        {
+            "Tipo_Falha": "Mudanca_Temperatura",
+            "T_falha": [],
+            "duracao_falha": [],
+            "Val_Temp": []
+        },
+        {
+            "Tipo_Falha": "Mudanca_Irradiancia",
+            "T_falha": [],
+            "duracao_falha": [],
+            "Val_Irrad": []
+        },
+        {
+            "Tipo_Falha": "Mudanca_Carga",
+            "T_falha": [],
+            "duracao_falha": [],
+            "Tipo": [],
+            "Pot_Carga": []
+        },
+        {
+            "Tipo_Falha": "Curto_Circuito_CC",
+            "T_falha": [],
+            "String_falha": [],
+            "duracao_falha": []
+        },
+        {
+            "Tipo_Falha": "Curto_Circuito_CA",
+            "T_falha": [],
+            "duracao_falha": []
+        }
+    ],
+    "Clima_Ambiente": [
+        {
+            "clima_id": "Clima_Ambiente",
+            "nome_cidade": "Goiania",			//FELIPE: "Localização do Projeto": Goiania,
+	    "Latitude":	-16.656685483908312, 		//FELIPE: "Latitude": -16.656685483908312,
+	    "Longitude": -49.31393576653127 		//FELIPE: "Longitude": -49.31393576653127,
+            "pais": "BR",
+            "data": 20240116				//FELIPE: "Data Inicio Projeto": 05/12/2025
+        }
+    ],
+    "painel_info": [
+        {
+            "pv_id": "PV_1",
+            "fabricante_painel": "CanadianSolar",	// Marca
+            "modelo_painel": "TOPBiHiKu6-610W",		// Modelo
+            "Pmp": 610,				//Potência Nominal (watts)
+            "Isc": 15.97,			//Corrente de Curto-Circuito - Isc (A)
+            "Voc": 48,				//Tensão de Cirtuito Aberto - Voc (V
+            "Imp": 14.96,			//Corrente máxima de potência - Imp (A)
+            "Vmp": 40.8,			//Tensão de máxima potência - VMP (V)
+            "Uisc": 0.05,			//Coef. Temp. Isc - Uisc
+            "Uvoc": -0.25,			//Coef. Temp. Voc - Uvoc
+            "Upmp": -0.29,			//Coef. Temp. Pot Max - UPmax
+            "material_painel": "Silicio",		//Tipo de célula
+            "eficiencia": 22.6,			//Eficiência do Painel
+            "quantidade": [20, 1]
+        }
+    ],
+    "inversor_info": [
+        {
+            "inv_id": "Inv_1",
+            "fabricante_inversor": "Deye",			//FELIPE: Marca
+            "modelo_inversor": "SUN-35K-SG01HP3-EU-BM",		//FELIPE: Modelo
+            "Nm_MPPT": 3,					//FELIPE: Nm MPPT 
+            "In_Pmax": 56,					//FELIPE: Potência Máxima de Entrada (KW)
+            "Imax_MPPT": 36,					//FELIPE: Corrente Max por MPPT (A)
+            "In_Vnom": 600,					//FELIPE: Tensão Nominal de Entrada (V)
+            "In_Vmin": 150,					//FELIPE: Tensão Minima de Entrada (V)
+            "In_Vmax": 1000,					//FELIPE: Tensão Maxima de Entrada (V)
+            "In_MPP_Vmin": 150,		Tensão Minima de ajuste MPPT (V)
+            "In_MPP_Vmax": 850,		Tensão Maxima de Ajuste MPPT (V)
+            "Out_Pmax": 38.5,		Potência Maxima de saida (W)
+            "Out_Imax": 58.4,		Corrente Maxima de saida (A)
+            "Out_VL_nom": 380,		Tensão Máxima de Saída (V) / Tensão Nominal de Saída (V)
+            "Out_Freq": 60,		Frequência de saída (Hz)
+            "Eficiencia": 0.976,	Eficiência do Inversor
+            "Max_THD": 3,		Distorções Harmônicas Totais (THD)
+            "Fator_pot": 0.9999,	Fator de potencia (FP)
+            "Nm_fases":3,
+            "smart": false,
+            "quantidade": 1
+        }
+    ],
+    "cargas_info": [
+        {
+            "carga_id": "Load_1",
+            "nome_carga": "Mercado",
+            "tipo_carga": "Industriaç",		//FELIPE: "Categoria projeto*": Industrial
+            "curva_carga": 0,
+            "s_instalada": 12000,
+            "fp": 0.9999,
+            "v_nom": 380,
+            "f_rede": 60,
+            "quantidade": 1
+        }
+    ],
+    "bateria_info": [
+    ],
+    "barramento_info": [
+        {
+            "bus_id": "Bus_ac_1",
+            "tipo": "AC",
+            "fases": 3,
+            "V_linha_nominal": 380,
+            "V_fase_nominal": 220,
+            "V_min": 0.9,
+            "V_max": 1.1
+        }
+    ],
+    "geradordiesel_info": [],
+    "geradorbiogas_info": [],
+    "eletrolizador_info": [],
+    "celulahidrogenio_info": [],
+    "turbinaeolica_info": [],
+
+    "grafo_conexoes": [
+        { "between": ["Clima_Ambiente", "PV_1"] },
+        { "between": ["PV_1", "Inv_1"] },
+        { "between": ["Batt_1", "Inv_1"] },
+        { "between": ["Inv_1", "Bus_ac_1"] },
+        { "between": ["Bus_ac_1", "Load_1"] }
+    ]
+}

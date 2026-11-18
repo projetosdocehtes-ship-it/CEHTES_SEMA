@@ -1,0 +1,138 @@
+{% load home_formatos %}
+<!-- Modal -->
+<div class="modal" id="modal_detalhes_pessoa{{ partes.id }}" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#000">
+                <h5 class="modal-title text-white fs-5" id="modal_detalhes_pessoaLabel">
+                    <i class="icon feather icon-info"></i>  Dados do Adquirente:
+                </h5>
+                <button type="button"
+                        class="btn btn-close "
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <input type="hidden" name="parte_id" value="{{ partes.id }}" />
+            <!-- Corpo do modal -->
+            <div class="modal-body table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>CPF/CNPJ</td>
+                            <td>Data do Cadastro</td>
+                            <td>Ficha</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ partes.pessoa.cpf|default:""|formatar_documento }}</td>
+                            <td>{{ partes.pessoa.criado_em|date:"d/m/y" }}</td>
+                            <td>{{ partes.pessoa.numero_ficha|protocolo_formatado }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ partes.pessoa.nome }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Sexo</th>
+                            <th>Data de Nascimento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ partes.pessoa.documento|default:"" }}</td>
+                            <td>{{ partes.pessoa.sexo|formato_sexo }}</td>
+                            <td>{{ partes.pessoa.data_nascimento|date:"d/m/y" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Estado Civil</th>
+                            <th>Regime de Bens</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ partes.pessoa.estado_civil|get_descricao_estado_civil }}</td>
+                            <td>{{ partes.pessoa.estado_civil_regime_id|get_descricao_tipo_regime_casamento }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Naturalidade</th>
+                            <th>Nacionalidade</th>
+                            <th>Profissão</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ partes.pessoa.naturalidade|default:"" }}</td>
+                            <td>{{ partes.pessoa.nacionalidade|default:"" }}</td>
+                            <td>{{ partes.pessoa.profissao|default:"" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome do Pai</th>
+                            <th>Nome da Mãe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ partes.pessoa.nome_pai|default:"" }}</td>
+                            <td>{{ partes.pessoa.nome_mae|default:"" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Endereço</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ partes.pessoa.endereco|default:"" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>e-mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ partes.pessoa.email|default:"" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-sm btn-secondary"
+                        data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>

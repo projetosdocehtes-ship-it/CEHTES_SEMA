@@ -1,0 +1,32 @@
+{% load django_tables2 %}
+<div class="col-md-6">
+   <div class="card">
+      <div class="card-header">
+         <h5>Certidões</h5>
+      </div>
+      <div class="card-block table-border-style">{% render_table certidoes_table %}</div>
+      <div class="card-footer">
+         {% if 'pessoas' in request.path %}
+            <a href="{% url 'home:pedido_certidao_adicionar_certidao_pessoa' object.pk %}"
+               class="btn btn-sm btn-primary">Adicionar</a>
+            <a class="btn btn-sm btn-success text-dark font-weight-bold"
+               href="{% url 'home:pedido_certidao_caixa_view' object.pedido_id %}"
+               data-bs-toggle="tooltip"><i class="fas fa-angle-double-up"></i>Pagamento
+            </a>
+            <a href="{% url 'home:pedido_certidao_listar_certidoes_pessoa' pessoa_id=object.pk %}"
+               class="btn btn-sm btn-info">Ver Todas Certidões</a>
+         {% elif 'imoveis' in request.path %}
+            <a href="{% url 'home:pedido_certidao_adicionar_certidao_imovel' object.pk %}"
+               class="btn btn-sm btn-primary">Adicionar</a>
+            <a class="btn btn-sm btn-success text-dark font-weight-bold"
+               href="{% url 'home:pedido_certidao_caixa_view' object.pedido_id %}"
+               data-bs-toggle="tooltip"><i class="fas fa-angle-double-up"></i>Pagamento
+            </a>
+            <a href="{% url 'home:pedido_certidao_listar_certidoes_imovel' imovel_id=object.pk %}"
+               class="btn btn-sm btn-info">Ver Todas Certidões</a>
+         {% endif %}
+         <a href="{% url 'home:pedido_certidao_detalhes' pk=object.pedido_id %}"
+            class="btn btn-sm btn-secondary">Ver Pedido de Certidão</a>
+      </div>
+   </div>
+</div>

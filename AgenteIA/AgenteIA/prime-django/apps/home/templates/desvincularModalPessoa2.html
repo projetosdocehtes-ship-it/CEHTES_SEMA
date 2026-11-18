@@ -1,0 +1,55 @@
+<button type="button"
+        class="btn btn-sm btn-danger   "
+        data-bs-toggle="modal"
+        data-bs-target="#desvincularModalPessoa{{ partes.pessoa.id }}"
+        title="Retira a pessoa selecionada do vinculo de Adquirente"
+        data-bs-toggle="tooltip">
+    <i class="icon feather icon-share-square"></i> Desvincular
+</button>
+{% load home_formatos %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% comment %} <!--   --> {% endcomment %}
+{% block content %}
+    <!-- Modal -->
+    <div class="modal"
+         id="desvincularModalPessoa{{ partes.id }}"
+         tabindex="-1"
+         aria-labelledby="desvincularModalPessoaLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background:#000">
+                    <h1 class="modal-title text-white fs-5" id="desvincularModalPessoaLabel">
+                        <i class="icon feather icon-times"></i>  Desvincular o Adquirente
+                        <p>{{ partes.id }}</p>
+                    </h1>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form action="{% url 'home:desvincularModalPessoa' opcao_parte='A' %}"
+                      method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="parte_id" value="{{ partes.id }}" />
+                    <div class="modal-body">
+                        <h6>
+                            Tem certeza de que deseja desvincular ?
+                            <p>
+                                <h5>{{ partes.id }}</h5>
+                            </p>
+                        </h6>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-sm btn-secondary"
+                                data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-danger">Desvincular</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

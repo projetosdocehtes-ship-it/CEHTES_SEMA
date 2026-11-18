@@ -1,0 +1,44 @@
+{% extends "impressao/base_A4.html" %}
+{% block stylesheets %}
+    <style>
+        .no-print {
+            display: none;
+              /* Elementos que não devem aparecer na impressão */
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <!-- Botão para acionar a impressão -->
+                <button class="btn btn-sm btn-primary no-print" onclick="window.print()">Imprimir Certidão</button>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12">
+                <!-- Cabeçalho da Certidão -->
+                <h2 class="text-center">Certidão</h2>
+                <hr>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <!-- Conteúdo da Certidão -->
+                <p>
+                    <strong>Nome:</strong> {{ certidao.nome }}
+                </p>
+                <p>
+                    <strong>Documento:</strong> {{ certidao.documento_formatado }}
+                </p>
+                <!-- Adicione mais campos conforme necessário -->
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12">
+                <!-- Rodapé da Certidão, se necessário -->
+                <p class="text-center">Este é um documento oficial emitido por [Nome do Cartório].</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

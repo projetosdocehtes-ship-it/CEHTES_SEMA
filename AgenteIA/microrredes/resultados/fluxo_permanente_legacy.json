@@ -1,0 +1,30 @@
+{
+  "analise": "fluxo_potencia",
+  "convergiu": true,
+  "tensoes_pu": {
+    "0": 1.0034558376195288,
+    "1": 1.013715473033146,
+    "2": 1.0085835457936347,
+    "3": 1.0085835470610587,
+    "4": 1.0017873311303567,
+    "5": 1.0
+  },
+  "carregamento_linhas_percentual": {
+    "0": 14.079598044204483,
+    "1": 1.7378998503502773e-05,
+    "2": 14.079597991168027,
+    "3": 4.5498962697274585,
+    "4": 9.530898077369214
+  },
+  "arquivo_entrada": "D:\\microrredes\\ProjetoPowerFlow\\old\\artefatos_raiz\\Entradas.json",
+  "nome_projeto": "Projeto Teste CEHTES",
+  "modelo_rede": "entradas_json",
+  "conectado_rede": false,
+  "parametros_linha_padrao": {
+    "length_km": 0.1,
+    "r_ohm_per_km": 0.2,
+    "x_ohm_per_km": 0.08,
+    "c_nf_per_km": 10.0,
+    "max_i_ka": 0.4
+  }
+}

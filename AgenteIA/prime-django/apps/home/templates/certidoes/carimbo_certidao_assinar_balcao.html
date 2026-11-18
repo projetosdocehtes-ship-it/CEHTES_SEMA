@@ -1,0 +1,128 @@
+{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load home_formatos %}
+{% load barcode_filters %}
+{% load static %}
+<style>
+     body {
+          font-family: Verdana, Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+     }
+
+     .certidao {
+          width: 100%;
+          border: 1px solid black;
+          border-collapse: collapse;
+     }
+
+     .certidao td,
+     .certidao th {
+          border: 1px solid black;
+          padding: 10px;
+          text-align: left;
+          font-family: Verdana, Arial, sans-serif;
+     }
+
+     .certidao th {
+          background-color: #f2f2f2;
+          text-align: center;
+          font-family: Verdana, Arial, sans-serif;
+     }
+
+     .center {
+          text-align: center;
+     }
+
+     .bold {
+          font-weight: bold;
+     }
+
+     .img-container {
+          width: 100px;
+          height: 100px;
+     }
+
+     .img-container img {
+          max-width: 100%;
+          max-height: 100%;
+     }
+</style>
+<table class="certidao">
+    <tr>
+        <th colspan="2" class="center bold" style="line-height: 1.2;">
+            PODER JUDICIÁRIO - TJMG - CORREGEDORIA GERAL DE JUSTIÇA
+            <br>
+            CARTÓRIO DE REGISTRO DE IMOVEIS DE {{ user.cartorio.municipio|upper }} - {{ user.cartorio.estado|upper }}
+        </th>
+        <td colspan="1" class="center bold" style="line-height: 1.5;">
+            <center>
+                <div class="logo-container">
+                    <img src="{% static 'assets/images/icons/minas_gerais.jpeg' width='20' height='20' %}"
+                         alt="Logo"
+                         class="logo-img">
+                </div>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="1" rowspan="1" class="center" style="line-height: 1.0;">
+            {% if andamento.pedido.selo_sqlserver %}
+                <p class="center bold" style="font-size: 16px;">
+                    Selo Eletrônico Nº: {{ andamento.pedido.selo_sqlserver.CODIGO_SEQUENCIAL_UNICO }}
+                </p>
+                <p class="center bold" style="font-size: 14px;">
+                    Código de Segurança: {{ andamento.pedido.selo_sqlserver.CODIGO_DE_SEGURANCA|formatar_codigo_seguranca }}
+                </p>
+                <p>&emsp;</p>
+                <p class="center">
+                    Data Selo: {{ andamento.pedido.selo_sqlserver.DATA_UTILIZACAO|date:"d/m/y" }} - Quantidade de Atos: 01
+                </p>
+            {% endif %}
+            <p>
+                <b>{{ andamento.pedido.descricao_valores_totais_pedido }}</b>
+            </p>
+            <br>
+            <p class="center">___________________________</p>
+            <p class="center">Assinatura do Oficial</p>
+            <br>
+            <p class="center">Dou fé. {{ user.cartorio.municipio }}, {{ now|data_por_extenso }}.</p>
+        </td>
+        <td colspan="2"
+            rowspan="2"
+            class="center"
+            style="line-height: 1.6;
+                   font-size: 8px">
+            <b>Assinado por</b>:
+            <br>
+            <input type="checkbox">
+            {{ user.cartorio.responsavel.funcao.titulo|default:"Oficial/Registrador(a) " }}: {{ user.cartorio.responsavel.nome_completo }}
+            <br>
+            <input type="checkbox">
+            Oficial. Subst. Thereza Libânio Santos
+            <br>
+            <input type="checkbox">
+            Oficial. Subst. Renato Libânio da S. Santos
+            <br>
+            <input type="checkbox">
+            Oficial. Subst. Cristofer Augusto de Freitas Costa Bísacro
+            <br>
+            <input type="checkbox">
+            Escrevente: Mario Roberto S. Silva
+        </td>
+    </tr>
+    <tr></tr>
+    <tr>
+        <td colspan="3" class="center" style="line-height: 1.2;">
+            A presente certidão foi emitida e assinada digitalmente nos termos da MP 2.200/01 e Lei nº 11.977/2009.
+            Sua emissão e conferência podem ser confirmadas pelo site.
+            <p>
+                <center>CONSULTE VALIDADE DO SELO EM: <b>https://selos.tjmg.jus.br</b></center>
+            </p>
+            <br>
+            <span class="bold"></span>
+        </td>
+    </tr>
+</table>

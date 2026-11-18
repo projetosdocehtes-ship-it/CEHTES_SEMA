@@ -1,0 +1,100 @@
+{% extends "layouts/base.html" %}
+{% load home_formatos %}
+{% load tz %}
+{% load static %}
+{% block title %}
+    Andamentos do Protocolo
+{% endblock title %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-white">Andamentos do Protocolo: {{ numero_protocolo|protocolo_formatado }}</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tr>
+                            <thead>
+                                <th>Data</th>
+                                <th>Serviços</th>
+                                <th>Colaborador</th>
+                                <th>Encaminhado</th>
+                                <th>Opções</th>
+                            </thead>
+                        </tr>
+                        <tbody>
+                            {% for andamento in andamentos %}
+                                <tr>
+                                    <td>{{ andamento.data|date:"DATETIME_FORMAT" }}</td>
+                                    <td>
+                                        {% with andamento.status_display as status %}
+                                            {% if status.class %}
+                                                <span class="badge {{ status.class }} f-12">{{ status.text }}</span>
+                                            {% else %}
+                                                {{ status.text }}
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+                                    <td>{{ andamento.colaborador }}</td>
+                                    <td>
+                                        <a href="{% url 'home:distribuidos_por_colaborador' colaborador_id=andamento.colaborador_destino_id|default:0 %}"
+                                           target="_blank"
+                                           class="btn btn-sm text-dark  "
+                                           title="Clique para ver Colaborador.">
+                                            <span class="badge bg-info activate f-12 font-weight-bold text-dark">{{ andamento.colaborador_destino }}</span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {% if andamento.tipo_andamento_id|verificar_servicos_exigencia > 0 %}
+                                            <a class="btn btn-sm btn-warning text-dark"
+                                               href="{% url 'home:andamento_texto_detail' pk=andamento.pk %}"
+                                               target="_blank"
+                                               aria-pressed="true"><span class="f-10"><i class="icon feather icon-eye"></i></span>&emsp;Ver Texto
+                                            </a>
+                                        {% else %}
+                                            <a class="btn btn-sm btn-secondary"
+                                               href="{% url 'home:andamento_texto_detail' pk=andamento.pk %}"
+                                               target="_blank"
+                                               aria-pressed="true"><span class="f-10"><i class="icon feather icon-file-plus"></i></span> Criar Texto
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <a type="button"
+                       class="btn btn-sm btn-primary text-dark"
+                       title="Cadastrar novo andamento para o andamento do protocolo">
+                        <i class="icon feather icon-plus"></i> Novo andamento
+                    </a>
+                    <a type="button"
+                       href="{% url 'home:agenda_protocolo' protocolos=numero_protocolo %}"
+                       target="_blank"
+                       class="btn btn-sm btn-success active-blue text-dark">
+                        <i class="fas fa-calendar-alt"></i> Ver Agenda
+                    </a>
+                    <a type="button"
+                       href="{% url 'home:protocolo_search' %}?numero_protocolo={{ numero_protocolo }}"
+                       class="btn btn-sm btn-secondary">
+                        <i class="icon feather icon-corner-left-up"></i>Voltar ao protocolo
+                    </a>
+                    <a type="button"
+                       title="Atualizar a página para visualizar os dados alterados"
+                       class="btn btn-sm btn-info text-dark"
+                       data-bs-toggle="tooltip"
+                       onclick="getAtualizarPagina()"><i class="icon feather icon-refresh-ccw" id="theme-inlimpar"></i> Atualizar
+                    </a>
+                    <script>
+                        function getAtualizarPagina() {
+                            window.location.reload();
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

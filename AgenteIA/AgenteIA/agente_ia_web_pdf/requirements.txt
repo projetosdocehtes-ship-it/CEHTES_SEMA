@@ -1,0 +1,13 @@
+streamlit
+openai>=1.0.0
+requests
+python-dotenv
+PyMuPDF
+sympy
+mesa
+numpy
+pandas
+matplotlib
+scipy
+requests
+

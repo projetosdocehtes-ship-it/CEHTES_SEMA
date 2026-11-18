@@ -1,0 +1,494 @@
+{% extends "layouts/base.html" %}
+{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load home_formatos %}
+{% block title %}
+  Pedido de Certidão nº {{ pedido_certidao.numero_pedido }}
+{% endblock title %}
+{% block stylesheets %}
+  <style>
+       .icon-text-container {
+            display: flex;
+            align-items: center;
+       }
+
+       .icon {
+            margin-right: 10px;
+       }
+
+       .text-container {
+            display: flex;
+            flex-direction: column;
+       }
+  </style>
+{% endblock stylesheets %}
+{% block content %}
+  <script>
+        function getAtualizarPagina() {
+            window.location.reload();
+        }
+  </script>
+  <!-- Cabeçalho -->
+  {% if not pedido_certidao %}
+    <p>O número informado não corresponde a um pedido existente!</p>
+  {% else %}
+    <!-- O código que requer um pedido válido -->
+    <div class="card-body">
+      <div class="row justify-content-end">
+        <div class="col-auto">
+          {% if pedido_certidao.primeiro and pedido_certidao.anterior %}
+            <a href="{{ pedido_certidao.primeiro.get_absolute_url }}"><i class="fas fa-angle-double-left"></i> Primeiro</a>
+          {% endif %}
+        </div>
+        <div class="col-auto">
+          {% if pedido_certidao.anterior %}
+            <a href="{{ pedido_certidao.anterior.get_absolute_url }}"><i class="fas fa-angle-left"></i> Anterior</a>
+          {% endif %}
+        </div>
+        <div class="col-auto">
+          {% if pedido_certidao.seguinte %}
+            <a href="{{ pedido_certidao.seguinte.get_absolute_url }}">
+            Próximo <i class="fas fa-angle-right"></i></a>
+          {% endif %}
+        </div>
+        <div class="col-auto">
+          {% if pedido_certidao.ultimo and pedido_certidao.seguinte %}
+            <a href="{{ pedido_certidao.ultimo.get_absolute_url }}">
+            Último <i class="fas fa-angle-double-right"></i></a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="col-auto">
+          {% if not pedido_certidao.cancelado %}
+            {% if pedido_certidao.exigencia %}
+              <span class="badge bg-warning f-12 text-dark">
+                <h5>Pedido de Certidão nº {{ pedido_certidao.numero_pedido }} - {{ pedido_certidao.origem_formatada }}</h5>
+              </span>
+            {% else %}
+              <h5>Pedido de Certidão nº {{ pedido_certidao.numero_pedido }} - {{ pedido_certidao.origem_formatada }}</h5>
+            {% endif %}
+          {% else %}
+            <span class="badge bg-danger f-12">
+              <h5>Pedido de Certidão nº {{ pedido_certidao.numero_pedido }} - {{ pedido_certidao.origem_formatada }}</h5>
+            </span>
+          {% endif %}
+          <span class="font-weight-bold text-white">
+            {% if pedido_certidao.devolvido %}- Devolvido: {{ pedido_certidao.descricao_cancelamento_financeiro }}{% endif %}
+          </span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row mb-12">
+          <!-- Primeira linha -->
+          <div class="col-lg-3">
+            <div class="icon-text-container">
+              <i class="icon feather icon-calendar f-22"></i>
+              <div class="text-container">
+                <small>Entrada</small>
+                <a href="{{ pedido_certidao.apresentante.get_update_url }}" class="ml-1">
+                  <span class="font-weight-bold">{{ pedido_certidao.data_entrada|date:"D, d M Y H:i" }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="icon-text-container">
+              <i class="icon feather icon-calendar f-22"></i>
+              <div class="text-container">
+                <small>Previsão</small>
+                <a href="{{ pedido_certidao.apresentante.get_update_url }}" class="ml-1">
+                  <span class="font-weight-bold">{{ pedido_certidao.data_prazo_final|date:"D, d M Y" }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="icon-text-container">
+              <i class="icon feather icon-calendar f-22"></i>
+              <div class="text-container">
+                <small>Data do Último Selo</small>
+                <a href="{{ pedido_certidao.apresentante.get_update_url }}" class="ml-1">
+                  <span class="font-weight-bold">{{ pedido_certidao.data_ultimo_selo|date:"D, d M Y"|default:"Não há selo" }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <!-- Segunda linha -->
+        <div class="row mb-6">
+          <div class="col-lg-6">
+            <div class="icon-text-container">
+              <i class="icon feather icon-user f-22"></i>
+              <div class="text-container">
+                <small>Apresentante</small>
+                <a href="{{ pedido_certidao.apresentante.get_update_url }}" class="ml-1">
+                  <span class="font-weight-bold">{{ pedido_certidao.apresentante.nome|default:"" }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="icon-text-container">
+              {% heroicon_outline "identification" size=20 class="m-r-10" %}
+              <div class="text-container">
+                <small>Documento</small>
+                <a href="{{ pedido_certidao.apresentante.get_update_url }}" class="ml-1">
+                  <span class="font-weight-bold">{{ pedido_certidao.apresentante.documento|formatar_documento|default:"Não informado" }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="icon-text-container">
+              <i class="fab fa-whatsapp f-22 m-r-10"></i>
+              <div class="text-container">
+                <small>Contato(s)</small>
+                {% comment %} <a href="{{ pedido_certidao.apresentante.get_update_url }}" class="ml-1">
+                  <span class="font-weight-bold"> {{ pedido_certidao.apresentante.telefone|formatar_telefone|default:"Não informado" }}</span>
+                </a> {% endcomment %}
+                <a href="https://wa.me/{{ pedido_certidao.apresentante.telefone|default:''|formatar_telefone|internacionalizar_telefone }}"
+                   class="ml-1"
+                   data-bs-toggle="tooltip"
+                   data-placement="top"
+                   data-bs-original-title="Abrir Whatsapp (se houver)"
+                   target="_blank">{{ pedido_certidao.apresentante.telefone|default:'Não Informado'|formatar_telefone }}</a>
+              </div>
+              <small>&emsp;</small>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <!-- Observacao linha -->
+        <div class="row mb-3">
+          <div class="col-lg-3">
+            <div class="icon-text-container">
+              <i class="icon feather icon-align-left f-22"></i>
+              <div class="text-container">
+                <small>Observações</small>
+                <a href="{{ pedido_certidao.apresentante.get_update_url }}" class="ml-1">
+                  <span class="font-weight-bold">{{ pedido_certidao.apresentante.observacao|default:"(Não há observações)" }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <!-- Terceira linha - Contadores -->
+        <div class="row mb-2">
+          <div class="col-md-2">
+            {% heroicon_outline "home-modern" size=20 class="mr-4 mb-2" %}
+            <a class="font-weight-bold"
+               href="{% url 'home:pedido_certidao_imoveis_listar' pedido_id=pedido_certidao.pk %}?next={{ request.path }}">
+              <span class="f-14">{{ pedido_certidao.imoveis.count }} Imóveis</span>
+            </a>
+          </div>
+          <div class="col-md-2">
+            {% heroicon_outline "users" size=20 class="mr-4 mb-2" %}
+            <a class="font-weight-bold"
+               href="{% url 'home:pedido_certidao_pessoas_list' pedido_id=pedido_certidao.pk %}?next={{ request.path }}">
+              <span class="f-14">{{ pedido_certidao.pessoas.count }} Pessoas</span>
+            </a>
+          </div>
+          <div class="col-md-2">
+            {% heroicon_outline "document-text" size=20 class="mr-4 mb-2" %}
+            <a class="font-weight-bold"
+               href="{% url 'home:pedido_certidao_listar_certidoes_pedido' pedido_id=pedido_certidao.pk %}">
+              <span class="f-14">{{ pedido_certidao.certidoes|length }} Certidões</span>
+            </a>
+          </div>
+          <div class="col-md-2">
+            {% heroicon_outline "paper-clip" size=20 class="mr-4 mb-2" %}
+            <a class="font-weight-bold"
+               href="{{ pedido_certidao.get_url_anexos_list }}">
+              <span class="f-14">{{ pedido_certidao.anexos_count }} Anexos</span>
+            </a>
+          </div>
+          <div class="col-md-2">
+            {% heroicon_outline "tag" size=20 class="mr-4 mb-2" %}
+            <a class="font-weight-bold"
+               href="{% url 'home:selos_listar' %}?&numero_pedido={{ pedido_certidao.numero_pedido_inteiro }}">
+              <span class="f-14">
+                {{ quantidade_selos }}
+              Selos Eletrônicos</span>
+            </a>
+          </div>
+          <div class="col-md-2">
+            {% heroicon_outline "queue-list" size=20 class="mr-4 mb-2" %}
+            <a class="font-weight-bold"
+               href="{% url 'home:pedido_certidao_andamentos' pedido_id=pedido_certidao.pk %}">
+              <span class="f-14">{{ pedido_certidao.andamentos.all.count }} Andamentos</span>
+            </a>
+          </div>
+        </div>
+        <hr />
+        <!-- TERCEIRA linha -->
+        <div class="row mb-4">
+          <div class="col-md-2">
+            <div class="icon-text-container">
+              <div class="text-container">
+                <small>Emolumentos</small>
+                <a class="ml-1" target="_blank">{{ pedido_certidao.total_emolumentos_pedido|formatar_moeda }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="icon-text-container">
+              <div class="text-container">
+                <small>Recompe</small>
+                <a class="ml-1" target="_blank">{{ pedido_certidao.total_recompe_pedido|formatar_moeda }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="icon-text-container">
+              <div class="text-container">
+                <small>TFJ</small>
+                <a class="ml-1" target="_blank">{{ pedido_certidao.total_taxa_fiscal_judiciaria_pedido|formatar_moeda }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="icon-text-container">
+              <div class="text-container">
+                <small>ISSQN</small>
+                <a class="ml-1" target="_blank">{{ pedido_certidao.total_issqn_pedido|formatar_moeda }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="icon-text-container f-22">
+              {% heroicon_outline "currency-dollar" size=20 class="m-r-10" %}
+              <div class="text-container">
+                <small class="f-14">Total do Pedido</small>
+                <a class="ml-1 f-22" target="_blank">{{ pedido_certidao.total_pedido|arrendamento_bancario:2|formatar_moeda }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <!-- TERCEIRA linha -->
+        <div class="row mb-4">
+          <div class="icon-text-container mb-4">
+            {% heroicon_outline "document-currency-dollar" size=20 class="mr-4" %}
+            <div class="text-container">
+              <small class="f-16">Financeiro</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="icon-text-container">
+              <div class="text-container">
+                <small>Recebido</small>
+                <a class="ml-1" target="_blank">{{ pedido_certidao.valor_total_caixa|formatar_moeda }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="icon-text-container">
+              <div class="text-container">
+                <small>Diferença</small>
+                <a class="ml-1" target="_blank">
+                  <span class="f-16 font-weight-bold {% if pedido_certidao.valor_diferenca != 0 %}text-danger{% else %}text-success{% endif %}">
+                    {{ pedido_certidao.valor_diferenca|formatar_moeda }}
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- TERCEIRA linha -->
+        <hr />
+        <!-- Ultima linha -->
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="icon-text-container">
+              <i class="icon feather icon-activity f-22"></i>
+              <div class="text-container">
+                <small>Ultimo Andamento</small>
+                <a href="{{ pedido_certidao.get_url_andamentos }}" class="ml-1">
+                  <span class="font-weight-bold">{{ pedido_certidao.ultimo_andamento }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="{% url 'home:pedido_certidao_criar_pedido' %}"
+           class="btn btn-sm btn-primary activate text-white f-14"
+           title="Criar novo pedido">
+          <i class="icon feather icon-plus"></i> Novo Pedido</a>
+        {% if not pedido_certidao.cancelado %}
+          {% if quantidade_selos == 0 %}
+            <a class="btn btn-sm btn-outline-danger"
+               href="{% url 'home:pedido_certidao_cancelar' pk=pedido_certidao.pk %}">
+              <i class="fas fa-times"></i> Cancelar Pedido
+            </a>
+          {% endif %}
+        {% endif %}
+        <a class="btn btn-sm btn-outline-secondary"
+           href="{% url 'home:pedido_certidao_listar_pedidos' %}">
+          <i class="icon feather icon-arrow-left"> </i>Voltar a Pesquisa
+        </a>
+        <a class="btn btn-sm btn-outline-secondary"
+           href="{% url 'home:pedido_certidao_pessoa_create' pedido_certidao.pk %}">
+          <i class="fas fa-user-plus"> </i>+Pessoa
+        </a>
+        <a class="btn btn-sm btn-outline-secondary"
+           href="{% url 'home:pedido_certidao_adicionar_imovel' pedido_certidao.pk %}">
+          <i class="icon feather icon-home"> </i>+Imóvel
+        </a>
+        <a data-bs-toggle="tooltip"
+           {% if pedido_certidao.andamento_certidao_entregue %} class="btn btn-sm btn-info text-dark font-weight-bold" href="{% url 'home:pedido_certidao_andamento_listar' pedido_id=pedido_certidao.pk %}" {% else %} class="btn btn-sm btn-outline-info text-dark font-weight-bold" href="{% url 'home:pedido_certidao_confirmar_entrega' pk=pedido_certidao.pk %}" {% endif %}>
+          {% if pedido_certidao.andamento_certidao_entregue %}
+            <i class="icon feather icon-check-circle"></i>
+            Já Entregue
+          {% else %}
+            <i class="icon feather icon-pocket"></i>
+            Entregar
+          {% endif %}
+        </a>
+        <a class="btn btn-sm btn-success text-dark font-weight-bold"
+           href="{% url 'home:pedido_certidao_caixa_view' pedido_certidao.pk %}"
+           data-bs-toggle="tooltip"><i class="fas fa-dollar-sign"></i>Caixa (diferença)
+        </a>
+        <a class="btn btn-sm btn-outline-info text-dark"
+           href="{% url 'home:financeiro_listar' %}?numero_pedido_certidao={{ pedido_certidao.numero_pedido_inteiro }}">
+          Ver Caixa
+        </a>
+        <a class="btn btn-sm btn-outline-warning text-dark font-weight-bold"
+           title="Atualizar a página para visualizar os dados alterados"
+           data-bs-toggle="tooltip"
+           onclick="getAtualizarPagina()">
+          <i class="icon feather icon-refresh-ccw"></i> Atualizar
+        </a>
+        <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">Andamento</button>
+        {% if request.user.gerar_selo_certidao %}
+          {% if pedido_certidao.permitir_selar %}
+            <a class="btn btn-sm btn-primary text-white font-weight-bold"
+               href="{% url 'home:pedido_certidao_selar' pedido_certidao.pk %}"
+               data-bs-toggle="tooltip"><i class="feather icon-award f-16"></i>Selar
+            </a>
+          {% endif %}
+        {% endif %}
+        <div class="dropdown-menu"
+             aria-labelledby="dropdownMenuButton{{ record.pk }}">
+          {% if opcoes_andamento %}
+            {% for andamento in opcoes_andamento %}
+              <a class="dropdown-item"
+                 href="{% url 'home:pedido_certidao_andamento_adicionar_mesmo_colaborador' pedido_id=pedido_certidao.id tipo_andamento_id=andamento.id %}">
+                {{ andamento.descricao }}
+              </a>
+            {% endfor %}
+          {% else %}
+            <a class="dropdown-item" href="#">Não há andamentos rápidos cadastrados</a>
+          {% endif %}
+        </div>
+        <button class="btn btn-sm btn-outline-info dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+        Opções</i>
+      </button>
+      <div class="dropdown-menu"
+           aria-labelledby="dropdownMenuButton{{ record.pk }}">
+        <a class="dropdown-item"
+           href="{% url 'home:financeiro_listar' %}?numero_pedido_certidao={{ pedido_certidao.numero_pedido_inteiro }}">
+          <i class="icon-orange icon feather icon-file-text"></i> Histórico Caixa</a>
+        <a class="dropdown-item"
+           href="{{ pedido_certidao.get_url_emitir_etiqueta }}"
+           target="_blank">
+          <i class="icon-orange icon feather icon-award"></i> Emitir Etiqueta
+        </a>
+        <a class="dropdown-item"
+           href="{% url 'home:pedido_certidao_atualizar_sistema_anterior' pedido_certidao.pk %}">
+          <i class="icon-orange icon feather icon-upload"></i> Atualizar sistema
+          anterior
+        </a>
+      </div>
+      <div class="dropdown-menu"
+           aria-labelledby="dropdownMenuButton{{ record.pk }}">
+        {% for andamento in opcoes_andamento %}
+          <a class="dropdown-item"
+             href="{% url 'home:pedido_certidao_andamento_adicionar_mesmo_colaborador' pedido_id=pedido_certidao.id tipo_andamento_id=andamento.id %}">
+            {{ andamento.descricao }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Pontos de Atenção:</h5>
+          <a class="text-white"
+             style="background-color: #507ca5"
+             target="_blank"
+             data-bs-toggle="tooltip"></a>
+        </div>
+        <div class="card-body">
+          {% if pedido_certidao.mensagens %}
+            <ul>
+              {% for mensagem in pedido_certidao.mensagens %}<li>{{ mensagem }}</li>{% endfor %}
+            </ul>
+          {% else %}
+            <p>Não há mensagens para exibir.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Certidões Neste Pedido</h5>
+          <a class="text-white"
+             style="background-color: #507ca5"
+             target="_blank"
+             data-bs-toggle="tooltip"></a>
+        </div>
+        <div class="card-body">
+          {% if pedido_certidao.certidoes %}
+            <ul>
+              {% for certidao in pedido_certidao.certidoes %}<li>{{ certidao.qualificacao_completa }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+</div>
+{% endblock content %}
+{% block javascripts %}
+  <script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // Seleciona todos os links de exportação
+    var exportLinks = document.querySelectorAll('a[id^="export-link-"]');
+    exportLinks.forEach(function (link) {
+      link.addEventListener("click", function (event) {
+// Desativa o link após o clique
+event.preventDefault();
+link.classList.add("disabled"); // Adiciona uma classe CSS para indicar que o link está desabilitado
+// Remove o atributo href para evitar cliques subsequentes
+link.innerHTML =
+  '<i class="icon-orange icon feather icon-upload"></i> Exportando...'; // Altera o texto do link
+
+// Opcional: redireciona manualmente após desabilitar o link
+window.location.href = link.getAttribute("href");
+      });
+    });
+  });
+  </script>
+{% endblock javascripts %}

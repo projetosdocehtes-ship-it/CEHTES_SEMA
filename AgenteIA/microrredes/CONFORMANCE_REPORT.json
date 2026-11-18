@@ -1,0 +1,134 @@
+{
+  "project": "ProjetoPowerFlow",
+  "date": "2026-10-12",
+  "status": "inconclusive",
+  "promotion": "blocked",
+  "scope": "organização do projeto em old/, separação de fluxo/falhas, módulo tarifário fundamental, regime permanente horário, componentes dinâmicos GeradorDiesel/BESS e transitório reduzido FV+BESS on-grid com gráfico HTML interativo",
+  "checks": [
+    {
+      "id": "CONF-001",
+      "rule": "compilação dos módulos novos",
+      "command": ".venv\\Scripts\\python.exe -m compileall -q microrredes tests",
+      "result": "passed",
+      "evidence": "processo concluído sem erro"
+    },
+    {
+      "id": "CONF-002",
+      "rule": "testes unitários e integração local",
+      "command": ".venv\\Scripts\\python.exe -m pytest tests -q",
+      "result": "passed",
+      "evidence": "18 passed in 34.62s"
+    },
+    {
+      "id": "CONF-003",
+      "rule": "fluxo de potência e curto-circuito independentes",
+      "command": ".venv\\Scripts\\python.exe -m microrredes fluxo-potencia; ... falhas --tipo 3ph/2ph/1ph",
+      "result": "passed",
+      "evidence": "fluxo convergiu; três tipos de curto retornaram correntes por barra"
+    },
+    {
+      "id": "CONF-004",
+      "rule": "consulta da fonte real de tarifas ANEEL",
+      "command": ".venv\\Scripts\\python.exe -m microrredes fundamentais --distribuidora 'EQUATORIAL GO' --grupo A4 --timeout 10",
+      "result": "inconclusive",
+      "evidence": "API CKAN e CSV oficial tentados; ambos bloqueados no ambiente local por WinError 10013 ao abrir HTTPS para dadosabertos.aneel.gov.br. O recurso e seu esquema foram confirmados no portal oficial da ANEEL."
+    },
+    {
+      "id": "CONF-005",
+      "rule": "cenário horário FV+BESS on-grid com contingência de strings",
+      "command": ".venv\\Scripts\\python.exe -m microrredes cenario-bess-fv --consumo-dia-kwh 650 --pv-kwp 80 --bess-kwh 100 --bess-kw 40 --strings-fv 16 --strings-perdidas 4 --contingencia-inicio 10 --contingencia-fim 18 --saida resultados\\analise_bess_fv_650kwh.json",
+      "result": "passed",
+      "evidence": "24 passos por cenário; consumo 650.000002 kWh; perda de 124 kWh FV; JSON e 2 PNGs gerados"
+    },
+    {
+      "id": "CONF-006",
+      "rule": "arquivo de falha transitória e ativação/restauração da perda de strings",
+      "command": ".venv\\Scripts\\python.exe -m pytest tests/test_falhas_transitorias.py -q",
+      "result": "passed",
+      "evidence": "2 testes passaram; evento Perda_String_FV em 0,5 s por 0,25 s e restauração validada"
+    },
+    {
+      "id": "CONF-007",
+      "rule": "simulação transitória reduzida a partir do Entradas.Json fornecido",
+      "command": ".venv\\Scripts\\python.exe -m microrredes transitorio-bess-fv --entrada D:\\downloads\\Downloads2\\Entradas.Json --consumo-dia-kwh 650 --pv-kwp 80 --bess-kwh 100 --bess-kw 40 --strings-fv 16 --strings-perdidas 4 --forcar-on-grid --saida resultados\\transitorio\\resultado_transitorio_bess_fv.json --graficos-dir resultados\\transitorio",
+      "result": "passed",
+      "evidence": "50.000 passos em 1 s; on-grid aplicado; falha em 0,5–0,75 s; JSON e 2 PNGs gerados; 3 testes específicos passaram"
+    },
+    {
+      "id": "CONF-008",
+      "rule": "cache local dos dados tarifários com linhagem e validade",
+      "command": ".venv\\Scripts\\python.exe -m pytest tests/test_tarifas_aneel.py -q",
+      "result": "passed",
+      "evidence": "4 testes passaram; cache persistido e reutilizado offline com fonte ANEEL_CACHE, idade, vigência e avisos"
+    },
+    {
+      "id": "CONF-009",
+      "rule": "HTML interativo offline com inspeção por cursor e zoom",
+      "command": ".venv\\Scripts\\python.exe -m microrredes transitorio-bess-fv --entrada D:\\downloads\\Downloads2\\Entradas.Json --forcar-on-grid --html-interativo resultados\\transitorio\\transitorio_interativo.html",
+      "result": "passed",
+      "evidence": "HTML gerado com 50.000 passos; script validado com node --check; teste confirmou dados completos e ausência de scripts externos"
+    },
+    {
+      "id": "CONF-010",
+      "rule": "arquivamento dos arquivos antigos em old/",
+      "command": "Move-Item legado old; Move-Item 74 artefatos antigos da raiz old\\artefatos_raiz",
+      "result": "passed",
+      "evidence": "old/codigo contém 54 scripts legados; old/artefatos_raiz contém 74 arquivos; sim-stable, Equipamentos, microrredes e resultados permaneceram na raiz; suíte de 18 testes passou após a mudança"
+    },
+    {
+      "id": "CONF-011",
+      "rule": "fluxo permanente aceita arquivo JSON proprio, separado do transitorio",
+      "command": ".venv\\Scripts\\python.exe -m pytest tests\\test_analises_eletricas.py -q; .venv\\Scripts\\python.exe -m microrredes fluxo-potencia --entrada Entradas\\Entradas_regime_permanente.json --saida resultados\\fluxo_permanente_amostra.json; .venv\\Scripts\\python.exe -m microrredes fluxo-potencia --entrada old\\artefatos_raiz\\Entradas.json --saida resultados\\fluxo_permanente_legacy.json",
+      "result": "passed",
+      "evidence": "compileall passou; 5 testes eletricos passaram; o exemplo novo e o Entradas.json legado convergiram pela CLI; o resultado registra arquivo_entrada e os defaults de linha"
+    },
+    {
+      "id": "CONF-012",
+      "rule": "suite completa sem regressao",
+      "command": ".venv\\Scripts\\python.exe -m pytest tests -q",
+      "result": "inconclusive",
+      "evidence": "22 testes passaram com -k 'not cenario'; os 3 testes existentes de cenario_bess_fv iniciaram, mas o processo encerrou sem resumo nem codigo de saida neste ambiente"
+    },
+    {
+      "id": "CONF-013",
+      "rule": "regime permanente horario aceita curva CSV legada e arquivo de entrada proprio",
+      "command": ".venv\\Scripts\\python.exe -m pytest tests\\test_regime_permanente.py -q -s; .venv\\Scripts\\python.exe -m microrredes regime-permanente --entrada Entradas\\Entradas_regime_permanente.json --periodo 24h --tipo-dia util --saida resultados\\regime_permanente_24h.json; .venv\\Scripts\\python.exe -m microrredes regime-permanente --entrada old\\artefatos_raiz\\Entradas.json --periodo 24h --tipo-dia util --saida resultados\\regime_permanente_legacy_24h.json",
+      "result": "passed",
+      "evidence": "5 testes passaram; o exemplo novo e o Entradas.json legado executaram 24/24 horas convergidas; a curva foi resolvida relativa ao JSON e bateria/diesel foram aplicados no caso legado"
+    },
+    {
+      "id": "CONF-014",
+      "rule": "expansao para horizonte anual e continuidade horaria do estado",
+      "command": ".venv\\Scripts\\python.exe -m pytest tests -q -k 'not cenario'; .venv\\Scripts\\python.exe -m microrredes regime-permanente --entrada Entradas\\Entradas_regime_permanente.json --periodo ano --ano 2025 --horas 48 --saida resultados\\regime_permanente_48h.json",
+      "result": "passed",
+      "evidence": "22 testes passaram; os testes de timeline validaram 8760 horas em 2025 e 8784 em ano bissexto; a execucao parcial anual convergiu em 48/48 horas e registrou SOC continuo no horizonte"
+    },
+    {
+      "id": "CONF-015",
+      "rule": "modelo transitorio isolado de gerador diesel antes da integracao com Entradas.Json",
+      "command": ".venv\\Scripts\\python.exe -m compileall -q microrredes Equipamentos tests; .venv\\Scripts\\python.exe -m pytest tests\\test_equipamentos_dinamicos.py tests\\test_transitorio_gerador_diesel.py -q -s; .venv\\Scripts\\python.exe -m microrredes transitorio-gerador-diesel --entrada Entradas\\gerador_diesel_teste.json --saida resultados\\transitorio_gerador_diesel_teste.json",
+      "result": "passed",
+      "evidence": "compileall passou; 7 testes passaram; CLI executou 601 passos; fluxo pandapower convergiu; ikss inicial no PCC foi 2.5068 kA; as equacoes diferenciais do GeradorDiesel e o SOC do BESS foram exercitados"
+    },
+    {
+      "id": "CONF-016",
+      "evidence_execucao_atual": "36 testes passaram em 16.90s com -k 'not cenario'; compileall e quatro JSONs passaram na validação; arquivo único convergiu 24/24 horas; transitório integrado executou 600 passos com diesel máximo de 150.469626 kW, frequência mínima de 59.134269 Hz, tensão mínima de 0.12 pu e ikss de 2.5068 kA; transitório isolado executou 601 passos; Entradas.Json legado executou 50000 passos sem ativar o caminho diesel",
+      "rule": "contratos JSON independentes do diesel e integração com pandapower",
+      "command": ".venv\\Scripts\\python.exe -m pytest tests\\test_analises_eletricas.py tests\\test_regime_permanente.py tests\\test_transitorio_gerador_diesel.py tests\\test_equipamentos_dinamicos.py -q -s; .venv\\Scripts\\python.exe -m microrredes fluxo-potencia --entrada Entradas\\Entradas_regime_permanente_diesel.json",
+      "result": "passed",
+      "evidence": "20 testes passaram em 8.56s; o gen Diesel_1 convergiu com sn_mva=0.34375, vn_kv=0.38, xdss_pu=0.20 e rdss_ohm=0.01; curto 3 fases retornou corrente por barra; o regime permanente diesel convergiu 24/24 horas; o transitório novo executou 601 passos e calculou ikss inicial de 2.5068 kA"
+    }
+  ],
+  "remaining_gaps": [
+    "executar o horizonte anual completo de 8760 fluxos AC em ambiente de desempenho controlado; a implementacao e o calendario foram validados e a execucao parcial de 48 horas convergiu",
+    "conectar o modelo dinÃ¢mico diesel isolado ao simulador transitÃ³rio completo da microrrede; a validaÃ§Ã£o atual cobre o mÃ³dulo separado e o uso permanente via pandapower",
+    "calibrar os parametros dinamicos do fabricante e validar o modelo reduzido contra ensaio/EMT; os valores atuais sao premissas de teste",
+    "validar a consulta live CKAN/CSV da ANEEL em ambiente com saída HTTPS autorizada",
+    "validar um caso elétrico real e o simulador transitório EMT completo; o resultado atual é um modelo reduzido de primeira ordem",
+    "revisar alíquota e incidência do ICMS para o consumidor e período do estudo"
+  ],
+  "human_approval_required": [
+    "qualquer promoção ou deploy em ambiente Azure protegido",
+    "aprovação regulatória/comercial das premissas tributárias"
+  ]
+}

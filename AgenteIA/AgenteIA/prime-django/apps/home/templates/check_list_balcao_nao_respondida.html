@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+{% extends "layouts/base.html" %}
+{% load static %}
+<script>
+    function getAtualizarPagina() {
+        window.location.reload();
+    }
+
+    function openNewTab() {
+
+    }
+</script>
+{% load home_formatos %}
+{% block title %}
+    Base de Conhecimento de Protocolo% endblock %}
+    <!-- Specific CSS goes HERE -->
+    {% block stylesheets %}
+        <!-- Wysiwyg editor -->
+        <link rel="stylesheet" href="{% static 'assets/css/plugins/main.css' %}">
+    {% endblock stylesheets %}
+    <html lang="pt-br">
+        <head>
+            <style>
+                .modal-content {
+                    box-shadow: 0 0 0 5px blue;
+                    border: none;
+                }
+            </style>
+        </head>
+        <body>
+            <!-- [ Pre-loader ] start -->
+            <div class="loader-bg">
+                <div class="loader-track">
+                    <div class="loader-fill"></div>
+                </div>
+            </div>
+            <!-- [ Pre-loader ] End -->
+            {% load home_formatos %}
+            {% include 'includes/sidebar.html' %}
+            {% include 'includes/navigation.html' %}
+            {% include 'includes/scripts.html' %}
+            <!-- Specific Page JS goes HERE  -->
+            {% block javascripts %}
+            {% endblock javascripts %}
+            <!-- [ Main Content ] start -->
+            <div class="pcoded-main-container">
+                <div class="pcoded-wrapper">
+                    <div class="pcoded-content">
+                        <div class="pcoded-inner-content">
+                            <div class="main-body">
+                                <div class="page-wrapper">
+                                    {% comment %} <form action="" method="post"> {% endcomment %}
+                                    {% csrf_token %}
+                                    {% block breadcrumb %}
+                                        <div>
+                                            <h1>
+                                                <i class="fa fa-dashboard"></i> Base de Conhecimento - Protocolo
+                                            </h1>
+                                        </div>
+                                    {% endblock breadcrumb %}
+                                    {% block content %}
+                                        {% load home_formatos %}
+                                        {% load humanize %}
+                                        <div class="card" id="itens_base_conhecimento">
+                                            <div class="card-header">
+                                                <h5>
+                                                    <a class="badge bg-danger f-14 text-white">PERGUNTAS NAO RESPONDIDAS:&emsp;{{ quantidade }}</a>
+                                                    &emsp;&emsp;Check-List do Balcão: {{ descricao_ato }} - {{ numero_protocolo }}
+                                                </h5>
+                                            </div>
+                                            <div class="card-body">
+                                                {% for question in questions %}
+                                                    {{ forloop.counter }}&emsp;-&emsp;
+                                                    <span class="badge bg-info f-14 font-weight-bold text-dark">
+                                                        <label>{{ question }}</label>
+                                                    </span>
+                                                    <br>
+                                                    <br>
+                                                {% endfor %}
+                                                <br>
+                                                <a class="btn btn-sm btn-warning text-dark active"
+                                                   title="Voltar para a página anterior sem alterar os dados."
+                                                   data-bs-toggle="tooltip"
+                                                   onclick="getVoltar()"><i class="icon feather icon-check-circle"></i> Voltar</a>
+                                                <script>
+                                                    function getVoltar() {
+                                                        window.history.back()
+                                                    }
+                                                </script>
+                                            </div>
+                                            <div class="card-footer"></div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                    {% endblock content %}
+                        {% comment %} </form> {% endcomment %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+    </html>

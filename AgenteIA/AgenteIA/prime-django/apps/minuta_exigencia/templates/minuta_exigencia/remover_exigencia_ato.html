@@ -1,0 +1,59 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+<script>
+    function getVoltar()
+    {
+        window.history.back()
+    }
+
+</script>
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {% block content %}
+                                <div class="card" id="card_membro">
+                                    <div class="card-header">
+                                        <span class="font-weight f-20 text-light">Desvincular esta Exigência deste Ato ?</span>
+                                    </div>
+                                </div>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <br>
+                                    <a class="btn btn-sm btn-warning text-dark"
+                                       title="Voltar para a página anterior sem alterar os dados."
+                                       data-bs-toggle="tooltip"
+                                       onclick="getVoltar()"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                                    <button class="btn btn-sm btn-danger text-white active"
+                                            type="submit"
+                                            title="Remove a ligação da Exigência com o Ato"
+                                            data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-delete"></i> Confirmar
+                                    </button>
+                                    <script>
+                                        function getVoltar()
+                                        {
+                                            window.history.back()
+                                        }
+
+                                    </script>
+                                {% endblock content %}
+                            </form>
+                            <script>
+                            function getVoltar()
+                            {
+                                window.history.back()
+                            }
+
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

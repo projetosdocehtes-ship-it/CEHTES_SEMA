@@ -1,0 +1,3 @@
+delete from public.home_ligacoes;
+delete from public.home_auxiliar_garantias;
+delete from public.home_registro_auxiliar;

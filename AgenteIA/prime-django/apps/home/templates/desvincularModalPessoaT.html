@@ -1,0 +1,43 @@
+{% load home_formatos %}
+<!-- Modal -->
+<div class="modal"
+     id="desvincularModalPessoa{{ partesD.id }}"
+     tabindex="-1"
+     aria-labelledby="desvincularModalPessoaLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#000">
+                <h1 class="modal-title text-white fs-5" id="desvincularModalPessoaLabel">
+                    <i class="icon feather icon-times"></i>  Desvincular o Devedor
+                    <p>{{ partesD.pessoa.nome }} - {{ partesD.pessoa.cpf|formatar_documento }}</p>
+                </h1>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form action="{% url 'home:desvincularModalPessoa' opcao_parte='D' %}"
+                  method="post">
+                {% csrf_token %}
+                <input type="hidden" name="parte_id" value="{{ partesD.id }}" />
+                <div class="modal-body">
+                    <h6>
+                        Tem certeza de que deseja desvincular ?
+                        <p>
+                            <h5>{{ partesD.pessoa.nome }}</h5>
+                        </p>
+                    </h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Desvincular</button>
+                    <button type="button"
+                            class="btn btn-sm btn-secondary"
+                            data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

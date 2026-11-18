@@ -1,0 +1,8 @@
+from django.apps import AppConfig
+
+
+class ModelosConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "apps.modelos"
+    label = "modelos"
+    verbose_name = "Modelos de Texto"

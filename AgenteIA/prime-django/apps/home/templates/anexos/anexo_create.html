@@ -1,0 +1,132 @@
+{% extends "layouts/base.html" %}
+{% load home_formatos %}
+{% load tz %}
+{% load static %}
+{% block title %}
+    Anexos do Protocolo
+{% endblock title %}
+{% block stylesheet %}
+    <link rel="stylesheet"
+          href="{% static 'assets/css/plugins/dropzone.min.css' %}">
+{% endblock stylesheet %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title text-white">Adicionar Anexos ao Protocolo {{ protocolo }}</h5>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <form action="{% url 'home:file_upload' protocolo.pk %}"
+                              method="post"
+                              enctype="multipart/form-data"
+                              id="upload-form"
+                              class="dropzone">
+                            {% csrf_token %}
+                            <div id="fallback">
+                                <input type="file"
+                                       name="file"
+                                       id="fileElem"
+                                       multiple
+                                       accept="application/pdf"
+                                       style="display:none">
+                            </div>
+                            <div class="dz-message" data-dz-message>
+                                <span>Arraste e solte os arquivos aqui ou clique para selecionar os arquivos</span>
+                            </div>
+                            <!-- Botão removido, já que o upload será feito via AJAX -->
+                        </form>
+                        <div class="text-center m-t-20">
+                            <a href="{{ protocolo.get_absolute_url }}"
+                               class="btn btn-sm btn-primary">Enviar Agora</a>
+                        </div>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    {% comment %} <a href="{% url 'home:anexos_list' %}" class="btn btn-primary">Ver Anexos</a> {% endcomment %}
+                    <a href="{{ protocolo.get_absolute_url }}" class="btn btn-secondary">Voltar ao Protocolo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'assets/js/plugins/dropzone-amd-module.min.js' %}"></script>
+    <script>
+        Dropzone.options.myAwesomeDropzone = {
+            paramName: "file", // O nome usado para transferir o arquivo
+            maxFilesize: 2, // MB
+            acceptedFiles: 'image/jpeg,image/png,image/gif', // Tipos de arquivo aceitos
+            dictDefaultMessage: "Solte os arquivos aqui para fazer o upload",
+        };
+    </script>
+{% endblock content %}
+{% block javascripts %}
+    {% comment %} <script>
+      (function() {
+           // Definição das funções e lógica do script
+           let protocoloPk = "{{ protocolo.pk }}"; // Supondo que você tenha a variável `protocolo` disponível no template
+
+           function handleFiles(files, protocoloPk) {
+                ([...files]).forEach(file => uploadFile(file, protocoloPk));
+           }
+
+           function uploadFile(file, protocoloPk) {
+                let url = `/protocolos/${protocoloPk}/upload/`; // Assegure que esta URL está correta
+                let formData = new FormData();
+                formData.append('file', file);
+
+                fetch(url, {
+                          method: 'POST',
+                          body: formData
+                     })
+                     .then(response => response.json())
+                     .then(data => console.log(data))
+                     .catch(error => console.error('Erro:', error));
+           }
+
+           // Agora, adicione o ouvinte de eventos ao elemento de input de arquivo
+           document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('fileElem').addEventListener('change', function() {
+                     handleFiles(this.files, protocoloPk);
+                });
+           });
+
+           // Demais funções e lógica para manipulação do drag and drop
+           let dropArea = document.getElementById('drop-area');
+
+           ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+           });
+
+           function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+           }
+
+           ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+           });
+
+           ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+           });
+
+           function highlight(e) {
+                dropArea.classList.add('highlight');
+           }
+
+           function unhighlight(e) {
+                dropArea.classList.remove('highlight');
+           }
+
+           dropArea.addEventListener('drop', handleDrop, false);
+
+           function handleDrop(e) {
+                let dt = e.dataTransfer;
+                let files = dt.files;
+
+                handleFiles(files, protocoloPk);
+           }
+      })();
+    </script> {% endcomment %}
+{% endblock javascripts %}

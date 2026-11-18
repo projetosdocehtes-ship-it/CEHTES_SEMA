@@ -1,0 +1,54 @@
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <!--        CABECALHO        -->
+        <h5 class="p-10 mb-10 bg-info text-white">
+            {{ perguntas_auxiliares }} - Livro 03 - pelo Colaborador:  {{ current_user }}
+            <br>
+            <br>
+            Protocolo:
+            <a class="btn btn-sm btn-primary text-white "
+               onclick="get_numero( {{ protocolo }} )"
+               title="Clique para acessar os detalhes"
+               data-bs-toggle="tooltip">{{ protocolo|protocolo_formatado }}</a>
+            -  Ato Praticado:  {{ ato_praticado }}
+            <br>
+            Número:  {{ tipo_registro }}.{{ numero_registro_auxiliar|formatar_numero_registro }}  -  Número do Ato: {{ numero_ato|default:"" }}
+            -  Código da Tabela: {{ codigo_tabela }}
+            <br>
+        </h5>
+        <!--        INICIO DA FICHA DE Checklist        -->
+        {% for obj in object_list %}
+            <li>
+                <!--<b>Id:</b> <a href="{% url 'home:texto_lv2' pk=obj.id %}">{{ obj.id }}</a>       -->
+                <b>Número Ato:</b> {{ obj.numero_ato|protocolo_formatado }}
+                <br>
+                {{ obj.texto|slice:":300"|safe }}
+                <br>
+                <br>
+                <a class="btn bg-primary    text-white f-12 "
+                   href="{% url 'home:texto_lv2_create' %}"
+                   aria-pressed="true"
+                   role="button">Novo</a>
+                <a class="btn bg-secondary  text-white f-12 "
+                   href="{% url 'home:texto_lv2_update' pk=obj.id %}"
+                   aria-pressed="true"
+                   role="button">Visualizar Texto</a>
+                <input class="btn bg-warning text-black "
+                       value="Voltar"
+                       id="b1"
+                       onclick="getVoltar()">
+                <br>
+                <br>
+                <br>
+            </li>
+        {% endfor %}
+        <!--   #######     FIM DA FICHA DE Checklist   #######     -->
+    </form>
+{% endblock content %}
+<script>
+    function get_numero(numero) {
+        var conteudo = "/protocolos/?numero_protocolo=" + numero
+        window.location.href = conteudo;
+    }
+</script>

@@ -1,0 +1,375 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block title %}
+    Dashboard
+{% endblock title %}
+{% block content %}
+    {% include "form-importar-protocolo.html" %}
+    {% include "form-importar-protocolo-data.html" %}
+    {% include "form-importar-imovel-numero.html" %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Gestão à vista</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Informe o periodo das informações</h6>
+                    <form class="row g-3 needs-validation" method="get">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <select class="form-select"
+                                        name="tipo_relatorio"
+                                        id="tipo_relatorio"
+                                        required>
+                                    <option value="A">Andamento</option>
+                                    <option value="E" selected>Entrada</option>
+                                    <option value="X">Exigência</option>
+                                    <option value="C">Cancelado</option>
+                                    <option value="R">Registrado</option>
+                                    <option value="S">Subjudice</option>
+                                </select>
+                                <input type="date" class="form-control" name="data_pesquisa_i" id="data_pesquisa_i" value={{ data_inicio }} required>
+                                <div class="valid-feedback">Looks good!</div>
+                                <input type="date" class="form-control" name="data_pesquisa_f" id="data_pesquisa_f" value={{ data_fim }} required>
+                                <div class="valid-feedback">Looks good!</div>
+                                <button type="submit"
+                                        class="btn btn-primary "
+                                        aria-pressed="true"
+                                        role="button">
+                                    <i class="icon feather icon-search"></i> Pesquisar
+                                </button>
+                                <a href="{% url 'home:dashboard_relatorio'  data_inicio=data_inicio data_fim=data_fim %}"
+                                   target='_blank'
+                                   class="btn btn-secondary text-white"
+                                   id="printButton"><i class="icon feather icon-printer d-none d-md-inline-block"></i>Imprimir</a>
+                                <a href="{% url 'home:agenda_protocolo_relatorio'  data_i=data_inicio data_f=data_fim %}"
+                                   target="_blank"
+                                   class="btn btn-success text-dark">
+                                    <i class="fas fa-calendar-alt" aria-hidden="true"></i> Agenda
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            {% comment %} <a class="btn btn-icon btn-secondary " data-bs-toggle="modal" data-bs-target="#addImportarProtocolo" title="Clique para importar um protocolo de outro sistema">
+                                <i class="icon feather icon-download"></i>
+                            </a> {% endcomment %}
+                            {% comment %} <a class="btn btn-icon btn-secondary " data-bs-toggle="modal" data-bs-target="#addImportarProtocoloData" title="Clique para importar por data protocolos de outro sistema">
+                                <i class="icon feather icon-download-cloud"></i>
+                            </a> {% endcomment %}
+                            {% comment %} <a class="btn btn-icon btn-success" href="{% url 'home:importar_protocolos_modificados_view' %}" title="Atualizar todos os andamentos do dia." data-bs-toggle="tooltip">
+                                <i class="icon feather icon-download-cloud auth-icon"></i>
+                            </a> {% endcomment %}
+                            {% comment %} <a class="btn btn-icon btn-warning" href="{% url 'home:tarefas_agenda' %}" title="Gerar Eventos para a Agenda do colaborador." data-bs-toggle="tooltip">
+                                <i class="icon feather icon-download-cloud auth-icon"></i>
+                            </a> {% endcomment %}
+                            {% comment %} <a class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#addImportarImovelNumero" title="Clique para importar por número os imóveis de outro sistema">
+                                <i class="icon feather icon-download-cloud"></i>
+                            </a> {% endcomment %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- small box -->
+            <div class="card">
+                <div class="card-header">
+                    <h5>Resumo</h5>
+                </div>
+                <div class="card-body">
+                    <div class="container mb-2">
+                        <h6>Protocolos:</h6>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <span class="badge bg-info f-12">Em Andamento</span>: <span class="text-dark f-12">{{ total_protocolos_em_andamento|default:0 }}</span>
+                            </div>
+                            <div class="col-md-auto">
+                                <span class="badge bg-warning text-dark f-12">Exigência</span>: <span class="text-dark f-12">{{ total_protocolos_exigencia|default:0 }}</span>
+                            </div>
+                            <div class="col-md-auto">
+                                <span class="badge bg-primary f-12">Registrados</span>: <span class="text-dark f-12">{{ total_protocolos_registrados|default:0 }}</span>
+                            </div>
+                            <div class="col-md-auto">
+                                <span class="badge bg-danger f-12">Cancelados</span>: <span class="text-dark f-12">{{ total_protocolos_cancelados|default:0 }}</span>
+                            </div>
+                            <div class="col-md-auto">
+                                <span class="badge bg-secondary f-12">Subjudice</span>: <span class="text-dark f-12">{{ total_protocolos_subjudice|default:0 }}</span>
+                            </div>
+                            <div class="col-md-auto">
+                                <span class="badge bg-info f-12">Em Registro</span>: <span class="text-dark f-12">{{ total_protocolos_em_registro|default:0 }}</span>
+                            </div>
+                        </div>
+                        <!-- Adicione mais linhas com .row e colunas com .col-md-6 conforme necessário -->
+                    </div>
+                    <hr>
+                    <div class="container mb-2">
+                        <h6>Certidões:</h6>
+                        <div class="row">
+                            <div class="col-md-auto">
+                                <span class="badge bg-info f-12">Em Andamento</span>: <span class="text-dark f-12">0</span>
+                            </div>
+                            <div class="col-md-auto">
+                                <span class="badge bg-warning text-dark f-12">Exigência</span>: <span class="text-dark f-12">0</span>
+                            </div>
+                            <div class="col-md-auto">
+                                <span class="badge bg-primary f-12">Registrados</span>: <span class="text-dark f-12">0</span>
+                            </div>
+                            <div class="col-md-auto">
+                                <span class="badge bg-danger f-12">Cancelados</span>: <span class="text-dark f-12">0</span>
+                            </div>
+                        </div>
+                        <!-- Adicione mais linhas com .row e colunas com .col-md-6 conforme necessário -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Entrada de Protocolos: {{ total_event }}</h5>
+                    </div>
+                    <div class="card-body" id="eventos_id">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="table">
+                                    <table class="table table-hover"
+                                           id="table-entrada-protocolos"
+                                           role="grid"
+                                           aria-describedby="sampleTable_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th>
+                                                    <div class="cell-content text-center">#</div>
+                                                </th>
+                                                <th>
+                                                    <div class="cell-content text-left">Protocolo</div>
+                                                </th>
+                                                <th>
+                                                    <div class="cell-content text-left">Datas</div>
+                                                </th>
+                                                {% comment %} <th>
+                                                    <div class="cell-content text-center">Total</div>
+                                                    <div class="cell-content text-center">Dias</div>
+                                                </th> {% endcomment %}
+                                                <th>
+                                                    <div class="cell-content text-center">Dias</div>
+                                                    <div class="cell-content text-center">Restantes</div>
+                                                </th>
+                                                <th>
+                                                    <div class="cell-content text-left">Apresentante / Observação</div>
+                                                </th>
+                                                <th>
+                                                    <div class="cell-content text-left">Fase Atual</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for event in eventos_periodo %}
+                                                <tr>
+                                                    <td>
+                                                        <div class="cell-content">{{ forloop.counter }}</div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cell-content">
+                                                            <a class="label bg-info text-white "
+                                                               href="{% url 'home:protocolo_search' %}?numero_protocolo={{ event.protocolo.numero_protocolo|remover_pontuacao }}"
+                                                               target="_blank"
+                                                               title="Clique para visualizar os detalhes"
+                                                               data-bs-toggle="tooltip">
+                                                                {{ event.protocolo.numero_protocolo|protocolo_formatado }}
+                                                            </a>
+                                                        </div>
+                                                        <div class="cell-content " style="margin-top: 20px;">
+                                                            {% if event.servico == 'Em Andamento' %}
+                                                                {% if event.protocolo.fases_protocolo_colaborador_id|default_if_none:"None" == "None" %}
+                                                                    <a class="label bg-success text-white"
+                                                                       href="{% url 'home:distribuicao_protocolo_numero' event.protocolo.numero_protocolo %}"
+                                                                       title="Clique para Reencaminhar o protocolo para um colaborador."
+                                                                       data-bs-toggle="tooltip"><i class="icon feather icon-edit"></i>Encaminhar</a>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cell-content">Entrada: {{ event.protocolo.data_protocolo|date:"d/m/y" }}</div>
+                                                        <div class="cell-content">Previsto: {{ event.data_prevista }}</div>
+                                                        <div class="cell-content">Validade: {{ event.data_validade }}</div>
+                                                    </td>
+                                                    {% if event.exibir_prazo == 'S' %}
+                                                        {% if event.dias_restante < 0 %}
+                                                            <td style="font-size:10px;text-align:center">
+                                                                <span class="badge bg-danger f-12 text-center">{{ event.dias_restante }} de {{ event.max_dias_uteis }}</span>
+                                                            </td>
+                                                        {% elif event.dias_restante == 0 %}
+                                                            <td></td>
+                                                        {% else %}
+                                                            <td>
+                                                                <div class="cell-content text-center">{{ event.dias_restante }} de {{ event.max_dias_uteis }}</div>
+                                                            </td>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <td></td>
+                                                    {% endif %}
+                                                    <td>
+                                                        <div class="cell-content">{{ event.protocolo.pedido.nome_solicitante_formatado|truncatechars:40 }}</div>
+                                                        <div class="cell-content">{{ event.protocolo.pedido.observacao|truncatechars:40 }}</div>
+                                                    </td>
+                                                    {% if event.servico == 'Registrado' %}
+                                                        <td>
+                                                            <div class="cell-content">
+                                                                <span class="badge bg-primary f-12">{{ event.servico }}</span>
+                                                            </div>
+                                                            <div class="cell-content">
+                                                                {{ event.colaborador }} -
+                                                                {{ event.data_andamento|date:"d/m/y" }} - {{ event.colaborador_destino }}
+                                                            </div>
+                                                            <div class="cell-content">{{ event.ultimo_andamento_praticado }} ({{ event.ultimo_data_andamento|date:"d/m/y" }})</div>
+                                                        </td>
+                                                    {% elif event.servico == 'Cancelado' %}
+                                                        <td>
+                                                            <div class="cell-content">
+                                                                <span class="badge bg-danger f-12">{{ event.servico }}</span>
+                                                            </div>
+                                                            <div class="cell-content">
+                                                                {{ event.colaborador }} - {{ event.data_andamento|date:"d/m/y" }} - {{ event.colaborador_destino }}
+                                                            </div>
+                                                            <div class="cell-content">
+                                                                {{ event.ultimo_andamento_praticado }} - ({{ event.ultimo_data_andamento|date:"d/m/y" }})
+                                                            </div>
+                                                        </td>
+                                                    {% elif event.servico == 'Exigência' %}
+                                                        <td>
+                                                            <div class="cell-content">
+                                                                <span class="badge bg-warning f-12">{{ event.servico }}</span>
+                                                            </div>
+                                                            <div class="cell-content">
+                                                                {{ event.colaborador }} - {{ event.data_andamento|date:"d/m/y" }} - {{ event.colaborador_destino }}
+                                                            </div>
+                                                            <div class="cell-content">{{ event.ultimo_andamento_praticado }}:</div>
+                                                            <div class="cell-content">{{ event.ultimo_colaborador }}: ({{ event.ultimo_data_andamento|date:"d/m/y" }})</div>
+                                                        </td>
+                                                    {% elif event.servico == 'Sub judice' %}
+                                                        <td>
+                                                            <div class="cell-content">
+                                                                <span class="badge bg-secondary f-12">{{ event.servico }}</span>
+                                                            </div>
+                                                            <div class="cell-content">
+                                                                {{ event.colaborador }} - {{ event.data_andamento|date:"d/m/y" }} - {{ event.colaborador_destino }}
+                                                            </div>
+                                                            <div class="cell-content">{{ event.ultimo_andamento_praticado }}:</div>
+                                                            <div class="cell-content">{{ event.ultimo_colaborador }}: ({{ event.ultimo_data_andamento|date:"d/m/y" }})</div>
+                                                        </td>
+                                                    {% elif event.servico == 'Em Registro' %}
+                                                        <td>
+                                                            <div class="cell-content">
+                                                                <span class="badge bg-info f-12">{{ event.servico }}</span>
+                                                            </div>
+                                                            <div class="cell-content">
+                                                                {{ event.colaborador }} - {{ event.data_andamento|date:"d/m/y" }} - {{ event.colaborador_destino }}
+                                                            </div>
+                                                            <div class="cell-content">{{ event.ultimo_andamento_praticado }}:</div>
+                                                            <div class="cell-content">{{ event.ultimo_colaborador }}: ({{ event.ultimo_data_andamento|date:"d/m/y" }})</div>
+                                                        </td>
+                                                    {% elif event.servico == 'Em Análise' %}
+                                                        <td>
+                                                            <div class="cell-content">
+                                                                <span class="badge bg-info f-12">{{ event.servico }}</span>
+                                                            </div>
+                                                            <div class="cell-content">
+                                                                {{ event.colaborador }} - {{ event.data_andamento|date:"d/m/y" }} - {{ event.colaborador_destino }}
+                                                            </div>
+                                                            <div class="cell-content">{{ event.ultimo_andamento_praticado }}:</div>
+                                                            <div class="cell-content">{{ event.ultimo_colaborador }}: ({{ event.ultimo_data_andamento|date:"d/m/y" }})</div>
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            <div class="cell-content">{{ event.servico }}</div>
+                                                            <div class="cell-content">{{ event.ultimo_andamento_praticado }}:</div>
+                                                            <div class="cell-content">
+                                                                {{ event.colaborador }} - {{ event.data_andamento|date:"d/m/y" }} - {{ event.colaborador_destino }}
+                                                            </div>
+                                                        </td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-14">
+        <div class="tile">
+            <div class="tile-body">
+                <div class="card table-responsive">
+                    <div class="card-header">
+                        <h5>Gráficos de Protocolos:</h5>
+                    </div>
+                    <div class="card-body" id="graficos_id">
+                        <div id="morris-bar-chart" style="height:auto"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <!-- chart-morris Js -->
+    <script src="{% static 'assets/plugins/chart-morris/js/raphael.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/chart-morris/js/morris.min.js' %}"></script>
+    <script src="{% static 'assets/js/pages/chart-morris-custom.js' %}"></script>
+    <!-- Inclusão do DataTables -->
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <!-- JS dos Botões do DataTables -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <!-- JS para a funcionalidade de Exportação para PDF -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <!-- JS do Idioma pt-BR para DataTables -->
+    <script src="https://cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"></script>
+    <!-- Seu Script de Inicialização -->
+    <script type="text/javascript">
+        $('#table-entrada-protocolos').DataTable({
+            dom: 'Bfrtip',
+            buttons: [{
+                extend: 'print',
+                text: 'Imprimir',
+                title: 'Minha Tabela',
+                customize: function(win) {
+                    $(win.document.body)
+                        .css('font-size', '10pt')
+                        .prepend(
+                            '<img src="path_to_logo.png" style="position:absolute; top:0; left:0;" />'
+                        );
+
+                    $(win.document.body).find('table')
+                        .addClass('compact')
+                        .css('font-size', 'inherit');
+
+                    $(win.document.body).find('td').css({
+                        'white-space': 'normal',
+                        'word-wrap': 'break-word'
+                    });
+                }
+            }]
+
+        });
+    </script>
+{% endblock javascripts %}

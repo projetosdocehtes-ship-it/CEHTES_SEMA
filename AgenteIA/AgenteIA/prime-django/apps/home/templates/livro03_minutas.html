@@ -1,0 +1,400 @@
+f<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>
+            Minutas
+            {% block title %}{% endblock %}
+        </title>
+        <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 11]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description"
+              content="Free Datta Able Admin Template come up with latest Bootstrap 4 framework with basic components, form elements and lots of pre-made layout options" />
+        <meta name="keywords"
+              content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, datta able, datta able bootstrap admin template, free admin theme, free dashboard template" />
+        <meta name="author" content="CodedThemes" />
+        <!-- Favicon icon -->
+        <link rel="icon" href='{% static "assets/images/favicon.ico" type="image/x-icon">
+        <!-- fontawesome icon -->
+        <link rel="stylesheet"
+              href='{% static "assets/fonts/fontawesome/css/fontawesome-all.min.css" %}'>
+        <!-- animation css -->
+        <link rel="stylesheet"
+              href='{% static "assets/plugins/animation/css/animate.min.css" %}'>
+        <!-- vendor css -->
+        <link rel="stylesheet" href='{% static "assets/css/style.css" %}'>
+        <!-- dark mode css -->
+        <link rel="stylesheet" href='{% static "assets/css/dark.css" %}'>
+        <style>
+             table {
+                  border-collapse: collapse;
+                  border-spacing: 0;
+                  width: 100%;
+                  border: 1px solid #ddd;
+             }
+
+             td {
+                  text-align: left;
+                  padding: 11px;
+             }
+
+             tr:nth-child(even) {
+                  background-color: #f2f2f2;
+             }
+        </style>
+        <!-- Specific CSS goes HERE -->
+        {% block stylesheets %}
+        {% endblock stylesheets %}
+        <script>
+             function getVoltar() {
+                  window.history.back()
+             }
+        </script>
+    </head>
+    <body>
+        <!-- [ Pre-loader ] start -->
+        <div class="loader-bg">
+            <div class="loader-track">
+                <div class="loader-fill"></div>
+            </div>
+        </div>
+        <!-- [ Pre-loader ] End -->
+        {% load home_formatos %}
+        {% include 'includes/sidebar.html' %}
+        {% include 'includes/navigation.html' %}
+        {% block content %}
+        {% endblock content %}
+        {% include 'includes/scripts.html' %}
+        <!-- Specific Page JS goes HERE  -->
+        {% block javascripts %}
+        {% endblock javascripts %}
+        <!-- [ Main Content ] start -->
+        <div class="pcoded-main-container">
+            <div class="pcoded-wrapper">
+                <div class="pcoded-content">
+                    <div class="pcoded-inner-content">
+                        <div class="main-body">
+                            <div class="page-wrapper">
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <!--        CABECALHO        -->
+                                    <h5 class="p-10 mb-10 bg-info text-white">
+                                        Protocolo:  {{ protocolo|protocolo_formatado }}  -  Ato Praticado:  {{ ato_praticado }}
+                                        <br>
+                                        Número:  {{ tipo_registro }}.{{ numero_registro_auxiliar|formatar_numero_registro }}  -  Número do Ato: {{ numero_ato|default:"" }}
+                                        -  Código da Tabela: {{ codigo_tabela }}
+                                        <br>
+                                    </h5>
+                                    <!--   #######     INICIO DA FICHA DE Checklist 	#######       -->
+                                    <div>
+                                        <h5 class="p-10 mb-10 bg-secondary text-white text-center">Selecionar minuta - Livro 03:</h5>
+                                        <select id="cbxMinuta"
+                                                name="cbxMinuta"
+                                                required
+                                                class="basic simple"
+                                                onChange="update()"
+                                                height="200">
+                                            {% for minuta in list_de_minutas %}
+                                                <option value={{ minuta }}>{{ minuta }}
+                                                </option>
+                                                itemSelecionado=minuta
+                                            {% endfor %}
+                                        </select>
+                                        <!--   BOTOES DAS MINUTAS   -->
+                                        <a></a>
+                                        <input type="submit"
+                                               value="Aplicar Modeloss"
+                                               class="btn text-white f-12"
+                                               style="background-color: #507CA5" />
+                                        <!--   <a class="btn text-white f-12"
+      style="background-color: #507CA5"
+      href="{% url 'home:exibir_perguntas_minuta_lv2' pedido_item_id=pedido_item_id  %}"
+      aria-pressed="true"
+      role="button">Aplicar Modelo</a>   -->
+                                        <a class="btn text-white f-12"
+                                           style="background-color: #9caf88"
+                                           href="."
+                                           aria-pressed="true"
+                                           role="button">Partes do Ato</a>
+                                        <!-- Botão que irá abrir o modal PESSOAL -->
+                                        <button type="button"
+                                                class="btn bg-body text-white f-12"
+                                                style="background-color: #839391"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modal_pessoal">Pessoal</button>
+                                        <!-- Botão que irá abrir o modal REAL -->
+                                        <button type="button"
+                                                class="btn bg-info       text-white f-12"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modal_real">Registro</button>
+                                        <input class="btn bg-warning text-black "
+                                               value="Voltar"
+                                               size="3"
+                                               id="b1"
+                                               onclick="getVoltar()">
+                                    </div>
+                                    <!--   #######     FIM DA FICHA DE Checklist   		#######       -->
+                                    <!-- INICIO DO Modal - INDICADOR REAL -->
+                                    <div id="modal_real" class="modal fade" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <!-- Conteúdo do modal-->
+                                            <div class="modal-content">
+                                                <!-- Cabeçalho do modal -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Dados do Registro Auxiliar:</h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                                                </div>
+                                                <!-- Corpo do modal -->
+                                                <div class="modal-body">
+                                                    <table cellpadding="2" cellspacing="2" width="100%" height="150%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-left">Registro Auxiliar</th>
+                                                                <th class="text-left">Tipo de Cédula</th>
+                                                                <th class="text-left">Número de Cédula</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>
+                                                                    <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                       aria-pressed="true"
+                                                                       role="button">{{ registro_auxiliar.numero_registro_auxiliar|formatar_numero_registro }}</a>
+                                                                </th>
+                                                                <th>
+                                                                    <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                       aria-pressed="true"
+                                                                       role="button">{{ registro_auxiliar.tipo_registro_auxiliar_id.nome }}</a>
+                                                                </th>
+                                                                <th>
+                                                                    <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                       aria-pressed="true"
+                                                                       role="button">{{ registro_auxiliar.numero_cedula_l_id3 }}</a>
+                                                                </th>
+                                                            </tr>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-left">Abertura</th>
+                                                                    <th class="text-left">Vencimento</th>
+                                                                    <th class="text-left">Cancelamento</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tr>
+                                                                <th>
+                                                                    <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                       aria-pressed="true"
+                                                                       role="button">{{ registro_auxiliar.data_abertura_id|date:"d/m/y" }}</a>
+                                                                </th>
+                                                                <th>
+                                                                    <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                       aria-pressed="true"
+                                                                       role="button">{{ registro_auxiliar.cancelado_em_id|date:"d/m/y" }}</a>
+                                                                </th>
+                                                                <th>
+                                                                    <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                       aria-pressed="true"
+                                                                       role="button">{{ registro_auxiliar.data_vencimento_id|date:"d/m/y" }}</a>
+                                                                </th>
+                                                            </tr>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-left">Descrição do Produto ou Safra</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tr>
+                                                                <th>
+                                                                    <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                       aria-pressed="true"
+                                                                       role="button">{{ registro_auxiliar.descricao_id }}</a>
+                                                                </th>
+                                                            </tr>
+                                                            <br>
+                                                        </tbody>
+                                                    </table>
+                                                    <p></p>
+                                                    <th>
+                                                        <button data-bs-toggle="button"
+                                                                aria-pressed="true"
+                                                                class="btn bg-secondary text-white btn-block"
+                                                                type="button">Garantias Apresentadas:</button>
+                                                    </th>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-left">Espécie</th>
+                                                                <th class="text-left">Objeto</th>
+                                                                <th class="text-left">Valor</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for garantias in garantias %}
+                                                                <tr>
+                                                                    <th>
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                           aria-pressed="true"
+                                                                           role="button">{{ garantias.especie }}</a>
+                                                                    </th>
+                                                                    <th>
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                           aria-pressed="true"
+                                                                           role="button">{{ garantias.numero }}</a>
+                                                                    </th>
+                                                                    <th>
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                           aria-pressed="true"
+                                                                           role="button">{{ garantias.valor }}</a>
+                                                                    </th>
+                                                                </tr>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-left">Quantidade</th>
+                                                                        <th class="text-left">Grau</th>
+                                                                        <th class="text-left">Vinculo</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                           aria-pressed="true"
+                                                                           role="button">{{ garantias.quantidade }}</a>
+                                                                    </th>
+                                                                    <th>
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                           aria-pressed="true"
+                                                                           role="button"> {{ garantias.grau_penhor }} </a>
+                                                                    </th>
+                                                                    <th>
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                           aria-pressed="true"
+                                                                           role="button"> {{ garantias.imovel_vinculado.descricao }} </a>
+                                                                    </th>
+                                                                </tr>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-left">Tipo</th>
+                                                                        <th class="text-left">Número</th>
+                                                                        <th class="text-left">Ato</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                           aria-pressed="true"
+                                                                           role="button"> {{ garantias.tipo_registro|get_descricao_tipo_registro }} </a>
+                                                                    </th>
+                                                                    <th>
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                           aria-pressed="true"
+                                                                           role="button"> {{ garantias.numero_registro|formatar_numero_registro }} </a>
+                                                                    </th>
+                                                                    <th>
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                           aria-pressed="true"
+                                                                           role="button">{{ garantias.tipo_ato }}</a>
+                                                                    </th>
+                                                                </tr>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th colspan="2" class="text-left">Localização</th>
+                                                                        <th class="text-left">Área plantada</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tr>
+                                                                    <th colspan="2">
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                           aria-pressed="true"
+                                                                           role="button">{{ garantias.fazenda }}</a>
+                                                                    </th>
+                                                                    <th>
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                           aria-pressed="true"
+                                                                           role="button">{{ garantias.area }}</a>
+                                                                    </th>
+                                                                </tr>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-left">Descrição</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tr>
+                                                                    <th colspan="3">
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-16"
+                                                                           aria-pressed="true"
+                                                                           role="button">{{ garantias.descricao }}</a>
+                                                                    </th>
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- Rodapé do modal-->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                                                    <button type="button" class="btn btn-sm btn-primary">Copiar Dados</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- FIM DO Modal - INDICADOR REAL  -->
+                                    <!-- INICIO DO Modal - INDICADOR PESSOAL -->
+                                    <div id="modal_pessoal"
+                                         class="modal fade"
+                                         role="dialog"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <!-- Conteúdo do modal-->
+                                            <div class="modal-content">
+                                                <!-- Cabeçalho do modal -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Dados do Indicador do Registro Auxiliar:</h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                                                </div>
+                                                <!-- Corpo do modal -->
+                                                <div class="modal-body">
+                                                    <th>
+                                                        <button data-bs-toggle="button"
+                                                                aria-pressed="true"
+                                                                class="btn bg-secondary text-white btn-block"
+                                                                type="button">Livro05 ligadas:</button>
+                                                    </th>
+                                                    {% for proprietario in proprietario_atual %}
+                                                        <table class="table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th>
+                                                                        <a class="label bg-primary   btn-lg  text-white btn-rounded f-14"
+                                                                           aria-pressed="true"
+                                                                           role="button">{{ proprietario }}</a>
+                                                                    </th>
+                                                                    <p>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        {% endfor %}
+                                                    </div>
+                                                    <!-- Rodapé do modal-->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                                                        <button type="button" class="btn btn-sm btn-primary">Copiar Dados</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- FIM DO Modal - INDICADOR PESSOAL  -->
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+    </html>

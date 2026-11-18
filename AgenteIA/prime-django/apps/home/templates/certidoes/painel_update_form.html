@@ -1,0 +1,138 @@
+{% extends "layouts/base.html" %}
+{% load static crispy_forms_tags %}
+
+{% block title %}
+    {{ title|default:"Editar" }}
+{% endblock title %}
+
+{% block stylesheets %}
+<style>
+    /* ===== Layout do formulário ===== */
+    .form-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .form-field {
+        flex: 1 1 calc(50% - 20px);
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    /* ===== Botões com mesmo tamanho ===== */
+    .btn-same-size {
+        min-width: 150px;
+        height: 32px;
+        padding: 0 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        white-space: nowrap;
+    }
+
+    /* Container dos botões */
+    .form-actions {
+        margin-top: 25px;
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .form-field {
+            flex: 1 1 100%;
+        }
+
+        .form-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="card-header">
+            <h5>Editar Painel</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="form-container">
+                {% for field in form %}
+                    <div class="form-field">
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">
+                                {{ field.help_text }}
+                            </small>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <small class="text-danger">
+                                {{ error }}
+                            </small>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- ===== AÇÕES ===== -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-sm btn-primary btn-same-size">
+                    Salvar
+                </button>
+
+                <button type="button"
+                        class="btn btn-sm btn-outline-danger btn-same-size"
+                        onclick="window.history.back();">
+                    Cancelar
+                </button>
+
+                <a href="{% url 'home:painel_exibir_grafico' pk=object.id %}"
+                   target="_blank"
+                   class="btn btn-sm btn-info btn-same-size">
+                    <i class="icon feather icon-eye f-14"></i>
+                    Gerar Gráfico
+                </a>
+            </div>
+        </div>
+
+        <div class="card-footer"></div>
+    </form>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fields = document.querySelectorAll('.quantidade-field');
+
+        fields.forEach(field => {
+            field.addEventListener('input', function () {
+                if (parseInt(this.value) > 0) {
+                    this.style.backgroundColor = '#d4edda'; // verde claro
+                } else {
+                    this.style.backgroundColor = '';
+                }
+            });
+        });
+    });
+</script>
+{% endblock javascripts %}

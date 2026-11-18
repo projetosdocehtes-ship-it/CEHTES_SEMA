@@ -1,0 +1,76 @@
+{% load home_formatos %}
+<!-- BTN ADD START -->
+<a class="btn btn-sm btn-outline-info text-dark"
+   data-bs-toggle="modal"
+   href="javascript:"
+   class="text-dark"
+   data-bs-target="#myModal{{ parte.pessoa.id }}"
+   role="button">
+    <i class="icon feather icon-file-plus"></i>&emsp;Cônjuge&emsp;
+</a>
+<!-- BTN ADD END -->
+<!-- Modal -->
+<div class="modal"
+     id="myModal{{ parte.pessoa.id }}"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header font-weight-bold text-white">
+                <h4 class="modal-title text-dark fs-5 text-bg-dark" id="myModalLabel">
+                    <i class="icon feather icon-edit"></i>  Vincular Cônjuge:
+                    <p>{{ parte.pessoa.nome }} - {{ parte.pessoa.cpf|default:""|formatar_documento }}</p>
+                </h4>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'pessoas:vincular_protocolo_parte_conjuge' %}"
+                  method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="hidden" name="pessoa_id" value="{{ parte.pessoa.id }}" />
+                    <input type="hidden" name="pedido_item_id" value="{{ parte.id }}" />
+                    <input type="hidden" name="pedido_id" value="{{ parte.pedido_id }}" />
+                    <input type="hidden" name="protocolo_id" value="{{ protocolo.pk }}" />
+                    <!-- OBTER O COMBOBOX DO CONJUGUE -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Cônjuge</span>
+                                    </div>
+                                    <select class="form-select" name="conjuge_id" id="conjuge_id" autofocus>
+                                        {% if parte.pessoa_id > 0 %}
+                                            <option value="{{ parte.pessoa_id }}">
+                                            {% else %}
+                                                <option value="0"></option>
+                                            {% endif %}
+                                            {% for adquirente in protocolo.partes_do_protocolo %}
+                                                <option value="{{ adquirente.pessoa_id }}">{{ adquirente.pessoa.nome }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="icon feather icon-save"></i> Salvar
+                        </button>
+                        <button type="button"
+                                class="btn btn-sm btn-secondary"
+                                data-bs-dismiss="modal">
+                            <i class="btn-close"></i> Fechar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

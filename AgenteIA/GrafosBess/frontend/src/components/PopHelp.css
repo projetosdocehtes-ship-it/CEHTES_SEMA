@@ -1,0 +1,19 @@
+.pop-help { padding: 28px; color: #183f3a; }
+.pop-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+.pop-header h1 { margin: 0; }
+.pop-header p { color: #506b66; }
+.pop-download { display: inline-block; padding: 12px 18px; background: #0f766e; color: white; border-radius: 8px; font-weight: 700; text-decoration: none; }
+.pop-download:hover { background: #115e59; }
+.pop-help a:focus-visible { outline: 3px solid #d97706; outline-offset: 4px; }
+.pop-index { display: grid; gap: 9px; padding: 20px 0; border-bottom: 1px solid #d7e3e0; }
+.pop-index a { color: #11675f; text-underline-offset: 3px; }
+.pop-document { max-width: 960px; line-height: 1.7; }
+.pop-document h2 { margin-top: 36px; scroll-margin-top: 24px; line-height: 1.3; }
+.pop-document h3 { margin: 26px 0 8px; line-height: 1.4; }
+.pop-document p { overflow-wrap: anywhere; }
+.pop-document img { max-width: 100%; height: auto; border: 1px solid #d7e3e0; border-radius: 6px; }
+.pop-table-wrap { overflow-x: auto; margin: 20px 0; }
+.pop-document table { border-collapse: collapse; width: 100%; min-width: 440px; }
+.pop-document th, .pop-document td { padding: 12px; border: 1px solid #d7e3e0; text-align: left; vertical-align: top; }
+.pop-document th { background: #edf5f2; }
+@media (max-width: 700px) { .pop-help { padding: 18px; } .pop-download { width: 100%; text-align: center; box-sizing: border-box; } }

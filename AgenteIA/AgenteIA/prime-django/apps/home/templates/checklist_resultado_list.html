@@ -1,0 +1,368 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    {% include "form-incluir-item-protocolo.html" %}
+    {% include 'form-incluir-item-protocolo-complementar-checklist.html' %}
+    <script>
+        function getAtualizarPagina() {
+            window.location.reload();
+        }
+
+        function openNewTab() {
+
+        }
+    </script>
+    <div class="card table-reponsive">
+        <div class="card-header" id="card_checklist_realizado">
+            <h5>Checklist pelo Colaborador:  {{ user.get_full_name }}</h5>
+        </div>
+        <div class="card-body">
+            <p>
+                Número:
+                <a href="{% url 'home:livro04_detail' numero_registro=numero_matricula tipo_registro=tipo_registro cartorio_imovel='1' %}"
+                   target="_blank"
+                   class="btn-sm text-dark  "
+                   title="Clique para acessar o Indicador Real.">
+                    <span class="badge bg-success f-14 font-weight-bold">{{ numero_matricula|formatar_numero_registro }}</span>
+                </a>
+                <a href="{% url 'home:livro04_detail' numero_registro=numero_matricula tipo_registro=tipo_registro cartorio_imovel='1' %}#card_real_proprietario"
+                   target="_blank"
+                   class="btn-sm text-dark  "
+                   title="Clique para acessar os proprietários atuais.">
+                    <span class="badge bg-success f-14 font-weight-bold">Proprietários</span>
+                </a>
+                <a href="{% url 'home:gerar_minuta_imagem' id=numero_matricula tipo=tipo_registro %}"
+                   target="_blank"
+                   class="btn-sm text-dark  "
+                   title="Exibir a Imagem.">
+                    <span class="badge bg-success f-14 font-weight-bold">Imagem</span>
+                </a>
+                <span class="font-weight-bold ml-2"></span>
+                Tipo: <span class="font-weight-bold">{{ pedido_item_id }}</span>
+                <span class="font-weight-bold ml-2"></span>
+                Ato: <span class="font-weight-bold">{{ pedido_item_id|get_numero_do_ato_pelo_pedido_item_id|default:"" }}</span>
+                <span class="font-weight-bold ml-2"></span>
+                Código: <span class="font-weight-bold">{{ pedido_item_id.codigo_tabela|default:"" }}</span>
+                <span class="font-weight-bold ml-2"></span>
+                Descrição do Imóvel: <span class="font-weight-bold">{{ classe_id|formatar_classe_do_registro }}</span>
+            </p>
+            <p>
+                Protocolo:
+                <a title="Clique para acessar o Protocolo."
+                   href="{% url 'home:protocolo_search' %}?numero_protocolo=pedido_item_id|get_numero_protocolo_filter"
+                   target="_blank">
+                    <span class="badge bg-primary f-14 font-weight-bold">{{ pedido_item_id|get_numero_protocolo_filter|protocolo_formatado }}</span>
+                </a>
+                <a>&nbsp;&nbsp;</a>
+                <a class="badge bg-primary f-14 font-weight-bold text-white"
+                   href="#"
+                   title="Alterar item do Protocolo">
+                    <i class="icon feather icon-edit mx-2"></i>Alterar
+                </a>
+                <a></a>
+                <a class="badge bg-primary active f-14 font-weight-bold text-white"
+                   data-bs-toggle="modal"
+                   href="javascript:"
+                   data-bs-target="#addItemProtocolo"
+                   title="Incluir título principal">
+                    <i class="icon feather icon-plus mx-2"></i> Incluir
+                </a>
+                <a></a>
+                <a class="badge bg-primary active f-14 font-weight-bold text-white"
+                   data-bs-toggle="modal"
+                   href="javascript:"
+                   data-bs-target="#addItemProtocoloComplementarchecklist"
+                   title="Abre tela para incluir novos complementos">
+                    <i class="icon feather icon-plus mx-2"></i> Complementar
+                </a>
+                <a></a>
+                <a class="badge bg-primary active f-14 font-weight-bold text-white"
+                   data-bs-toggle="modal"
+                   data-bs-target="."
+                   href="#!"
+                   title="Emitir Recibo do Protocolo">
+                    <i class="icon feather icon-printer mx-2"></i> Recibo
+                </a>
+                <p>
+                    <!--
+                    <a href="{% url 'home:gerar_minuta_imagem' id=numero_matricula tipo=tipo_registro %}" target="_blank" class="btn-sm text-white" style="background-color: #d3341f" title="Visualizar Imagem" type="button">
+                        <i class="icon feather icon-image" id="btn-imagem">&nbsp;Imagem</i> </a>
+                    <a></a>
+                    <a href="{% url 'home:livro02_pessoas_list' numero_registro=numero_matricula tipo_registro=tipo_registro  cartorio_imovel='1' %}" target="_blank" class="btn-sm active text-dark" style="background-color: #a8a8a8" title="Exibir Indicador Pessoal" aria-pressed="true" role="button"><i class="icon feather icon-users">Pessoal</i></a>
+                    <a></a>
+                <a href="{% url 'home:livro04_detail' numero_registro=numero_matricula tipo_registro=tipo_registro cartorio_imovel='1' %}" target="_blank" class="btn-sm text-dark  " style="background-color: #3bf1f7" title="Clique para acessar o Indicador Real." aria-pressed="true" role="button"> <i class="icon feather icon-home">Real</i>
+            </a>
+-->
+                </p>
+            </div>
+            <div class="card-footer">
+                {% if pedido_item_id|pedido_item_possui_nota_devolucao %}
+                    <a class="btn btn-sm btn-warning text-dark"
+                       href="{% url 'home:texto_devolucao' pk=pedido_item_id pedido_item_id=pedido_item_id %}"
+                       aria-pressed="true"><i class="icon feather icon-file"></i> Texto Nota</a>
+                {% else %}
+                    <a class="btn btn-sm btn-warning text-dark"
+                       title="Gerar a nota de devolução e salvar no protocolo"
+                       href="{% url 'home:download_doc_file' pedido_item_id=pedido_item_id opcao_nota=0 %}"
+                       aria-pressed="true"
+                       role="button"><i class="icon feather icon-file-text"></i> Exigência</a>
+                    <a class="btn btn-sm btn-light text-dark"
+                       title="Gerar apenas exigência Pagamento"
+                       href="{% url 'home:download_doc_file_pagamento' pedido_item_id=pedido_item_id opcao_nota=1 %}"
+                       aria-pressed="true"
+                       role="button"><i class="icon feather icon-file-text"></i> Exigência de Pagamento</a>
+                    <a class="btn btn-sm btn-danger font-weight-bold text-white"
+                       title="Gerar a nota de devolução em PDF"
+                       href="{% url 'home:download_pdf_file' pedido_item_id %}"
+                       aria-pressed="true"
+                       role="button"><i class="icon feather icon-printer"></i> Exigência em PDF</a>
+                {% endif %}
+                <a class="btn btn-sm btn-secondary text-white"
+                   title="Exibe esta tela em outra aba"
+                   data-bs-toggle="tooltip"
+                   href="{% url 'home:checklist_imovel' pedido_item_id %}"
+                   target='_blank'
+                   aria-pressed="true"
+                   role="button"><i class="icon feather icon-monitor"></i> Duplicar tela</a>
+                <a class="btn btn-sm btn-secondary text-white "
+                   title="Atualizar a página para visualizar os dados alterados"
+                   data-bs-toggle="tooltip"
+                   onclick="getAtualizarPagina()"><i class="icon feather icon-refresh-cw" id="theme-inlimpar"></i> Atualizar</a>
+                <a class="btn btn-sm btn-secondary text-white"
+                   href="{% url 'home:checklist_lv2' pedido_item_id=pedido_item_id opcao=1 %}"
+                   title="Acessar o Checklist do Ato."
+                   aria-pressed="true"
+                   role="button"><i class="icon feather icon-check"></i> Voltar Realizar Checklist</a>
+                <a href="#card_checklist"
+                   class="btn btn-sm btn-light text-dark"
+                   title="Próximo ítem"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i> Próximo
+                </a>
+                <!-- <a class="btn btn-sm btn-primary   text-white f-12 " href="{% url 'home:download_excel_file' %}" aria-pressed="true" role="button">Gerar Excell</a> -->
+                <!-- <a class="btn btn-sm btn-primary  text-white f-12 " href="{% url 'home:gerar_nota_de_devolucao' pedido_item_id=pedido_item_id %}" aria-pressed="true" role="button">Gerar Nota de Devolução</a> -->
+            </div>
+        </div>
+        <div class="card table-reponsive">
+            <div class="card-header text-white" id="card_checklist">
+                <h5>1 - Respostas e Ações - Indicador Pessoal:</h5>
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Pergunta:</th>
+                            <th>Informado</th>
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                            <th>Informação Arquivada</th>
+                            <th>Ações</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if object_list %}
+                            {% regroup object_list by pessoa.nome as pessoa_groups %}
+                            {% for pessoa_group in pessoa_groups %}
+                                {% if pessoa_group.grouper %}
+                                    <tr>
+                                        <td>{{ forloop.counter|add:"-0" }}</td>
+                                        <td colspan="6">
+                                            <b>{{ pessoa_group.grouper }}</b>
+                                        </td>
+                                    </tr>
+                                    {% for objeto in pessoa_group.list %}
+                                        {% if objeto.perguntas.setores.descricao != 'Geral' %}
+                                            <tr>
+                                                <td>{{ forloop.parentloop.counter|add:"-0" }}.{{ forloop.counter }}</td>
+                                                <td>
+                                                    <small>{{ objeto.perguntas.questions }}</small>
+                                                </td>
+                                                <td>
+                                                    <small>{{ objeto.resposta }}</small>
+                                                </td>
+                                                <td>
+                                                    {% if objeto.resposta != objeto.resposta_correta %}
+                                                        <a href="{% url 'home:atualizar_checklist_partes' pedido_item_id=pedido_item_id pessoa_id=objeto.pessoa_id coluna_tabela_origem=objeto.coluna_tabela_origem resposta_correta=objeto.resposta_correta %}"
+                                                           class="badge bg-danger f-14"
+                                                           title="Colocar texto da 'Informação Arquivada' como correto"
+                                                           type="button"><i class="icon feather icon-arrow-left"   id="theme-indproximo"></i> </a>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <td>
+                                                        <small>{{ objeto.resposta_correta }}</small>
+                                                    </td>
+                                                    <td>
+                                                        <small>{{ objeto.perguntas.observacao }}</small>
+                                                    </td>
+                                                    <td>
+                                                        {% if objeto.resposta != objeto.resposta_correta %}
+                                                            <a title="{{ objeto.perguntas.observacao }}"
+                                                               class="badge bg-danger f-14 text-white"
+                                                               href="javascript:"
+                                                               data-bs-toggle="modal"
+                                                               data-bs-target="#addItemProtocolo">Divergente</a>
+                                                        {% else %}
+                                                            <a class="badge bg-success f-14 text-white">Correto</a>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-sm btn-warning text-dark "
+                   title="Voltar para a página anterior sem alterar os dados"
+                   data-bs-toggle="tooltip"
+                   href="#card_checklist_realizado"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i> Voltar </a>
+                <div class="btn-group mb-2 mr-2">
+                    <a href="#card_respostas_acoes"
+                       class="btn btn-sm btn-primary text-dark "
+                       title="Próximo ítem"
+                       type="button"
+                       data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+                </div>
+            </div>
+        </div>
+        <div class="card table-reponsive" id="card_respostas_acoes">
+            <div class="card-header text-white">
+                <h5>2 - Respostas e Ações - Indicador Real:</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>#</th>
+                        <th>Pergunta:</th>
+                        <th>Informado</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                        <th>Informação Arquivada</th>
+                        <th>Ações</th>
+                        <th>Status</th>
+                    </tr>
+                    <tbody>
+                        {% if object_list %}
+                            {% for objeto in object_list %}
+                                {% if objeto.perguntas.setores.descricao == 'Geral' %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ objeto.perguntas.questions }}</td>
+                                        <td>{{ objeto.resposta }}</td>
+                                        <td>
+                                            {% if objeto.resposta != objeto.resposta_correta %}
+                                                {% if objeto.resposta_correta == '.' %}
+                                                    <a href="{% url 'home:atualizar_checklist_livro02_03' pedido_item_id=pedido_item_id perguntas_id=objeto.tabela_origem_id coluna_tabela_origem=objeto.coluna_tabela_origem resposta_correta=objeto.resposta %}"
+                                                       class="badge bg-danger f-14"
+                                                       title="Colocar texto da 'Informação Arquivada' como correto"
+                                                       type="button"><i class="icon feather icon-arrow-left"   id="theme-indproximo"></i>
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{% url 'home:atualizar_checklist_livro02_03' pedido_item_id=pedido_item_id perguntas_id=objeto.tabela_origem_id coluna_tabela_origem=objeto.coluna_tabela_origem resposta_correta=objeto.resposta_correta %}"
+                                                       class="badge bg-danger f-14"
+                                                       title="Colocar texto da 'Informação Arquivada' como correto"
+                                                       type="button"><i class="icon feather icon-arrow-left"   id="theme-indproximo"></i>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if objeto.resposta != objeto.resposta_correta %}
+                                                <a href="{% url 'home:atualizar_livro02_03' pedido_item_id=pedido_item_id perguntas_id=objeto.tabela_origem_id coluna_tabela_origem=objeto.coluna_tabela_origem resposta_correta=objeto.resposta %}"
+                                                   class="badge bg-danger f-14"
+                                                   title="Colocar texto do 'xxx Informado' como correto"
+                                                   type="button"><i class="icon feather icon-arrow-right"   id="theme-indproximo"></i> </a>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ objeto.resposta_correta }}</td>
+                                        <td>{{ objeto.perguntas.observacao }}</td>
+                                        <td>
+                                            {% if objeto.resposta != objeto.resposta_correta %}
+                                                <a title="{{ objeto.perguntas.observacao }}"
+                                                   class="badge bg-danger f-14 text-white"
+                                                   href="javascript:"
+                                                   data-bs-toggle="modal"
+                                                   data-bs-target="#addItemProtocolo">Divergente</a>
+                                            {% else %}
+                                                <a class="badge bg-success f-14 text-white">Correto</a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-sm btn-warning text-dark "
+                   title="Voltar para a página anterior sem alterar os dados"
+                   data-bs-toggle="tooltip"
+                   href="#card_checklist_realizado"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i> Voltar </a>
+                <div class="btn-group mb-2 mr-2">
+                    <a href="#card_opcoes"
+                       class="btn btn-sm btn-primary text-dark "
+                       title="Próximo ítem"
+                       type="button"
+                       data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="card_opcoes">
+                <h5>3 - Opções</h5>
+            </div>
+            <div class="card-body">
+                <a class="btn btn-sm btn-warning text-dark"
+                   title="Gerar a nota de devolução e salvar no protocolo"
+                   href="{% url 'home:download_doc_file' pedido_item_id=pedido_item_id opcao_nota=0 %}"
+                   aria-pressed="true"
+                   role="button"><i class="icon feather icon-file-text"></i> Exigência</a>
+                <a class="btn btn-sm btn-light text-dark"
+                   title="Gerar apenas exigência Pagamento"
+                   href="{% url 'home:download_doc_file_pagamento' pedido_item_id=pedido_item_id opcao_nota=1 %}"
+                   aria-pressed="true"
+                   role="button"><i class="icon feather icon-file-text"></i> Exigência de Pagamento</a>
+                <a class="btn btn-sm btn-danger font-weight-bold text-whitedark"
+                   title="Gerar a nota de devolução em PDF"
+                   href="{% url 'home:download_pdf_file' pedido_item_id %}"
+                   aria-pressed="true"
+                   role="button"><i class="icon feather icon-printer"></i> Exigência em PDF</a>
+                {% if pedido_item_id|pedido_item_possui_nota_devolucao %}
+                    <a class="btn btn-sm btn-success text-dark"
+                       href="{% url 'home:texto_devolucao' pk=pedido_item_id pedido_item_id=pedido_item_id %}"
+                       aria-pressed="true"><i class="icon feather icon-file"></i> Texto Nota</a>
+                {% endif %}
+                <a class="btn btn-sm btn-secondary text-white"
+                   title="Exibe esta tela em outra aba"
+                   data-bs-toggle="tooltip"
+                   href="{% url 'home:checklist_imovel' pedido_item_id %}"
+                   target='_blank'
+                   aria-pressed="true"
+                   role="button"><i class="icon feather icon-monitor"></i> Duplicar tela</a>
+                <a class="btn btn-sm btn-secondary text-white "
+                   title="Atualizar a página para visualizar os dados alterados"
+                   data-bs-toggle="tooltip"
+                   onclick="getAtualizarPagina()"><i class="icon feather icon-refresh-cw" id="theme-inlimpar"></i> Atualizar</a>
+                <a class="btn btn-sm btn-secondary text-white"
+                   href="{% url 'home:checklist_lv2' pedido_item_id=pedido_item_id opcao=1 %}"
+                   title="Acessar o Checklist do Ato."
+                   aria-pressed="true"
+                   role="button"><i class="icon feather icon-check"></i> Voltar ao Checklist</a>
+                <a class="btn btn-sm btn-warning text-dark "
+                   title="Voltar para a página anterior sem alterar os dados"
+                   data-bs-toggle="tooltip"
+                   href="#card_checklist_realizado"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i> Voltar </a>
+            </div>
+        </div>
+{% endblock content %}

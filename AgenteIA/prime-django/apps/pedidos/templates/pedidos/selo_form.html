@@ -1,0 +1,36 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Adicionar/Alterar Selo</h5>
+                    </div>
+                    <div class="card-block table-border-style">
+                        <form action=".", method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% if imovel_id %}
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Atos</h5>
+                        </div>
+                        <div class="card-block table-border-style">{% render_table atos_table %}</div>
+                        <div class="card-footer">
+                            <a href="{% url 'pedidos:adicionar_ato' pedido_id imovel_id %}"
+                               class="btn btn-sm btn-primary">Adicionar</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

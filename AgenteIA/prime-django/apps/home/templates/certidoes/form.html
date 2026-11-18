@@ -1,0 +1,36 @@
+{% extends "layouts/base.html" %}
+{% load static crispy_forms_tags django_tables2 %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        {% if object %}
+                            Editar
+                        {% else %}
+                            Adicionar
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form action="." method="post">
+                        {% csrf_token %}
+                        {% crispy form %}
+                        <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+                        <a href="{% url 'home:pedido_certidao_editar_apresentante' object.pedido_id %}"
+                           class="btn btn-sm btn-secondary">Cancelar</a>
+                        <!-- Link para editar os DadosBancarios associados -->
+                        {% if object.dadosbancarios %}
+                            <a href="{% url 'comum:editar_dadosbancarios' pk=object.dados_bancarios.pk %}"
+                               class="btn btn-sm btn-info">Editar Dados Bancários</a>
+                        {% else %}
+                            <a href="{% url 'comum:cadastrar_dadosbancarios' apresentante_pk=object.pk %}"
+                               class="btn btn-sm btn-info">Adicionar Dados Bancários</a>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

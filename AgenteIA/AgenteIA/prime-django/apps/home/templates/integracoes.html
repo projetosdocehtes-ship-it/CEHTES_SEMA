@@ -1,0 +1,187 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <h3>Serviços de Exportação</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Gerar PGM (ONR)</h5>
+                        <a class="text-white"
+                           style="background-color: #507CA5"
+                           href="https://cnm.onr.org.br/pages/consultarRegistroCnm.php"
+                           target="_blank"
+                           data-bs-toggle="tooltip">Livro 02 (Registros)- (clique aqui para ir para site)</a>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Último número gerado para o arquivo: <b>{{ Ultimo_Numero_Enviado_ONR_L2 }}</b>
+                            <p>
+                                Data da última verificação: <b>{{ Ultima_DataRelatorio_Enviado_ONR_L2|date:"DATETIME_FORMAT" }} hs.</b>
+                            </p>
+                        </p>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-append">
+                                <a class="btn btn-sm bg-info text-dark"
+                                   href="{% url 'integracoes:gerar_pgnm' numero_livro='2' %}"
+                                   title="Gerar Eventos para a Agenda do colaborador."
+                                   data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-download-cloud auth-icon"></i> Gerar Arquivo
+                                </a>
+                                <a class="btn btn-sm bg-success text-white"
+                                   href="#!"
+                                   data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-upload-cloud "></i> WebService
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Gerar PGM (ONR)</h5>
+                        <a class="text-white"
+                           style="background-color: #507CA5"
+                           href="https://cnm.onr.org.br/pages/consultarRegistroCnm.php"
+                           target="_blank"
+                           data-bs-toggle="tooltip">Livro 03 - (clique aqui para ir para site)</a>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Último número gerado para o arquivo:
+                            <b>{{ Ultimo_Numero_Enviado_ONR_L3 }}</b>
+                            <p>
+                                Data da última verificação: <b>{{ Ultima_DataRelatorio_Enviado_ONR_L3|date:"DATETIME_FORMAT" }} hs.</b>
+                            </p>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-append">
+                                    <a class="btn btn-sm bg-info text-dark"
+                                       href="{% url 'integracoes:gerar_pgnm' numero_livro='3' %}"
+                                       title="Gerar Eventos para a Agenda do colaborador."
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-download-cloud auth-icon"></i> Gerar Arquivo
+                                    </a>
+                                    <a class="btn btn-sm bg-success text-white"
+                                       href="#!"
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-upload-cloud "></i> WebService
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Ofício Eletrônico (ONR)</h5>
+                            <a class="text-white"
+                               style="background-color: #507CA5"
+                               href="https://oficioeletronico.com.br/"
+                               target="_blank"
+                               data-bs-toggle="tooltip">Livro 04 - (clique aqui para ir para site)</a>
+                        </div>
+                        <div class="card-body">
+                            <p>
+                                Último número gerado para o arquivo: <b>{{ Ultimo_Numero_Enviado_ONR_L4 }}</b>
+                                <p>
+                                    Data da última verificação: <b>{{ Ultima_DataRelatorio_Enviado_ONR_L4|date:"DATETIME_FORMAT" }} hs.</b>
+                                </p>
+                            </p>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-append">
+                                    <a class="btn btn-sm bg-info text-dark"
+                                       href="{% url 'integracoes:gerar_envio_l4' %}"
+                                       title="Gerar Eventos para a Agenda do colaborador."
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-download-cloud auth-icon"></i> Gerar Arquivo
+                                    </a>
+                                    <a class="btn btn-sm bg-success text-white"
+                                       href="#!"
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-upload-cloud "></i> WebService
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Exportar para Ofício Eletrônico (ONR)</h5>
+                            <a class="text-white"
+                               style="background-color: #507CA5"
+                               href="https://oficioeletronico.com.br/"
+                               target="_blank"
+                               data-bs-toggle="tooltip">Livro 05</a>
+                        </div>
+                        <div class="card-body">
+                            <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                            <div class="input-group input-group-sm mb-3">
+                                <input type="file"
+                                       name="document"
+                                       class="form-control"
+                                       id="inputGroupFile04"
+                                       aria-describedby="inputGroupFileAddon04"
+                                       aria-label="Upload">
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-primary"
+                                            type="submit"
+                                            id="inputGroupFileAddon04"
+                                            data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-paperclip "></i>Anexar
+                                    </button>
+                                    <button class="btn-sm bg-success text-white"
+                                            href="#!"
+                                            data-bs-toggle="tooltip">
+                                        WebService    <i class="icon feather icon-download-cloud "></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Receita Federal</h5>
+                            <a class="text-white"
+                               style="background-color: #507CA5"
+                               href="https://oficioeletronico.com.br/"
+                               target="_blank"
+                               data-bs-toggle="tooltip">DOI</a>
+                        </div>
+                        <div class="card-body">
+                            <p>Última importação: {{ Servicos_01_Certidao_Cri|date:"d/m/y" }}</p>
+                            <div class="input-group input-group-sm mb-3">
+                                <div class="input-group-append">
+                                    <a class="btn btn-sm bg-info text-dark"
+                                       href="{% url 'home:protocolo_list_doi' %}"
+                                       title="Visualizar o relatório da DOI atual."
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-printer mx-2"></i> Relatório
+                                    </a>
+                                    <a class="btn btn-sm bg-success text-white"
+                                       href="#!"
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-upload-cloud "></i> WebService
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+{% endblock content %}

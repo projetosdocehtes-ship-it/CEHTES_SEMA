@@ -1,0 +1,90 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Editar Ato ao {{ pedido }} de {{ pedido.nome_apresentante }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <!-- <div class="form-group">
+                                {{ form.tipo_titulo|as_crispy_field }}
+                            </div> -->
+                            <!-- <hr> -->
+                            <div class="row">
+                                <div class="col-md-6">{{ form.tipo_titulo|as_crispy_field }}</div>
+                                <div class="col-md-6">{{ form.ato_praticavel|as_crispy_field }}</div>
+                            </div>
+                            <!-- <hr> -->
+                            <div class="row">
+                                <div class="col-md-6">{{ form.tipo_emolumento|as_crispy_field }}</div>
+                                <div class="col-md-4">{{ form.tipo_tributacao|as_crispy_field }}</div>
+                                <div class="col-md-2">{{ form.quantidade|as_crispy_field }}</div>
+                            </div>
+                            <!-- <hr> -->
+                            <div class="row">
+                                <div class="col-md-6">{{ form.valor_avaliacao|as_crispy_field }}</div>
+                                <div class="col-md-6">{{ form.valor_titulo|as_crispy_field }}</div>
+                            </div>
+                            <!-- <hr> -->
+                            <div class="row">
+                                <div class="col-md-3">{{ form.imovel_tipo_registro|as_crispy_field }}</div>
+                                <div class="col-md-3">{{ form.imovel_numero_registro|as_crispy_field }}</div>
+                                <div class="col-md-2">{{ form.imovel_cartorio|as_crispy_field }}</div>
+                                <div class="col-md-2">{{ form.tipo_ato|as_crispy_field }}</div>
+                                <div class="col-md-2">{{ form.numero_ato|as_crispy_field }}</div>
+                            </div>
+                            <!-- <hr> -->
+                            <div class="row"></div>
+                            <!-- Repita a estrutura acima para outros grupos de campos -->
+                            <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+                            <button type="submit"
+                                    class="btn btn-sm btn-outline-info"
+                                    name="action"
+                                    value="save_and_add_another">Salvar e Adicionar outro</button>
+                            <button type="submit"
+                                    class="btn btn-sm btn-success text-dark"
+                                    name="action"
+                                    value="save_and_add_complementar">Salvar e Adicionar Ato Complementar</button>
+                        </form>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-auto">
+                                {% if object.numero_protocolo_firebird %}
+                                    <a href="{{ object.get_pedido_url }}"
+                                       class="btn btn-sm btn-outline-secondary"><i class="fas fa-newspaper d-none d-md-inline-block"></i> Voltar ao Protocolo </a>
+                                {% else %}
+                                    <a href="{{ object.get_pedido_url }}"
+                                       class="btn btn-sm btn-outline-secondary"><i class="fas fa-newspaper d-none d-md-inline-block"></i> Voltar ao Pedido </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const formFields = document.querySelectorAll('.form-control');
+
+            formFields.forEach(function(field) {
+            field.addEventListener('focus', function() {
+                field.classList.add('highlighted');
+            });
+
+            field.addEventListener('blur', function() {
+                field.classList.remove('highlighted');
+            });
+            });
+        });
+    </script>
+{% endblock %}

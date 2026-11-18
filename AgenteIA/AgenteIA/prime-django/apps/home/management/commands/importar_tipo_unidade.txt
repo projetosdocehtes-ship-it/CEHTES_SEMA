@@ -1,0 +1,14 @@
+INSERT INTO public.home_tipounidade (id, descricao)                   VALUES ('A', 'Apartamento');
+INSERT INTO public.home_tipounidade (id, descricao)                   VALUES ('B', 'Box');
+INSERT INTO public.home_tipounidade (id, descricao)                   VALUES ('C', 'Casa');
+INSERT INTO public.home_tipounidade (id, descricao)                   VALUES ('E', 'Escaninho');
+INSERT INTO public.home_tipounidade (id, descricao)                   VALUES ('J', 'Loja');
+INSERT INTO public.home_tipounidade (id, descricao)                   VALUES ('K', 'Kitchenette');
+INSERT INTO public.home_tipounidade (id, descricao)                   VALUES ('O', 'Conjunto');
+INSERT INTO public.home_tipounidade (id, descricao)                   VALUES ('R', 'Lote');
+INSERT INTO public.home_tipounidade (id, descricao)                   VALUES ('S', 'Sala');
+INSERT INTO public.home_tipounidade (id, descricao)                   VALUES ('T', 'Estudio');
+INSERT INTO public.home_tipounidade (id, descricao)  			      VALUES ('L', 'Lote');
+INSERT INTO public.home_tipounidade (id, descricao)                   VALUES ('', '');
+INSERT INTO public.home_tipounidade (id, descricao)                   VALUES (' ', '');
+COMMIT WORK;

@@ -1,0 +1,135 @@
+{% include "form-incluir-item-protocolo-ato-principal.html" %}
+{% load home_formatos %}
+<div class="card">
+    <div class="card-header" id="itens_pedido_titulo_principal">
+        <h5>
+            <span class="text-white">Título Principal: {{ protocolo }}</span>
+        </h5>
+        <a href="javascript:"
+           class="info-icon"
+           data-info="Instruções para o Card Titulo Principal">
+            <i class="fas fa-info-circle"></i>
+        </a>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Ato Praticado</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for titulo in protocolo.titulos_principais %}
+                    <tr>
+                        <td>
+                            <div class="cell-content text-left">Título: {{ titulo.titulo.tipo_titulo }}</div>
+                            <div class="cell-content text-left">
+                                {{ titulo.ato.tipo_ato }} <small>({{ titulo.codigo_tabela }})</small>
+                            </div>
+                            <div class="cell-content">
+                                <span class="font-weight-bold"> {{ titulo.tipo_registro }}.
+                                    <b>{{ titulo.numero_registro|formatar_numero_registro_inteiro }}</b></span>
+                                {% if titulo.numero_ato %}- {{ titulo.numero_ato|default:"" }}{% endif %}
+                                {% if titulo.numero_ri %}{% endif %}
+                                <!-- - RI: {{ titulo.numero_ri }} -->
+                            </div>
+                        </td>
+                        <td>
+                            <!-- Botão que irá abrir o modal ADQUIRENTE - Detalhes dos dados do Adquirente selecionado -->
+                            {% comment %} {% include 'endereco-urbano.html' %} {% endcomment %}
+                            <!-- Botão que irá abrir o modal PESSOAL -->
+                            <div class="cell-content">
+                                {% if titulo.ato %}
+                                    <a class="btn btn-sm btn-outline-primary activate"
+                                       href="{% url 'home:base_conhecimento_protocolo' pedido_item_id=titulo.pk ato_id=titulo.ato.id numero_protocolo_pesquisar=protocolo.numero numero_registro=titulo.numero_registro tipo_registro=titulo.tipo_registro cartorio_imovel=titulo.numero_ri classe=titulo.pedido_item.imovel.classe|default:0 %}"
+                                       target="_blank"
+                                       title="Clique para visualizar os detalhes de protocolos similares a este Título"
+                                       data-toggle="tooltip">
+                                        <i class="icon feather icon-check"></i>Base de Conhecimento</a>
+                                {% endif %}
+                                <a class="btn btn-sm btn-outline-info activate"
+                                   href="{% url 'home:checklist_lv2' pedido_item_id=titulo.pk opcao=1 %}"
+                                   target="_blank"
+                                   title="Acessar o Checklist do Ato."
+                                   aria-pressed="true"
+                                   role="button"><i class="icon feather icon-check"></i>Checklist</a>
+                                {% if titulo.ato %}
+                                    <a class="btn btn-sm btn-dark"
+                                        style="background-color: #3d0c02"
+                                        href="{% url 'home:base_conhecimento_protocolo' pedido_item_id=titulo.pk ato_id=titulo.ato.id numero_protocolo_pesquisar=protocolo.numero numero_registro=titulo.numero_registro tipo_registro=titulo.tipo_registro cartorio_imovel=titulo.numero_ri classe=titulo.pedido_item.imovel.classe|default:0 %}#itens_minutas""
+                                        target="_blank"
+                                        title="Acessar as minutas para o Ato."
+                                        aria-pressed="true"
+                                    role="button"><i class="icon feather icon-file-text"></i>Minutas</a>
+                                {% endif %}
+                                <!-- Abrir o Modal REAL -->
+                            </div>
+                            <div class="cell-content">
+                                {% if titulo.tipo_registro != 'A' %}
+                                    <a class="btn btn-sm btn-outline-primary activate"
+                                       title="Exibe os dados do Registro Geral."
+                                       href="{% url 'home:livro04_detail' numero_registro=titulo.numero_registro tipo_registro=titulo.tipo_registro cartorio_imovel=titulo.numero_ri %}"
+                                       target="_blank">
+                                        <i class="icon feather icon-home"></i>Livro 02 (Registros)&emsp;&emsp;</a>
+                                {% else %}
+                                    <a class="btn btn-sm btn-outline-primary activate"
+                                       title="Exibe os dados do Registro Auxiliar."
+                                       href="{% url 'home:livro03_detail_pelo_numero' numero=titulo.numero_registro|default:0|apenas_numeros cartorio=titulo.numero_ri %}"
+                                       target="_blank">
+                                        <i class="icon feather icon-home"></i>Livro 03&emsp;(Reg. Auxiliar)</a>
+                                {% endif %}
+                                {% if titulo.tipo_registro != 'A' %}
+                                    <!-- Abrir o Modal PESSOAL -->
+                                    <a class="btn btn-sm btn-outline-secondary activate"
+                                       title="Exibe os envolvidos no registro."
+                                       href="{% url 'home:livro02_pessoas_list' numero_registro=titulo.numero_registro tipo_registro=titulo.tipo_registro  cartorio_imovel=titulo.numero_ri %}"
+                                       target="_blank"
+                                       target="_blank">
+                                        <i class="icon feather icon-users"></i>Pessoal&ensp;</a>
+                                {% endif %}
+                                <a class="btn btn-sm btn-outline-danger"
+                                   title="Exibe as imagens do registro."
+                                   href="{% url 'home:livro02_imagens_pelo_numero' numero_registro=titulo.numero_registro tipo_registro=titulo.tipo_registro %}"
+                                   target="_blank">
+                                    <i class="icon feather icon-image"></i>Imagem</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <div class="btn-group mb-2 mr-2">
+            <a class="btn btn-sm btn-primary activate text-white"
+               target="_blank"
+               href="{% url 'pedidos:atos_list_protocolo' numero_protocolo=protocolo.numero_protocolo %}"
+               title="Incluir título principal">
+                <i class="icon feather icon-plus mx-2"></i> Incluir
+            </a>
+        </div>
+        <div class="btn-group mb-2 mr-2">
+            <a class="btn btn-sm btn-outline-secondary"
+               href="#itens_pedido_partes"
+               title="Acessar os dados do Título Principal."
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-check"></i>Partes
+            </a>
+        </div>
+        <div class="btn-group mb-2 mr-2">
+            <a href="#protocolo_detail"
+               class="btn btn-sm btn-outline-warning text-dark "
+               title="Clique para voltar ao topo da página"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+        <div class="btn-group mb-2 mr-2">
+            <a href="#itens_pedido_partes"
+               class="btn btn-sm btn-outline-primary text-dark "
+               title="Próximo ítem"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+        </div>
+    </div>
+</div>
+<!-- [ FIM - TITULO PRINCIPAL ] -->

@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>Comparação de Marcas</h4>
+        <p>Marcas comparadas: {{ marcas_desejadas|join:", " }}</p>
+    </div>
+    <div class="card-body">
+        {{ grafico_html|safe }}
+    </div>
+</div>
+{% endblock %}

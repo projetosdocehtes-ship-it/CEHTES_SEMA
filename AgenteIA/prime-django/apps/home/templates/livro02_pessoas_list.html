@@ -1,0 +1,153 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <div class="card" id="card_pessoal">
+        <div class="card-header">
+            <h5>
+                Indicador Pessoal - {{ imovel.tipo_descrito }}:&nbsp;
+                <span class="font-weight-bold f-24 {% if imovel.encerrado == 'F' %}text-white {% else %}text-white bg-danger{% endif %}">
+                    {{ imovel.numero_formatado }}
+                </span>&nbsp;
+                <span class="text-white f-22">- {{ imovel.descricao_dados_registro }}</span>
+                <span class="text-white f-22">- CNM: {{ imovel.cnm_formatada }}</span>
+            </h5>
+            {% comment %} <p class="text-white f-16">
+                <a class="text-white f-16" href="{% url 'home:protocolo_search' %}?numero_protocolo={{ protocolo|remover_pontuacao }}" title="Clique para Acessar o Protocolo" data-bs-toggle="tooltip">Protocolo: {{ protocolo|protocolo_formatado }}</a>
+            </p> {% endcomment %}
+        </div>
+        <div class="card-body table-responsive">
+            <a type="button"
+               href="{% url 'home:livro02_imagens_pelo_numero' numero_registro=imovel.numero tipo_registro=imovel.tipo %}"
+               target="_blank"
+               class="btn-sm bg-danger text-white">
+                <i class="icon feather icon-image"></i> Imagem  <span class="badge bg-dark"></span></a>
+            {% if imovel.tipo != 'A' %}
+                <a type="button"
+                   href="{% url 'home:livro04_detail' numero_registro=imovel.numero tipo_registro=imovel.tipo cartorio_imovel=imovel.cartorio %}"
+                   target="_blank"
+                   class="btn-sm bg-info text-dark">
+                    <i class="icon feather icon-home"></i> Real  <span class="badge bg-dark"></span></a>
+            {% else %}
+                <a type="button"
+                   href="{% url 'home:livro03_detail_pelo_numero' numero=imovel.numero cartorio=imovel.cartorio %}"
+                   target="_blank"
+                   class="btn bg-info text-dark">
+                    <i class="icon feather icon-home"></i> Registro Auxiliar <span class="badge bg-dark"></span></a>
+            {% endif %}
+            <!-- Dropdown Button -->
+            <a class="btn-sm btn-primary activate text-white dropdown-toggle"
+               type="button"
+               id="dropdownNumero"
+               data-bs-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false"><i class="icon feather icon-settings"></i> Opções </a>
+            <!-- Dropdown Menu -->
+            <div class="dropdown-menu" aria-labelledby="dropdownNumero">
+                <!-- Imagem Option -->
+                <a class="dropdown-item" href="#"  target="_blank">
+                    <i class="icon feather icon-image"></i> Detalhes</a>
+            </div>
+            {% if imovel.tipo != 'A' %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ato</th>
+                            <th>%</th>
+                            <th>CPF/CNPJ</th>
+                            <th>Nome</th>
+                            <th>Vinculo</th>
+                            <th>Estado Cívil</th>
+                            {% comment %} <th>Transferencia (*)</th> {% endcomment %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for vinculo in vinculos %}
+                            <tr>
+                                <!-- Tipo e Número do Ato -->
+                                <td>{{ vinculo.tipo_ato }}.{{ vinculo.numero_ato|numero_inteiro }}</td>
+                                <!-- Porcentagem da Área -->
+                                <td>{{ vinculo.area_pecentual|default:"0,00" }}</td>
+                                <!-- CPF -->
+                                <td>{{ vinculo.pessoa.cpf|formatar_documento }}</td>
+                                <!-- Nome com destaque baseado na situação e tipo de vínculo -->
+                                <td>
+                                    <a type="button"
+                                       href="{% url 'home:livro05_por_id' id=vinculo.pessoa.id %}"
+                                       target="_blank"
+                                       class="label">
+                                        <span class="badge bg-dark f-12">{{ vinculo.pessoa.nome|upper }}</span>
+                                    </a>
+                                </td>
+                                <!-- Situação e Descrição do Tipo de Vínculo -->
+                                <td>
+                                    {% if vinculo.situacao == 'F' %}
+                                        {% if vinculo.tipo_vinculo.id == 2 %}
+                                            <span class="badge bg-warning f-12">{{ vinculo.situacao|formatar_situacao }} {{ vinculo.tipo_vinculo.descricao }}</span>
+                                        {% elif vinculo.tipo_vinculo.id == 4 %}
+                                            <span class="badge bg-danger f-12">{{ vinculo.situacao|formatar_situacao }} {{ vinculo.tipo_vinculo.descricao }}</span>
+                                        {% elif vinculo.tipo_vinculo.id == 7 %}
+                                            <span class="badge bg-primary f-12">{{ vinculo.situacao|formatar_situacao }} {{ vinculo.tipo_vinculo.descricao }}</span>
+                                        {% else %}
+                                            {{ vinculo.situacao|formatar_situacao }} {{ vinculo.tipo_vinculo.descricao }}
+                                        {% endif %}
+                                    {% else %}
+                                        <div class="cell-content text-left">{{ vinculo.situacao|formatar_situacao }} {{ vinculo.tipo_vinculo.descricao }}</div>
+                                        <div class="cell-content text-left">
+                                            Transferência: <b><small>{{ vinculo.transferido_em|date:"d/m/y" }}</b></small>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <!-- Tipo de EstadoCivil -->
+                                <td>{{ vinculo.estado_civil.descricao_estado_civil }}</td>
+                                {% comment %} <!-- Data de Transferência -->
+                                <td>{{ vinculo.transferido_em|date:"d/m/y" }}</td> {% endcomment %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Ato</th>
+                            <th>CPF/CNPJ</th>
+                            <th>Nome</th>
+                            <th>Papel</th>
+                            <th>Estado Cívil</th>
+                            <th>Transferencia (*)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ligacoes in ligacoes %}
+                            <tr>
+                                <!-- Tipo e Número do Ato -->
+                                <td>{{ ligacoes.tipo_ato }}.{{ ligacoes.numero_ato|numero_inteiro }}</td>
+                                <!-- CPF -->
+                                <td>{{ ligacoes.pessoa.cpf|formatar_documento }}</td>
+                                <!-- Nome com destaque baseado na situação e tipo de figura -->
+                                <td class="{% if ligacoes.situacao == 'F' %} {% if ligacoes.figuras.id == 1 %} btn bg-warning text-white btn-block {% elif ligacoes.figuras.id == 3 %} btn bg-danger text-white btn-block {% endif %} {% endif %}">
+                                    {{ ligacoes.pessoa.nome }}
+                                </td>
+                                <!-- Situação e Tipo de Papel -->
+                                <td>{{ ligacoes.situacao|formatar_situacao }} {{ ligacoes.figuras.tipo_figura }}</td>
+                                <!-- Tipo de EstadoCivil -->
+                                <td>{{ ligacoes.estado_civil.descricao_estado_civil }}</td>
+                                <!-- Data de Transferência -->
+                                <td>{{ ligacoes.transferido_em|date:"d/m/y" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            <!-- Voltar Button -->
+            <a href="#card_pessoal"
+               class="btn btn-sm btn-outline-warning text-dark "
+               title="Retornar ao topo"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+    </div>
+{% endblock content %}

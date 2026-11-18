@@ -1,0 +1,174 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    <form class="form" action="." method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="card_pedido_certidao_numero">
+                    <div class="card-header">
+                        <h5>
+                            <span class="text-white">{{ caption }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Pedido de Certidão:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_numero_pedido_certidao_id"
+                                           id="input_numero_pedido_certidao_id"
+                                           type="text"
+                                           value="{{ pedido_certidao.numero_pedido }}"
+                                           readonly>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Valor Total:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_valor_total_pago_pedido_certidao"
+                                           id="input_valor_total_pago_pedido_certidao"
+                                           type="text"
+                                           pattern="^\d+(\.\d{1,2})?$"
+                                           title="Por favor, insira um valor monetário válido."
+                                           value="{{ valor_total_pago_pedido_certidao }}"
+                                           readonly>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Valor já pago no Caixa:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_valor_atual_pedido_certidao"
+                                           id="input_valor_atual_pedido_certidao"
+                                           type="text"
+                                           pattern="^\d+(\.\d{1,2})?$"
+                                           title="Por favor, insira um valor monetário válido."
+                                           value="{{ valor_atual_pedido_certidao }}"
+                                           readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>
+                                        <b>Requerente:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           type="text"
+                                           value="{{ nome_requerente }}"
+                                           readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tipo de Ato do Protocolo -->
+                        <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="data_original">
+                                        <b>Data original Transação:</b>
+                                    </label>
+                                    <input type="date" class="form-control" placeholder="digite a data do Pedido de Certidão" name="data_original" id="data_original" value={{ data_original }} autofocus required>
+                                </div>
+                                <!-- Tipo de Ato do Protocolo -->
+                                <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Valor á Receber:</b>
+                                    </label>
+                                    <input class="form-control" name="valor_diferenca_receber" id="valor_diferenca_receber" type="text" title="Por favor, insira um valor monetário válido." value={{ valor_diferenca }}>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="operacao_financeira_id">
+                                        <b>Tipo operação Financeira:</b>
+                                    </label>
+                                    <select class="form-select"
+                                            name="operacao_financeira_id"
+                                            id="operacao_financeira_id"
+                                            required>
+                                        <option value=1>Dinheiro</option>
+                                        {% for operacao in operacao_financeira %}
+                                            <option value={{ operacao.pk }}>{{ operacao }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="descricao_i">
+                                        <b>Descrição:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="descricao"
+                                           id="descricao"
+                                           type="text"
+                                           value="Pedido de Certidão nº: {{ pedido_certidao.numero_pedido }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="nome_interessado">
+                                        <b>Nome Interessado (PAGADOR):</b>
+                                    </label>
+                                    <input class="form-control" name="nome_pagador" id="nome_pagador" type="text" value={{ nome_interessado }}>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tipo de Ato do Protocolo -->
+                        <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit"
+                                class="btn btn-success text-dark"
+                                aria-pressed="true"
+                                role="button">{% heroicon_outline "currency-dollar" %} Confirmar o Pagamento</button>
+                        {% comment %} <a id="export-link-{{ pedido_certidao.pk }}" class="btn btn-success text-dark" type="button" href="{% url 'home:pedido_certidao_exportar_caixa' pedido_certidao.pk %}">
+                            {% heroicon_outline "currency-dollar" %} Confirmar o Pagamento
+                        </a> {% endcomment %}
+                        {% comment %} {% if valor_atual_pedido_certidao != 0 %} {% endcomment %}
+                        <a class="btn btn-outline-secondary text-dark "
+                           href="{% url 'home:pedido_certidao_recibo_do_caixa' pk=pedido_certidao.pk %}"
+                           target="_blank">
+                            <i class="fas fa-print"></i>Imprimir Recibo
+                        </a>
+                        {% comment %} {% endif %} {% endcomment %}
+                        <a href="{% url 'home:pedido_certidao_detalhes' pk=pedido_certidao.pk %}"
+                           class="btn btn-outline-warning text-dark "
+                           title="Retornar ao topo"
+                           type="button"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-arrow-left"></i>Voltar ao Pedido</a>
+                        <a class="btn btn-outline-secondary "
+                           href="{% url 'home:pedido_certidao_listar_pedidos' %}">
+                            <i class="icon feather icon-search">
+                            </i>Pesquisar
+                        </a>
+                        {% comment %} <a class="btn btn-outline-info text-dark " href="{% url 'home:financeiro_listar_por_colaborador' %}?data_transacao_inicio={% now 'Y-m-d' %}&data_transacao_fim={% now 'Y-m-d' %}&colaborador={{ request.user.id }}">
+                        Meu Caixa</a> {% endcomment %}
+                        <a class="btn btn-outline-info text-dark "
+                           href="{% url 'home:financeiro_listar' %}?numero_pedido_certidao={{ pedido_certidao.numero_pedido_inteiro }}">
+                        Ver Caixa</a>
+                        <a href="{% url 'home:pedido_certidao_criar_pedido' %}"
+                           class="btn btn-outline-primary activate  text-dark"
+                           title="Criar novo pedido">
+                            <i class="icon feather icon-plus"></i> Novo Pedido</a>
+                        <a class="btn btn-outline-info text-dark "
+                           href="{% url 'home:pedido_certidao_pessoas_list' pedido_id=pedido_certidao.pk %}?next={{ request.path }}">
+                            <i class="fas fa-user-plus"></i>Pessoa
+                        </a>
+                        <a class="btn btn-outline-secondary "
+                           href="{% url 'home:pedido_certidao_imoveis_listar' pedido_id=pedido_certidao.pk %}?next={{ request.path }}">
+                            <i class="fas fa-home"></i>Imóveis
+                        </a>
+                        <!-- Voltar Button -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

@@ -1,0 +1,85 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% load django_tables2 %}
+{% block title %}
+    {{ title }}
+{% endblock title %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        {{ title }}
+                        {% if protocolo %}
+                            <a class="font-weight-bold mx-4 text-white"
+                               href="{{ protocolo.get_absolute_url }}">{{ protocolo }}</a>
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form class="d-flex flex-row flex-wrap align-items-center" method="get">
+                        {% if filter %}
+                            {% for field in filter.form %}<div class="p-2">{{ field|as_crispy_field }}</div>{% endfor %}
+                        {% else %}
+                        {% endif %}
+                        <div class="col-md-12">
+                            {% if filter %}
+                                <button type="submit" class="btn  btn-primary mt-3">
+                                    <i class="fa-solid fa-filter"></i> Filtrar
+                                </button>
+                            {% endif %}
+                            {% if protocolo %}
+                                <a type="button"
+                                   class="btn  btn-primary  mt-3 "
+                                   href="{{ protocolo.get_add_andamento_url }}"
+                                   aria-pressed="true">
+                                    <i class="icon feather icon-plus"></i>
+                                    Novo Andamento
+                                </a>
+                                <a type="button"
+                                   href="{{ protocolo.get_timeline_url }}"
+                                   style="margin-right: 10px"
+                                   target="_blank"
+                                   class="btn  btn-outline-success  mt-3  text-dark">
+                                    <i class="fas fa-calendar-alt"></i> Ver Agenda
+                                </a>
+                            {% endif %}
+                            <button type="submit"
+                                    name="export"
+                                    value="excel"
+                                    class="btn btn-outline-success mt-3 text-dark">
+                                <i class="fa-solid fa-file-export"></i> Exportar para Excel
+                            </button>
+                            <a type="button"
+                               href=" {{ impressao_url }}"
+                               target="_blank"
+                               title="Atualizar a página para visualizar os dados alterados"
+                               class="btn  btn-outline-info mt-3  text-dark">
+                                <i class="fas fa-money-bill-alt f-18 text-dark m-r-10"
+                                   style="color: orange"></i> Valores  <span class="badge bg-dark"></span></a>
+                            <a class="btn btn-outline-warning text-dark mt-3"
+                               href="{{ protocolo.get_absolute_url }}"
+                               title="Retornar ao topo"
+                               type="button"
+                               data-bs-toggle="tooltip"><i class="icon feather icon-arrow-left"></i>Voltar ao Protocolo</a>
+                            <a class="btn btn-secondary mt-3"
+                               title="Atualizar a página para visualizar os dados alterados"
+                               data-bs-toggle="tooltip"
+                               onclick="window.location.reload()"><i class="icon feather icon-refresh-cw" id="theme-inlimpar"></i> Recarregar Página
+                            </a>
+                        </div>
+                        {% comment %} <button type="submit" name="export_andamento_valores" value="excel" class="btn btn-outline-info mt-3 text-dark">
+                <i class="fa-solid fa-file-export"></i> Exportar valores
+                        </button> {% endcomment %}
+                    </form>
+                    {% render_table table %}
+                </div>
+                <div class="card-footer">
+                    <p>Total de Registros: {{ table.count_records }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

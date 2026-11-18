@@ -1,0 +1,9 @@
+{% extends "impressao/base_impressao_a4.html" %}
+{% block content %}
+    <div class="cabecalho">{% include "andamentos/cabecalho_cartorio_certidao.html" %}</div>
+    <br>
+    <div class="conteudo">
+        <div class="ck-content">{{ andamento.texto|safe }}</div>
+    </div>
+    {% comment %} <p>Impresso por {{ user }} em {{ now|date:"d/m/y" }} | {{ user.cartorio }}</p> {% endcomment %}
+{% endblock %}

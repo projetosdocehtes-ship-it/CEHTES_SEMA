@@ -1,0 +1,22 @@
+{% extends "layouts/base.html" %}
+{% load static crispy_forms_tags %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <form method="post">
+                        <div class="card-header">
+                            {% if object %}
+                                <h5>Alterar ato</h5>
+                            {% else %}
+                                <h5>Adicionar ato</h5>
+                            {% endif %}
+                        </div>
+                        <div class="card-block table-border-style">{% crispy form %}</div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,64 @@
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% comment %} <!--   --> {% endcomment %}
+{% block content %}
+    <!-- Modal -->
+    <div class="modal"
+         id="addExibirImagem"
+         tabindex="-1"
+         aria-labelledby="addAdquirenteModalLabel"
+         aria-hidden="True">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAdquirenteModalLabel">
+                        <i class="fas fa-file-pdf"></i>&emsp;Exibir:&emsp;Imagem
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- PASSANDO O NUMERO -->
+                {% comment %} <form action="{% url 'home:exibir_imagem' %}" target="_blank" method="post" href=".">
+                    <!-- Não se esqueça dessa tag -->
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <!-- TIPO -->
+                        <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Tipo</span>
+                            </div>
+                            <select class="form-select" name="tipo_registro" id="tipo_registro" required>
+                                <option value="I">Inscrição</option>
+                                <option value="M" selected>Matrícula (L2)</option>
+                                <option value="U">Protocolo (L1)</option>
+                                <option value="A">Registro Auxiliar (L3)</option>
+                                <option value="T">Transcrição</option>
+                            </select>
+                        </div>
+                        <!-- PESQUISAR O NUMERO -->
+                        <input type="hidden" name="parte_id" id="parte_id" value="{{ Protocolo }}" />
+                        <!-- NÚMERO -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Número</span>
+                            </div>
+                            <input type="number" class="form-control" placeholder="digite o número" name="numero_informado" id="numero_informado" value="" autofocus="True" required>
+                        </div>
+                        <!-- BOTOES -->
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-sm btn-primary " aria-pressed="true" role="button">
+                                <i class="icon feather icon-save"></i> Pesquisar
+                            </button>
+                            <button value="" type="button" class="btn btn-sm btn-secondary " data-bs-dismiss="modal">
+                                <i class="btn-close"></i> Fechar
+                            </button>
+                        </div>
+                    </div>
+                </form> {% endcomment %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

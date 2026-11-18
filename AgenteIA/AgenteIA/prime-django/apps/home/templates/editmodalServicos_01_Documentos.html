@@ -1,0 +1,77 @@
+{% load home_formatos %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% block content %}
+    <button type="button"
+            class="btn btn-sm btn-primary "
+            data-bs-toggle="modal"
+            data-bs-target="#addServicos_01_Modal"
+            title="Anexar arquivos para o Protocolo"
+            data-bs-toggle="tooltip">
+        <i class="icon feather icon-paperclip auth-icon"></i>Novo documento
+    </button>
+    <!-- Modal -->
+    <div class="modal"
+         id="addServicos_01_Modal"
+         tabindex="-1"
+         aria-labelledby="addServicos_01_ModalLabel"
+         aria-hidden="True">
+        <!-- <div class="modal-dialog"> -->
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addServicos_01_ModalLabel">
+                        <i class="icon feather icon-plus"></i>  Anexar documento
+                        <p>Protocolo: {{ Protocolo|protocolo_formatado }}</p>
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <!-- PASSANDO O ITEM DO PROTOCOLO - URBANO -->
+                <form action="{% url 'home:anexar_documento' id=protocolo.numero_protocolo %}"
+                      method="post"
+                      enctype="multipart/form-data">
+                    <!-- Não se esqueça dessa tag -->
+                    {% csrf_token %}
+                    <div class="modal-body" style="background:#cdc9c9;">
+                        <!-- PASSANDO O pedido_item_id -->
+                        <input type="hidden" name="protocolo" id="protocolo" value={{ Numero_Protocolo }} />
+                        <div class="icon">
+                            <div class="input-group">
+                                <input type="file"
+                                       name="files"
+                                       class="form-control"
+                                       id="name_arquivo"
+                                       aria-describedby="inputGroupFileAddon04"
+                                       aria-label="Upload"
+                                       multiple
+                                       required="required">
+                                <div></div>
+                                <button class="btn bg-primary text-white"
+                                        type="submit"
+                                        id="inputGroupFileAddon04"
+                                        title="Anexar documentos para o protocolo"
+                                        data-bs-toggle="tooltip">
+                                    Anexar <i class="icon feather icon-paperclip auth-icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="input-group"></div>
+                        <div class="input-group"></div>
+                        <!-- BOTOES -->
+                        <div class="modal-footer">
+                            <button type="button"
+                                    class="btn btn-sm btn-secondary "
+                                    data-bs-dismiss="modal">
+                                <i class="btn-close"></i>Fechar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

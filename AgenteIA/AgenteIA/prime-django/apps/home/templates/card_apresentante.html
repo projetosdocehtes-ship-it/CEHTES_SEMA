@@ -1,0 +1,68 @@
+<!-- [ INICIO - CARD APRESENTANTE ] -->
+{% load static %}
+{% load home_formatos %}
+<div class="card" id="itens_pedido_apresentante">
+    <div class="card-header">
+        <h5 class="text-white">
+            <span class="font-weight-bold text-white">2 - Dados do Apresentante: {{ protocolo }}</span>
+            {% if protocolo.pedido.tipo_documento_apresentante and  protocolo.pedido.documento_apresentante %}
+                : <span class="font-weight-bold"></span>
+            {% endif %}
+        </h5>
+        <a href="javascript:" class="info-icon" data-card-id="99">
+            <i class="fas fa-info-circle"></i>
+        </a>
+    </div>
+    <div class="card-body">
+        <!-- Linha para Apresentante -->
+        <div class="row mb-3">
+            <div class="col">
+                Nome: <span class="font-weight-bold">{{ protocolo.pedido.nome_solicitante_formatado }}</span>
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+        </div>
+        <!-- Linha para Endereço -->
+        <div class="row mb-3">
+            <div class="col">
+                Endereço:
+                {% if protocolo.pedido.endereco != "None" %}
+                    <span class="font-weight-bold">{{ protocolo.pedido.endereco|default:"" }}</span>
+                {% endif %}
+                {% comment %} Add virgula {% endcomment %}
+                {% if protocolo.pedido.municipio and protocolo.pedido.endereco != "None" %},{% endif %}
+                <span class="font-weight-bold">{{ protocolo.pedido.municipio|default:"" }}</span>
+                {% comment %} Add virgula {% endcomment %}
+                {% if protocolo.pedido.municipio and protocolo.pedido.uf %},{% endif %}
+                <span class="font-weight-bold">{{ estado|default:"" }}</span>
+            </div>
+        </div>
+        <!-- Linha para Telefone, Celular e Email -->
+        <div class="row mb-3">
+            <div class="col">
+                Telefones: <b>{{ protocolo.pedido.telefone|formatar_telefone }}</b>
+                {% if protocolo.pedido.telefone and protocolo.pedido.telefone1 %},{% endif %}
+                <b>{{ protocolo.pedido.telefone1|formatar_telefone }}</b>
+            </div>
+        </div>
+        <!-- Linha para Observação -->
+        <div class="row mb-3">
+            <div class="col">
+                Observações: <b>{{ protocolo.pedido.observacao }}</b>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <a href="#protocolo_detail"
+           class="btn btn-sm btn-warning text-dark "
+           title="Clique para voltar ao topo da página"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        <a href="#itens_pedido_titulo_principal"
+           class="btn btn-sm btn-primary text-dark "
+           title="Próximo ítem"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+    </div>
+</div>
+<!-- [ FIM - CARD APRESENTANTE ] -->

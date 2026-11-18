@@ -1,0 +1,252 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    <form class="form"
+          action="{% url 'home:reprotocolar_protocolo_view' numero_protocolo=protocolo.numero_protocolo %}"
+          method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="card_distribuir_protocolo_numero">
+                    <div class="card-header">
+                        <h5>
+                            <span class="text-white">Reprotocolar: {{ protocolo.numero_protocolo|protocolo_formatado }}
+                                <a class="text-white f-18 mx-4"
+                                   href="{% url 'home:importar_protocolo' numero_protocolo=protocolo.numero_protocolo %}"
+                                   title="Sincronizar Protocolo: {{ protocolo }}"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   aria-pressed="true"
+                                   role="button">
+                                    <i class="fas fa-sync-alt"></i>
+                                </a>
+                                <br>
+                                <br>
+                                <span class="badge bg-danger f-22">ATENÇÃO !!! Antes de reprotocolar verifique no sistema anterior se os valores estão atualizados.</span>
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Protocolo:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_numero_protocolo_id"
+                                           id="input_numero_protocolo_id"
+                                           type="text"
+                                           value="{{ protocolo.numero_protocolo|protocolo_formatado }}"
+                                           readonly>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Valor Atual: </b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_valor_atual_protocolo"
+                                           id="input_valor_atual_protocolo"
+                                           type="text"
+                                           value="{{ valor_atual_protocolo|formatar_moeda }}"
+                                           readonly>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Valores já Pagos: </b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_valor_pagos_caixa"
+                                           id="input_valor_pagos_caixa"
+                                           type="text"
+                                           value="{{ valor_pagos_caixa|formatar_moeda }}"
+                                           readonly>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Valores Complementares:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_valores_complementares"
+                                           id="input_valores_complementares"
+                                           type="text"
+                                           value="{{ valores_complementares|formatar_moeda }}"
+                                           readonly>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Valores já Selados:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_valores_selados"
+                                           id="input_valores_selados"
+                                           type="text"
+                                           value="{{ valores_selados|formatar_moeda }}"
+                                           readonly>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Valores á Transportar: </b>
+                                    </label>
+                                    <input class="form-control border: 2px solid red; background-color: #ffcccc;"
+                                           name="input_valor_transportar"
+                                           id="input_valor_transportar"
+                                           type="text"
+                                           value="{{ valor_transportar|formatar_moeda }}"
+                                           readonly>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Novo Depósito: </b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_valor_novo_deposito"
+                                           id="input_valor_novo_deposito"
+                                           type="text"
+                                           value="{{ valor_novo_deposito }}"
+                                           style="border: 2px solid red;
+                                                  background-color: white">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Nova Diferença: </b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_valor_nova_diferenca"
+                                           id="input_valor_nova_diferenca"
+                                           type="text"
+                                           value="{{ valor_nova_diferenca|formatar_moeda }}"
+                                           readonly>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <!-- valores_selados e pagos no caixa -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>
+                                        <b>Observações:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_observacao"
+                                           id="input_observacao"
+                                           type="text"
+                                           value="{{ protocolo.pedido.observacao|formatar_nome }}">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tipo de Ato do Protocolo -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="data_distribuicao_i">
+                                        <b>Data para Distribuir</b>
+                                    </label>
+                                    <input type="date" class="form-control" placeholder="digite a data do protocolo" name="data_distribuicao_i" id="data_distribuicao_i" value={{ data_distribuir }} autofocus required>
+                                </div>
+                                <!-- Tipo de Tribucao do Protocolo -->
+                                <div class="col-md-2">
+                                    <label for="tipo_tributacao_protocolo">
+                                        <b>Tipo Tributação</b>
+                                    </label>
+                                    <select class="form-select"
+                                            name="tipo_tributacao_protocolo"
+                                            id="tipo_tributacao_protocolo"
+                                            autofocus
+                                            required>
+                                        <option value="">- Selecione -</option>
+                                        {% for tipo_tributacao_protocolo in tipo_tributacao_protocolo %}
+                                            <option value="{{ tipo_tributacao_protocolo.id }}"
+                                                    {% if forloop.first %}selected{% endif %}>
+                                                {{ tipo_tributacao_protocolo.descricao }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <!-- Tipo de Titulo do Protocolo -->
+                                <div class="col-md-8">
+                                    <label for="tipo_ato_protocolo">
+                                        <b>Título Principal</b>
+                                    </label>
+                                    <select class="form-select"
+                                            name="titulo_protocolo_id"
+                                            id="titulo_protocolo_id"
+                                            autofocus
+                                            required>
+                                        <option value={{ titulo_inicial }}>{{ titulo_inicial_descricao }}
+                                        </option>
+                                        {% for titulo in titulos %}
+                                            <option value={{ titulo.id }}>{{ titulo }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tipo de Ato do Protocolo -->
+                        <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="setor_enviar_id">
+                                        <b>Setor a enviar</b>
+                                    </label>
+                                    <select class="form-select" name="fase_id" id="fase_id" required>
+                                        <option value="5">Conferência</option>
+                                        {% for fase in fases %}
+                                            <option value={{ fase.id }}>{{ fase }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <!-- Tipo de Ato do Protocolo -->
+                                <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                                <div class="col-md-10">
+                                    <label for="colaborador_id">
+                                        <b>Encaminhar Para:</b>
+                                    </label>
+                                    <select class="form-select"
+                                            name="colaborador_id"
+                                            id="colaborador_id"
+                                            required>
+                                        <option value="">- Selecione -</option>
+                                        {% for colaborador in colaboradores %}
+                                            <option value={{ colaborador.pk }}>{{ colaborador.nome_com_quantidade_de_protocolo }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <!-- Voltar Button -->
+                        <a onclick="window.history.back()"
+                           class="btn btn-secondary text-white "
+                           title="Retornar ao topo"
+                           type="button"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-arrow-left"></i>Voltar</a>
+                        <button type="submit"
+                                class="btn btn-primary"
+                                aria-pressed="true"
+                                role="button">
+                            <i class="fas fa-angle-double-up"></i> Reprotocolar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

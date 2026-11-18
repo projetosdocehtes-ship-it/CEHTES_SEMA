@@ -1,0 +1,56 @@
+<button type="button"
+        class="btn btn-sm btn-warning"
+        data-bs-toggle="modal"
+        data-bs-target="#editModal{{ pessoa.id }}">
+    <i class="icon feather icon-edit"></i> Editar
+</button>
+<!-- Modal -->
+<div class="modal"
+     id="editModal{{ pessoa.id }}"
+     tabindex="-1"
+     aria-labelledby="editModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title fs-5" id="editModalLabel">Editando: {{ pessoa.name }} {{ pessoa.fistname }}</h4>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form action={% url 'home:editModal' %} method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="hidden" name="pessoa_id" value="{{ pessoa.id }}" />
+                    <div class="form-floating mb-3">
+                        <input type="text"
+                               class="form-control"
+                               name="name"
+                               id="floatingInput"
+                               placeholder="nome"
+                               value="{{ pessoa.name }}" />
+                        <label for="floatingInput">Nome</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text"
+                               class="form-control"
+                               name="fist_name"
+                               id="floatingInput"
+                               placeholder="Primeiro nome"
+                               value="{{ pessoa.fistname }}" />
+                        <label for="floatingInput">Primeiro nome</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning">Salvar</button>
+                    <button type="button"
+                            class="btn btn-sm btn-secondary"
+                            data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

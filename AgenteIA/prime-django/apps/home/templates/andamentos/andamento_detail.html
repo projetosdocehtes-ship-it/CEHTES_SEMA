@@ -1,0 +1,83 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block breadcrumbs %}
+    <!-- Você pode adicionar uma navegação de breadcrumbs aqui, se desejar -->
+{% endblock breadcrumbs %}
+{% block title %}
+    Detalhes do Andamento
+{% endblock title %}
+{% block stylesheets %}
+    <link rel="stylesheet"
+          href="{% static 'assets/css/ckeditor5/content-styles.css' %}">
+{% endblock stylesheets %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Detalhes do Andamento</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h3>
+                            Tipo de Andamento: <b>{{ andamento.tipo_andamento }}</b>
+                        </h3>
+                    </div>
+                    <p>
+                        <b>Protocolo:</b>
+                        <a href="{{ object.protocolo.get_absolute_url }}">{{ object.protocolo }}
+                            <i class="fas fa-external-link-alt ms-1"></i>
+                        </a>
+                    </p>
+                    <p>
+                        <b>Colaborador:</b>
+                        <a title="Ver Protocolos Distribuídos para {{ andamento.colaborador }}"
+                           href="{{ object.colaborador.get_distribuidos_url }}">
+                            {{ andamento.colaborador }}
+                            <i class="fas fa-external-link-alt  ms-1"></i>
+                        </a>
+                    </p>
+                    <p>
+                        <b>Data do Andamento:</b> {{ andamento.data|date:"DATETIME_FORMAT" }}
+                    </p>
+                    <p>
+                        <b>Encaminhado a:</b>
+                        <a title="Ver Protocolos Distribuídos para {{ andamento.colaborador_destino }}"
+                           href="{{ object.colaborador_destino.get_distribuidos_url }}"
+                           target="_blank">
+                            {{ andamento.colaborador_destino }}
+                            <i class="fas fa-external-link-alt  ms-1"></i>
+                        </a>
+                    </p>
+                    <b>Texto:</b>
+                    {% if andamento.texto %}<div class="ck-content">{{ andamento.texto|safe }}</div>{% endif %}
+                    <p>
+                        <b>Arquivo:</b>
+                        {% if andamento.arquivo_assinado %}
+                            <a href="{% url 'home:andamento_texto_print' object.pk %}"
+                               target="_blank">
+                            Download <i class="fa-solid fa-file-pdf  d-none d-md-inline-block ms-1"></i></a>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'home:andamento_edit' object.pk %}"
+                       class="btn btn-primary"><i class="icon feather icon-edit d-none d-md-inline-block "></i>Editar</a>
+                    <a href="{% url 'home:protocolo_andamentos' object.protocolo.pk %}"
+                       class="btn btn-secondary"><i class="icon feather icon-corner-up-left"></i>Voltar à Lista</a>
+                    <a href="{% url 'home:escolher_certificado' object.pk %}"
+                       class="btn btn-secondary"><i class="fas fa-file-signature"></i>Assinar Digitalmente</a>
+                    <a href="{% url 'home:andamento_texto_print' object.pk %}"
+                       target="_blank"
+                       class="btn btn-secondary"><i class="fas fa-solid fa-print"></i>Imprimir Texto</a>
+                    <a href="#" class="btn btn-secondary"><i class="fa-solid fa-envelope"></i>Enviar por e-mail</a>
+                    <a href="#" class="btn btn-info"><i class="feather icon-thumbs-up"></i>Avaliar&emsp;<i class="feather icon-thumbs-down"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.3.0/classic/ckeditor.js"></script>
+{% endblock javascripts %}

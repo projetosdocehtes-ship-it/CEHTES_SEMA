@@ -1,0 +1,102 @@
+{% block stylesheet %}
+  <style>
+       .lista-anexos {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+       }
+
+       .item-anexo {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+       }
+
+       .item-anexo:hover {
+            transform: translateY(-5px);
+       }
+
+       .item-anexo a,
+       .item-anexo span {
+            color: #007bff;
+            text-decoration: none;
+       }
+
+       .item-anexo a:hover {
+            text-decoration: underline;
+       }
+
+       .link-alterar {
+            margin-left: auto;
+            color: #6c757d;
+       }
+
+       .link-alterar:hover {
+            color: #007bff;
+       }
+
+       .fas.fa-file-pdf {
+            color: #d9534f;
+            font-size: 24px;
+            margin-right: 10px;
+       }
+
+       .info-anexo {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+       }
+
+       .data-anexo {
+            color: #6c757d;
+            font-size: 12px;
+       }
+
+       @media (max-width: 768px) {
+            .item-anexo {
+                 flex-direction: column;
+                 align-items: flex-start;
+            }
+
+            .link-alterar {
+                 margin-left: 0;
+                 margin-top: 10px;
+            }
+       }
+  </style>
+{% endblock stylesheet %}
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title">Anexos do Protocolo {{ protocolo }}</h5>
+  </div>
+  <div class="card-body">
+    <div class="lista-anexos">
+      {% for anexo in anexos %}
+        <div class="item-anexo">
+          <i class="fas fa-file-pdf"></i>
+          <div class="info-anexo">
+            {% if anexo.arquivo %}
+              <a href="{% url 'home:protected_media' file_path=anexo.arquivo.name %}">{{ anexo.nome|default:anexo.nome_do_arquivo }}</a>
+            {% else %}
+              <span>{{ anexo.descricao|default:"Sem Descrição" }} (Arquivo não disponível)</span>
+            {% endif %}
+            <small>
+              <span class="data-anexo">Enviado em: {{ anexo.created_at|date:"d/m/Y H:i" }}</span>
+            </small>
+          </div>
+          <a href="{% url 'home:anexo_update' protocolo.pk anexo.pk %}"
+             class="link-alterar">Alterar Informações</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="card-footer">
+    <a href="{% url 'home:anexo_create' protocolo_pk=protocolo.pk %}"
+       class="btn btn-sm btn-primary">Adicionar anexo</a>
+  </div>
+</div>

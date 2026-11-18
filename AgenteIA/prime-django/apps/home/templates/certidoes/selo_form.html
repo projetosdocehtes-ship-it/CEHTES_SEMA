@@ -1,0 +1,34 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Adicionar/Editar Selo</h5>
+                </div>
+                <div class="card-block table-border-style">
+                    <form action=".", method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% if imovel_id %}
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Certidões</h5>
+                    </div>
+                    <div class="card-block table-border-style">{% render_table certidoes_table %}</div>
+                    <div class="card-footer">
+                        <a href="{% url 'home:pedido_certidao_adicionar_certidao' pedido_id imovel_id %}"
+                           class="btn btn-sm btn-primary">Adicionar</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

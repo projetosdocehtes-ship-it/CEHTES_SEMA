@@ -1,0 +1,42 @@
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('d33cb9df-5087-46a2-a8fb-a7ea286a6bd7'::uuid, 'Certidão de Inteiro Teor', '8401-2', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '3');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('75babc5d-cdeb-48ce-b9ba-e890a3ac5e67'::uuid, 'Visualização de Matricula CRI', '4902-3', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '12');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('9e1df8e3-f3cf-4dd8-8145-15783d5b8d92'::uuid, 'Isento - 8401-2', '8401-2', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '0');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('9547acad-17bc-46ee-9fa6-16a43ae53792'::uuid, 'Buscas', '8301-4', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '14');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('99f7e73f-2243-46a7-b6f8-17f6b932eded'::uuid, 'Vintenária', '8402-0', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '0');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('7ad4569a-c48a-4077-a162-e51f43729a2c'::uuid, 'Isento - 8402-0', '8402-0', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '0');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('74d46120-dbe1-4685-944f-78e7cf130640'::uuid, 'Negativa de Registro', '8402-0', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '0');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('51e513b9-8015-4687-a6a4-f008a3314943'::uuid, 'Levantamento de Dúvida', '8601-7', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '0');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('4d6e2a37-9210-4c90-bed8-f262b5755a98'::uuid, 'Registro Auxiliar (Livro 03)', '8402-0', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '0');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('41bec169-2daf-4b7c-b80c-451355f480ac'::uuid, 'Negativa de Ônus', '8402-0', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '0');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('1814592e-8cce-4ddf-afd3-559eee057e51'::uuid, 'Isento - Buscas', '8301-4', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '0');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('11c7562d-e085-4a8a-bcb5-cd4af95819ff'::uuid, 'Negativa de Propriedade', '8402-0', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '0');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('10eb7915-733f-44be-bc6f-674d04666246'::uuid, 'Transcrição', '8402-0', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '0');
+INSERT INTO public.certidoes_tipocertidao
+(id, nome, codigo, tipo_item_id, prazo_legal_id, codigo_onr)
+VALUES('04acb3b6-982d-42aa-98df-378ecdaceb00'::uuid, 'Negativa de Penhor', '8402-0', '69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 1, '0');

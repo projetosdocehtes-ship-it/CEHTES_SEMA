@@ -1,0 +1,44 @@
+<div class="modal" id="{{ modal_id }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="{{ modal_action }}" method="post", class="needs-validation">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="{{ icon_class }}"></i> {{ modal_title }}
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Aqui, você pode incluir partes específicas de cada modal, se necessário -->
+                    {% include custom_body_template %}
+                    <input type="hidden" value='1' name="numero_cartorio">
+                </div>
+                <div class="modal-footer">
+                    <!-- BOTOES -->
+                    {% include "layouts/botoes-pesquisar-fechar.html" %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Fim do Modal -->
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var modalElement = document.getElementById('{{ modal_id }}');
+
+            if (modalElement) {
+                modalElement.addEventListener('shown.bs.modal', function (event) {
+                    var inputElement = modalElement.querySelector('#numero_informado');
+                    if (inputElement) {
+                        inputElement.focus();
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock javascripts %}

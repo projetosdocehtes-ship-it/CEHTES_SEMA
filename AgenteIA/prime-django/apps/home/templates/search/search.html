@@ -1,0 +1,42 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+    <h2>Pesquisar Livros</h2>
+    <form method="get" action="{% url 'home:search' %}">
+        <input type="text"
+               name="q"
+               placeholder="Pesquisar..."
+               value="{{ query|default:'' }}">
+        <button type="submit">Pesquisar</button>
+    </form>
+    <h2>
+        Resultados da busca
+        {% if query %}para "{{ query }}"{% endif %}
+    </h2>
+    <ul>
+        {% for result in results %}
+            <li>
+                <a href="{{ result.object.get_absolute_url }}">{{ result.object.numero }}</a>
+                <p>Tipo: {{ result.object.tipo }}</p>
+                <p>Município: {{ result.object.municipio }}</p>
+                <p>{{ result.object.texto|truncatewords:20 }}</p>
+            </li>
+        {% empty %}
+            <li>Nenhum resultado encontrado.</li>
+        {% endfor %}
+    </ul>
+    {% if results.has_other_pages %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if results.has_previous %}
+                    <a href="?q={{ query }}&page=1">&laquo; primeira</a>
+                    <a href="?q={{ query }}&page={{ results.previous_page_number }}">anterior</a>
+                {% endif %}
+                <span class="current">Página {{ results.number }} de {{ results.paginator.num_pages }}.</span>
+                {% if results.has_next %}
+                    <a href="?q={{ query }}&page={{ results.next_page_number }}">próxima</a>
+                    <a href="?q={{ query }}&page={{ results.paginator.num_pages }}">última &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+{% endblock %}

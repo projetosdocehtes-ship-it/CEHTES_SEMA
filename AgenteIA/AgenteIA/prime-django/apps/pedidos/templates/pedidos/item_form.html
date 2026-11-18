@@ -1,0 +1,67 @@
+{% extends "layouts/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+    {% load crispy_forms_tags %}
+    {% load django_tables2 %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    {% if titulo_card %}
+                        <h5>{{ titulo_card }}</h5>
+                    {% else %}
+                        {% if object %}
+                            <h5>Alterar</h5>
+                        {% else %}
+                            <h5>Adicionar</h5>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="card-body">{% crispy form %}</div>
+                {% if object %}
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-auto">
+                                <a href="{{ object }}" class="btn btn-sm btn-secondary"><i class="fas fa-newspaper d-none d-md-inline-block"></i> Voltar ao Pedido</a>
+                                {% if object|class_name == "Apresentante" %}
+                                    {% if object.dados_bancarios %}
+                                        <a href="{% url 'comum:alterar_dadosbancarios' pk=object.dados_bancarios.pk %}"
+                                           class="btn btn-sm btn-info">Alterar Dados Bancários</a>
+                                    {% else %}
+                                        <a href="{% url 'comum:cadastrar_dadosbancarios' apresentante_pk=object.pk %}"
+                                           class="btn btn-sm btn-info">Adicionar Dados Bancários</a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-auto">
+                                {% if url_de_exclusao %}
+                                    <form action="{{ url_de_exclusao }}" method="post">
+                                        {% csrf_token %}
+                                        <input type="submit"
+                                               value="Excluir"
+                                               class="btn btn-sm btn-danger"
+                                               onclick="return confirm('Você tem certeza que deseja excluir este registro?');">
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-auto">
+                                {% for key, botao in botoes.items %}
+                                    <a href="{{ botao.url }}" class="btn btn-sm {{ botao.class }}">{{ botao.label }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% if object and atos_table %}
+            {% include "certidoes/partials/partial_list_atos.html" %}
+        {% endif %}
+    </div>
+{% endblock content %}

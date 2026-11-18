@@ -1,0 +1,43 @@
+{% bootstrap_messages %}
+<div class="modal"
+     id="{{ modal_id }}"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="modalBaseTitulo"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Cabeçalho do Modal -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="{{ modal_id }}Label">{{ modal_titulo }}</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- Corpo do Modal -->
+            <div class="modal-body">
+                {% block modal_corpo %}Conteúdo padrão do modal aqui.{% endblock %}
+            </div>
+            <!-- Rodapé do Modal -->
+            <div class="modal-footer">
+                {% block modal_rodape %}{% endblock %}
+                <button type="button"
+                        class="btn btn-sm btn-secondary"
+                        data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Fim do Modal -->
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $("#{{ modal_id }}").on('shown.bs.modal', function() {
+                $(this).find('#numero_informado').focus();
+            });
+        });
+    </script>
+{% endblock javascripts %}

@@ -1,0 +1,108 @@
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2462, 'hipoteca_id', '4', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2463, 'proprietario_id', '7', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2464, 'alienacao_id', '2', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2465, 'diretorio_ged_protocolos', '//192.168.1.195/imagens/GED/protocolos/', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2466, 'diretorio_ged_nota_devolucao', '/static/assets/images/ged/nota_devolucao/', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2467, 'url_ged', 'http://192.168.1.195:5000/files?path=', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2468, 'url_ged_download', 'http://192.168.1.195:5000/download/', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2472, 'cns', '046128', 'Geral', '');
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2473, 'prazo_exigencia_em_dias', '20', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2474, 'prazo_previso_protocolo_em_dias', '10', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2475, 'prazo_validade_protocolo_em_dias', '21', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2477, 'chave_funcionario_sistema_antigo', '999998', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2478, 'titulo_recibo_certidao', 'COMPROVANTE DE PEDIDO DE CERTIDÃO', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2479, 'descricao_servico_distribuido', 'Distribuido Balcao', 'Geral', '');
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2480, 'url_selo_digital_mg', 'https://selos.tjmg.jus.br/sisnor/eselo/consultaSeloseAtos.jsf?selo={}&codigo={}', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2481, 'palavras_para_manter_minuscula', '{''do'', ''dos'', ''das'', ''da'', ''de'', ''e''}', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2482, 'cidade_atual_id', 'Monte Carmelo', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2483, 'estado_numero_atual_id', '10', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2486, 'intimacao_emolumento_id', '851', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2487, 'intimacao_valor_venal_id', '0', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2488, 'intimacao_valor_avaliacao_id', '0', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2489, 'intimacao_titulos_id', '1000', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2490, 'intimacao_numero_titulo_id', '1', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2491, 'intimacao_numero_cartorio_id', '1', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2492, 'intimacao_quantidade_id', '1', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2493, 'intimacao_funcionario_id', '999998', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2494, 'intimacao_tipos_andamentos_id', '12', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2495, 'intimacao_observacao_protocolo_id', 'Protocolo de intimação', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2496, 'intimacao_descricao_id', 'Protocolo de intimação', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2497, 'intimacao_atos_id', '1000', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2498, 'intimacao_qtde_dias_uteis_id', '10', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2511, 'pasta_protocolo_id', '', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2512, 'codigo_emolumento_prenotacao_mg', '4701-9', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2525, 'servico__id01_intimacao', '6', 'Geral', NULL);
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2526, 'funcionario_id_sistema_antigo', '999998', 'Geral', '');
+INSERT INTO public.home_configuracao
+(id, chave, valor, sessao, descricao)
+VALUES(2527, 'acoes_onus_id', '', 'Geral', NULL);

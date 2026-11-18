@@ -1,0 +1,18 @@
+INSERT INTO public.comum_estadocivil
+(id, nome)
+VALUES(1, 'Solteiro(a)');
+INSERT INTO public.comum_estadocivil
+(id, nome)
+VALUES(2, 'Casado(a)');
+INSERT INTO public.comum_estadocivil
+(id, nome)
+VALUES(3, 'Divorciado(a)');
+INSERT INTO public.comum_estadocivil
+(id, nome)
+VALUES(4, 'Viúvo(a)');
+INSERT INTO public.comum_estadocivil
+(id, nome)
+VALUES(5, 'Separado(a) judicialmente');
+INSERT INTO public.comum_estadocivil
+(id, nome)
+VALUES(6, 'União estável');

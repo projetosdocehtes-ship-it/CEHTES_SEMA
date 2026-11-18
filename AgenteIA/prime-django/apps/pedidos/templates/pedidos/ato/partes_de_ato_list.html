@@ -1,0 +1,26 @@
+{% extends "layouts/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% load pedidos_formatos %}
+{% load django_tables2 %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+  <h2>Partes do Ato</h2>
+  <table>
+    <tr>
+      <th>Nome da Parte</th>
+      <th>Papel</th>
+    </tr>
+    {% for participacao in participacoes %}
+      <tr>
+        <td>{{ participacao.parte.nome }}</td>
+        <td>{{ participacao.papel.nome }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="2">Não há partes registradas para este ato.</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

@@ -1,0 +1,166 @@
+{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load home_formatos %}
+{% load barcode_filters %}
+{% load static %}
+<div class="relatorio-body borda">
+    <table class="tabela-responsiva">
+        <tbody>
+            <tr>
+                <td style="background-color: #bdbdbd;">
+                    Protocolo nº.: <strong>{{ protocolo.numero_protocolo_formatado }}</strong> |
+                </td>
+                <td style="background-color: #bdbdbd;">
+                    Data Protocolo: <strong>{{ protocolo.data_protocolo|date:"d/m/y" }}</strong>
+                </td>
+                <td style="background-color: #bdbdbd;">
+                    {% if protocolo.get_data_registro %}
+                        Registro: <strong>{{ protocolo.get_data_registro|date:"d/m/y" }}</strong>
+                    {% endif %}
+                </td>
+                <td style="background-color: #bdbdbd;">
+                    Previsão: <strong>{{ protocolo.data_prevista|date:"d/m/y" }}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #bdbdbd;" colspan="4">
+                    Apresentante: <strong>{{ protocolo.nome_apresentante|upper }}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #bdbdbd;">
+                    Selo de Consulta: <strong>{{ protocolo.selo_codigo_para_consulta.codigo_sequencial_unico }}</strong>
+                </td>
+                <td style="background-color: #bdbdbd;" colspan="3">
+                    Código de Segurança: <strong>{{ protocolo.selo_codigo_para_consulta.codigo_de_seguranca|formatar_codigo_seguranca }}</strong>
+                </td>
+            </tr>
+            {% if protocolo.apresentante.interessado_nome %}
+                <tr>
+                    <td style="background-color: #bdbdbd;" colspan="4">
+                        {{ protocolo.apresentante.interessado_tipo }}: <strong>{{ protocolo.apresentante.interessado_nome }}</strong>
+                    </td>
+                </tr>
+            {% endif %}
+            {% if protocolo.pedido.observacao %}
+                <tr>
+                    <td style="background-color: #bdbdbd;" colspan="4">
+                        Observação: <strong>{{ protocolo.pedido.observacao|default:"Não informado" }}</strong>
+                    </td>
+                </tr>
+            {% endif %}
+            {% if protocolo.finalidade %}
+                <tr>
+                    <td style="background-color: #bdbdbd;" colspan="4">{{ protocolo.finalidade_formatada }}</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    <div class="my-8" style="height: 10px;"></div>
+    <!-- Tabela -->
+    {% if itens_agrupados %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Código</th>
+                    <th>Qtd.</th>
+                    <th>Tipo</th>
+                    <th>Documento</th>
+                    <th>Emol.</th>
+                    <th>RECOMPE</th>
+                    <th>TFJ</th>
+                    <th>ISSQN</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aqui você pode repetir essa linha para cada item que tiver -->
+                {% for chave, valores in itens_agrupados.items %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ valores.codigo_tabela }}</td>
+                        <td>
+                            <div>{{ valores.quantidade|floatformat:0 }}</div>
+                        </td>
+                        <td>
+                            <div style="margin-bottom: 4px;">
+                                <div class="cell-content text-left">
+                                    <b>{{ valores.descricao_ato }}</b>
+                                    {% if valores.tipo_registro %}
+                                        - {{ valores.numero_ato }} - {{ valores.tipo_registro }}.<b>{{ valores.numero_registro }}</b>
+                                    {% endif %}
+                                </div>
+                                <div class="cell-content text-left">
+                                    <small>{{ valores.descricao_cobranca }} - {{ valores.tipo_cobranca }}</small>
+                                </div>
+                                <div class="cell-content text-left"></div>
+                                {% if valores.selos %}<small>{{ valores.selos }}</small>{% endif %}
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ valores.valor_avaliacao|formatar_moeda:False }}</td>
+                    <td>{{ valores.emolumento_liquido_calculado|formatar_moeda:False }}</td>
+                    <td>{{ valores.recompe_calculado|formatar_moeda:False }}</td>
+                    <td>{{ valores.taxa_fiscal_judiciaria_calculada|formatar_moeda:False }}</td>
+                    <td>{{ valores.issqn_calculado|formatar_moeda:False }}</td>
+                    <td>{{ valores.total|formatar_moeda:False }}</td>
+                </tr>
+            {% endfor %}
+            <!-- Fim da repetição -->
+        </tbody>
+        <tfoot style="font-weight: bold;">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: right;">Total:</td>
+                <td>{{ protocolo.pedido.valor_emolumento_sum|formatar_moeda:False }}</td>
+                <td>{{ protocolo.pedido.valor_fundo_estado_sum|formatar_moeda:False }}</td>
+                <td>{{ protocolo.pedido.valor_tfj_sum|formatar_moeda:False }}</td>
+                <td>{{ protocolo.pedido.valor_issqn_sum|formatar_moeda:False }}</td>
+                <td>{{ protocolo.pedido.valor_total_pedido_sum|formatar_moeda:False }}</td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="6" style="text-align: right;">Depósito/Valor Pago:</td>
+                <td>{{ protocolo.valor_total_caixa|formatar_moeda:False }}</td>
+                <td style="text-align: right;">A Pagar:</td>
+                <td>{{ protocolo.valor_diferenca|formatar_moeda:False }}</td>
+            </tr>
+        </tfoot>
+    </table>
+{% else %}
+    <p>-- Não há itens neste protocolo. --</p>
+{% endif %}
+</div>
+<!-- SEPARACAO ELEGANTE -- INICIO -->
+<!-- <div class="my-8" style="height: 8px;"></div> -->
+<!-- SEPARACAO ELEGANTE -- FIN -->
+<!-- <div class="relatorio-footer"> -->
+<!-- SEPARACAO ELEGANTE -- INICIO -->
+<!-- <div class="my-8" style="height: 8px;"></div> -->
+<!-- SEPARACAO ELEGANTE -- FIN -->
+<!-- <table>
+    <tbody>
+      <tr>
+        <td class="assinatura">
+          <div class="linha-assinatura"></div>
+          <p>Requerente: {{ protocolo.apresentante.nome }}</p>
+        </td>
+        <td class="assinatura">
+          <div class="linha-assinatura"></div>
+          <p>Colaborador: {{ user|title }}</p>
+        </td>
+      </tr>
+    </tbody>
+  </table> -->
+<!-- <p></p> -->
+<!-- </div> -->
+<div class="row">
+    <p></p>
+</div>

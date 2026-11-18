@@ -1,0 +1,29 @@
+{% extends "recibos/base_recibo_a4.html" %}
+{% block content %}
+    <style>
+        @media print {
+            body {
+                font-family: 'Arial', sans-serif;
+                font-size: 14px;
+            }
+
+            header,
+            footer,
+            button {
+                display: none;
+            }
+        }
+    </style>
+    <div class="recibo">
+        <!-- Conteúdo do recibo -->
+        <div class="via">
+            {% include "financeiro/financeiro_snippet_recibo.html" %}
+            <small>1º Via - Cliente - Impresso por: {{ user.username|title }} em {{ agora }}</small>
+        </div>
+        <div class="via">
+            {% include "financeiro/financeiro_snippet_recibo.html" %}
+            <small>2º Via - Cartório - Impresso por: {{ user.username|title }} em {{ agora }}</small>
+        </div>
+    </div>
+    <button class="btn btn-primary no-print" onclick="window.print()">Imprimir</button>
+{% endblock %}

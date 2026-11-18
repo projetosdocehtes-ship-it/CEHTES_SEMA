@@ -1,0 +1,68 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% load django_tables2 %}
+{% block breadcrumbs %}
+  {% load replace_value %}
+  <div class="page-header">
+    <div class="page-block">
+      <div class="row align-items-center">
+        <div class="col-md-12">
+          <div class="page-header-title">
+            <h5 class="m-b-10">Pessoas</h5>
+          </div>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'index' %}"><i class="feather icon-home"></i></a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="{% url 'index' %}">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="{{ object.get_absolute_url }}">Pessoas</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="{{ object.get_absolute_url }}">Lista</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock breadcrumbs %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>Pessoas</h5>
+        </div>
+        <div class="card-block table-border-style">
+          {% if filter %}
+            <div class="row">
+              <form class="d-flex flex-row flex-wrap align-items-center" method="get">
+                {% for field in filter.form %}<div class="p-2">{{ field|as_crispy_field }}</div>{% endfor %}
+                <div class="p-2">
+                  <button type="submit" class="btn btn-sm btn-primary mt-2">Filtrar</button>
+                  <button type="submit"
+                          name="export"
+                          value="excel"
+                          class="btn btn-sm btn-success mt-2">Exportar para Excel</button>
+                </div>
+              </form>
+            </div>
+          {% endif %}
+          {% render_table table %}
+        </div>
+        <div class="card-footer">
+          <div class="row">
+            <div class="col-md-12">
+              <a href="{% url 'pessoas:pessoa-create' %}" class="btn btn-primary">Adicionar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+```

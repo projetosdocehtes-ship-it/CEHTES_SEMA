@@ -1,0 +1,65 @@
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% comment %} <!--   --> {% endcomment %}
+{% block content %}
+    <!-- Modal -->
+    <div class="modal"
+         id="addVincularTransmitenteModal"
+         tabindex="-1"
+         aria-labelledby="addVincularTransmitenteModalLabel"
+         aria-hidden="True">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title text-dark fs-5"
+                        id="addVincularTransmitenteModalLabel">
+                        <i class="icon feather icon-check"></i>   Vincular Transmitente
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- PASSANDO O ITEM DO PROTOCOLO -->
+                <form action="{% url 'home:vincular_ChecklistPessoa' pedido_item_id=pedido_item_id opcao_pessoa='T' %}"
+                      method="post">
+                    <!-- Não se esqueça dessa tag -->
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <!-- PASSANDO O pedido_item_id -->
+                        <input type="hidden" name="pedido_item" id="pedido_item" value={{ pedido_item_id }} />
+                        <!-- Pessoa -->
+                        <div class="input-group mb-3">
+                            <!-- OBTER O COMBOBOX DA pessoa -->
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" for="pessoa">Pessoa</span>
+                            </div>
+                            <select class="form-select" name="pessoa" id="pessoa" autofocus required>
+                                {% for transmitente in partes_transmitente %}
+                                    <option value={{ transmitente.pessoa }}>{{ transmitente.pessoa.nome }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- BOTOES -->
+                        <div class="modal-footer">
+                            <button type="submit"
+                                    class="btn btn-sm btn-primary "
+                                    aria-pressed="true"
+                                    role="button">
+                                <i class="icon feather icon-save"></i> Salvar
+                            </button>
+                            <button value=""
+                                    type="button"
+                                    class="btn btn-sm btn-secondary "
+                                    data-bs-dismiss="modal">
+                                <i class="btn-close"></i> Fechar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Detalhe da Senha</title>
+        <style>
+             .container {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100vh;
+                  flex-direction: column;
+                  font-family: Arial, sans-serif;
+             }
+
+             .senha {
+                  font-size: 5rem;
+                  margin: 0;
+             }
+
+             .tipo-atendimento {
+                  font-size: 2rem;
+                  margin: 0;
+             }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="tipo-atendimento">{{ senha.tipo_atendimento }}</h1>
+            <p class="senha">Senha: {{ senha.numero }}</p>
+            <a href="{% url 'atendimento:gerar_senha' %}" class="btn btn-primary">Gerar Nova Senha</a>
+        </div>
+    </body>
+</html>

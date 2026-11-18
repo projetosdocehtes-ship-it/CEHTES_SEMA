@@ -1,0 +1,3 @@
+INSERT INTO public.certidoes_tipoitemcertidao
+(id, nome, explicacao)
+VALUES('69702a30-36a8-47a1-85b0-a47fc2fd3b93'::uuid, 'Ambos', NULL);

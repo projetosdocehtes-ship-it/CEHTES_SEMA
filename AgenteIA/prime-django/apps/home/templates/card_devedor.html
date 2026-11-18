@@ -1,0 +1,48 @@
+{% load home_formatos %}
+<div class="card">
+    <div class="card-header">
+        <h5>Devedores</h5>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table">
+            {% include "updateD.html" %}
+            <thead>
+                <tr>
+                    <th>CPF/CNPJ</th>
+                    <th>Nome</th>
+                    <th>Documento</th>
+                    <th>Estado Civil</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for partesD in partes_D %}
+                    <tr>
+                        <th>{{ partesD.pessoa.cpf|default:""|formatar_documento }}</th>
+                        <th>{{ partesD.pessoa.nome }}</th>
+                        <th>{{ partesD.pessoa.documento|default:"" }}</th>
+                        <th>{{ partesD.pessoa.estado_civil|get_descricao_estado_civil }}</th>
+                        <td class="btn-group">
+                            <!-- Botão que irá abrir o modal TRANSMITENTE - Detalhes dos dados do Adquirente selecionado -->
+                            {% include "modal_detalhes_pessoa_D.html" %}
+                            <!-- Alterar os dados do Transmitente selecionado -->
+                            {% include "modal_detalhes_pessoa_D.html" %}
+                            <!-- DESVINCULAR Transmitente -->
+                            {% comment %} {% include "desvincularModalPessoaD.html" %} {% endcomment %}
+                        </td>
+                        <th class="text-right"></th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <button type="button"
+                class="btn btn-sm btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#addDevedorModal"
+                title="Cadastrar um novo Devedor para o protocolo">
+            <i class="icon feather icon-user-plus"></i> Novo Devedor
+        </button>
+    </div>
+</div>

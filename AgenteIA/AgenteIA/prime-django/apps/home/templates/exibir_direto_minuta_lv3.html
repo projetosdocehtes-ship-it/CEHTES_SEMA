@@ -1,0 +1,26 @@
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <!--        CABECALHO        -->
+        <h5 class="p-10 mb-10 bg-info text-white">
+            {{ perguntas_auxiliares }} - Livro 03 - pelo Colaborador:  {{ current_user }}
+            <br>
+            <br>
+            Protocolo:  {{ protocolo|protocolo_formatado }}  -  Ato Praticado:  {{ ato_praticado }}
+            <br>
+            Número:  {{ tipo_registro }}.{{ numero_registro_auxiliar|formatar_numero_registro }}  -  Número do Ato: {{ numero_ato|default:"" }}
+            -  Código da Tabela: {{ codigo_tabela }}
+            <br>
+        </h5>
+        <div>
+            <input class="btn bg-warning text-black "
+                   value="Voltar"
+                   id="b1"
+                   onclick="getVoltar()">
+            <a class="btn bg-primary    text-white f-12 "
+               href="{% url 'home:gerar_minuta_lv2' pedido_item_id=pedido_item_id %}"
+               aria-pressed="true"
+               role="button">Gerar Minuta</a>
+        </div>
+    </form>
+{% endblock content %}

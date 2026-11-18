@@ -1,0 +1,38 @@
+{% extends "layouts/base.html" %}
+{% load static crispy_forms_tags django_tables2 %}
+{% block content %}
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h5>{{ title }}</h5>
+        </div>
+        <div class="card-block table-border-style">{% crispy form %}</div>
+        {% comment %} <button type="button" id="carregarDados">Carregar Dados</button> {% endcomment %}
+        <!-- Seu botão -->
+        <div class="card-footer"></div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+{% block javascripts %}
+  <script>
+    $(document).ready(function() {
+      $('#carregarDados').click(function() {
+        var dadosSelecionados = $('#busca_id').find('option:selected').text();
+        console.log("Dados Selecionados: ", dadosSelecionados);
+
+        var partes = dadosSelecionados.split(' | ');
+        if (partes.length === 4) {
+          console.log("Partes do dado: ", partes);
+
+          $('#nome_apresentante_id').val(partes[0]);
+          $('#documento_id').val(partes[1]);
+          $('#telefone_id').val(partes[2]);
+          $('#email_id').val(partes[3]);
+                // Ajuste conforme necessário para outros campos
+        }
+      });
+    });
+  </script>
+{% endblock javascripts %}

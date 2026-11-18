@@ -1,0 +1,82 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load l10n %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    {% if ato %}
+                        <h5>Alterar Ato {{ ato }}</h5>
+                    {% else %}
+                        <h5>Adicionar Ato</h5>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Pedido</label>
+                                <input type="text"
+                                       name="pedido"
+                                       value="{{ pedido.numero_pedido }}"
+                                       class="form-control textinput readonly"
+                                       required=""
+                                       readonly=""
+                                       aria-describedby="id_pedido_helptext"
+                                       id="id_pedido">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Apresentante</label>
+                                <input type="text"
+                                       name="apresentante"
+                                       value=" {{ pedido.apresentante }}"
+                                       class="form-control textinput readonly"
+                                       required=""
+                                       readonly=""
+                                       aria-describedby="id_apresentante_helptext"
+                                       id="id_apresentante">
+                            </div>
+                        </div>
+                    </div>
+                    {% crispy form %}
+                </div>
+            </div>
+        </div>
+        {% if todos_atos %}
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Todos os Atos deste Pedido</h5>
+                    </div>
+                    <div class="card-body">
+                        <ol>
+                            {% for outro_ato in todos_atos %}
+                                <li class="{% if outro_ato.pk == ato.pk %}font-weight-bold text-primary{% endif %}">
+                                    {% if outro_ato.pk == ato.pk %}
+                                        {{ outro_ato }}
+                                        {% if outro_ato.imovel_numero_registro %}
+                                            - {{ outro_ato.imovel_tipo_registro.sigla }}.{{ outro_ato.imovel_numero_registro }}
+                                            {% if outro_ato.valor_avaliacao %}- {{ outro_ato.valor_avaliacao }}{% endif %}
+                                        {% endif %}
+                                        <span class="badge bg-info f-14">(Editando)</span>
+                                    {% else %}
+                                        <a href="{% url 'pedidos:ato_update' outro_ato.pk %}">{{ outro_ato }}
+                                            {% if outro_ato.imovel_numero_registro %}
+                                                - {{ outro_ato.imovel_tipo_registro.sigla }}.{{ outro_ato.imovel_numero_registro }}
+                                                {% if outro_ato.valor_avaliacao %}- R${{ outro_ato.valor_avaliacao }}{% endif %}
+                                            {% endif %}
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

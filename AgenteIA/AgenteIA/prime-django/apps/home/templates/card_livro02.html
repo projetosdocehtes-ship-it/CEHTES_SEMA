@@ -1,0 +1,99 @@
+{% load home_formatos %}
+<div class="card" id="itens_pedido_livro2">
+    <div class="card-header">
+        <h5>
+            <span class="font-weight-bold text-white">Livro 02 (Registros) : {{ protocolo }}</span>
+        </h5>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table">
+            <tr>
+                <thead>
+                    <th>#</th>
+                    <th>Ato Praticado</th>
+                    <th>Opções</th>
+                </thead>
+            </tr>
+            <tbody>
+                {% for registro in livro_2 %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            {{ registro.ato.tipo_ato }}
+                            {% if registro.codigo_tabela %}<small>({{ registro.codigo_tabela }})</small>{% endif %}
+                            <div class="cell-content">
+                                <span class="font-weight-bold">{{ registro.tipo_registro }}. <b>{{ registro.numero_registro|formatar_numero_registro_inteiro }}</b></span>
+                                {% if registro.numero_ato %}- {{ registro.numero_ato|default:"" }}{% endif %}
+                                {% if registro.numero_ri %}<!-- - RI:  {{ registro.numero_ri }}{% endif %} -->
+                                </div>
+                                <td>
+                                    <!-- Abrir o Modal REAL -->
+                                    <a class="btn btn-sm btn-outline-info activate text-black"
+                                       title="Exibe os dados do Registro Geral."
+                                       href="{% url 'home:livro04_detail' numero_registro=registro.numero_registro tipo_registro=registro.tipo_registro cartorio_imovel=registro.numero_ri %}"
+                                       target="_blank">
+                                        <i class="icon feather icon-home"></i>Real L04</a>
+                                    <!-- Abrir o Modal PESSOAL -->
+                                    <a class="btn btn-sm btn-outline-secondary text-dark"
+                                       title="Exibe os envolvidos no registro."
+                                       href="{% url 'home:livro02_pessoas_list' numero_registro=registro.numero_registro tipo_registro=registro.tipo_registro  cartorio_imovel=registro.numero_ri %}"
+                                       target="_blank"
+                                       target="_blank">
+                                        <i class="icon feather icon-users"></i>Pessoal L05</a>
+                                    <!-- Abrir o Modal Minutas -->
+                                    <a class="btn btn-sm text-white"
+                                       style="background-color: #3d0c02"
+                                       href="{% url 'home:minuta_lv2' pedido_item_id=registro.pk %}"
+                                       target="_blank"
+                                       title="Acessar as minutas para o Ato."
+                                       aria-pressed="true">
+                                        <i class="icon feather icon-file-text"></i>Minutas</a>
+                                    {% if registro.pedido_item|get_texto_imovel > 0 %}
+                                        <!-- Abrir o Modal Minutas -->
+                                        <a class="btn btn-sm btn-outline-success  text-dark"
+                                           title="Exibe o texto do ato deste registro."
+                                           href="{% url 'home:texto_lv2' pk=registro.pedido_item pedido_item_id=registro.pk %}"
+                                           target="_blank">
+                                        {% else %}
+                                            <a class="btn btn-sm btn-outline-success text-dark"
+                                               title="Exibe o texto do ato deste registro."
+                                               href="{% url 'home:minuta_lv2' pedido_item_id=registro.pk %}"
+                                               target="_blank"
+                                               role="label">
+                                            {% endif %}
+                                            <i class="icon feather icon-file"></i>Texto</a>
+                                        <a class="btn btn-sm btn-outline-danger text-dark"
+                                           title="Exibe as imagens do registro."
+                                           href="{% url 'home:livro02_imagens_pelo_numero' numero_registro=registro.numero_registro tipo_registro=registro.tipo_registro %}"
+                                           target="_blank">
+                                            <i class="icon feather icon-image"></i>Imagem</a>
+                                        {% if registro.pedido_item|get_codigo_doi > 0 %}
+                                            <a class="btn btn-sm bg-primary text-white" href="#!">
+                                                <i class="icon feather icon-file-text"></i> DOI</a>
+                                        {% endif %}
+                                        {% if registro.pedido_item|get_classe_do_imovel_pelo_pedido_item_id == 'R' %}
+                                            <a class="btn btn-sm bg-secondary text-white" href="#!">
+                                                <i class="icon feather icon-file-text"></i> Incra </a>
+                                        {% endif %}
+                                    </td>
+                                    <!-- INICIO DO Modal - INDICADOR REAL -->
+                                    {% include "modal_indicador_real.html" %}
+                                    <!-- FIM DO Modal - INDICADOR REAL  -->
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <a href="#protocolo_detail"
+                       class="btn btn-sm btn-outline-warning text-dark "
+                       title="Clique para voltar ao topo da página"
+                       type="button"
+                       data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                    <a href="#itens_pedido_livro3"
+                       class="btn btn-sm btn-outline-primary text-dark "
+                       title="Próximo ítem"
+                       type="button"
+                       data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+                </div>
+            </div>

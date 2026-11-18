@@ -1,0 +1,40 @@
+{% extends "relatorios/relatorio_base_a4.html" %}
+{% block content %}
+    {% load home_formatos %}
+    <div class="page">
+        <div class="header">
+            <h1>Protocolos Distribuidos</h1>
+            <p>Data: {{ hoje }}</p>
+        </div>
+        <table class="table">
+            <thead>
+                <tr role="row">
+                    <th>#</th>
+                    <th>Protocolo</th>
+                    <th>Entrada</th>
+                    <th>Reentrada</th>
+                    <th>Distrib.</th>
+                    <th>Observação</th>
+                    <th>Status</th>
+                    <th>Encaminhado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for protocolo_distribuido in protocolos_distribuidos %}
+                    {% comment %} {% if protocolo_distribuido.fases_protocolo_colaborador_id == protocolo_distribuido.colaborador %}
+                    <tr> {% endcomment %}
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ protocolo_distribuido }}</td>
+                    <td>{{ protocolo_distribuido.data_protocolo|date:"d/m/y" }}</td>
+                    <td>{{ protocolo_distribuido.data_reentrada|date:"d/m/y" }}</td>
+                    <td>{{ protocolo_distribuido.data_distribuicao|date:"d/m/y" }}</td>
+                    <td>{{ protocolo_distribuido.pedido.observacao|formatar_nome|truncatechars:40 }}</td>
+                    <td>{{ protocolo_distribuido.status_protocolo_descricao }}</td>
+                    <td>{{ protocolo_distribuido.colaborador }}</td>
+                    </tr>
+                    {% comment %} {% endif %} {% endcomment %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

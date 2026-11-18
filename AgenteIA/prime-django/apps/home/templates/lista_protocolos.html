@@ -1,0 +1,15 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    {% load humanize %}
+    <ul>
+        {% for protocolo in protocolos %}
+            <li>
+                <a href="{% url 'home:protocolo_detalhes' protocolo.pk %}">{{ protocolo }}</a>
+            </li>
+        {% empty %}
+            <li>Nenhum protocolo encontrado.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

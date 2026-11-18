@@ -1,0 +1,153 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% load django_tables2 %}
+{% block title %}
+    {{ title }}
+{% endblock title %}
+{% block content %}
+    <script>
+        function getAtualizarPagina() {
+            window.location.reload();
+        }
+
+        function openNewTab() {
+
+        }
+    </script>
+    <div class="card">
+        {% if messages %}
+            <div>
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                         role="alert">
+                        {{ message }}
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="card-header">
+            {% if title %}
+                <h5>{{ title }} {{ pedido_certidao.numero_pedido }}</h5>
+            {% else %}
+                <h5>Lista</h5>
+            {% endif %}
+        </div>
+        <div class="card-body table-responsive">
+            {% if filter %}
+                <form class="row row-cols-md-auto g-3 align-items-center" method="get">
+                    {% for field in filter.form %}<div class="p-2">{{ field|as_crispy_field }}</div>{% endfor %}
+                    <div class="col-md-12">
+                        <button type="submit" id="btn-submit" class="btn btn-sm btn-primary ">
+                            <i class="fa-solid fa-filter"></i> Filtrar
+                        </button>
+                        <a id="btn-cancel"
+                           class="btn btn-sm btn-outline-danger"
+                           href="{% url 'home:pedido_certidao_listar_pedidos' %}">
+                            <i class="fa-solid fa-eraser"></i> Limpar
+                        </a>
+                        <a href="{{ impressao_url }}"
+                           target="_blank"
+                           id="btn-print"
+                           class="btn btn-sm btn-outline-secondary ">
+                            <i class="icon feather icon-printer d-none d-md-inline-block"></i> Imprimir
+                        </a>
+                        <button type="button"
+                                value="export"
+                                name="export"
+                                id="btn-export"
+                                class="btn btn-sm btn-outline-info text-dark">
+                            <i class="fa-solid fa-file-export"></i> Exportar para Excel
+                        </button>
+                        <form method="get" action=".">
+                            {% if request.GET.show_all == 'true' %}
+                                <button type="submit"
+                                        name="show_all"
+                                        value="false"
+                                        class="btn btn-sm btn-outline-secondary">Exibir Menos</button>
+                            {% else %}
+                                <button type="submit"
+                                        name="show_all"
+                                        value="true"
+                                        class="btn btn-sm btn-outline-secondary">Exibir Todos</button>
+                            {% endif %}
+                        </form>
+                        <a class="btn btn-sm bg-success text-white"
+                           href="{% url 'home:verificar_webservice_onr' %}"
+                           title="Verificar a WebService da ONR">
+                            <i class="icon feather icon-check-circle"></i> WebService
+                        </a>
+                        <button class="btn btn-sm btn-secondary dropdown-toggle"
+                                type="button"
+                                id="dropdownMenuButton"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">Andamento</button>
+                        <div class="dropdown-menu"
+                             aria-labelledby="dropdownMenuButton{{ record.pk }}">
+                            {% if opcoes_andamento %}
+                                {% with andamento_url='home:pedido_certidao_andamento_adicionar_mesmo_colaborador_lista' %}
+                                    {% for andamento in opcoes_andamento %}
+                                        <a class="dropdown-item"
+                                           href="{% url andamento_url %}?numeros_pedidos={{ filtered_numero_pedidos|join:',' }}&tipo_andamento_id={{ andamento.id }}">
+                                            {{ andamento.descricao }}
+                                        </a>
+                                    {% endfor %}
+                                {% endwith %}
+                            {% else %}
+                                <a class="dropdown-item" href="#">Não há andamentos rápidos cadastrados</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+            {% endif %}
+            {% if table %}
+                <form id="pedido-form" method="get" action=".">
+                    {% render_table table %}
+                    {% if filter %}<button type="submit" class="btn btn-sm btn-primary">Filtrar Selecionados</button>{% endif %}
+                </form>
+                {% comment %} <form method="get" action=".">
+                    {% if request.GET.show_all == 'true' %}
+                        <button type="submit" name="show_all" value="false" class="btn btn-secondary mb-3">Exibir Menos</button>
+                    {% else %}
+                        <button type="submit" name="show_all" value="true" class="btn btn-secondary mb-3">Exibir Todos</button>
+                    {% endif %}
+                </form> {% endcomment %}
+            {% else %}
+                <p>Não há registros para exibir.</p>
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            {% for key, botao in botoes.items %}
+                <a href="{{ botao.url }}" class="btn btn-sm {{ botao.class }}">{{ botao.label }}</a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+            var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl)
+            })
+        });
+    </script>
+    <script>
+        document.getElementById('pedido-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const selectedPedidos = Array.from(document.querySelectorAll('input[name="selecionar"]:checked'))
+                .map(checkbox => checkbox.value);
+            const form = event.target;
+            const url = new URL(form.action, window.location.origin);
+            if (selectedPedidos.length > 0) {
+                url.searchParams.set('numero_pedido', selectedPedidos.join(','));
+            }
+            window.location.href = url;
+        });
+    </script>
+{% endblock javascripts %}

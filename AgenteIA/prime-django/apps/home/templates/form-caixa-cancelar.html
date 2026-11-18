@@ -1,0 +1,57 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    <form class="form" action="." method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="card_distribuir_protocolo_numero">
+                    <div class="card-header">
+                        <h5>
+                            <span class="text-white">Cancelar o item: {{ caption }}
+                                <br>
+                                Valor: R$ {{ valor_transacao }}
+                                <br>
+                                Data Lançamento: {{ data_transacao }}
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label>
+                                        <b>Motivo do Cancelamento:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="descricao_cancelamento_id"
+                                           id="descricao_cancelamento_id"
+                                           type="text"
+                                           title="Por favor, insira a motivo do cancelamento."
+                                           value=""
+                                           required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <!-- Voltar Button -->
+                            <a onclick="window.history.back()"
+                               class="btn btn-secondary text-white "
+                               title="Retornar ao topo"
+                               type="button"
+                               data-bs-toggle="tooltip"><i class="icon feather icon-arrow-left"></i>Voltar</a>
+                            <button type="submit"
+                                    class="btn btn-danger text-white"
+                                    aria-pressed="true"
+                                    role="button">
+                                <i class="fas fa-angle-double-up"></i> Confirmar Cancelamento
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+{% endblock content %}

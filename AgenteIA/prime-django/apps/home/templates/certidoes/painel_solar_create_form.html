@@ -1,0 +1,114 @@
+{% extends "layouts/base.html" %}
+{% load static crispy_forms_tags django_tables2 %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block title %}
+    {{ title }}
+{% endblock title %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>{{ title }}</h5>
+        </div>
+
+        <div class="card-block table-border-style">{% crispy form %}</div>
+
+        <div class="card-header">
+            <h5>Painel Solar cadastradas: {{ total_hidrogenios }}</h5>
+        </div>
+
+        <div class="card-body table-responsive">
+            <table class="table">
+                <tr>
+                    <thead>
+                        <th>#</th>
+                        <th>Número</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Tipo de celula</th>
+                        <th>Numero celulas</th>
+                        <th>Isc</th>
+                        <th>Pontencial nominal</th>
+                        <th>Eficiencia</th>
+                        <th>Vmp</th>
+                        <th>Mp</th>
+                        <th>Coef temp pot max upmax</th>
+                        <th>Coef temp voc uvoc</th>
+                        <th>Coef temp isc uisc</th>
+                        <th>Ações</th>
+                    </thead>
+                </tr>
+                <tbody>
+                    {% for hidrogenio in hidrogenios %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ hidrogenio.numero_hidrogenio }}</td>
+                            <td>{{ hidrogenio.marca }}</td>
+                            <td>{{ hidrogenio.modelo }}</td>
+                            <td>{{ hidrogenio.tipo_de_celula }}</td>
+                            <td>{{ hidrogenio.numero_celulas }}</td>
+                            <td>{{ hidrogenio.isc }}</td>
+                            <td>{{ hidrogenio.pontencial_nominal }}</td>
+                            <td>{{ hidrogenio.eficiencia }}</td>
+                            <td>{{ hidrogenio.vmp }}</td>
+                            <td>{{ hidrogenio.mp }}</td>
+                            <td>{{ hidrogenio.coef_temp_pot_max_upmax }}</td>
+                            <td>{{ hidrogenio.coef_temp_voc_uvoc }}</td>
+                            <td>{{ hidrogenio.coef_temp_isc_uisc }}</td>
+                            <td>
+                                <a href="{% url 'home:painel_editar' pk=hidrogenio.id %}"
+                                   class="btn btn-sm btn-info">Alterar</a>
+                                <a href="{% url 'home:painel_excluir' pk=hidrogenio.id %}"
+                                   class="btn btn-sm btn-danger">Excluir</a>
+
+                                <a href="{% url 'home:painel_exibir_grafico' pk=hidrogenio.id %}"
+                                    target="_blank"
+                                    class="btn btn-sm btn-info btn-same-size">
+                                    <i class="icon feather icon-eye f-14"></i>
+                                    Gerar Gráfico
+                                </a>
+
+                                {% comment %} <a href="http://localhost:8501/"
+                                   target="_blank"
+                                   class="btn btn-sm btn-primary">
+                                   <i class='icon feather icon-eye f-14'></i>Simular
+                                </a> {% endcomment %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer">
+            <a class="btn btn-sm btn-success text-white"
+               href="{% url 'home:painel_importar_excell' %}"
+               title="Confirmar importação."
+               data-bs-toggle="tooltip">
+               <i class="icon feather icon-info"></i> Importar Dados Excell
+            </a>
+        </div>
+
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#carregarDados').click(function() {
+                var dadosSelecionados = $('#busca_id').find('option:selected').text();
+                console.log("Dados Selecionados: ", dadosSelecionados);
+
+                var partes = dadosSelecionados.split(' | ');
+                if (partes.length === 4) {
+                    console.log("Partes do dado: ", partes);
+
+                    $('#nome_apresentante_id').val(partes[0]);
+                    $('#documento_id').val(partes[1]);
+                    $('#telefone_id').val(partes[2]);
+                    $('#email_id').val(partes[3]);
+                        // Ajuste conforme necessário para outros campos
+                }
+            });
+        });
+    </script>
+{% endblock javascripts %}

@@ -1,0 +1,29 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load pedidos_formatos %}
+{% load django_tables2 %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">Pedido: {{ pedido }}</div>
+                <div class="card-footer">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <a class="btn btn-sm btn-secondary" href="{{ pedido.get_absolute_url }}">
+                            <i class="fas fa-newspaper d-none d-md-inline-block"></i> Voltar ao Pedido
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-block">
+                        {% render_table partes_table %} <!-- Renderiza a tabela de partes -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

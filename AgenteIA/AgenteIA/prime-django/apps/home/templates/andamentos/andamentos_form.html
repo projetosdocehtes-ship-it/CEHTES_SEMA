@@ -1,0 +1,238 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block stylesheets %}
+    <style>
+         .floating-button {
+              position: fixed;
+              bottom: 20px;
+              right: 20px;
+              background-color: #007bff;
+              color: white;
+              border: none;
+              border-radius: 50%;
+              padding: 15px;
+              font-size: 18px;
+              box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+              cursor: pointer;
+              z-index: 1000;
+              /* Adicionado z-index para sobrepor outros elementos */
+         }
+    </style>
+{% endblock stylesheets %}
+{% block content %}
+    <button class="floating-button" onclick="getSuggestion()">💬</button>
+    <div id="loadingMessage"
+         style="display:none;
+                position:fixed;
+                top:50%;
+                left:50%;
+                transform:translate(-50%, -50%);
+                background-color:white;
+                padding:20px;
+                border:1px solid black;
+                z-index:2000">Verificando texto...</div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>
+                            {% if form.instance.pk %}
+                                Editar Andamento do Protocolo {{ object.protocolo.numero }}
+                            {% else %}
+                                Adicionar Andamento ao Protocolo {{ protocolo.numero }}
+                            {% endif %}
+                        </h5>
+                    </div>
+                    <form action="." method="post">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="row">
+                                {% if not form.instance.pk %}
+                                    <div class="col-md-4">{{ form.data | as_crispy_field }}</div>
+                                    <div class="col-md-4">{{ form.tipo_andamento | as_crispy_field }}</div>
+                                    <div class="col-md-4">{{ form.colaborador_destino | as_crispy_field }}</div>
+                                {% endif %}
+                                <div class="col-md-12">
+                                    {{ form.modelos_de_texto | as_crispy_field }}
+                                    <button id="load-modelo-texto"
+                                            class="btn btn-sm btn-primary mt-10"
+                                            type="button">Carregar Modelo</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">{{ form.texto }}</div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="cancel" class="btn btn-secondary">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade"
+         id="aiSuggestionModal"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="aiSuggestionModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aiSuggestionModalLabel">Sugestão de IA</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="aiSuggestionContent">
+                    <!-- Sugestão de IA será exibida aqui -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="replaceTextButton">Substituir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <script>
+        document.getElementById('load-modelo-texto').addEventListener('click', function(event) {
+            event.preventDefault();  // Evita o envio do formulário
+            var selectElement = document.getElementById('id_modelos_de_texto');
+            var modeloId = selectElement.value;
+            if (modeloId) {
+                // Converte a PK para string no template
+                var protocoloPk = '{% if form.instance.pk %}{{ object.protocolo.pk|stringformat:"s" }}{% else %}{{ protocolo.pk|stringformat:"s" }}{% endif %}';
+                fetch(`/modelos/${modeloId}/conteudo/protocolo/${protocoloPk}/`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro na resposta da rede');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (window.editors) {
+                            const firstEditor = window.editors.id_texto || window.editors[0];
+                            if (firstEditor && firstEditor.model) {
+                                firstEditor.model.change(writer => {
+                                    const contentFragment = firstEditor.data.processor.toView(data.conteudo);
+                                    const modelFragment = firstEditor.data.toModel(contentFragment);
+                                    firstEditor.model.insertContent(modelFragment, firstEditor.model.document.selection);
+                                });
+                            } else {
+                                console.error('Método change ou editor não disponível.');
+                            }
+                        } else {
+                            console.error('Instância do editor não encontrada.');
+                        }
+                    })
+                    .catch(error => console.error('Erro ao buscar o modelo de texto:', error));
+            } else {
+                console.error('Nenhum modelo de texto selecionado.');
+            }
+        });
+    </script>
+    {% comment %} <script>
+      async function getSuggestion() {
+           if (window.editors) {
+                const text = window.editors.id_texto.getData();
+                const response = await fetch('{% url "home:get_ai_suggestion" %}', {
+                     method: 'POST',
+                     headers: {
+                          'Content-Type': 'application/json',
+                          'X-CSRFToken': '{{ csrf_token }}'
+                     },
+                     body: JSON.stringify({
+                          text
+                     })
+                });
+
+                if (response.ok) {
+                     const data = await response.json();
+                     document.getElementById('aiSuggestionContent').innerText = data.suggestion;
+                     $('#aiSuggestionModal').modal('show');
+                } else {
+                     alert('Erro ao obter sugestão de IA');
+                }
+           } else {
+                console.error('Instância do editor não encontrada.');
+           }
+      }
+    </script> {% endcomment %}
+    <script>
+        async function getSuggestion() {
+            const loadingMessage = document.getElementById('loadingMessage');
+            loadingMessage.style.display = 'block'; // Mostrar mensagem de espera
+
+            if (window.editors) {
+                const selectedText = getSelectedText(window.editors.id_texto);
+                if (selectedText) {
+                    const response = await fetch('{% url "home:get_ai_suggestion" %}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({
+                            text: selectedText
+                        })
+                    });
+
+                    loadingMessage.style.display = 'none'; // Esconder mensagem de espera
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        document.getElementById('aiSuggestionContent').innerText = data.suggestion;
+                        $('#aiSuggestionModal').modal('show');
+
+                             // Adiciona o evento para substituir o texto quando o modal for exibido
+                        document.getElementById('replaceTextButton').onclick = function() {
+                            replaceSelectedText(window.editors.id_texto, data.suggestion);
+                            $('#aiSuggestionModal').modal('hide');
+                        };
+                    } else {
+                        alert('Erro ao obter sugestão de IA');
+                    }
+                } else {
+                    alert('Por favor, selecione o texto para obter uma sugestão.');
+                }
+            } else {
+                console.error('Instância do editor não encontrada.');
+            }
+
+            loadingMessage.style.display = 'none'; // Esconder mensagem de espera caso ocorra um erro
+        }
+
+        function getSelectedText(editor) {
+            const selection = editor.model.document.selection;
+            const range = selection.getFirstRange();
+            let selectedText = '';
+
+            for (const item of range.getItems()) {
+                if (item.is('textProxy') || item.is('text')) {
+                    selectedText += item.data;
+                }
+            }
+
+            return selectedText;
+        }
+
+        function replaceSelectedText(editor, newText) {
+            const model = editor.model;
+            const selection = model.document.selection;
+
+            model.change(writer => {
+                   // Substitui o conteúdo selecionado com o novo texto
+                writer.insertText(newText, selection.getFirstPosition());
+                   // Remove o conteúdo selecionado anterior
+                writer.remove(selection.getFirstRange());
+            });
+        }
+    </script>
+{% endblock javascripts %}

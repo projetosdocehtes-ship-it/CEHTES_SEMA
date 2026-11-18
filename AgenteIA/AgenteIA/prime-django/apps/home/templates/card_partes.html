@@ -1,0 +1,116 @@
+{% load home_formatos %}
+<script>
+    function getAtualizarPagina() {
+        window.location.reload();
+    }
+
+    function openNewTab() {
+
+    }
+</script>
+<div class="card" id="partes_do_protocolo">
+    <div class="card-header">
+        <h5>
+            <span class="font-weight-bold text-white">Partes do Protocolo: {{ protocolo }}</span>
+        </h5>
+    </div>
+    <div class="card-body table-responsive">
+        {% if protocolo.partes_do_protocolo %}
+            <!-- Verifica se a query possui partes -->
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Percentual</th>
+                        <th>Papel</th>
+                        <th>Nome</th>
+                        <th>Estado Civil</th>
+                        <th style="text-align: center;">Indisponibilidade</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% with counter=protocolo.partes_do_protocolo|length %}
+                        {% for parte in protocolo.partes_do_protocolo %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ parte.percentual_participacao }}</td>
+                                <td>{{ parte.papel }}</td>
+                                <td>
+                                    <b>{{ parte.parte.nome|upper }}</b>
+                                    <div class="cell-content">
+                                        {% if parte.parte.documento > 11 %}
+                                            CNPJ: <b>{{ parte.parte.documento|formatar_documento|default:"" }}</b>
+                                        {% else %}
+                                            CPF: <b>{{ parte.parte.documento|formatar_documento|default:"" }}</b>
+                                        {% endif %}
+                                    </div>
+                                    <div class="cell-content">
+                                        Documento: <b>{{ parte.parte.documento_auxiliar|default:"(Não Consta)" }}</b>
+                                    </div>
+                                    <div class="cell-content">
+                                        {% if parte.parte.conjuge_id > 0 %}Cônjuge: {{ parte.parte.conjuge.nome|formatar_nome }}{% endif %}
+                                    </div>
+                                </td>
+                                <td>{{ parte.parte.estado_civil }}</td>
+                                <td style="text-align: center;">
+                                    <span class="badge bg-danger">0</span>
+                                </td>
+                                <td>
+                                    <div class="cell-content mb-2">
+                                        <a href="{{ parte.parte.get_update_url }}"
+                                           target="_blank"
+                                           class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-user-edit d-none d-md-inline-block"></i> Editar Parte
+                                        </a>
+                                    </div>
+                                    <div class="cell-content mb-2">
+                                        <a href="{{ parte.get_update_url }}"
+                                           class="btn btn-sm btn-outline-secondary"
+                                           target="_blank"
+                                           title="Desvincular pessoa do ato">
+                                            <i class="icon feather icon-edit"></i>&emsp;Percentual
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endwith %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% comment %} {% include "form-inserir-pessoa-adquirente.html" %} {% endcomment %}
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-sm btn-primary"
+           href="{% url 'pedidos:atos_list_protocolo' numero_protocolo=protocolo.numero_protocolo %}"
+           target="_blank"
+           type="button"
+           aria-haspopup="true"
+           aria-expanded="false">
+            <i class="icon feather icon-plus"></i>Adicionar Participação
+        </a>
+        <a class="btn btn-sm btn-outline-secondary"
+           href="#itens_pedido_titulo_principal"
+           title="Acessar os dados do Título Principal."
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-check"></i>Título Principal
+        </a>
+        <a class="btn btn-sm btn-outline-info text-dark"
+           title="Atualizar a página para visualizar os dados alterados"
+           data-bs-toggle="tooltip"
+           onclick="getAtualizarPagina()"><i class="icon feather icon-refresh-ccw" id="theme-inlimpar"></i> Atualizar
+        </a>
+        <a href="#protocolo_detail"
+           class="btn btn-sm btn-outline-warning text-dark"
+           title="Clique para voltar ao topo da página"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        <a href="#itens_pedido"
+           class="btn btn-sm btn-outline-primary text-dark"
+           title="Próximo ítem"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+    </div>
+</div>
+<!-- [ FIM - CARD ENVOLVIDOS ] -->

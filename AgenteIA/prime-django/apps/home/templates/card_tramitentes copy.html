@@ -1,0 +1,48 @@
+{% load home_formatos %}
+<div class="card">
+    <div class="card-header">
+        <h5>Transmitentes</h5>
+    </div>
+    <div class="card-body">
+        <!-- Verifica se a query possui partes -->
+        <div class="table-responsive">
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>CPF/CNPJ</th>
+                        <th>Nome</th>
+                        <th>Documento</th>
+                        <th>Estado Civil</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for partesT in partes_T %}
+                        <tr>
+                            <td>{{ partesT.pessoa.cpf|default:""|formatar_documento }}</td>
+                            <td>{{ partesT.pessoa.nome }}</td>
+                            <td>{{ partesT.pessoa.documento|default:"" }}</td>
+                            <td>{{ partesT.pessoa.estado_civil_id|get_descricao_estado_civil }}</td>
+                            <td>
+                                {% include 'editmodalAtoTransmitentePartesProtocolo.html' %}
+                                {% include 'modal_detalhes_pessoa_T.html' %}
+                                {% include 'modal_detalhes_pessoa_T.html' %}
+                                {% comment %} {% include 'desvincularModalPessoaT.html' %} {% endcomment %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% include "updateT.html" %}
+    </div>
+    <div class="card-footer">
+        <!-- Botão para adicionar novo Transmitente -->
+        <button type="button"
+                class="btn btn-sm btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#addTransmitenteModal">
+            <i class="icon feather icon-plus"></i>  Novo Transmitente
+        </button>
+    </div>
+</div>

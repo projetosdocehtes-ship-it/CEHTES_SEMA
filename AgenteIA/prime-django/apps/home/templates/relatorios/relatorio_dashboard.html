@@ -1,0 +1,44 @@
+{% extends "relatorios/relatorio_base_a4.html" %}
+{% block content %}
+    {% load home_formatos %}
+    <div class="page">
+        <div class="header">
+            <h1>Dashboard - Pela Entrada de Protocolos:</h1>
+            <p>Data: {{ hoje }}</p>
+        </div>
+        <table class="table">
+            <thead>
+                <tr role="row">
+                    <th>SL</th>
+                    <th>Número</th>
+                    <th>Entrada</th>
+                    <th>Previsto</th>
+                    <th>Validade</th>
+                    <th>Total Dias</th>
+                    <th>Rest.</th>
+                    <th>Apresentante / Observação</th>
+                    <th>Fase Atual</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for protocolo in lista_protocolos %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ protocolo.0|protocolo_formatado }}</td>
+                        <td>{{ protocolo.1|date:"d/m/y" }}</td>
+                        <td>{{ protocolo.2|proxima_data_prevista|date:"d/m/y" }}</td>
+                        <td>{{ protocolo.2|proxima_data_valida|date:"d/m/y" }}</td>
+                        <td>{{ protocolo.2|get_max_dias_titulo_total_dias }}</td>
+                        <td>{{ protocolo.2|proxima_data_prevista|total_dias_restantes }}</td>
+                        <td>
+                            <div class="cell-content">{{ protocolo.3 }}</div>
+                            <div class="cell-content">{{ protocolo.4 }}</div>
+                        </td>
+                        {% comment %} <td>{{ protocolo.5|get_andamentos_agrupados_por_status }}</td> {% endcomment %}
+                        <td></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

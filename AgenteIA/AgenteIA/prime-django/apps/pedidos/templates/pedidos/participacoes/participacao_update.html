@@ -1,0 +1,29 @@
+{% extends "layouts/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+    {% load crispy_forms_tags %}
+    {% load django_tables2 %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Alterar Participação de {{ object }}</h5>
+                </div>
+                <div class="card-body">{% crispy form %}</div>
+                <div class="card-footer">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <a href="{{ object.ato.get_absolute_url }}"
+                           class="btn btn-sm btn-secondary"><i class="fas fa-newspaper d-none d-md-inline-block"></i> Voltar ao Ato</a>
+                        <a href="{{ object.parte.get_update_url }}"
+                           class="btn btn-sm btn-secondary"><i class="fas fa-user-edit d-none d-md-inline-block"></i> Editar Parte </a>
+                        {% comment %} <form action="{{ object.get_excluir_url }}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Excluir" class="btn btn-sm btn-danger" onclick="return confirm('Você tem certeza que deseja excluir este registro?');">
+                        </form> {% endcomment %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,422 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% load humanize %}
+{% block title %}Base de Conhecimento de Protocolos{% endblock %}
+{% block content %}
+    <div class="card" id="itens_base_conhecimento">
+        <div class="card-header">
+            {% if numero_protocolo_pesquisar == "0" %}
+                <h5>Base de Conhecimento de {{ descricao_ato }}</h5>
+            {% else %}
+                <h5>
+                    Base de Conhecimento: {{ descricao_ato }}  {% comment %} - Protocolo: {{ numero_protocolo_pesquisar }} {% endcomment %}
+                </h5>
+            {% endif %}
+            {% if numero_protocolo == "0" %}
+                <a class="f-26 text-white"
+                   href="{% url 'home:protocolo_detail' numero_protocolo|get_id_protocolo_pelo_numero %}">
+                    {{ numero_protocolo|protocolo_formatado }}
+                </a>
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            <a type="button"
+               href="#itens_checklist_balcao"
+               class="btn btn-sm btn-secondary">
+                Check-List Balcão: <span class="badge bg-dark">{{ total_checklist }}</span>
+            </a>
+            <a type="button"
+               href="#itens_OrdemDigitalizarBalcao"
+               class="btn btn-sm btn-secondary">
+                Ordem Digitalizar: <span class="badge bg-dark">{{ total_ordem_digitalizar }}</span>
+            </a>
+            <a type="button"
+               href="#itens_exigencias"
+               class="btn btn-sm btn-secondary">
+                Exigências: <span class="badge bg-dark">{{ total_exigencias }}</span>
+            </a>
+            <a type="button" href="#itens_minutas" class="btn btn-sm btn-secondary">
+                Modelos de Minuta(s) <span class="badge bg-dark">{{ total_minutas }}</span>
+            </a>
+            <a type="button"
+               href="#itens_notas_tecnicas"
+               class="btn btn-sm btn-secondary">
+                Notas Técnicas <span class="badge bg-dark">{{ total_notas_tecnicas }}</span>
+            </a>
+            <a type="button"
+               href="#itens_similares"
+               class="btn btn-sm btn-secondary">
+                Similares <span class="badge bg-dark">{{ total_protocolos_registrados }}</span>
+            </a>
+        </div>
+    </div>
+    <div class="card" id="itens_checklist_balcao">
+        <div class="card-header">
+            <h5>Check-List Balcão - {{ descricao_ato }}: {{ total_checklist }}</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered dataTable no-footer">
+                <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>Documento / Ordem de Digitalização</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for checklist in checklist_balcao_ato %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td style="word-wrap: break-word; white-space: normal;">{{ checklist.text }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            {% if total_checklist > 0 %}
+                <a class="btn btn-sm btn-primary"
+                   href="{% url 'home:checklist_balcao' numero_protocolo=numero_protocolo_pesquisar classe_imovel=classe_imovel ato_id=ato_id %}"
+                   title="Clique para realizar um checklist para este Ato"
+                   data-toggle="tooltip">
+                    <i class="icon feather icon-check"></i> Iniciar Checklist
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card" id="itens_OrdemDigitalizarBalcao">
+        <div class="card-header">
+            <h5>Ordem Digitalizar - {{ descricao_ato }}: {{ total_ordem_digitalizar }}</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered dataTable no-footer">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ordem de Digitalização</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ordem in OrdemDigitalizarBalcao %}
+                        <tr>
+                            <td style="word-wrap: break-word; white-space: normal;">{{ forloop.counter }}</td>
+                            <td style="word-wrap: break-word; white-space: normal;">{{ ordem.pergunta.text }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card" id="itens_exigencias">
+        <div class="card-header">
+            <h5>Exigências - {{ descricao_ato }}: {{ total_exigencias }}</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-hover table-bordered table-responsive">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Descrição da Exigência</th>
+                                <th>Observações</th>
+                                <th>Opcões</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for exigencia in exigencias %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td style="word-wrap: break-word; white-space: normal;">{{ exigencia.minuta.titulo }}</td>
+                                    <td style="word-wrap: break-word; white-space: normal;">{{ exigencia.minuta.subtitulo }}</td>
+                                    <td>
+                                        <a href="{% url 'minuta_exigencia:editar_minuta_exigencia' pk=exigencia.minuta.pk %}"
+                                           target="_blank"
+                                           class="btn btn-icon btn-sm btn-info"
+                                           title="Alterar os dados da EXIGÊNCIA.">
+                                            <i class="icon feather icon-edit"></i></a>
+                                        <a href="{% url 'minuta_exigencia:remover_exigencia_ato' pk=exigencia.pk %}"
+                                           target="_blank"
+                                           class="btn btn-icon btn-sm btn-danger"
+                                           title="Desvincular EXIGÊNCIA do ato">
+                                            <i class="icon feather icon-trash-2"></i></a>
+                                        <a href="{% url 'home:texto_exigencia_minuta' pk=exigencia.minuta.pk %}"
+                                           target="_blank"
+                                           class="btn btn-icon btn-sm btn-primary activate text-white"
+                                           title="Visualizar o texto da EXIGÊNCIA, sem alterar os dados.">
+                                            <i class="icon feather icon-file"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-sm btn-primary"
+               href="{% url 'minuta_exigencia:adicionar_minuta_exigencia' %}"
+               target="_blank">
+                <i class="icon feather icon-plus"></i>Adicionar</a>
+            <a class="btn btn-sm btn-secondary text-white"
+               href="{% url 'minuta_exigencia:vincular_minuta_exigencia_ato' pk=ato_id %}"
+               target="_blank">
+                <i class="icon feather icon-check"></i>Vincular</a>
+            <a class="btn btn-sm btn-secondary text-white"
+               title="Atualizar a página para visualizar os dados alterados."
+               data-bs-toggle="tooltip"
+               onclick="window.location.reload()"><i class="icon feather icon-refresh-cw"></i>Atualizar</a>
+            <a class="btn btn-sm btn-outline-warning text-dark"
+               title="Voltar para a página anterior sem alterar os dados."
+               data-bs-toggle="tooltip"
+               onclick="window.history.back();"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+    </div>
+    <div class="card" id="itens_minutas">
+        <div class="card-header">
+            <h5>Modelos de Minutas - {{ descricao_ato }}: {{ total_minutas }}</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered dataTable no-footer">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Descrição da Minuta</th>
+                        <th>Observações</th>
+                        <th>Prévia</th>
+                        <th>Opcões</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for minuta in minutas %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ minuta.minuta.titulo }}</td>
+                            <td style="width: 20px;  word-wrap: break-word; white-space: normal;">{{ minuta.minuta.subtitulo }}</td>
+                            <td>
+                                <a href="{% url 'minutas_atos:modelo_impressao' modelo_id=minuta.minuta.pk pedido_item_id=pedido_item_id %}"
+                                   target="_blank"
+                                   class="btn btn-sm btn-primary activate"
+                                   title="Exibe uma prévia do texto usando a minuta selecionada.">
+                                    <i class="icon feather icon-eye"></i> Visualizar</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'minutas_atos:editar_minuta_ato' pk=minuta.minuta.pk %}"
+                                   target="_blank"
+                                   class="btn btn-icon btn-sm btn-info"
+                                   title="Alterar os dados da MINUTA DE TEXTO.">
+                                    <i class="icon feather icon-edit"></i></a>
+                                <a href="{% url 'minutas_atos:remover_ato' pk=minuta.pk %}"
+                                   target="_blank"
+                                   class="btn btn-icon btn-sm btn-danger"
+                                   title="Desvincular MINUTA do ato">
+                                    <i class="icon feather icon-trash-2"></i></a>
+                                <a href="{% url 'home:texto_ato_minuta' pk=minuta.minuta_id %}"
+                                   target="_blank"
+                                   class="btn btn-icon btn-sm btn-secondary text-white"
+                                   title="Visualizar o texto da MINUTA, sem alterar os dados.">
+                                    <i class="icon feather icon-file"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-sm btn-primary"
+               href="{% url 'minutas_atos:adicionar_minuta_ato' %}"
+               target="_blank">
+                <i class="icon feather icon-plus"></i>Adicionar</a>
+            <a class="btn btn-sm btn-secondary text-white"
+               href="{% url 'minutas_atos:vincular_minuta_ato' pk=ato_id %}"
+               target="_blank">
+                <i class="icon feather icon-check"></i>Vincular</a>
+            <a class="btn btn-sm btn-secondary text-white"
+               title="Atualizar a página para visualizar os dados alterados."
+               data-bs-toggle="tooltip"
+               onclick="window.location.reload()"><i class="icon feather icon-refresh-cw"></i>Atualizar</a>
+            <a class="btn btn-sm activate btn-secondary"
+               href="{% url 'home:checklist_lv2' pedido_item_id=pedido_item_id opcao=1 %}"
+               checklist_adquirente
+               target="_blank"
+               title="Acessar o Checklist do Ato."
+               role="button"><i class="icon feather icon-check"></i>Partes
+            </a>
+            <a class="btn btn-sm btn-secondary text-white"
+               href="{% url 'minutas_atos:listar_estado_civil' %}"
+               target="_blank">
+                <i class="icon feather icon-edit"></i>Estado Cívil</a>
+            <a class="btn btn-sm btn-outline-warning text-dark"
+               title="Voltar para a página anterior sem alterar os dados."
+               data-bs-toggle="tooltip"
+               onclick="window.history.back();"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+    </div>
+    <div class="card" id="itens_notas_tecnicas">
+        <div class="card-header">
+            <h5>Notas Técnicas - {{ descricao_ato }}: {{ total_notas_tecnicas }}</h5>
+        </div>
+        <div class="card-body">
+            <div class="col-md-12">
+                <div class="tile">
+                    <div class="tile-body">
+                        <div class="table-responsive">
+                            <div id="sampleTable_wrapper"
+                                 class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-hover table-bordered dataTable no-footer"
+                                               id="sampleTable"
+                                               role="grid"
+                                               aria-describedby="sampleTable_info">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th class="width"
+                                                        :
+                                                        50px
+                                                        tabindex="0"
+                                                        aria-controls="sampleTable"
+                                                        rowspan="1"
+                                                        colspan="1"
+                                                        aria-sort="ascending"
+                                                        aria-label="Name: activate to sort column descending"
+                                                        style="width: 50px">SL</th>
+                                                    <th class="sorting_asc"
+                                                        tabindex="0"
+                                                        aria-controls="sampleTable"
+                                                        rowspan="1"
+                                                        colspan="1"
+                                                        aria-sort="ascending"
+                                                        aria-label="Name: activate to sort column descending">
+                                                        Documento / Ordem de Digitalização
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for nota_tecnica in notas_tecnicas %}
+                                                    <tr role="row" class="odd">
+                                                        <td class="sorting_1">{{ forloop.counter }}</td>
+                                                        <td>{{ nota_tecnica.pergunta.text }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer"></div>
+    </div>
+    <div class="card" id="itens_similares">
+        <div class="card-header">
+            <h5>
+                Protocolos similares do ato - {{ descricao_ato }}: {{ total_protocolos_registrados }} <a style="color:white;"></a>
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="col-md-12">
+                <div class="tile">
+                    <div class="tile-body">
+                        <div class="table-responsive">
+                            <div id="sampleTable_wrapper"
+                                 class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-hover table-bordered dataTable no-footer"
+                                               id="sampleTable"
+                                               role="grid"
+                                               aria-describedby="sampleTable_info">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th class="sorting_asc"
+                                                        tabindex="0"
+                                                        aria-controls="sampleTable"
+                                                        rowspan="1"
+                                                        colspan="1"
+                                                        aria-sort="ascending"
+                                                        aria-label="Name: activate to sort column descending"
+                                                        style="width: 50px">SL</th>
+                                                    <th class="sorting text-center"
+                                                        tabindex="0"
+                                                        aria-controls="sampleTable"
+                                                        rowspan="1"
+                                                        colspan="1"
+                                                        aria-label="Position: activate to sort column ascending"
+                                                        style="width: 20.1px">Protocolo</th>
+                                                    <th class="sorting text-center"
+                                                        tabindex="0"
+                                                        aria-controls="sampleTable"
+                                                        rowspan="1"
+                                                        colspan="1"
+                                                        aria-label="Office: activate to sort column ascending"
+                                                        style="width: 20.1px">Cobranças</th>
+                                                    <th class="sorting text-center"
+                                                        tabindex="0"
+                                                        aria-controls="sampleTable"
+                                                        rowspan="1"
+                                                        colspan="1"
+                                                        aria-label="Office: activate to sort column ascending"
+                                                        style="width: 20.1px">Data Protocolo</th>
+                                                    <th class="sorting"
+                                                        tabindex="0"
+                                                        aria-controls="sampleTable"
+                                                        rowspan="1"
+                                                        colspan="1"
+                                                        aria-label="Age: activate to sort column ascending"
+                                                        style="width: 102.141px">Nome do Apresentante</th>
+                                                    <th class="sorting"
+                                                        tabindex="0"
+                                                        aria-controls="sampleTable"
+                                                        rowspan="1"
+                                                        colspan="1"
+                                                        aria-label="Age: activate to sort column ascending"
+                                                        style="width: 102.141px">Observação</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for event in protocolos_lista_registrados %}
+                                                    <tr role="row" class="odd">
+                                                        <td class="sorting_1">{{ forloop.counter }}</td>
+                                                        <td class="text-center">
+                                                            <a class="btn btn-sm btn-primary active btn-sm"
+                                                               href="{% url 'home:protocolo_detail' event.numero_protocolo|remover_pontuacao|get_id_protocolo_pelo_numero %}"
+                                                               target="_blank"
+                                                               title="Clique para visualizar os detalhes"
+                                                               data-toggle="tooltip">
+                                                                <i class="icon feather icon-info"></i>{{ event.numero_protocolo|remover_pontuacao|protocolo_formatado }}
+                                                            </a>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <a class="btn btn-sm btn-success active btn-sm"
+                                                               href="{% url 'home:protocolo_detail' event.numero_protocolo|remover_pontuacao|get_id_protocolo_pelo_numero %}"
+                                                               target="_blank"
+                                                               title="Clique para visualizar os detalhes"
+                                                               data-toggle="tooltip">
+                                                                <i class="icon feather icon-info"></i>Copiar</a>
+                                                        </td>
+                                                        <td class="text-center">{{ event.data_protocolo|date:"d/m/y" }}</td>
+                                                        <td style="width: 40px;  word-wrap: break-word; white-space: normal;">
+                                                            {{ event.pedido.nome_solicitante_formatado|slice:":40"|upper }}
+                                                        </td>
+                                                        <td>{{ event.pedido.observacao|slice:":50" }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

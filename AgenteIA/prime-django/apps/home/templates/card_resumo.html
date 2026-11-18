@@ -1,0 +1,50 @@
+{% load home_formatos %}
+<div class="card">
+    <div class="card-header">
+        <h5>Resumo</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <div class="row mb-3">
+                <div class="col">
+                    <span class="font-weight-bold">Itens do Pedido:</span> {{ pedidos_itens|length }}
+                </div>
+                <div class="col">
+                    <span class="font-weight-bold">Selos Eletrônicos:</span> {{ selos|length }}
+                </div>
+                <div class="col">
+                    <span class="font-weight-bold">Livro 2:</span> {{ livro_2|length }}
+                </div>
+                <div class="col">
+                    <span class="font-weight-bold">Livro 3:</span> {{ livro_3|length }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <span class="font-weight-bold">Emolumentos:</span> {{ valor_total_emolumentos|formatar_moeda }}
+                </div>
+                <div class="col">
+                    <span class="font-weight-bold">Taxa Fisc. Judic.:</span> {{ valor_total_tfj|formatar_moeda }}
+                </div>
+                <div class="col">
+                    <span class="font-weight-bold">ISSQN:</span> {{ valor_total_issqn|formatar_moeda }}
+                </div>
+                <div class="col">
+                    <span class="font-weight-bold">Recompe:</span> {{ valor_total_recompe|formatar_moeda }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <span class="font-weight-bold">Total:</span> {{ valor_total_protocolo|formatar_moeda }}
+                </div>
+                <div class="col">
+                    <span class="font-weight-bold">Caixa:</span> {{ valor_total_caixa|formatar_moeda }}
+                </div>
+                <div class="col">
+                    <span class="font-weight-bold {% if valor_diferenca > 0 %}text-danger{% else %}text-success{% endif %}">Diferença: {{ valor_diferenca|formatar_moeda }}</span>
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
+    </div>
+</div>

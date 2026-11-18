@@ -1,0 +1,32 @@
+{% extends "base.html" %}  {# Ajuste o caminho para o seu template base #}
+{% block content %}
+    <h2>Certificados Digitais</h2>
+    <ul>
+        {% for certificado in certificados %}
+            <li>
+                {{ certificado.usuario.username }} -
+                <a href="{{ certificado.certificado.url }}">Download</a>
+                {% if certificado.imagem_assinatura %}
+                    -
+                    <img src="{{ certificado.imagem_assinatura.url }}"
+                         alt="Assinatura"
+                         height="50">
+                {% endif %}
+                - {{ certificado.texto_assinatura }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% if certificados.has_other_pages %}
+        <div>
+            {% if certificados.has_previous %}<a href="?page={{ certificados.previous_page_number }}">Anterior</a>{% endif %}
+            {% for num in certificados.paginator.page_range %}
+                {% if certificados.number == num %}
+                    <strong>{{ num }}</strong>
+                {% else %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if certificados.has_next %}<a href="?page={{ certificados.next_page_number }}">Próximo</a>{% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

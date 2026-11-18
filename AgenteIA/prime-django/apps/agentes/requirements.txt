@@ -1,0 +1,7 @@
+sympy
+mesa
+numpy
+pandas
+matplotlib
+scipy
+requests

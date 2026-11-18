@@ -1,0 +1,123 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <div class="card" id="card_distribuir_protocolo_numero">
+        <form action={% url 'home:salvar_lembrete_imovel' %} method="post">
+            <!-- Não se esqueça dessa tag -->
+            {% csrf_token %}
+            <div class="card-header">
+                <h5>
+                    Lembrete do Imóvel:&nbsp;&nbsp;<span class="text-white f-24">{{ numero_registro|protocolo_formatado }}</span>
+                </h5>
+            </div>
+            <input type="hidden" name="imovel_id" value="{{ imovel_id }}">
+            <div class="card-body table-responsive">
+                <!-- Dropdown Menu -->
+                <div class="form-floating mb-3">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <!-- Tipo de Ato do Protocolo -->
+                            <div class="input-group mb-8">
+                                <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" for="data_distribuir"><b>Data lembrete:</b></span>
+                                </div>
+                                <input type="date" class="form-control" placeholder="digite a data do protocolo" name="data_distribuicao_i" id="data_distribuicao_i" value={{ data_distribuir }} autofocus required>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <!-- Tipo de Ato do Protocolo -->
+                            <div class="input-group mb-8">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" for="tipo_setor_protocolo"><b>Nivel de Alerta</b></span>
+                                </div>
+                                <select class="form-select"
+                                        name="setor_enviar_id"
+                                        id="setor_enviar_id"
+                                        required>
+                                    {% for NivelAlerta in NivelAlerta %}
+                                        <option value={{ NivelAlerta.id }}>{{ NivelAlerta.descricao }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <!-- Tipo de Ato do Protocolo -->
+                            <div class="input-group mb-8">
+                                <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" for="encaminhar_protocolo_ao_colaborador"><b>Criado pelo Colaborador:</b></span>
+                                </div>
+                                <select class="form-select"
+                                        name="colaborador_id"
+                                        id="colaborador_id"
+                                        required>
+                                    <option value="">- Selecione -</option>
+                                    {% for colaborador in colaborador %}
+                                        <option value={{ colaborador.1 }}>{{ colaborador.0 }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <a>&nbsp;</a>
+                    </div>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <!-- Área de Texto para Lembrete -->
+                            <div class="input-group mb-12">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><b>Lembrete:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></span>
+                                </div>
+                                <textarea class="form-control"
+                                          name="lembrete_id"
+                                          id="lembrete_id"
+                                          placeholder="Digite o lembrete"
+                                          rows="5"
+                                          {% comment %}
+                                          style="background-color: rgba(173, 216, 230, 0.5)"
+                                          {% endcomment %}
+                                          data-processed="0"
+                                          data-config="{&quot;skin&quot;: &quot;moono&quot;, &quot;toolbar_Basic&quot;: [[&quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;], [&quot;NumberedList&quot;, &quot;BulletedList&quot;, &quot;-&quot;, &quot;Outdent&quot;, &quot;Indent&quot;, &quot;-&quot;, &quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;], [&quot;RemoveFormat&quot;], [&quot;-&quot;, &quot;Save&quot;, &quot;Preview&quot;, &quot;Print&quot;, &quot;-&quot;], [&quot;Maximize&quot;, &quot;ShowBlocks&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;, &quot;Smiley&quot;, &quot;SpecialChar&quot;, &quot;PageBreak&quot;, &quot;Iframe&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;, &quot;Anchor&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;full&quot;, &quot;height&quot;: 291, &quot;width&quot;: &quot;114%&quot;, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;frame&quot;: &quot;border&quot;, &quot;toolbar_Custom&quot;: [[&quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;], [&quot;NumberedList&quot;, &quot;BulletedList&quot;, &quot;-&quot;, &quot;Outdent&quot;, &quot;Indent&quot;, &quot;-&quot;, &quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;], [&quot;Link&quot;, &quot;Unlink&quot;], [&quot;RemoveFormat&quot;, &quot;Source&quot;]], &quot;language&quot;: &quot;pt-br&quot;}"
+                                          data-external-plugin-resources="[]"
+                                          data-type="ckeditortype"
+                                          required></textarea>
+                                <!-- Texto da Ficha -->
+                            </div>
+                        </div>
+                    </div>
+                    </>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit"
+                        class="btn btn-sm btn-primary text-white"
+                        aria-pressed="true"
+                        role="button">
+                    <i class="icon feather icon-save"></i> Salvar
+                </button>
+                <!-- Voltar Button -->
+                <a onclick="getVoltar()"
+                   class="btn btn-sm btn-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+            <script>
+                 function get_numero(numero) {
+                      var conteudo = "/protocolos/?numero_protocolo=" + numero
+                      window.location.href = conteudo;
+                 }
+
+                 function getVoltar() {
+                      window.history.back()
+                 }
+            </script>
+        </form>
+    </div>
+{% endblock content %}

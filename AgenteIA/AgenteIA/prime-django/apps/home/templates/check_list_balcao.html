@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% load humanize %}
+{% block title %}Checklist{% endblock %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+{% endblock stylesheets %}
+{% block content %}
+    <div class="card" id="itens_base_conhecimento">
+        <div class="card-header">
+            <h5 class="text-white">Checklist de Pedido</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <h5>
+                        <b>Ato:</b> {{ descricao_ato }}
+                    </h5>
+                </div>
+                <div class="col">
+                    <h5>
+                        <b>Protocolo:</b> {{ numero_protocolo }}
+                    </h5>
+                </div>
+            </div>
+            <hr>
+            <form method="post" class="questionnaire-form">
+                {% csrf_token %}
+                {% for question in questions %}
+                    <div class="form-group row">
+                        <!-- Perguntas -->
+                        {% if question.titulo_informacao == "S" %}
+                            <hr>
+                            <h5>
+                                <b>{{ question.text|formatar_nome }}</b>
+                            </h5>
+                        {% else %}
+                            <label class="col-4 col-form-label d-flex justify-content-end">
+                                <b>{{ question.text|formatar_nome }}</b>
+                            </label>
+                        {% endif %}
+                        <div class="col-8">
+                            {% if question.tipo_pergunta == "T" %}
+                                <div class="form-check-inline">
+                                    <select name="checklist_balcao_ato_texto_{{ question.id }}"
+                                            class="form-select">
+                                        {% for chave, valor in lista_opcoes.items %}
+                                            {% if option.id == valor.checklist_balcao_ato_id %}
+                                                <option value="{{ valor.id }}">{{ valor.texto_escolha }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            {% else %}
+                                {% for option in question.checklist_balcao_ato_set.all %}
+                                    <div class="form-check-inline mt-2">
+                                        <input class="form-check-input"
+                                               type="radio"
+                                               name="checklist_balcao_ato_{{ question.id }}"
+                                               value="{{ option.id }}"
+                                               id="option{{ option.id }}">
+                                        <label class="form-check-label" for="option{{ option.id }}">{{ option.texto_escolha }}</label>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary submit-btn">
+                    <i class="icon feather icon-save"></i> Salvar
+                </button>
+            </form>
+        </div>
+{% endblock content %}

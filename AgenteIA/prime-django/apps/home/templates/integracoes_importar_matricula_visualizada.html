@@ -1,0 +1,81 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% load django_tables2 %}
+{% load home_formatos %}
+{% block content %}
+    <h3 class="mb-4">Ofício Eletrônico (ONR) - Matrícula Visualizada</h3>
+    <div class="col-md-12">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-group input-group mb-4">
+                <input type="file"
+                       name="document"
+                       class="form-control"
+                       id="inputGroupFile04"
+                       aria-describedby="inputGroupFileAddon04"
+                       aria-label="Upload"
+                       required="required">
+                <div class="input-group-append">
+                    <a>&emsp;</a>
+                    <button class="btn btn-primary"
+                            type="submit"
+                            id="inputGroupFileAddon04"
+                            data-bs-toggle="tooltip">
+                        <i class="icon feather icon-paperclip "></i>Importar do XML
+                    </button>
+                    <button class="btn bg-success text-white" href="#!" data-bs-toggle="tooltip">
+                        <i class="icon feather icon-download-cloud "></i>Importar da Web
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <span style="float: right">
+                    <p>Última importação: {{ data_ultima_importacao }}</p>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Pedidos de Certidão: ONR Matrícula Visualizada: {{ filter.qs.count }}</h5>
+                </div>
+                <div class="card-body">
+                    {% if filter %}
+                        <form class="row row-cols-md-auto g-3 align-items-center mb-3" method="get">
+                            {% for field in filter.form %}<div class="p-2">{{ field|as_crispy_field }}</div>{% endfor %}
+                            <div class="col-md-12">
+                                <input type="submit"
+                                       id="btn-submit"
+                                       class="btn btn-sm btn-primary"
+                                       value="Filtrar">
+                                {% if filter.qs.count > 0 %}
+                                    <a class="btn btn-sm btn-secondary"
+                                       href="{{ impressao_url }}"
+                                       target="_blank"
+                                       id="btn-print">
+                                        <i class="icon feather icon-printer d-none d-md-inline-block"></i> Imprimir Recibo
+                                    </a>
+                                    <a class="btn btn-sm btn-primary text-white"
+                                       href="{{ selar_url }}"
+                                       title="Selar para os itens que não tenham sido selados ainda">
+                                        <i class="icon feather icon-check-circle"></i> Selar todos não selados
+                                    </a>
+                                    <a class="btn btn-sm btn-outline-success text-dark"
+                                       href="{{ excel_url }}"
+                                       aria-pressed="true"
+                                       role="button">
+                                        <i class="icon feather icon-file"></i> Exportar Excel
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </form>
+                    {% endif %}
+                    {% render_table table %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

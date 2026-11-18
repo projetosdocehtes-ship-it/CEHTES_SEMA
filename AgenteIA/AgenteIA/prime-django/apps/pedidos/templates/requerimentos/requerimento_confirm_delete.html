@@ -1,0 +1,9 @@
+{% extends "base_generic.html" %}
+{% block content %}
+  <h1>Deletar Requerimento</h1>
+  <p>Tem certeza que deseja deletar "{{ requerimento }}"?</p>
+  <form method="post">{% csrf_token %}
+    <button type="submit">Sim, deletar</button>
+    <a href="{% url 'pedidos:requerimento_detail' requerimento.pk %}">Cancelar</a>
+  </form>
+{% endblock %}

@@ -1,0 +1,320 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block title %}
+    Distribuição de Protocolos
+{% endblock title %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    <h4>Distribuição de Protocolos</h4>
+    <br>
+    <div class="row">
+        <div class="col-lg-6">
+            <!-- small box -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-white">Por Data de Entrada</h5>
+                </div>
+                <div class="card-body">
+                    <form class="row row-cols-md-auto g-3 align-items-center needs-validation"
+                          method="get">
+                        <div class="col-md-12">
+                            <div class="input-group ">
+                                <input type="date"
+                                       class="form-control"
+                                       placeholder="Digite a data do protocolo"
+                                       name="data_entrada_inicio"
+                                       id="data_entrada_inicio"
+                                       value="{{ data_inicio }}"
+                                       required>
+                                <input type="date"
+                                       class="form-control"
+                                       placeholder="Digite a data do protocolo"
+                                       name="data_entrada_fim"
+                                       id="data_entrada_fim"
+                                       value="{{ data_fim }}"
+                                       required>
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    <i class="icon feather icon-search"></i> Pesquisar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <!-- small box -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-white">Pelo Número do Protocolo</h5>
+                </div>
+                <div class="card-body">
+                    <form class="row row-cols-md-auto g-3 align-items-center needs-validation">
+                        <div class="col-md-8">
+                            <div class="input-group ">
+                                <input type="text"
+                                       class="form-control"
+                                       name="numero_protocolo_id"
+                                       id="numero_protocolo_id"
+                                       placeholder="Numero do Protocolo"
+                                       size="10"
+                                       required>
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    <i class="icon feather icon-search"></i> Pesquisar
+                                </button>
+                            </div>
+                        </div>
+                        {% comment %} <div class="col-md-4">
+                            <span class="float-right">
+                                <a class="btn btn-icon btn-secondary" data-bs-toggle="modal" data-bs-target="#addImportarProtocolo" title="Importar protocolo de outro sistema">
+                                    <i class="icon feather icon-download"></i>
+                                </a>
+                                <a class="btn btn-icon btn-danger" href="{% url 'home:importar_protocolo_do_dia' %}" title="Atualizar os não importados." data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-download-cloud auth-icon"></i>
+                                </a>
+                            </span>
+                        </div> {% endcomment %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-white">À Distribuir: {{ protocolos|length }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-hover"
+                                   id="sampleTable"
+                                   role="grid"
+                                   aria-describedby="sampleTable_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th>#</th>
+                                        <th>Protocolo</th>
+                                        <th>Entrada</th>
+                                        <th>Observação</th>
+                                        <th>Opções</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for protocolo in protocolos %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>
+                                                <a href="{{ protocolo.get_absolute_url }}"
+                                                   target="_blank"
+                                                   data-bs-toggle="tooltip">{{ protocolo }}</a>
+                                            </td>
+                                            <td>{{ protocolo.data_protocolo|date:"d/m/y" }}</td>
+                                            <td>{{ protocolo.pedido.observacao|formatar_nome|truncatechars:40 }}</td>
+                                            <td>
+                                                <a class="btn btn-sm btn-primary font-weight-bold"
+                                                   href="{% url 'home:distribuicao_protocolo_numero' numero_protocolo=protocolo.numero_protocolo %}"
+                                                   data-bs-toggle="tooltip"><i class="fas fa-angle-double-up"></i>Encaminhar
+                                                </a>
+                                                <a class="btn btn-sm btn-secondary text-white font-weight-bold"
+                                                   href="{% url 'home:reentrada_protocolo_numero' numero_protocolo=protocolo.numero_protocolo %}"
+                                                   data-bs-toggle="tooltip"><i class="fas fa-angle-double-up"></i>Reentrada
+                                                </a>
+                                                <a class="btn btn-sm btn-success text-dark font-weight-bold"
+                                                   href="{% url 'home:reentrada_pagamento_protocolo_numero' numero_protocolo=protocolo.numero_protocolo %}"
+                                                   data-bs-toggle="tooltip"><i class="fas fa-angle-double-up"></i>Pagamento
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-white">Distribuidos: {{ protocolos_distribuidos|length }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table class="table table-hover table-responsive"
+                                   id="sampleTable"
+                                   role="grid"
+                                   aria-describedby="sampleTable_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th>#</th>
+                                        <th>Protocolo</th>
+                                        <th>Entrada</th>
+                                        <th>Reentrada</th>
+                                        <th>Distribuição</th>
+                                        <th>Observação</th>
+                                        <th>Setor</th>
+                                        <th>Encaminhado</th>
+                                        <th>Opções</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for protocolo_distribuido in protocolos_distribuidos %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>
+                                                <a href="{{ protocolo_distribuido.get_absolute_url }}"
+                                                   target="_blank"
+                                                   title="Clique para visualizar os detalhes"
+                                                   data-bs-toggle="tooltip">
+                                                    {{ protocolo_distribuido.numero_protocolo|protocolo_formatado }}
+                                                </a>
+                                            </td>
+                                            <td>{{ protocolo_distribuido.data_protocolo|date:"d/m/y" }}</td>
+                                            <td>{{ protocolo_distribuido.data_reentrada|date:"d/m/y" }}</td>
+                                            <td>{{ protocolo_distribuido.data_distribuicao|date:"d/m/y" }}</td>
+                                            <td>{{ protocolo_distribuido.pedido.observacao|formatar_nome|truncatechars:40 }}</td>
+                                            <td>{{ protocolo_distribuido.fases_protocolo.nome }}</td>
+                                            <td>
+                                                <a href="{{ protocolo_distribuido.colaborador.get_distribuidos_url }}"
+                                                   target="_blank"
+                                                   title="Clique para ver Colaborador.">
+                                                    {{ protocolo_distribuido.colaborador|default:"-" }}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'home:distribuicao_protocolo_numero' numero_protocolo=protocolo_distribuido.numero_protocolo %}"
+                                                   data-bs-toggle="tooltip"><i class="icon feather icon-edit"></i>Reencaminhar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'home:distribuicao_protocolo_relatorio_unico' data_inicio=data_inicio data_fim=data_fim colaborador_id=0 %}"
+                       target='_blank'
+                       class="btn btn-sm btn-secondary"
+                       id="printButton"> <i class="icon feather icon-printer"></i> Imprimir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Gráfico de Barras:</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="meuGrafico"></canvas>
+                </div>
+                <div class="card-footer">
+                    <div class="card-footer">
+                        <a href="{% url 'home:distribuicao_protocolo_relatorio' data_inicio=data_inicio data_fim=data_fim colaborador_id=0 %}"
+                           target='_blank'
+                           class="btn btn-sm btn-secondary"
+                           id="printButton"> <i class="icon feather icon-printer"></i> Imprimir Separado por Colaborador (data)</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Gráfico de Pizza:</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="meuGrafico2"></canvas>
+                </div>
+                <div class="card-footer">
+                    <div class="card-footer">
+                        <a href="{% url 'home:distribuicao_protocolo_relatorio' data_inicio=data_inicio data_fim=data_fim colaborador_id=0 %}"
+                           target='_blank'
+                           class="btn btn-sm btn-secondary"
+                           id="printButton"> <i class="icon feather icon-printer"></i> Imprimir Separado por Colaborador (data)</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "form-importar-protocolo.html" %}
+    {% include "form-importar-protocolo-data.html" %}
+{% endblock content %}
+{% block javascripts %}
+    <script>
+        var ctx = document.getElementById('meuGrafico').getContext('2d');
+        var ctx2 = document.getElementById('meuGrafico2').getContext('2d');
+
+        var meuGrafico = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                {
+                    grafico | safe
+                }
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    datalabels: {
+                        display: true,
+                        align: 'end',
+                        anchor: 'end',
+                        formatter: function(value, context) {
+                            return value.toString(); // Retorne apenas o valor
+                        },
+                        color: '#000000'
+
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        var meuGrafico2 = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                {
+                    grafico | safe
+                }
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    datalabels: {
+                        display: true,
+                        align: 'end',
+                        anchor: 'end',
+                        formatter: function(value, context) {
+                            return value.toString(); // Retorne apenas o valor
+                        },
+                        color: '#000000'
+
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock javascripts %}

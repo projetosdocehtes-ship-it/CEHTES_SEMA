@@ -1,0 +1,142 @@
+{% extends "layouts/base.html" %}
+{% load static crispy_forms_tags django_tables2 %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block title %}
+    {{ title }}
+{% endblock title %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>{{ title }}</h5>
+        </div>
+        <div class="card-block table-border-style">{% crispy form %}</div>
+        <div class="card-header">
+            <h5>Projetos cadastrados: {{ total_projetos }}</h5>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table">
+                <tr>
+                    <thead>
+                        <th>#</th>
+                        <th>Número</th>
+                        <th>Nome</th>
+                        <th>Data Início</th>
+                        <th>Data Fim</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                        <th>Descrição</th>
+                        <th>Equipamentos</th>
+                        <th>Observações</th>
+                        <th>Ações</th>
+                    </thead>
+                </tr>
+                <tbody>
+                    {% for projeto in projetos %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ projeto.numero_projeto }}</td>
+                            <td>{{ projeto.nome_projeto }}</td>
+                            <td>{{ projeto.data_inicio_projeto|date:"d/m/y" }}</td>
+                            <td>{{ projeto.data_fim_projeto|date:"d/m/y" }}</td>
+                            <td>{{ projeto.latitude }}</td>
+                            <td>{{ projeto.longitude }}</td>
+
+                            <td>
+                                <div>
+                                    {% if projeto.fotovoltaico %}
+                                        Fotovoltaico
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {% if projeto.biogas %}
+                                        Biogás
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {% if projeto.hidrogenio %}
+                                        Hidrogênio
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {% if projeto.baterias %}
+                                        Baterias
+                                    {% endif %}
+                                </div>
+                            </td>
+
+                            <td>
+                                <div>
+                                    {% if projeto.fotovoltaico %}
+                                        <a href="{% url 'home:criar_painel_solar' %}">Painel Solar</a>
+                                        <br>
+                                        <a href="{% url 'home:criar_inversor' %}" class="">Inversor de Frequência</a>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {% if projeto.biogas %}
+                                        <a href="{% url 'home:criar_hidrogenio' %}" class="">Gerador de Biogás</a>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {% if projeto.hidrogenio %}
+                                        <a href="{% url 'home:criar_hidrogenio' %}" class="">Célula de Hidrogênio</a>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {% if projeto.baterias %}
+                                        <a href="{% url 'home:criar_bateria' %}" class="">Bateria</a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>{{ projeto.observacoes }}</td>
+                            <td>
+                                <a href="{% url 'home:projeto_visualizar' pk=projeto.id %}"
+                                   class="btn btn-sm btn-primary text-white">Inicializar</a>
+                                {% comment %} <a href="{% url 'home:sugerir_equipamento_fotovoltaico' projeto_id=projeto.id %}"
+                                    class="btn btn-sm btn-outline-warning text-dark">Sugerir Equipamento Painel Fotovoltaico</a> {% endcomment %}
+                                <a href="{% url 'home:projeto_editar' pk=projeto.id %}"
+                                   class="btn btn-sm btn-info text-dark">Alterar</a>
+                                <a href="{% url 'home:projeto_excluir' pk=projeto.id %}"
+                                   class="btn btn-sm btn-danger">Excluir</a>
+                                {% comment %} <a href="http://localhost:8501/"
+                                   target="_blank"
+                                   class="btn btn-sm btn-primary">
+                                   <i class='icon feather icon-eye f-14'></i>Simular
+                                </a> {% endcomment %}
+                                {% comment %} <a href="{% url 'home:latitude_longitude' cidade=projeto.localidade %}"
+                                    target="_blank"
+                                    class="btn btn-sm btn-outline-warning text-dark">Ver Latitude
+                                </a> {% endcomment %}
+                                <a href="https://www.google.com/maps?q={{ projeto.latitude }},{{ projeto.longitude }}" target="_blank"
+                                   class="btn btn-sm btn-warning text-dark">Google Maps
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#carregarDados').click(function() {
+                var dadosSelecionados = $('#busca_id').find('option:selected').text();
+                console.log("Dados Selecionados: ", dadosSelecionados);
+
+                var partes = dadosSelecionados.split(' | ');
+                if (partes.length === 4) {
+                    console.log("Partes do dado: ", partes);
+
+                    $('#nome_apresentante_id').val(partes[0]);
+                    $('#documento_id').val(partes[1]);
+                    $('#telefone_id').val(partes[2]);
+                    $('#email_id').val(partes[3]);
+                        // Ajuste conforme necessário para outros campos
+                }
+            });
+        });
+    </script>
+{% endblock javascripts %}

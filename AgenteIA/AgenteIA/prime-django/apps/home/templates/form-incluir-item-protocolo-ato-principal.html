@@ -1,0 +1,141 @@
+{% load static %}
+{% load home_formatos %}
+<div class="modal"
+     id="addItemProtocoloAtoPrincipal"
+     tabindex="-1"
+     aria-labelledby="addItemProtocoloLabel"
+     aria-hidden="True">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-white fs-5" id="addItemProtocoloLabel">
+                    {% block modal-title %}
+                        <i class="fas fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp;Título Principal
+                    {% endblock modal-title %}
+                </h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Fechar">
+                    <span>x</span>
+                </button>
+            </div>
+            <!-- PASSANDO O PROTOCOLO DO AQUIRENTE -->
+            <form action="{% url 'home:criar_item_protocolo_principal' %}"
+                  method="post">
+                <!-- Não se esqueça dessa tag -->
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="hidden"
+                           name="pedido_id"
+                           id="pedido_id"
+                           value="{{ protocolo.pedido_id }}" />
+                    <!-- 1 linha -->
+                    <div class="form-floating mb-1">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <!-- Tipo de Ato do Protocolo -->
+                                <div class="input-group mb-3">
+                                    <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" for="tipo_ato_protocolo"><b>Ato</b></span>
+                                    </div>
+                                    <select class="form-select"
+                                            name="tipo_ato_protocolo"
+                                            id="tipo_ato_protocolo"
+                                            required>
+                                        <option value="">- Selecione -</option>
+                                        {% for tipo_ato_protocolo in tipo_ato_protocolo %}
+                                            <option value={{ tipo_ato_protocolo.id }}>{{ tipo_ato_protocolo.tipo_ato }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 4 linha -->
+                    <div class="form-floating mb-1">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <!-- Tipo de Tribucao do Protocolo -->
+                                    <div class="input-group mb-3">
+                                        <!-- OBTER O COMBOBOX DO TIPO DE TRIBUCAO -->
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" for="tipo_tributacao_protocolo"><b>Tipo Tributação</b></span>
+                                        </div>
+                                        <select class="form-select"
+                                                name="tipo_tributacao_protocolo"
+                                                id="tipo_tributacao_protocolo"
+                                                required>
+                                            {% for tipo_tributacao_protocolo in tipo_tributacao_protocolo %}
+                                                <option value={{ tipo_tributacao_protocolo.id }}>{{ tipo_tributacao_protocolo.descricao }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 3 linha -->
+                    <div class="form-floating mb-1">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <!-- Tipo de Imovel do Protocolo -->
+                                <div class="input-group mb-3">
+                                    <!-- OBTER O COMBOBOX DO TIPO DE IMOVEL -->
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" for="tipo_registro_protocolo"><b>Imóvel</b></span>
+                                    </div>
+                                    <select class="form-select"
+                                            name="tipo_registro_protocolo"
+                                            id="tipo_registro_protocolo"
+                                            required>
+                                        {% for tipo_registro_protocolo in tipo_registro_protocolo %}
+                                            <option value={{ tipo_registro_protocolo.id }}>{{ tipo_registro_protocolo.descricao }}
+                                            </option>
+                                            <selected>{{ pedido_item_id|tipo_registro|get_descricao_tipo_registro }}</selected>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <!-- NÚMERO -->
+                                <div class="input-group mb-12">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><b>Número</b></span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="" name="numero" id="numero" value= {{ pedido_item_id|get_numero_registro_por_pedido }} required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- BOTOES -->
+                    <div class="modal-footer">
+                        <button type="submit"
+                                class="btn btn-sm btn-primary btn-sm"
+                                aria-pressed="true"
+                                role="button">
+                            <i class="fas fa-save"></i>Salvar
+                        </button>
+                        <button value=""
+                                type="button"
+                                class="btn btn-sm btn-secondary btn-sm"
+                                data-bs-dismiss="modal">
+                            <i class="fas fa-window-close"></i>Fechar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $("#addItemProtocoloAtoPrincipal").on('shown.bs.modal', function() {
+            $(this).find('#tipo_titulo_protocolo_id').focus();
+        });
+    });
+</script>

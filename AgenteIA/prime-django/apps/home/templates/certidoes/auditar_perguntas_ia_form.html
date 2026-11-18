@@ -1,0 +1,66 @@
+{% extends "layouts/base.html" %}
+{% load static crispy_forms_tags django_tables2 %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block title %}
+    {{ title }}
+{% endblock title %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>Perguntas cadastradas feitas a IA: {{ total_perguntas }}</h5>
+        </div>
+
+        <div class="card-body table-responsive">
+            <table class="table">
+                <tr>
+                    <thead>
+                        <th>#</th>
+                        <th>Perguntas</th>
+                        <th>Criado em</th>
+                        <th>Enviado email</th>
+                        <th>Analisar</th>
+                    </thead>
+                </tr>
+                <tbody>
+                    {% for item in perguntas %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.pergunta }}</td>
+                            <td>{{ item.created_at }}</td>
+                            <td>
+                                {% if item.enviado_email %}
+                                    <span class="badge bg-success">Sim</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Não</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <a href="{% url 'home:analisar_perguntas_ia' pergunta=item.pergunta %}"
+                                        class="btn btn-sm btn-outline-primary text-dark">🔍 Analisar Intenção
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer">
+            <div>
+                <!-- Botão para atualizar a página -->
+                <a href="{% url request.resolver_match.view_name %}" class="btn btn-sm btn-outline-primary text-dark">
+                    🔄 Atualizar
+                </a>
+
+                <!-- Botão para voltar para a página anterior -->
+                <a href="javascript:history.back()" class="btn btn-sm btn-outline-secondary">
+                    ⬅️ Voltar
+                </a>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

@@ -1,0 +1,135 @@
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(17, 'Qual a data de pagamento do ITBI ou ITCD', '.', 'DATA_PAGAMENTO_ITBI');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(4, 'Qual data do memorial ?', '.', 'DATA_MEMORIAL');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(3, 'Qual número do ART ?', '.', 'NUMERO_ART');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(1, 'Qual o nome do Engenheiro ?', '.', 'NOME_ENGENHEIRO');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(2, 'Qual o CREA do Engenheiro ?', '.', 'NUMERO_CREA_ENGENHEIRO');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(8, 'Procedo haver cancelado ônus fiduciário gravado no(s) ?', '.', 'ATOS_ANTERIORES');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(10, 'Qual a Destinação/Finalidade ?', '.', 'FINALIDADE');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(11, 'Qual a Forma de sua utilização ?', '.', 'FORMA_UTILIZACAO');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(12, 'Qual os Encargos/Juros ?', '.', 'ENCARGOS_JUROS');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(13, 'Qual a Forma de pagamento ?', '.', 'FORMA_PAGAMENTO');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(14, 'Qual a Praça de pagamento ?', '.', 'PRACA_PAGAMENTO');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(18, 'Qual o valor pago do ITBI ?', '.', 'VALOR_PAGO_ITBI');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(19, 'Qual o número do Livro 3 registrado no cartório ?', '.', 'LIVRO3NUMERO');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(20, 'Qual data da emissão da Cédula ?', '.', 'LIVRO3DATAEMISSAO');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(9, 'Data de Cancelamento de Alienação Fiduciária e Outras Avenças ?', '.', 'DATA_ALIENACAO');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(21, 'Qual o número do ato alienação fiduciária gravada ? (ex. R-03)', '.', 'ATO_CANCELAMENTO_ALIENACAO');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(5, 'Qual o livro do NOTAS ?', '.', '{{ livro_escritura }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(6, 'Qual a folha do NOTAS ?', '.', '{{ folha_escritura }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(7, 'Qual a data da escritura ?', '.', '{{ data_escritura }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(15, 'Qual o número do cartório de notas  ?', '.', '{{ numero_cartorio_escritura }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(16, 'Qual a cidade do cartório de notas  ?', '.', '{{ cidade_cartorio_escritura }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(22, 'Qual a forma de sua utilização ?', '.', '{{ livro3_forma_utilizacao }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(23, 'Qual a forma de pagamento ?', '.', '{{ livro3_forma_pagamento }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(24, 'Encargos e Juros ?', '.', '{{ livro3_encargos_juros }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(25, 'Qual a praça de pagamento ?', '.', '{{ livro3_praca_pagamento }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(26, 'Qual o tipo de Penhor ?', '.', '{{ livro3_tipo_penhor }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(27, 'Qual local os bens se encontram apanhados ?', '.', '{{ livro3_local_bens }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(28, 'Qual o grau (por extenso) ?', '.', '{{ livro3_grau_extenso }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(29, 'Descreva o imóvel ?', '.', '{{ livro3_descrever_imovel }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(30, 'Descreva a serventia ?', '.', '{{ livro3_descrever_serventia }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(31, 'Forma de Pagamento Imóvel ', '.', '{{ livro2_forma_pagamento }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(32, 'Descreva o tipo de venda (Parcial ou Total) ', '.', '{{ livro2_descricao_venda }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(33, 'Qual o número do novo imóvel ?', '.', '{{ numero_novo_imovel }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(34, 'Qual o nome do agrimensor  ?', '.', '{{ nome_agrimensor }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(35, 'Qual o CREA do agrimensor :', '.', '{{ crea_agrimensor }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(37, 'Proceder averbação a margem do ato ?', '.', '{{ averbacao_margem_ato }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(38, 'Descreva a área rural (Gleba ou Sitio)', '.', '{{ descricao_gleba_sitio }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(42, 'Qual o acréscimo ou decréscimo da área  ?', '.', '{{ rural_area_acrescimo }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(36, 'Qual o número da ART ?', '.', '{{ numero_art }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(39, 'Qual a área real  ?', '.', '{{ rural_area_real }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(41, 'Qual a área em culturas  ?', '.', '{{ rural_area_culturas }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(40, 'Qual a área em campos  ?', '.', '{{ rural_area_campos }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(43, 'Qual o acréscimo ou decréscimo da área em campos  ?', '.', '{{ rural_area_acrescimo_campos }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(44, 'Qual o acréscimo ou decréscimo da área em culturas ?', '.', '{{ rural_area_acrescimo_culturas }}');
+INSERT INTO public.home_perguntaminuta
+(id, questions, option1, corrans)
+VALUES(45, 'Qual o percentual do acréscimo ?', '.', '{{ rural_area_acrescimo_percentual }}');

@@ -1,0 +1,20 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Confirmar Exclusão</h5>
+                </div>
+                <div class="card-block">
+                    <p>Tem certeza de que deseja excluir este projeto ?</p>
+                    <form action="." method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

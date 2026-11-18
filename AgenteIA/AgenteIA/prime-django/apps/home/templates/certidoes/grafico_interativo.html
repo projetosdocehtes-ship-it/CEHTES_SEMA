@@ -1,0 +1,36 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>Gráfico Interativo - Projeto {{ projeto.nome_projeto }}</h4>
+    </div>
+    <div class="card-body">
+        {% if sem_precos %}
+        <div class="alert alert-warning">
+            <strong>Atenção:</strong> Nenhum preço real foi encontrado nos painéis solares.
+            Valores fictícios de R$1000 foram usados apenas para visualização.
+        </div>
+        {% endif %}
+
+        <div>
+            {{ grafico_html|safe }}
+        </div>
+
+        <form method="get" class="mb-3">
+            <label for="marcas">Filtrar por marca:</label>
+            <select id="marcas" name="marcas" multiple class="form-select" style="height: 150px;">
+                {% for marca in marcas_unicas %}
+                    <option value="{{ marca }}" {% if marca in marcas_selecionadas %}selected{% endif %}>
+                        {{ marca }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary btn-sm mt-2">Filtrar</button>
+        </form>
+
+    </div>
+    <div class="card-footer">
+        <a href="{% url 'home:projeto_visualizar' pk=projeto.id %}" class="btn btn-sm btn-outline-secondary">Voltar</a>
+    </div>
+</div>
+{% endblock %}

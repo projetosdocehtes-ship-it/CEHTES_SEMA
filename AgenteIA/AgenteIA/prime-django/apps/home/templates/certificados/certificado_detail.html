@@ -1,0 +1,23 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load home_formatos %}
+{% block content %}
+    <h2>Detalhes do Certificado Digital: {{ certificado.usuario.username }}</h2>
+    <p>ID: {{ certificado.id }}</p>
+    <p>Usuário: {{ certificado.usuario.username }}</p>
+    <p>
+        Arquivo do Certificado: <a href="{{ certificado.certificado.url }}">Download</a>
+    </p>
+    {% if certificado.imagem_assinatura %}
+        <p>
+            Imagem da Assinatura:
+            <img src="{{ certificado.imagem_assinatura.url }}"
+                 alt="Assinatura"
+                 height="100">
+        </p>
+    {% endif %}
+    <p>Texto da Assinatura: {{ certificado.texto_assinatura }}</p>
+    <a href="{% url 'nome_da_sua_url_para_editar_certificado' certificado.id %}">Editar</a> |
+    <a href="{% url 'nome_da_sua_url_para_certificados' %}">Voltar à lista</a>
+{% endblock %}

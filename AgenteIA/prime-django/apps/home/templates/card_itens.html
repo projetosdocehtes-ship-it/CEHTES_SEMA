@@ -1,0 +1,228 @@
+{% load home_formatos %}
+<div class="card">
+    <div class="card-header" id="card_atos_do_protocolo">
+        <h5>
+            <span class="font-weight-bold text-white">Atos do Protocolo: {{ protocolo }} - (quantidade: {{ protocolo.itens|length }}) </span>
+        </h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Ato Praticado</th>
+                    <th>Qtd</th>
+                    <th>Cobrança</th>
+                    <th>$ Avaliação</th>
+                    <th>$ Titulo</th>
+                    <th>Total Taxas</th>
+                    <th>Selo</th>
+                    {% comment %} <th>Alterado</th> {% endcomment %}
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in protocolo.itens %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <!-- Título e código do ato -->
+                            <div class="cell-content text-left">Título: {{ item.titulo.tipo_titulo }}</div>
+                            <div class="cell-content text-left">{{ item.ato.tipo_ato }}</div>
+                            {% if item.numero_registro %}
+                                <div class="cell-content">
+                                    <!-- Informações do imóvel e ato -->
+                                    <span class="font-weight-bold">
+                                        {{ item.tipo_registro|default:"" }}.
+                                        <b>{{ item.numero_registro|formatar_numero_registro_inteiro }}</b>
+                                    </span>
+                                    {% if item.numero_ato %}
+                                        <!-- Detalhes do ato -->
+                                        - {{ item.numero_ato|default:"" }}
+                                        {{ item.ato_tipo|default:"" }}
+                                        {{ item.ato_numero|default:"" }}
+                                    {% endif %}
+                                    {% if livro2.numero_ri %}
+                                        <!-- Informação adicional RI -->
+                                        <!-- - RI: {{ item.numero_ri|default:"" }} -->
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>{{ item.cdhu|numero_inteiro }}</td>
+                        <td>
+                            <div class="cell-content text-left">{{ item.ato.tipo_ato }}</div>
+                            <div class="cell-content text-left">
+                                <small>({{ item.codigo_tabela }})</small> - <small>{{ item.custas|formatar_tipo_cobranca }}</small>
+                            </div>
+                        </td>
+                        <td>{{ item.valor_itbi|formatar_moeda }}</td>
+                        <td>
+                            {% if item.valor_avaliacao > 0 %}{{ item.valor_avaliacao|formatar_moeda }}{% endif %}
+                        </td>
+                        <td data-bs-toggle="tooltip" title="Clique para ver os detalhes">
+                            <div data-bs-toggle="popover" data-html="true" data-content="
+                                <p>Emolumento: {{ item.valor_emolumento|formatar_moeda }}</p>
+                                <p>TFJ: {{ item.valor_tfj|formatar_moeda }}</p>
+                                <p>ISSQN: {{ item.issqn|formatar_moeda }}</p>
+                                <p>Recomep: {{ item.valor_fundo_estado|formatar_moeda }}</p>
+                                <p>Vigor: {{ item.vigencia_id.descricao_periodo }}</p>
+                                ">
+                                {{ item.valor_total|formatar_moeda }}  <i class="icon feather icon-chevrons-down"></i>
+                            </div>
+                        </td>
+                        <td>{{ item.pk|get_selos }}</td>
+                        {% comment %} <td>{{ item.colaborador|get_nome_colaborador_pelo_id|capitalizar }}</td> {% endcomment %}
+                        <td>
+                            {% comment %} <div class="cell-content text-left">
+                                <a href="#!" class="label bg-success text-white f-12">Alterar</a>
+                            </div>
+                            &emsp; {% endcomment %}
+                            {% comment %} <div class="cell-content text-left">
+                                <a class="btn btn-sm" href="{% url 'home:Remover_Pedido_Item' pedido_item_id=item.pk pedidos_itens_origem_id=0 %}" Remover</a>
+                            </div> {% endcomment %}
+                            <div class="cell-content text-left">
+                                <a href="#!" class="label bg-info text-black f-12">Opções</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <!-- FUNCOES DOS BOTOES DA ITEM DA TABELA -->
+        <script>
+            function Evento_Opcoes_Livro_5_Aberto() {
+                alert('evento  LIVRO 5 ABERTO funcionando')
+            }
+        </script>
+        <script>
+            function Evento_Opcoes_Livro_5() {
+                alert('evento  LIVRO 5 CANCELADOS funcionando')
+            }
+        </script>
+        <script>
+            function Evento_Opcoes_Financeiro() {
+                alert('evento Financeiro funcionando')
+            }
+        </script>
+        <script>
+            function Evento_Opcoes_Historico() {
+                alert('evento Andamento funcionando')
+            }
+        </script>
+        <script>
+            function Evento_Opcoes_Selos() {
+                alert('evento  SELOS funcionando')
+            }
+        </script>
+        <script>
+            function Evento_Opcoes_Livro_4() {
+                alert('evento  LIVRO 4 funcionando')
+            }
+        </script>
+        <script>
+            function Evento_Opcoes_Livro_2() {
+                alert('evento  LIVRO 2 funcionando')
+            }
+        </script>
+        <script>
+            function Evento_Recibo_Protocolo() {
+                alert('evento  RECIBO PROTOCOLO funcionando')
+            }
+        </script>
+        <script>
+            function Evento_get_PDF() {
+                alert('evento  BUSCAR PDF funcionando')
+            }
+        </script>
+        <script>
+            function Evento_Opcoes_Item() {
+                alert('evento  OPCOES funcionando')
+            }
+        </script>
+        <script>
+            function Evento_Excluir_Item() {
+                alert('evento EXCLUIR funcionando')
+            }
+        </script>
+        <script>
+            function Evento_Alterar_Item() {
+                alert('evento ALTERAR funcionando')
+            }
+        </script>
+        <!-- RODAPE COM OS VALORES DO PEDIDO -->
+        <table class="table">
+            <div class="card-block table-border-style">
+                <!--
+                        <ul class="nav nav-pills mb-3" id="resumo-tab" role="tablist">
+                            <li class="nav-item">
+                                    <a class="nav-link  show" id="dados-andamento-tab" data-bs-toggle="tab" href="#andamento" role="tab"  Valores Finais:</a>
+                            </li>
+                        </ul>
+                        -->
+            </div>
+            <!--
+                    <tr>
+                        <th>Emolumentos:</th>
+                        <th>Taxa Fisc. Judic.:</th>
+                        <th>ISSQN</th>
+                        <th>Recompe:</th>
+                        <th>Total:</th>
+                        <th></th>
+                        <th>Caixa:</th>
+
+                        {% if valor_diferenca > 0 %}
+                        <td style="color: red;">Diferença:</th>
+                        {% else %}
+                            <th>Diferença:</th>
+                        {% endif %}
+                    </tr>
+
+                    <tr>
+                        <b><h4>
+                        <td>{{ valor_total_emolumentos|formatar_moeda }}</td>
+                        <td>{{ valor_total_tfj|formatar_moeda }}</td>
+                        <td>{{ valor_total_issqn|formatar_moeda }}</td>
+                        <td>{{ valor_total_recompe|formatar_moeda }}</td>
+                        <td>{{ valor_total_protocolo|formatar_moeda }}</td>
+                        <td> </td>
+                        <td>{{ valor_total_caixa|formatar_moeda }}</td>
+
+                        {% if valor_diferenca > 0 %}
+                            <td style="color: red;">{{ valor_diferenca|formatar_moeda }}</td>
+                        {% else %}
+                            <td>{{ valor_diferenca|formatar_moeda }}</td>
+                        {% endif %}
+
+                        </b></h4>
+                    </tr>
+                                        -->
+        </table>
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-sm btn-primary activate text-white"
+           target="_blank"
+           href="{% url 'pedidos:atos_list_protocolo' numero_protocolo=protocolo.numero_protocolo %}"
+           title="Incluir título principal">
+            <i class="icon feather icon-plus mx-2"></i> Adicionar Item
+        </a>
+        <button type="button"
+                class="btn btn-sm btn-outline-secondary"
+                title="Visualizar apenas os detalhes da cobrança com maiores destaque">
+            <i class="icon feather icon-info"></i> Visualizar Detalhes
+        </button>
+        <a href="#protocolo_detail"
+           class="btn btn-sm btn-outline-warning text-dark "
+           title="Clique para voltar ao topo da página"
+           type="button"
+           data-bs-toggle="tooltip"
+           data-placement="top"><i class="icon feather icon-corner-left-up"></i>Voltar
+        </a>
+        <a href="#selos"
+           class="btn btn-sm btn-outline-primary text-dark "
+           title="Próximo ítem"
+           type="button"
+           data-bs-toggle="tooltip"
+           data-placement="top"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+    </div>
+</div>

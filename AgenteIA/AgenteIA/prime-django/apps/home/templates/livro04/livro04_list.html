@@ -1,0 +1,93 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% load django_tables2 %}
+{% block title %}
+    Livro 04 - Cadastro Real (Imóveis)
+{% endblock title %}
+{% block breadcrumbs %}
+    {% load replace_value %}
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Livro 04 - Cadastro Real (Imóveis)</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ javascript }}">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ javascript }}">Livros</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ javascript }}">Livro 04</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ javascript }}">Listagem de Imóveis</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Livro 04 - Cadastro Real (Imóveis)</h5>
+                </div>
+                <div class="card-body">
+                    {% if filter %}
+                        <div class="row">
+                            <form class="d-flex flex-row flex-wrap align-items-center" method="get">
+                                {% for field in filter.form %}<div class="p-2">{{ field|as_crispy_field }}</div>{% endfor %}
+                                <div class="p-2">
+                                    <button type="submit" class="btn  btn-primary mt-3">Filtrar</button>
+                                    <a href="{% url 'home:livro02_list' %}" class="btn  btn-danger mt-3">Limpar</a>
+                                    <button type="submit"
+                                            name="export"
+                                            value="excel"
+                                            class="btn  btn-success mt-3 text-dark">
+                                        <i class="fa-solid fa-file-export"></i> Exportar para Excel
+                                    </button>
+                                    <a class="btn  btn-primary text-white mt-3 dropdown-toggle"
+                                       type="button"
+                                       id="dropdownNumero"
+                                       data-bs-toggle="dropdown"
+                                       aria-haspopup="true"
+                                       aria-expanded="false"><i class="icon feather icon-settings"></i> Opções </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownNumero">
+                                        <!-- Imagem Option -->
+                                        <a class="dropdown-item" href="#">
+                                            <i class="icon feather icon-image"></i>&emsp;Exibir os números faltantes
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="icon feather icon-image"></i>&emsp;Pesquisar somente urbano
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="icon feather icon-image"></i>&emsp;Pesquisar somente rural
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    {% endif %}
+                    {% render_table table %}
+                </div>
+                <div class="card-footer">
+                    <p>Total: {{ table.count_records }} Registros</p>
+                    {% for key, botao in botoes.items %}
+                        <a href="{{ botao.url }}" class="btn  btn-primary">{{ botao.label }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

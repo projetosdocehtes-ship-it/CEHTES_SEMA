@@ -1,0 +1,641 @@
+update public.home_atos set exibir = 'S' where exibir is null
+
+
+--INSERT INTO home_tipologradouro (id, descricao)                 VALUES (0, '');
+--INSERT INTO home_tipologradouro (id, descricao)                 VALUES (1, 'Rua');
+--INSERT INTO home_tipologradouro (id, descricao)                 VALUES (2, 'Avenida');
+--INSERT INTO home_tipologradouro (id, descricao)                 VALUES (3, 'Travessa');
+--INSERT INTO home_tipologradouro (id, descricao)                 VALUES (4, 'Praça');
+--INSERT INTO home_tipologradouro (id, descricao)                 VALUES (5, 'Rodovia');
+--INSERT INTO home_tipologradouro (id, descricao)                 VALUES (6, 'Corredor');
+--INSERT INTO home_tipologradouro (id, descricao)                 VALUES (7, 'Via');
+--INSERT INTO home_tipologradouro (id, descricao)                 VALUES (8, 'Penetração');
+--INSERT INTO home_tipologradouro (id, descricao)                 VALUES (9, 'Alameda');
+
+
+
+--INSERT INTO home_tipologradouro (id, descricao)                 VALUES (0, '');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (1, 'Acampamento');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (2, 'Acesso');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (3, 'Açude');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (4, 'Adro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (5, 'Aeroporto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (6, 'Afluente');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (7, 'Aglomerado');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (8, 'Agrovila');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (9, 'Alagado');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (10, 'Alameda');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (11, 'Aldeia');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (12, 'Aleia');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (13, 'Alto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (14, 'Anel');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (15, 'Antiga');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (16, 'Antigo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (17, 'Área');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (18, 'Areal');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (19, 'Arraial');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (20, 'Arroio');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (21, 'Artéria');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (22, 'Assentamento');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (23, 'Atalho');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (24, 'Aterro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (25, 'Autódromo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (26, 'Avenida');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (27, 'Baia');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (28, 'Bairro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (29, 'Baixa');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (30, 'Baixada');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (31, 'Baixadão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (32, 'Baixão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (33, 'Baixo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (34, 'Balão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (35, 'Balneário');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (36, 'Barra');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (37, 'Barragem');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (38, 'Barranca');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (39, 'Barranco');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (40, 'Barreiro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (41, 'Barro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (42, 'Beco');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (43, 'Beira');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (44, 'Beirada');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (45, 'Belvedere');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (46, 'Bloco');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (47, 'Bocaina');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (48, 'Boqueirão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (49, 'Bosque');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (50, 'Boulevard');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (51, 'Brejo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (52, 'Buraco');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (53, 'Cabeceira');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (54, 'Cachoeira');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (55, 'Cachoeirinha');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (56, 'Cais');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (57, 'Calcada');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (58, 'Calçadão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (59, 'Caminho');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (60, 'Campo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (61, 'Canal');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (62, 'Canteiro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (63, 'Capão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (64, 'Capoeira');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (65, 'Cartódromo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (66, 'Central');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (67, 'Centro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (68, 'Cerca');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (69, 'Cerrado');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (70, 'Cerro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (71, 'Chácara');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (72, 'Chapada');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (73, 'Chapadão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (74, 'Charco');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (75, 'Cidade');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (76, 'Circular');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (77, 'Cohab');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (78, 'Colina');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (79, 'Colônia');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (80, 'Comunidade');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (81, 'Condomínio');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (82, 'Conjunto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (83, 'Continuação');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (84, 'Contorno');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (85, 'Corredor');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (86, 'Córrego');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (87, 'Costa');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (88, 'Coxilha');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (89, 'Cruzamento');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (90, 'Descida');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (91, 'Desvio');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (92, 'Dique');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (93, 'Distrito');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (94, 'Divisa');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (95, 'Divisão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (96, 'Divisor');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (97, 'Edifício');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (98, 'Eixo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (99, 'Elevado');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (100, 'Encosta');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (101, 'Engenho');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (102, 'Enseada');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (103, 'Entrada');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (104, 'Entreposto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (105, 'Entroncamento');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (106, 'Escada');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (107, 'Escadão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (108, 'Escadaria');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (109, 'Escadinha');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (110, 'Espigão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (111, 'Esplanada');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (112, 'Esquina');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (113, 'Estação');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (114, 'Estacionamento');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (115, 'Estádio');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (116, 'Estância');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (117, 'Estrada');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (118, 'Extensão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (119, 'Faixa');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (120, 'Favela');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (121, 'Fazenda');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (122, 'Feira');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (123, 'Ferrovia');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (124, 'Final');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (125, 'Floresta');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (126, 'Folha');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (127, 'Fonte');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (128, 'Fortaleza');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (129, 'Freguesia');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (130, 'Fundos');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (131, 'Furo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (132, 'Galeria');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (133, 'Gameleira');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (134, 'Garimpo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (135, 'Gleba');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (136, 'Granja');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (137, 'Grota');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (138, 'Habitacional');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (139, 'Haras');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (140, 'Hipódromo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (141, 'Horto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (142, 'Igarapé');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (143, 'Ilha');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (144, 'Inaplicável');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (145, 'Invasão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (146, 'Jardim');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (147, 'Jardinete');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (148, 'Ladeira');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (149, 'Lado');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (150, 'Lago');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (151, 'Lagoa');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (152, 'Lagoinha');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (153, 'Largo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (154, 'Lateral');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (155, 'Leito');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (156, 'Ligação');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (157, 'Limeira');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (158, 'Limite');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (159, 'Limites');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (160, 'Linha');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (161, 'Lote');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (162, 'Loteamento');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (163, 'Lugarejo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (164, 'Maloca');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (165, 'Manancial');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (166, 'Mangue');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (167, 'Margem');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (168, 'Margens');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (169, 'Marginal');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (170, 'Marina');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (171, 'Mata');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (172, 'Mato');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (173, 'Módulo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (174, 'Monte');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (175, 'Morro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (176, 'Muro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (177, 'Não Especificado');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (178, 'Núcleo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (179, 'Oca');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (180, 'Oleoduto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (181, 'Olho');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (182, 'Olhos');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (183, 'Orla');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (184, 'Outros');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (185, 'Paco');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (186, 'Palafita');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (187, 'Pântano');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (188, 'Parada');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (189, 'Paradouro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (190, 'Paralela');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (191, 'Parque');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (192, 'Particular');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (193, 'Passagem');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (194, 'Passarela');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (195, 'Passeio');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (196, 'Passo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (197, 'Pasto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (198, 'Pátio');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (199, 'Pavilhão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (200, 'Pedra');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (201, 'Pedras');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (202, 'Pedreira');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (203, 'Penhasco');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (204, 'Perimetral');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (205, 'Perímetro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (206, 'Perto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (207, 'Planalto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (208, 'Plataforma');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (209, 'Ponta');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (210, 'Ponte');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (211, 'Ponto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (212, 'Porto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (213, 'Posto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (214, 'Povoado');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (215, 'Praça');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (216, 'Praia');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (217, 'Projeção');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (218, 'Projetada');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (219, 'Projeto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (220, 'Prolongamento');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (221, 'Propriedade');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (222, 'Próximo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (223, 'Quadra');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (224, 'Quarteirão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (225, 'Quilombo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (226, 'Quilometro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (227, 'Quinta');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (228, 'Quintas');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (229, 'Rachão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (230, 'Ramal');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (231, 'Rampa');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (232, 'Rancho');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (233, 'Recanto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (234, 'Região');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (235, 'Represa');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (236, 'Residencial');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (237, 'Reta');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (238, 'Retiro');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (239, 'Retorno');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (240, 'Riacho');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (241, 'Ribanceira');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (242, 'Ribeirão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (243, 'Rincão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (244, 'Rio');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (245, 'Rocha');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (246, 'Rochedo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (247, 'Rodovia');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (248, 'Rotatória');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (249, 'Rotula');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (250, 'Rua');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (251, 'Ruela');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (252, 'Saco');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (253, 'Saída');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (254, 'Sanga');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (255, 'Sede');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (256, 'Sem');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (257, 'Seringal');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (258, 'Serra');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (259, 'Sertão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (260, 'Servidão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (261, 'Seta');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (262, 'Setor');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (263, 'Sitio');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (264, 'Sopé');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (265, 'Subida');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (266, 'Superquadra');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (267, 'Tapera');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (268, 'Terminal');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (269, 'Terra');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (270, 'Terreno');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (271, 'Terrenos');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (272, 'Transversal');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (273, 'Travessa');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (274, 'Travessão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (275, 'Travessia');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (276, 'Trecho');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (277, 'Trevo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (278, 'Trilha');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (279, 'Trilho');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (280, 'Trilhos');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (281, 'Trincheira');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (282, 'Túnel');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (283, 'Unidade');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (284, 'Usina');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (285, 'Vala');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (286, 'Valão');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (287, 'Vale');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (288, 'Vargem');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (289, 'Variante');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (290, 'Várzea');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (291, 'Velódromo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (292, 'Vereda');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (293, 'Vertente');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (294, 'Via');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (295, 'Viaduto');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (296, 'Vicinal');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (297, 'Viela');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (298, 'Vila');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (299, 'Vilarejo');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (300, 'Volta');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (301, 'Zona');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (302, '1a Travessa da Avenida');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (303, '1a Travessa da Rua');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (304, '2a Travessa da Avenida');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (305, '2a Travessa da Rua');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (306, '3a Travessa da Avenida');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (307, '3a Travessa da Rua');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (308, '4a Travessa da Avenida');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (309, '4a Travessa da Rua');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (310, '5a Travessa da Avenida');
+INSERT INTO home_tipologradouro (id, descricao)
+                          VALUES (311, '5a Travessa da Rua');
+
+COMMIT WORK;

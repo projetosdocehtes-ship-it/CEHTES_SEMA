@@ -1,0 +1,16 @@
+SELECT '' AS NUMERO,
+       D.data AS DATA,
+       SUM(d.valor) AS valor,
+       D.LANCAMENTO AS LANCAMENTO,
+       '' AS SELO,
+       '' AS CODIGO,
+       D.data AS DATA_INICIO,
+       '' AS ITEM,
+       '' AS ORDEM
+FROM   DEPOSITO_PREVIO D
+
+WHERE  D.data >= :DATA_INICIO
+AND    D.data <= :DATA_FIM
+
+GROUP BY D.lancamento, D.data
+ORDER BY D.data, D.lancamento

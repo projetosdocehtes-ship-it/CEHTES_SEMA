@@ -1,0 +1,67 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% load humanize %}
+{% block title %}Base de Conhecimento de Protocolos{% endblock %}
+{% block content %}
+    <div class="card" id="itens_minutas">
+        <div class="card-header">
+            <h5>Modelos de Minutas - {{ descricao_ato }}: {{ total_minutas }}</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered dataTable no-footer">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Descrição da Minuta</th>
+                        <th>Observações</th>
+                        <th>Prévia</th>
+                        <th>Opcões</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for minuta in minutas %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ minuta.minuta.titulo }}</td>
+                            <td style="width: 20px;  word-wrap: break-word; white-space: normal;">{{ minuta.minuta.subtitulo }}</td>
+                            <td>
+                                <a href="{% url 'minutas_atos:modelo_exibir_minuta' modelo_id=minuta.minuta.pk pedido_item_id=pedido_item_id %}"
+                                   target="_blank"
+                                   class="btn btn-sm btn-primary activate"
+                                   title="Exibe uma prévia do texto usando a minuta selecionada.">
+                                    <i class="icon feather icon-eye"></i> Visualizar</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'minutas_atos:editar_minuta_ato' pk=minuta.minuta.pk %}"
+                                   target="_blank"
+                                   class="btn btn-sm btn-success text-dark"
+                                   title="Alterar os dados da MINUTA DE TEXTO.">
+                                    <i class="icon feather icon-edit"></i>Modelo</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-sm btn-primary"
+               href="{% url 'minutas_atos:adicionar_minuta_ato' %}"
+               target="_blank">
+                <i class="icon feather icon-plus"></i>Adicionar</a>
+            <a class="btn btn-sm btn-secondary text-white"
+               href="{% url 'minutas_atos:vincular_minuta_ato' pk=ato_id %}"
+               target="_blank">
+                <i class="icon feather icon-check"></i>Vincular</a>
+            <a class="btn btn-sm btn-secondary text-white"
+               title="Atualizar a página para visualizar os dados alterados."
+               data-bs-toggle="tooltip"
+               onclick="window.location.reload()"><i class="icon feather icon-refresh-cw"></i>Atualizar</a>
+            <a class="btn btn-sm btn-outline-warning text-dark"
+               title="Voltar para a página anterior sem alterar os dados."
+               data-bs-toggle="tooltip"
+               onclick="window.history.back();"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,37 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    {% load humanize %}
+    <h1>Protocolo {{ protocolo.numero_protocolo }}</h1>
+    <p>
+        <strong>Número de Ordem:</strong> {{ protocolo.numero_protocolo }}
+    </p>
+    <p>
+        <strong>Data do Protocolo:</strong> {{ protocolo.data_protocolo }}
+    </p>
+    <p>
+        <strong>Observação:</strong> {{ protocolo.observacao }}
+    </p>
+    <p>
+        <strong>Status:</strong> {{ protocolo.status }}
+    </p>
+    <!-- Outras informações relevantes -->
+    <p>
+        <strong>Número de Origem:</strong> {{ protocolo.numero_origem }}
+    </p>
+    <p>
+        <strong>Origem do Pedido:</strong> {{ protocolo.origem_pedido }}
+    </p>
+    <p>
+        <strong>Data de Distribuição:</strong> {{ protocolo.data_distribuicao }}
+    </p>
+    <p>
+        <strong>Data Finalizado:</strong> {{ protocolo.data_finalizado }}
+    </p>
+    <p>
+        <strong>Data de Reentrada:</strong> {{ protocolo.data_reentrada }}
+    </p>
+    <!-- Link para voltar à lista de protocolos -->
+    <a href="{% url 'home:lista_protocolos' %}">Voltar para a lista de protocolos</a>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load home_formatos %}
+{% load barcode_filters %}
+{% load static %}
+<div class="recibo-header borda">
+    <div class="logo-container">
+        <img src="{% static 'assets/images/icons/brasao-republica-color-min.svg' width='100' height='auto' %}"
+             alt="Logo"
+             class="logo-img">
+    </div>
+    <div class="header-central">
+        <h1>{{ user.cartorio.nome }}</h1>
+        <p>{{ user.cartorio.endereco }}</p>
+        <p>Fone: {{ user.cartorio.telefones }} | email: {{ user.cartorio.email }}</p>
+        <p>{{ user.cartorio.site|default:"" }}</p>
+        <p>
+            {{ user.cartorio.responsavel.funcao.titulo|default:"Oficial/Registrador(a) " }}: {{ user.cartorio.responsavel.nome_completo }}
+        </p>
+    </div>
+    <div class="barcode-container">
+        <img class="barcode-img"
+             src="{{ object.numero_pedido|gerar_codigo_barras }}"
+             alt="Código de Barras">
+    </div>
+</div>

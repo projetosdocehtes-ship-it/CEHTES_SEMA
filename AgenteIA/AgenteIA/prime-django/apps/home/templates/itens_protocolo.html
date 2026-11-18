@@ -1,0 +1,62 @@
+"""
+##
+TEMPLATE MIGRADA PARA protocolo/protocolo_detail.html
+##
+"""
+{% comment %} {% extends "layouts/base.html" %}
+{% load static formatos %}
+{% block breadcrumbs %}
+    {% comment %} {% load replace_value %}
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Detalhes do Protocolo {{ protocolo }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Protocolo e Exames</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            {% if protocolo %}
+                                <a href="#">Detalhes</a>
+                            {% else %}
+                                <a href="#">Buscar Protocolo</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+</div> {% endcomment %}
+{% endblock breadcrumbs %}
+{% block content %}
+    {% include "card_busca_protocolo.html" %}
+    {% if protocolo %}
+        {% include "card_protocolo_detail.html" %}
+        {% include "card_apresentante.html" %}
+        {% include "card_titulo_principal.html" %}
+        {% include "card_adquirentes.html" %}
+        {% include "card_itens.html" %}
+        {% include "card_selos.html" %}
+        {% include "card_andamentos_list.html" %}
+        {% include "card_caixa.html" %}
+        {% include "card_livro02.html" %}
+        {% include "card_livro03.html" %}
+{% comment %} {% include "card_imagens.html" %} {% endcomment %}
+        {% include "card_indisponibilidade.html" %}
+        {% include "card_contraditorio.html" %}
+{% comment %} {% include "card_pendencias.html" %} {% endcomment %}
+{% comment %} {% include "card_imagens_nota_devolucao.html" %} {% endcomment %}
+    {% else %}
+        <h6>Não identificamos nenhum protocolo correspondente ao número fornecido.</h6>
+    {% endif %}
+{% endblock content %}
+{% endcomment %}

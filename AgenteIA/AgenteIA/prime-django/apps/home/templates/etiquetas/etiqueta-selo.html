@@ -1,0 +1,51 @@
+{% load static %}
+{% if object.numero_protocolo_firebird %}
+    {% load pedidos_formatos %}
+    {% load barcode_filters %}
+    <div class="card-etiqueta">
+        <div class="card-header">
+            <b>Projeto CEHTES - <strong>Protocolo nº {{ object.numero_protocolo_firebird|formatar_numero_registro|default:"000.000" }} de {{ object.data_entrada|date:"d/m/y" }} </strong><b>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>
+                            <strong>Poder Judiciário – TJMG</strong>
+                        </p>
+                        <p>
+                            Selo nº {{ object.numero_selo_firebird|default:"000000" }} |
+                            Cód. Seg. {{ object.codigo_seguranca_firebird_formatado }}
+                        </p>
+                        <p>Quantidade de atos praticados: {{ atos_agrupados.items|length }}</p>
+                        <p>
+                            Emol: {{ object.total_emolumentos_pedido_de_protocolo|formatar_moeda:False }} ISSQN: {{ object.total_issqn_pedido_de_protocolo|formatar_moeda:False }} RECOMPE: {{ object.total_fundo1_pedido_de_protocolo|formatar_moeda:False }} TJF: {{ object.total_taxa_fiscal_judiciaria_pedido|formatar_moeda:False }}
+                        </p>
+                        <p>Total: {{ object.total_pedido_de_protocolo|formatar_moeda:False }}</p>
+                        <p>
+                            Consulte este selo em: <a href="https://selos.tjmg.jus.br">https://selos.tjmg.jus.br</a>
+                        </p>
+                        <p>{{ user.cartorio.responsavel.nome_completo }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <img class="barcode-img"
+                             height="80%"
+                             width="80%"
+                             src="{{ object.url_selo_digital_mg|gerar_qr_code }}"
+                             alt="QR Code">
+                    </div>
+                </div>
+                {% if user.cartorio.responsavel.imagem_assinatura %}
+                    <img src="{{ user.cartorio.responsavel.imagem_assinatura.url }}"
+                         alt="Rubrica Digitalizada"
+                         class="rubrica-img">
+                {% else %}
+                    {% comment %} <img src="{% static 'assets/images/assinatura_generica_2.png' %}"
+      alt="Rubrica Digitalizada"
+      class="rubrica-img"> {% endcomment %}
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                {% comment %} <p>Oficila: ____________________________</p> {% endcomment %}
+            </div>
+        </div>
+    {% endif %}

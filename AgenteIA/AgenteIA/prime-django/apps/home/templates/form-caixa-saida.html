@@ -1,0 +1,205 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    <form class="form" action="." method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="card_distribuir_protocolo_numero">
+                    <div class="card-header">
+                        <h5>
+                            <span class="text-white">{{ caption }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="data_lancamento">
+                                        <b>Data Inicial:</b>
+                                    </label>
+                                    <input type="date" class="form-control" placeholder="digite a data do protocolo" name="data_lancamento" id="data_lancamento" value={{ data_lancamento }} autofocus required>
+                                </div>
+                                <!-- Tipo de Ato do Protocolo -->
+                                <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Valor:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="valor_lancado"
+                                           id="valor_lancado"
+                                           type="number"
+                                           step="0.01"
+                                           title="Por favor, insira um valor monetário válido."
+                                           value="{{ valor }}">
+                                </div>
+                                <div class="col-md-8">
+                                    <label>
+                                        <b>Descrição:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="descricao_id"
+                                           id="descricao_id"
+                                           type="text"
+                                           title="Por favor, insira a descrição."
+                                           value=""
+                                           required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>
+                                        <b>Categoria:</b>
+                                    </label>
+                                    <select class="form-select"
+                                            name="tipocategoria_id"
+                                            id="tipocategoria_id"
+                                            required>
+                                        <option value=1>Geral</option>
+                                        {% for tipocategoria in tipocategorias %}
+                                            <option value={{ tipocategoria.pk }}>{{ tipocategoria }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Número</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="protocolo_id"
+                                           id="protocolo_id"
+                                           type="number"
+                                           title="Por favor, insira o número de protocolo ou pedido de certidão."
+                                           value="0">
+                                </div>
+                                {% comment %} <div class="col-md-2">
+                                    <label>
+                                        <b>Transação Financeira:</b>
+                                    </label>
+                                    <select class="form-select" name="tipo_transacao_financeira_id" id="tipo_transacao_financeira_id" required>
+                                        <option value=1>Receita</option>
+                                        {% for tipo_transacao in tipo_transacao_financeira %}
+                                            <option value={{ tipo_transacao.pk }}>{{ tipo_transacao }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div> {% endcomment %}
+                                <div class="col-md-4">
+                                    <label>
+                                        <b>Operação de Pagamento:</b>
+                                    </label>
+                                    <select class="form-select"
+                                            name="tipooperacaofinanceira_id"
+                                            id="tipooperacaofinanceira_id"
+                                            required>
+                                        <option value=1>Dinheiro</option>
+                                        {% for tipooperacaofinanceira in tipooperacaofinanceiras %}
+                                            <option value={{ tipooperacaofinanceira.pk }}>{{ tipooperacaofinanceira }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="data_original_transacao">
+                                        <b>Data de Pagamento Inicial:</b>
+                                    </label>
+                                    <input type="date" class="form-control" placeholder="digite a data do pagamento" name="data_original_transacao" id="data_original_transacao" value={{ data_original_transacao }}>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="colaborador_id">
+                                        <b>Confirmado:</b>
+                                    </label>
+                                    <select class="form-select"
+                                            name="colaborador_id"
+                                            id="colaborador_id"
+                                            required>
+                                        <option value="N" selected>Não</option>
+                                        <option value="N">Não</option>
+                                        <option value="S">Sim</option>
+                                    </select>
+                                </div>
+                                {% comment %} <div class="col-md-1">
+                                    <label for="dadp_id">
+                                        <b>DADP:</b>
+                                    </label>
+                                    <select class="form-select" name="dadp_id" id="dadp_id" required>
+                                        <option value="N" selected>Não</option>
+                                        <option value="N">Não</option>
+                                        <option value="S">Sim</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="imposto_renda_id">
+                                        <b>Imposto de Renda:</b>
+                                    </label>
+                                    <select class="form-select" name="imposto_renda_id" id="imposto_renda_id" required>
+                                        <option value="N" selected>Não</option>
+                                        <option value="N">Não</option>
+                                        <option value="S">Sim</option>
+                                    </select>
+                                </div> {% endcomment %}
+                            </div>
+                        </div>
+                        <!-- Tipo de Ato do Protocolo -->
+                        <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                        <!-- Tipo de Ato do Protocolo -->
+                        <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                        <div class="form-group">
+                            <div class="row">
+                                <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Repetir:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="quantidade_id"
+                                           id="quantidade_id"
+                                           type="number"
+                                           title="Por favor, insira a quantidade de vezes que deseja repetir o lançamento."
+                                           value="1">
+                                </div>
+                                <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Recorrência:</b>
+                                    </label>
+                                    <select class="form-select"
+                                            name="recorrencia_id"
+                                            id="recorrencia_id"
+                                            required>
+                                        <option value=1>Única</option>
+                                        {% for financeiro_repetir_lancamento in financeiro_repetir_lancamentos %}
+                                            <option value={{ financeiro_repetir_lancamento.pk }}>{{ financeiro_repetir_lancamento }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <!-- Voltar Button -->
+                        <a onclick="window.history.back()"
+                           class="btn btn-secondary text-white "
+                           title="Retornar ao topo"
+                           type="button"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-arrow-left"></i>Voltar</a>
+                        <button type="submit"
+                                class="btn btn-warning text-dark"
+                                aria-pressed="true"
+                                role="button">
+                            <i class="fas fa-angle-double-up"></i> Confirmar Saída
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

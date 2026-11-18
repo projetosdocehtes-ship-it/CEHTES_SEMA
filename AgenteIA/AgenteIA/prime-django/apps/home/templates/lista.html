@@ -1,0 +1,29 @@
+<!-- Primeiro, carregamos nosso filtro, logo após o extends -->
+...
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                <!-- Retiramos o "ID" aqui -->
+            </th>
+            <th>Nome</th>
+            <th>Sobrenome</th>
+            <th>Tempo de Serviço</th>
+            <th>Remuneração</th>
+            <th class="text-center">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for f in funcionarios %}
+            <tr>
+                <!-- Aplicamos nosso filtro no atributo funcionario.nome -->
+                <td>{{ f.nome }}</td>
+                <td>{{ f.nome }}</td>
+                <td>{{ f.sobrenome }}</td>
+                <td>{{ f.tempo_de_servico }}</td>
+                <td>{{ f.remuneracao }}</td>
+                <td class="text-center"></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

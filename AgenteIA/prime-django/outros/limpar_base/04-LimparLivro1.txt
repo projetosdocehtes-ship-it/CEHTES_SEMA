@@ -1,0 +1,16 @@
+    DELETE from home_fase_agenda_itens;
+    DELETE from home_fase_agenda_itens_andamentos;
+    DELETE from home_fase_agenda ;
+    DELETE from home_pedidoparte ;
+    DELETE from pedido_item ;
+    DELETE from home_financeiro;
+    DELETE from home_pedidos_partes_ato;
+    DELETE FROM home_livro01andamento;
+    DELETE FROM home_checklist_realizado;
+    DELETE FROM home_selos;
+    DELETE FROM home_livro01andamento;
+    DELETE FROM home_livro01protocolo;
+    DELETE FROM home_pedidos;
+    DELETE FROM home_pedidos;
+    DELETE FROM home_eventmember ;
+    DELETE FROM home_event;

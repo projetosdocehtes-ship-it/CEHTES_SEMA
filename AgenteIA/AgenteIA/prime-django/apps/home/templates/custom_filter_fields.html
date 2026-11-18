@@ -1,0 +1,2 @@
+{% load crispy_forms_tags %}
+{% for subfield in field %}<div class="p-2">{{ subfield|as_crispy_field }}</div>{% endfor %}

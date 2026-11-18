@@ -1,0 +1,88 @@
+<!-- CARD IMOVEIS INICIO -->
+{% load home_formatos %}
+<div class="card" id="checklist_imovel">
+    <div class="card-header">
+        <h5>3 - Imóvel Rural</h5>
+    </div>
+    <div class="card-body table-reponsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome da Fazenda</th>
+                    <th>Característica</th>
+                    <th>Aréa Fazenda</th>
+                    <th>Município</th>
+                    <th>Descrição Rural</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            {% for partes_imovel in partes_imovel_rural %}
+                <tbody>
+                    <tr>
+                        <th>{{ partes_imovel.nome_fazenda|default:"" }}</th>
+                        <th>{{ partes_imovel.caracteristica_fazenda|default:"" }}</th>
+                        <th>{{ partes_imovel.area_fazenda|default:"" }}</th>
+                        <th>{{ partes_imovel.municipio|default:"" }}</th>
+                        <th>
+                            <div class="cell-content">
+                                <strong>NIRF:</strong> {{ partes_imovel.numero_nirf|default:"" }}
+                            </div>
+                            <div class="cell-content">
+                                <strong>CCIRR:</strong> {{ partes_imovel.numero_ccirr|default:"" }}
+                            </div>
+                            <div class="cell-content">
+                                <strong>CAR:</strong> {{ partes_imovel.numero_car|default:"" }}
+                            </div>
+                            <div class="cell-content">
+                                <strong>INCRA:</strong> {{ partes_imovel.numero_incra|default:"" }}
+                            </div>
+                            <div class="cell-content">
+                                <strong>Georeferenciado:</strong> {{ partes_imovel.georefenciada|formatar_sim_nao }}
+                            </div>
+                            <div class="cell-content">
+                                <strong>Reserva Legal:</strong> {{ partes_imovel.reserva_legal|formatar_sim_nao }}
+                            </div>
+                        </th>
+                        <!-- Alterar os dados do Endereço selecionado -->
+                        <th>
+                            <div class="cell-content">{% include 'editmodalAtoEnderecoRural.html' %}</div>
+                            <div class="cell-content"></div>
+                            <div class="cell-content">{% include 'desvincularModalPessoaEnderecoRural.html' %}</div>
+                        </th>
+                        <!-- DESVINCULAR endereço -->
+                    </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="card-footer">
+        <button type="button"
+                class="btn btn-sm btn-primary text-dark "
+                data-bs-toggle="modal"
+                data-bs-target="#addCheckListEnderecoRuralModal"
+                title="Cadastrar Endereco da Escritura">Novo Endereço Rural</button>
+        <!-- Alterar os dados do Transmitente selecionado -->
+        {% include 'updateEnderecoCheckListRural.html' %}
+        <!-- COMPARATIVO -->
+        <a class="btn btn-sm text-white "
+           style="background-color: #ac2bac"
+           href="{% url 'home:checklist_imovel' id=pedido_item_id %}"
+           aria-pressed="true"
+           role="button">
+            <i class="fas fa-chart-bar"></i> Comparativo Rural
+        </a>
+        <div class="btn-group mb-2 mr-2">
+            <a href="#checklist_transmitenteadquirente"
+               class="btn btn-sm btn-warning text-dark "
+               title="Ítem anterior"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i> Voltar </a>
+            <a href="#card_checklist_minuta"
+               class="btn btn-sm btn-primary text-dark "
+               title="Próximo ítem"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i> Próximo </a>
+        </div>
+    </div>
+</div>
+<!-- CARD IMOVEIS FIM -->

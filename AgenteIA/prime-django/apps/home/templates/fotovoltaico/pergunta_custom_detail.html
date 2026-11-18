@@ -1,0 +1,18 @@
+{% extends "fotovoltaico/base.html" %}
+{% block title %}{{ pergunta.titulo }}{% endblock %}
+{% block content %}
+
+<h5 class="alert alert-warning"><b>{{ pergunta.titulo }}</b></h5>
+<p class="text-muted"><b>{{ pergunta.descricao }}</b></p>
+<hr>
+
+<div class="alert alert-info">
+  <b>{{ rendered|linebreaksbr|safe }}</b>
+</div>
+
+<div class="card-footer">
+  <!-- Botão para voltar para a página anterior -->
+  <a href="javascript:history.back()" class="btn btn-sm btn-secondary">⬅️ Voltar</a>
+</div>
+
+{% endblock %}

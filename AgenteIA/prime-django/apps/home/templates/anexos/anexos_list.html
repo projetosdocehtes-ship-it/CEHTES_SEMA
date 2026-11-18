@@ -1,0 +1,100 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">{% include "anexos/anexos_list_include.html" %}</div>
+        <div class="col-lg-6">
+            <button class="btn btn-primary btn-sm" onclick="imprimirImagens()">Imprimir</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Imagens do Protocolo {{ protocolo }}</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <p>Total de Imagens: {{ urls_dos_anexos_da_rede|length }}</p>
+                {% for imagem_url in urls_dos_anexos_da_rede %}
+                    <div class="col-md-3">
+                        <div class="thumbnail mb-4">
+                            <div class="thumb">
+                                <a href="{{ imagem_url }}"
+                                   data-lightbox="image-{{ forloop.counter }}"
+                                   data-title="Imagem {{ forloop.counter }}">
+                                    <img src="{{ imagem_url }}"
+                                         class="img-fluid img-thumbnail m-b-10"
+                                         alt="Imagem {{ forloop.counter }}"
+                                         style="width: 100%;
+                                                height: auto">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="col-lg-6">
+                <a href="{% url 'home:protocolo_detail' protocolo.pk %}"
+                   class="btn btn-sm btn-secondary">Voltar ao Protocolo</a>
+                <button class="btn btn-primary btn-sm" onclick="imprimirImagens()">Imprimir</button>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <script>
+        var lightboxModal = new bootstrap.Modal(document.getElementById('lightboxModal'));
+        var elem = document.querySelectorAll("[data-lightbox]");
+        for (var j = 0; j < elem.length; j++) {
+            elem[j].addEventListener('click', function() {
+                var imagespath = event.target;
+                if (imagespath.tagName == "IMG") {
+                    imagespath = imagespath.parentNode;
+                }
+                var recipient = imagespath.getAttribute('data-lightbox');
+                var image = document.querySelector('.modal-image');
+                image.setAttribute('src', recipient);
+                image.style.width = '100%'; // Adiciona um estilo inline para forçar a imagem a ter 100% de largura
+                lightboxModal.show();
+            });
+        }
+
+        function removeClassByPrefix(node, prefix) {
+            for (let i = 0; i < node.classList.length; i++) {
+                let value = node.classList[i];
+                if (value.startsWith(prefix)) {
+                    node.classList.remove(value);
+                }
+            }
+        }
+    </script>
+    <script>
+        function imprimirImagens() {
+                  // Cria uma nova janela
+            var win = window.open('', '_blank');
+
+                  // Obtém as imagens dentro dos cards
+            var imagens = document.querySelectorAll('div.card img');
+
+                  // Para cada imagem
+            for (var i = 0; i < imagens.length; i++) {
+                       // Cria uma nova imagem na nova janela
+                var img = win.document.createElement('img');
+                img.src = imagens[i].src;
+
+                       // Define a largura da imagem para 100%
+                img.style.width = '100%';
+
+                       // Adiciona a imagem à nova janela
+                win.document.body.appendChild(img);
+
+                       // Adiciona uma quebra de linha após cada imagem
+                win.document.body.appendChild(win.document.createElement('br'));
+            }
+
+                  // Imprime a nova janela
+            win.print();
+        }
+    </script>
+{% endblock javascripts %}

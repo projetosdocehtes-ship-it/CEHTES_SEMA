@@ -1,0 +1,225 @@
+# apps/Equipamentos/fotovoltaico.py
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass
+from pathlib import Path
+
+import numpy as np
+
+
+def carregar_painel_de_json(path: str | Path):
+    path = Path(path)
+    with path.open(encoding="utf-8") as f:
+        d = json.load(f)
+
+    return PainelFotovoltaico(
+        fabricante=d["fabricante"],
+        modelo=d["modelo"],
+        Pmp=float(d["Pmp"]),
+        Isc=float(d["Isc"]),
+        Voc=float(d["Voc"]),
+        Imp=float(d["Imp"]),
+        Vmp=float(d["Vmp"]),
+        Uisc=float(d["Uisc"]),
+        Uvoc=float(d["Uvoc"]),
+        Upmp=float(d["Upmp"]),
+        material=d["material"],
+        eficiencia=float(d["eficiencia"]),
+    )
+
+
+@dataclass
+class PainelFotovoltaico:
+    fabricante: str
+    modelo: str
+    Pmp: float
+    Isc: float
+    Voc: float
+    Imp: float
+    Vmp: float
+    Uisc: float
+    Uvoc: float
+    Upmp: float
+    material: str
+    eficiencia: float
+
+    def __post_init__(self):
+        self.PV_Param = self.ParamPainelFotovoltaico(
+            self.fabricante,
+            self.modelo,
+            self.Pmp,
+            self.Isc,
+            self.Voc,
+            self.Imp,
+            self.Vmp,
+            self.Uisc,
+            self.Uvoc,
+            self.Upmp,
+            self.material,
+            self.eficiencia,
+        )
+
+    class ParamPainelFotovoltaico:
+        def __init__(
+            self,
+            fabricante_painel,
+            modelo_painel,
+            Pmp,
+            Isc,
+            Voc,
+            Imp,
+            Vmp,
+            Uisc,
+            Uvoc,
+            Upmp,
+            material_painel,
+            eficiencia,
+        ):
+
+            self.fabricante = fabricante_painel
+            self.modelo = modelo_painel
+            self.nome = fabricante_painel + "-" + modelo_painel
+            self.Pmp = Pmp
+            self.Isc = Isc
+            self.Voc = Voc
+            self.Imp = Imp
+            self.Vmp = Vmp
+            self.Uisc = Uisc
+            self.Uvoc = Uvoc
+            self.Upmp = Upmp
+
+            if material_painel == "Silicio":
+                self.Cs = 0.11175
+                self.Csh = 34.49692
+            elif material_painel == "HIT":
+                self.Cs = 0.16129000
+                self.Csh = 124.48114
+            else:
+                # fallback
+                self.Cs = 0.11175
+                self.Csh = 34.49692
+
+            self.Rsho = self.Csh * (self.Voc / self.Isc)
+            self.Rso = self.Cs * (self.Voc / self.Isc)
+            self.T_STC_C = 25
+            self.T_STC_K = self.T_STC_C + 273.15
+            self.G_STC = 1000
+            self.eficiencia = eficiencia
+
+            self.Rsh = 0
+            self.Rs = 0
+            self.Io = 0
+            self.IL = 0
+            self.nT = 0
+            self.n = 0
+
+            Perda_sombreamento = 0
+            Perda_mismatch = 0.02
+            self.Perdas_Painel = Perda_sombreamento + Perda_mismatch
+
+            self.Calcular_Parametros_painel()
+
+        def sgn(self, x):
+            if x > 0:
+                return 1
+            elif x < 0:
+                return -1
+            return 0
+
+        def Normalizar_Parametros(self):
+            Vrange = self.Voc
+            Irange = self.Isc
+            Voc_norm = self.Voc / Vrange
+            Isc_norm = self.Isc / Irange
+            Vmp_norm = self.Vmp / Vrange
+            Imp_norm = self.Imp / Irange
+            Rsho_norm = self.Rsho / Vrange * Irange
+            Rso_norm = self.Rso / Vrange * Irange
+            return Voc_norm, Isc_norm, Vmp_norm, Imp_norm, Rsho_norm, Rso_norm
+
+        def Calcular_Parametros_painel(self):
+
+            Accuracy = 0.00001
+            Rs = 0.01
+            Step = 0.001
+            Sign1 = 1
+            Diff = Accuracy + 1
+
+            Voc, Isc, Vmp, Imp, Rsho, Rso = self.Normalizar_Parametros()
+
+            while True:
+                nT = (Vmp + Imp * Rs - Voc) / np.log(
+                    ((Isc - Imp) * Rsho - (Vmp + Imp * Rs)) / (Isc * Rsho - Voc),
+                )
+                Io = (Isc - Voc / Rsho) / (np.exp(Voc / nT) - 1)
+                Diff = (Io / nT * np.exp(Voc / nT) + 1 / Rsho) / (
+                    1 + Rs * (Io / nT * np.exp(Voc / nT) + 1 / Rsho)
+                ) - 1 / Rso
+
+                if abs(Diff) <= Accuracy:
+                    break
+
+                Sign2 = self.sgn(Diff)
+                if Sign1 != Sign2:
+                    Step = -Step / 3
+                Rs = Rs + Step
+                Sign1 = Sign2
+
+            self.Rsh = self.Rsho
+            self.Rs = Rs * self.Voc / self.Isc
+            self.Io = Io * self.Isc
+            self.IL = self.Isc
+            self.nT = nT * self.Voc
+            self.n = nT / self.T_STC_K
+            return 0
+
+        def Calcula_Param_auxiliares(self, T_sim, G_sim):
+
+            C1 = 5.468511e-2
+            C2 = 5.973869e-3
+            C3 = 7.616178e-4
+            T_STC_C = 25
+            G_STC = 1000
+
+            nT_sim = (T_sim + 273.15) * self.n
+            if G_sim <= 0:
+                G_sim = 1e-4
+            aG = G_sim / G_STC
+
+            IL_T = self.Isc + self.Uisc * (T_sim - T_STC_C)
+            IL_GT = IL_T * aG
+            Voc_GT = self.Voc * (
+                1 + C1 * np.log(aG) + C2 * np.log(aG) ** 2 + C3 * np.log(aG) ** 3
+            ) + self.Uvoc * (T_sim - T_STC_C)
+            Io_GT = aG * ((IL_T - (Voc_GT / self.Rsh)) / (np.exp(Voc_GT / self.nT) - 1))
+            return IL_GT, Io_GT, Voc_GT
+
+        def Newton_Raphson_Corrente(self, V_init, I_init, IL, Io):
+
+            for _ in range(100):
+                exp_term = np.exp((V_init + I_init * self.Rs) / self.nT)
+                f = (
+                    IL
+                    - Io * (exp_term - 1)
+                    - (V_init + I_init * self.Rs) / self.Rsh
+                    - I_init
+                )
+                df = -Io * (self.Rs / self.nT) * exp_term - self.Rs / self.Rsh - 1
+                I_new = I_init - f / df
+
+                if np.abs(I_new - I_init) < 1e-6:
+                    return max(I_new, 0)
+                I_init = I_new
+            return max(I_init, 0)
+
+        def Gerar_curva_IV(self, T_sim, G_sim):
+
+            IL_GT, Io_GT, Voc_GT = self.Calcula_Param_auxiliares(T_sim, G_sim)
+            V_array = np.linspace(0, Voc_GT, 2000)  # 2000 já é bem mais leve que 10000
+            I_init = self.Isc / 2
+            I_array = []
+            for V_init in V_array:
+                I = self.Newton_Raphson_Corrente(V_init, I_init, IL_GT, Io_GT)
+                I_array.append(I)
+            return V_array, I_array

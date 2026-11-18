@@ -1,0 +1,81 @@
+{% load home_formatos %}
+<div class="card" id="selos">
+    <div class="card-header">
+        <h5>
+            <span class="font-weight-bold text-white">Selos Eletrônicos do Protocolo: {{ protocolo }}</span>
+        </h5>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Utilização</th>
+                    <th>Selo</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% regroup protocolo.selos by pedido_item as selos_agrupados %}
+                {% for selo_grupo in selos_agrupados %}
+                    <tr>
+                        <td colspan="7">
+                        <a class="label"
+                           data-bs-toggle="collapse"
+                           data-bs-target="#grupo_{{ forloop.counter }}"
+                           aria-expanded="true"> <i class="icon feather icon-plus"></i>
+                        <b>{{ selo_grupo.grouper }} </b> ({{ selo_grupo.list|length }}) <span class="f-10">Codigo: {{ selo_grupo.grouper.codigo_tabela }}</span>
+                    </a>
+                </td>
+            </tr>
+            <tbody id="grupo_{{ forloop.counter }}" class="collapse">
+                {% for selo in selo_grupo.list %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            {{ selo.codigo_sequencial_unico }}
+                            {% if selo.selo_de_consulta %}<span class="badge bg-info">Consulta</span>{% endif %}
+                            <div class="cell-content">
+                                <small>{{ selo.codigo_de_seguranca|formatar_codigo_seguranca }}</small>
+                            </div>
+                        </td>
+                        <td>{{ selo.utilizado_em|date }}</td>
+                        <td>
+                            <a href="#!" class="label bg-transparent text-auto f-12">
+                                <i class="icon feather icon-settings"></i> Opções
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+<div class="card-footer">
+    <button data-bs-toggle="button"
+            aria-pressed="true"
+            type="submit"
+            class="btn btn-sm btn-primary  text-white f-12"
+            title="Selar para os itens que não tenham sido selados ainda">
+        <i class="icon feather icon-plus"></i>  Selar
+    </button>
+    <button data-bs-toggle="button"
+            aria-pressed="true"
+            type="submit"
+            class="btn btn-sm btn-outline-secondary f-12"
+            title="Selar apenas das certidões">
+        <i class="icon feather icon-plus"></i>  Selar Certidão
+    </button>
+    <a href="#protocolo_detail"
+       class="btn btn-sm btn-outline-warning text-dark "
+       title="Clique para voltar ao topo da página"
+       type="button"
+       data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+    <a href="#itens_pedido_historico"
+       class="btn btn-sm btn-outline-primary text-dark "
+       title="Próximo ítem"
+       type="button"
+       data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+</div>
+</div>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <title>
+            Checklist
+            {% block title %}{% endblock %}
+        </title>
+        <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 11]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description"
+              content="Free Datta Able Admin Template come up with latest Bootstrap 4 framework with basic components, form elements and lots of pre-made layout options" />
+        <meta name="keywords"
+              content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, datta able, datta able bootstrap admin template, free admin theme, free dashboard template" />
+        <meta name="author" content="CodedThemes" />
+        <!-- Favicon icon -->
+        <link rel="icon" href='{% static "assets/images/favicon.ico" type="image/x-icon">
+        <!-- fontawesome icon -->
+        <link rel="stylesheet"
+              href='{% static "assets/fonts/fontawesome/css/fontawesome-all.min.css" %}'>
+        <!-- animation css -->
+        <link rel="stylesheet"
+              href='{% static "assets/plugins/animation/css/animate.min.css" %}'>
+        <!-- vendor css -->
+        <link rel="stylesheet" href='{% static "assets/css/style.css" %}'>
+        <!-- dark mode css -->
+        <link rel="stylesheet" href='{% static "assets/css/dark.css" %}'>
+        <!-- Specific CSS goes HERE -->
+        {% block stylesheets %}
+        {% endblock stylesheets %}
+        <script>
+                                                                                                                                                                                                                                             $(document).ready(function() {
+                                                                                                                                                                                                                                             $("#b1").click(function() {
+                                                                                                                                                                                                                                             $(".rb").show();
+                                                                                                                                                                                                                                             $(".rb").attr("disabled", true);
+
+
+                                                                                                                                                                                                                                             });
+                                                                                                                                                                                                                                             });
+
+
+                                                                                                                                                                                                                                             function getanswers() {
+                                                                                                                                                                                                                                             document.getElementById("UserAnswers").innerHTML = "";
+                                                                                                                                                                                                                                             var e = document.getElementsByTagName("input");
+                                                                                                                                                                                                                                             for (i = 0; i <= e.length; i++) {
+                                                                                                                                                                                                                                             if (e[i].type == "radio") {
+                                                                                                                                                                                                                                             if (e[i].checked) {
+                                                                                                                                                                                                                                             document.getElementById("UserAnswers").innerHTML += "Q " + e[i].name + " As respostas que você selecionou são : " + e[i].value + "<br>";
+                                                                                                                                                                                                                                             }
+                                                                                                                                                                                                                                             }
+
+                                                                                                                                                                                                                                             if (e[i].type == "text") {
+                                                                                                                                                                                                                                             document.getElementById("UserAnswers").innerHTML += "Q " + e[i].name + " As respostas que você selecionou são : " + e[i].value + "<br>";
+                                                                                                                                                                                                                                             }
+                                                                                                                                                                                                                                             }
+                                                                                                                                                                                                                                             }
+        </script>
+    </head>
+    <body>
+        <!-- [ Pre-loader ] start -->
+        <div class="loader-bg">
+            <div class="loader-track">
+                <div class="loader-fill"></div>
+            </div>
+        </div>
+        <!-- [ Pre-loader ] End -->
+        {% comment %} {% load widget_tweaks %} {% endcomment %}
+        {% comment %} <!--   --> {% endcomment %}
+        {% load home_formatos %}
+        {% include 'includes/sidebar.html' %}
+        {% include 'includes/navigation.html' %}
+        {% block content %}
+        {% endblock content %}
+        {% include 'includes/scripts.html' %}
+        <!-- Specific Page JS goes HERE  -->
+        {% block javascripts %}
+        {% endblock javascripts %}
+        <!-- [ Main Content ] start -->
+        <div class="pcoded-main-container">
+            <div class="pcoded-wrapper">
+                <div class="pcoded-content">
+                    <div class="pcoded-inner-content">
+                        <div class="main-body">
+                            <div class="page-wrapper">
+                                <!--        INICIO DA FICHA DE CADASTRO        -->
+                                <form method="post">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <td class="text-center p-10 mb-10 bg-info text-white disabled">
+                                                <h5>Alterar dados da Pessoa</h5>
+                                            </td>
+                                            <td class="text-center p-10 mb-10 bg-info text-white disabled">
+                                                <h5>-</h5>
+                                            </td>
+                                            <th class="text-center p-10 mb-10 bg-info text-white disabled">
+                                                <h5>Número da Ficha: {{ object.numero_ficha|protocolo_formatado }}</h5>
+                                            </th>
+                                        </thead>
+                                    </table>
+                                    <th>
+                                        <p class="lead">Preencha todos os campos obrigatórios (*).</p>
+                                    </th>
+                                    {% csrf_token %}
+                                    <table class="table">
+                                        <th>
+                                            CPF/CNPJ: {% render_field form.cpf type="number" class="form-control p-10 mb-10 btn-secondary text-black" placeholder=form.cpf.label %}
+                                        </th>
+                                        <th></th>
+                                        <th>
+                                            Data do cadastro:{% render_field form.criado_em type="text" class="form-control p-10 mb-10 btn-secondary text-black" placeholder=form.criado_em.label %}
+                                        </th>
+                                    </table>
+                                    <table class="table">
+                                        <tr>
+                                            Nome: {% render_field form.nome class="form-control p-10 mb-10 btn-secondary text-black" placeholder=form.nome.label %}
+                                        </tr>
+                                    </table>
+                                    <table class="table">
+                                        <thead>
+                                            <th>
+                                                Documento (RG, CNH):{% render_field form.documento class="form-control p-10 mb-10 btn-info text-black" placeholder=form.documento.label %}
+                                            </th>
+                                            <th></th>
+                                            <th>
+                                                Data do nascimento:{% render_field form.data_nascimento type="date" class="form-control p-10 mb-10 btn-info text-black" placeholder=form.data_nascimento.label %}
+                                            </th>
+                                            <th></th>
+                                            <th>
+                                                Sexo Nascimento:{% render_field form.sexo class="form-control p-10 mb-10 btn-info text-black required" placeholder=form.sexo.label %}
+                                            </th>
+                                            <th></th>
+                                            <th>
+                                                Nacionalidade:{% render_field form.nacionalidade class="form-control p-10 mb-10 btn-info text-black" placeholder=form.nacionalidade.label %}
+                                            </th>
+                                            <th></th>
+                                            <th>
+                                                Naturalidade:{% render_field form.naturalidade class="form-control p-10 mb-10 btn-info text-black" placeholder=form.naturalidade.label %}
+                                            </th>
+                                        </thead>
+                                    </table>
+                                    <table class="table">
+                                        <tr>
+                                            Profissão:{% render_field form.profissao class="form-control p-10 mb-10 btn-info text-black" placeholder=form.profissao.label %}
+                                        </tr>
+                                        <tr>
+                                            Nome pai: {% render_field form.nome_pai class="form-control p-10 mb-10 btn-info text-black" placeholder=form.nome_pai.label %}
+                                        </tr>
+                                        <tr>
+                                            Nome mae: {% render_field form.nome_mae class="form-control p-10 mb-10 btn-info text-black" placeholder=form.nome_mae.label %}
+                                        </tr>
+                                        <tr>
+                                            e-mail: {% render_field form.email class="form-control p-10 mb-10 btn-info text-black" placeholder=form.email.label %}
+                                        </tr>
+                                        <tr>
+                                            Endereço: {% render_field form.endereco class="form-control p-10 mb-10 btn-info text-black" placeholder=form.endereco.label %}
+                                        </tr>
+                                    </table>
+                                    <table class="table">
+                                        <td>
+                                            Estado Civil:{% render_field form.estado_civil class="form-control p-10 mb-10 btn-info text-black" placeholder=form.estado_civil.label %}
+                                        </td>
+                                    </table>
+                                    <hr>
+                                    <button type="submit" class="btn btn-sm btn-primary">Confirmar</button>
+                                    <button type="button"
+                                            class="btn btn-warning"
+                                            onclick="window.history.back();">Cancelar</button>
+                                </form>
+                            </div>
+                            <!--   #######     FIM DA FICHA DE Checklist   #######     -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

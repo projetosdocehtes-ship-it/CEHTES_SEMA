@@ -1,0 +1,84 @@
+{% extends "layouts/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+    {% load crispy_forms_tags %}
+    {% load django_tables2 %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    {% comment %} <a href="{% url 'home:pedido_certidao_adicionar_imovel' pk=object.pk %}" class="btn btn-sm btn-primary  float-end">Salvar</a> {% endcomment %}
+                    {% if titulo_card %}
+                        <h5>{{ titulo_card }}</h5>
+                    {% else %}
+                        {% if object %}
+                            <h5>Editar Imóvel ou Registro Auxiliar</h5>
+                        {% else %}
+                            <h5>Adicionar Imóvel ou Registro Auxiliar</h5>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="card-block">
+                    {% crispy form %}
+                    {% comment %} <a href="{% url 'home:pedido_certidao_detalhes' pk=object.pedido_id  %}" class="btn btn-sm btn-secondary">Voltar ao PedidoCertidao</a> {% endcomment %}
+                    {% if object|class_name == "Apresentante" %}
+                        {% if object.dados_bancarios %}
+                            <a href="{% url 'comum:editar_dadosbancarios' pk=object.dados_bancarios.pk %}"
+                               class="btn btn-sm btn-info">Editar Dados Bancários</a>
+                        {% else %}
+                            <a href="{% url 'comum:cadastrar_dadosbancarios' apresentante_pk=object.pk %}"
+                               class="btn btn-sm btn-info activate text-dark">Informar Dados Bancários</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% if object %}
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-lg-auto">
+                                {% comment %} <a href="{ object.get_absolute_url }" class="btn btn-sm btn-secondary">Voltar ao PedidoCertidao 2</a> {% endcomment %}
+                                {% comment %} <a href="{% url 'home:pedido_certidao_detalhes' pk=object.pedido_id %}" class="btn btn-sm btn-secondary">Voltar ao PedidoCertidao</a>
+                                {% if object|class_name == "Apresentante" %}
+                                    {% if object.dados_bancarios %}
+                                        <a href="{% url 'comum:editar_dadosbancarios' pk=object.dados_bancarios.pk %}" class="btn btn-sm btn-info">Editar Dados Bancários</a>
+                                    {% else %}
+                                        <a href="{% url 'comum:cadastrar_dadosbancarios' apresentante_pk=object.pk %}" class="btn btn-sm btn-info">Adicionar Dados Bancários</a>
+                                    {% endif %}
+                                {% endif %} {% endcomment %}
+                            </div>
+                            <div class="col-lg-auto">
+                                {% if url_de_exclusao %}
+                                    <form action="{% url 'home:pedido_certidao_excluir_imovel' object.pk %}"
+                                          method="post">
+                                        {% csrf_token %}
+                                        <input type="submit"
+                                               value="Excluir"
+                                               class="btn btn-sm btn-danger"
+                                               onclick="return confirm('Você tem certeza que deseja excluir este registro?');">
+                                        <a href="{% url 'home:pedido_certidao_imoveis_listar' pedido_id=object.pedido_id %}"
+                                           class="btn btn-sm btn-outline-secondary">Imóvel</a>
+                                        <a href="{% url 'home:pedido_certidao_pessoas_list' pedido_id=object.pedido_id %}"
+                                           class="btn btn-sm btn-outline-secondary">Pessoas</a>
+                                        <a href="{% url 'home:pedido_certidao_andamentos' pedido_id=object.pedido_id %}"
+                                           class="btn btn-sm btn-outline-secondary">Andamentos</a>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="card-footer">
+                        {% for key, botao in botoes.items %}
+                            <a href="{{ botao.url }}" class="btn btn-sm {{ botao.class }}">{{ botao.label }}</a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        {% if object and certidoes_table %}
+            {% include "certidoes/partials/partial_list_certidoes.html" %}
+        {% else %}
+            <p>Não há certiões neste imóvel</p>
+        {% endif %}
+    </div>
+{% endblock content %}

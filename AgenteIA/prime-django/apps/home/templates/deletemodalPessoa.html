@@ -1,0 +1,41 @@
+<button type="button"
+        class="btn btn-sm btn-danger  "
+        data-bs-toggle="modal"
+        data-bs-target="#deleteModalPessoa{{ partes.pessoa.id }}">Excluir</button>
+<!-- Modal -->
+<div class="modal"
+     id="deleteModalPessoa{{ partes.pessoa.id }}"
+     tabindex="-1"
+     aria-labelledby="deleteModalPessoaLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteModalPessoaLabel">
+                    Deletando: {{ partes.pessoa.nome }} {{ partes.pessoa.cpf }}
+                </h1>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form action="{% url 'home:deleteModalPessoa' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="parte_id" value="{{ partes.pessoa.id }}" />
+                <div class="modal-body">
+                    <h6>Tem certeza de que deseja excluir {{ partes.pessoa.nome }} {{ partes.pessoa.cpf }}?</h6>
+                    <br>
+                    <h5>Esta ação não pode ser revertida.</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-sm btn-secondary"
+                            data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-danger">Excluir dados</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

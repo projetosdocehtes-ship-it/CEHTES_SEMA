@@ -1,0 +1,175 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% load humanize %}
+{% block content %}
+    <div class="card" id="card_real">
+        <div class="card-header">
+            <h5>
+                Ficha Auxiliar do Loteamento - {{ object.tipo|get_descricao_tipo_registro }}:
+                <span class="font-weight-bold f-26 {% if object.encerrado == 'F' %}text-white {% else %}text-white bg-danger{% endif %}">
+                    {{ object.numero|formatar_numero_registro }}
+                </span>
+                <span class="font-weight f-18 text-light">CNM:</span>
+                <span class="font-weight-bold f-26 text-white">{{ object.cnm }}</span>
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-4">
+                    Municipio: <b>{{ object.municipio }}</b>
+                </div>
+                <div class="col-4">
+                    Data Abertura: <b>{{ object.data_abertura|date:"d/m/y" }}</b>
+                </div>
+                <div class="col-4"></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4">
+                    Cadastro Municipal: <b>
+                    {% for contribuinte_mae in unidade_mae.imovel.lista_contribuintes %}
+                        {{ contribuinte_mae.numero_contribuinte }}
+                    {% endfor %}
+                </b>
+            </div>
+            <div class="col-4"></div>
+            <div class="col-4">
+                Registro Encerrado:
+                <span class="font-weight-bold {% if object.encerrado == 'F' %}text-dark{% else %}text-danger{% endif %}">
+                {{ object.encerrado|formatar_tipo_encerramento }}</span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-4">
+                Bairro: <b>{{ unidade_mae.lote.setor }}</b>
+            </div>
+            <div class="col-4">
+                Quadra: <b>{{ unidade_mae.lote.quadra }}</b>
+            </div>
+            <div class="col-4">
+                Lote: <b>{{ unidade_mae.lote.numero_unidade }}</b>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-8">
+                Rua:
+                {% for rua in unidade_mae.ruas.all %}
+                    <small class="font-weight-bold">{{ rua.nome }}, {{ rua.numero_edificacao }}</small>
+                {% endfor %}
+            </div>
+            <div class="col-4">
+                Área: <b>{{ unidade_mae.lote.area }}</b>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-4">
+                Área Residencial: <b>{{ object.area_construida_residencial|default:"" }}</b>
+            </div>
+            <div class="col-4">
+                Área de Construção: <b>{{ object.area_construida|default:"" }}</b>
+            </div>
+            <div class="col-4">
+                Área Comercial: <b>{{ object.area_construida_comercial|default:"" }}</b>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card" id="card_real_loteamento_origem">
+    <div class="card-header text-white">
+        Loteamento
+        <span class="badge bg-dark">1</span>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Número</th>
+                    <th>Nome do Loteamento</th>
+                    <th>Nome Incorporadora</th>
+                    <th>Data de Registro</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ unidade_mae.imovel.tipo|get_descricao_tipo_registro }}</td>
+                    <td>
+                        <span class="badge bg-primary f-14">
+                            <a class="text-white"
+                               title="Clique para acessar o Indicador Real."
+                               href="{% url 'home:livro04_detail' numero_registro=unidade_mae.imovel.numero tipo_registro=unidade_mae.imovel.tipo cartorio_imovel=unidade_mae.imovel.cartorio %}"
+                               target="_blank">
+                            {{ unidade_mae.imovel.numero|remover_pontuacao|formatar_numero_registro }}</span></a>
+                        </td>
+                        <td>{{ ficha_auxiliar.nome }}</td>
+                        <td>{{ ficha_auxiliar.nome_incorporadora }}</td>
+                        <td>{{ ficha_auxiliar.data_incorporacao|date:"d/m/y" }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="#card_real"
+               class="btn btn-sm btn-warning text-dark "
+               title="Retornar ao topo"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+    </div>
+    <div class="card" id="card_real_ficha_unidades_loteamento">
+        <div class="card-header text-white">
+            Unidade (Loteamento)
+            <span class="badge bg-dark">{{ unidades|length }}</span>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Matrícula</th>
+                        <th>Quadra</th>
+                        <th>Lote</th>
+                        <th>Bairro</th>
+                        <th>Área</th>
+                        <th>Ruas</th>
+                        <th>Cadastro Municipal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for unidade in unidades %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                <span class="badge bg-primary f-14">
+                                    <a class="text-white"
+                                       title="Clique para acessar o Indicador Real."
+                                       href="{% url 'home:livro04_detail' numero_registro=unidade.imovel.numero tipo_registro=unidade.imovel.tipo cartorio_imovel=unidade.imovel.cartorio %}"
+                                       target="_blank">
+                                    {{ unidade.imovel.numero|formatar_numero_registro }}</span></a>
+                                </td>
+                                <td>{{ unidade.lote.quadra }}</td>
+                                <td>{{ unidade.lote.numero_unidade }}</td>
+                                <td>{{ unidade.lote.setor }}</td>
+                                <td>{{ unidade.lote.area }}</td>
+                                <td>
+                                    {% for rua in unidade.ruas.all %}<li>{{ rua.nome }} , {{ rua.numero_edificacao }}</li>{% endfor %}
+                                </td>
+                                <td>
+                                    {% for contribuinte in unidade.imovel.lista_contribuintes %}
+                                        <li>{{ contribuinte.numero_contribuinte }}</li>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a href="#card_real"
+                   class="btn btn-sm btn-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+        </div>
+    {% endblock %}

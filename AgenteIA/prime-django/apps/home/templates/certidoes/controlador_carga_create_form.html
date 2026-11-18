@@ -1,0 +1,85 @@
+{% extends "layouts/base.html" %}
+{% load static crispy_forms_tags django_tables2 %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block title %}
+    {{ title }}
+{% endblock title %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>{{ title }}</h5>
+        </div>
+        <div class="card-block table-border-style">{% crispy form %}</div>
+        <div class="card-header">
+            <h5>Painel Solar cadastradas: {{ total_hidrogenios }}</h5>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table">
+                <tr>
+                    <thead>
+                        <th>#</th>
+                        <th>Número</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Tipo de Celula</th>
+                        <th>Número de Celula</th>
+                        <th>Número de Celula Stack</th>
+                        <th>Pontência Nominal</th>
+                        <th>tensao_nomimal_saida</th>
+                        <th>corrente_nominal_saida</th>
+                        <th>consumo_hidrogenio</th>
+                        <th>eficiencia</th>
+                        <th>Degracao_tempo</th>
+                        <th>curva_eficiencia</th>
+                        <th>saida_agua</th>
+                        <th>temperatura_maxima</th>
+                    </thead>
+                </tr>
+                <tbody>
+                    {% for hidrogenio in hidrogenios %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ hidrogenio.numero_hidrogenio }}</td>
+                            <td>{{ hidrogenio.marca }}</td>
+                            <td>{{ hidrogenio.modelo }}</td>
+                            <td>{{ hidrogenio.tipo_de_celula }}</td>
+                            <td>{{ hidrogenio.numero_celulas }}</td>
+                            <td>{{ hidrogenio.numero_celulas_stack }}</td>
+                            <td>{{ hidrogenio.pontencial_nominal }}</td>
+                            <td>{{ hidrogenio.tensao_nomimal_saida }}</td>
+                            <td>{{ hidrogenio.corrente_nominal_saida }}</td>
+                            <td>{{ hidrogenio.consumo_hidrogenio }}</td>
+                            <td>{{ hidrogenio.eficiencia }}</td>
+                            <td>{{ hidrogenio.degracao_tempo }}</td>
+                            <td>{{ hidrogenio.curva_eficiencia }}</td>
+                            <td>{{ hidrogenio.saida_agua }}</td>
+                            <td>{{ hidrogenio.temperatura_maxima }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#carregarDados').click(function() {
+                var dadosSelecionados = $('#busca_id').find('option:selected').text();
+                console.log("Dados Selecionados: ", dadosSelecionados);
+
+                var partes = dadosSelecionados.split(' | ');
+                if (partes.length === 4) {
+                    console.log("Partes do dado: ", partes);
+
+                    $('#nome_apresentante_id').val(partes[0]);
+                    $('#documento_id').val(partes[1]);
+                    $('#telefone_id').val(partes[2]);
+                    $('#email_id').val(partes[3]);
+                        // Ajuste conforme necessário para outros campos
+                }
+            });
+        });
+    </script>
+{% endblock javascripts %}

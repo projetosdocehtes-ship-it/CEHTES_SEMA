@@ -1,0 +1,54 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% load django_tables2 %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>Modelos de Texto</h5>
+          </div>
+          <div class="card-body">
+            {% if modelos_texto %}
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Título</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for modelo in modelos_texto %}
+                    <tr>
+                      <td>{{ modelo.titulo }}</td>
+                      <td>
+                        <a href="{% url 'modelos:modelo_detail' modelo.pk %}"
+                           class="btn btn-info btn-sm">Visualizar</a>
+                        <a href="{% url 'modelos:modelo_edit' modelo.pk %}"
+                           class="btn btn-primary btn-sm">Editar</a>
+                        <a href="{% url 'modelos:modelo_delete' modelo.pk %}"
+                           class="btn btn-danger btn-sm">Deletar</a>
+                        <a href="{% url 'modelos:modelo_impressao' modelo.pk %}"
+                           class="btn btn-secondary btn-sm"
+                           target="_blank">Imprimir</a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+              <p>Não há modelos de texto cadastrados.</p>
+            {% endif %}
+          </div>
+          <div class="card-footer">
+            <a href="{% url 'modelos:modelo_new' %}" class="btn btn-danger btn-sm">Criar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

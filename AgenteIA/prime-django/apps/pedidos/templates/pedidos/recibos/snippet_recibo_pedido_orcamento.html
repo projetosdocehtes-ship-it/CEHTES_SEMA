@@ -1,0 +1,188 @@
+{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load pedidos_formatos %}
+{% load barcode_filters %}
+{% load static %}
+<div class="recibo-header borda">
+    <div class="logo-container">
+        <img src="{% static 'assets/images/icons/brasao-republica-color-min.svg' width='100' height='auto' %}"
+             alt="Logo"
+             class="logo-img">
+    </div>
+    <div class="header-central">
+        <h1>{{ user.cartorio.nome }}</h1>
+        <p>{{ user.cartorio.endereco }}</p>
+        <p>Fone: {{ user.cartorio.telefones }} | email: {{ user.cartorio.email }}</p>
+        <p>{{ user.cartorio.site|default:"" }}</p>
+        <p>
+            {{ user.cartorio.responsavel.funcao.titulo|default:"Oficial/Registrador(a) " }}: {{ user.cartorio.responsavel.nome_completo }}
+        </p>
+    </div>
+    <div class="barcode-container">
+        <div class="logo-container m-r-10">
+            {% if user.cartorio.logo %}
+                <img src="{{ user.cartorio.logo.url }}"
+                     alt="Logo"
+                     class="logo-img"
+                     width="100"
+                     height="auto">
+            {% else %}
+                <img src="{% static 'assets/images/logo_minas_gerais.png' %}"
+                     alt="Logo"
+                     class="logo-img"
+                     width="100"
+                     height="auto">
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="titulo-recibo">
+    <h1>ORÇAMENTO PRÉVIO</h1>
+</div>
+<div class="recibo-body borda">
+    <table class="tabela-responsiva ">
+        <tbody>
+            <tr>
+                <td>
+                    Pedido nº.: <strong><span style="font-size: 18px;">{{ object.numero_pedido|formatar_numero_registro }}</span></strong> | {{ object.origem|default:"Balcão" }} {{ object.protocolo_onr_formatado }}
+                </td>
+                <td>Data: {{ object.data_entrada|date:"d/m/y" }} às {{ object.data_entrada|date:"H:i" }}</td>
+                <td>
+                    <!-- Previsão: <strong>{{ object.data_prevista|date:"d/m/y" }}</strong> -->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Apresentante: <strong>{{ object.apresentante.nome }}</strong>
+                </td>
+                <td>Telefone: {{ object.apresentante.telefone|formatar_telefone|default:"Não Informado" }}</td>
+                <td>e-mail: {{ object.apresentante.email|default:"Não Informado" }}</td>
+            </tr>
+            <tr>
+                <td>
+                    Adquirente: <strong>{{ object.apresentante.nome_adquirente_parte|default:"Não Informado" }}</strong>
+                </td>
+                <td></td>
+                <td>
+                    {% if object.codigo_internet_firebird %}Código para Internet: <b>{{ object.codigo_internet_firebird }}</b>{% endif %}
+                </td>
+            </tr>
+            {% if object.apresentante.observacao %}
+                <tr>
+                    <td colspan="3">
+                        Observação: <strong>{{ object.apresentante.observacao|default:"Não informado" }}</strong>
+                    </td>
+                </tr>
+            {% endif %}
+            {% if object.finalidade %}
+                <tr>
+                    <td colspan="3">{{ object.finalidade_formatada }}</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    <div class="my-8" style="height: 10px;"></div>
+    <!-- Tabela -->
+    {% if atos_agrupados %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tipo</th>
+                    <th>Valor Documento</th>
+                    <th>Emol.</th>
+                    <th>TFJ</th>
+                    <th>ISSQN</th>
+                    <th>RECOMPE</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for chave, custas in atos_agrupados.items %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <div style="margin-bottom: 5px;">
+                                <b>{{ custas.quantidade|floatformat:0 }}</b> x {{ chave.0 }}
+                                {% if custas.codigo_tabela %}- ({{ custas.codigo_tabela|default:"" }}){% endif %}
+                            </div>
+                            <div>
+                                {{ chave.1|retirar_provisorio }}.
+                                {% if custas.imovel_numero_registro %}
+                                    <b>{{ custas.imovel_tipo }}: {{ custas.imovel_numero_registro|formatar_numero_registro }}</b>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>{{ custas.valor_titulo|formatar_moeda:False }}</td>
+                        <td>{{ custas.emolumento_liquido_com_desconto_tributacao|formatar_moeda:False }}</td>
+                        <td>{{ custas.taxa_fiscal_judiciaria_com_desconto_tributacao|formatar_moeda:False }}</td>
+                        <td>{{ custas.issqn_com_desconto_tributacao|formatar_moeda:False }}</td>
+                        <td>{{ custas.fundo1_com_desconto_tributacao|formatar_moeda:False }}</td>
+                        <td>{{ custas.total_com_desconto_tributacao|formatar_moeda:False }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot style="font-weight: bold;">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right;">Total:</td>
+                    <td>{{ object.total_emolumentos_pedido_de_protocolo|formatar_moeda:False }}</td>
+                    <td>{{ object.total_taxa_fiscal_judiciaria_pedido|formatar_moeda:False }}</td>
+                    <td>{{ object.total_issqn_pedido_de_protocolo|formatar_moeda:False }}</td>
+                    <td>{{ object.total_fundo1_pedido_de_protocolo|formatar_moeda:False }}</td>
+                    <td>{{ object.total_pedido_de_protocolo|formatar_moeda:False }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    {% else %}
+        <p>-- Não há itens neste orçamento. --</p>
+    {% endif %}
+</div>
+<!-- SEPARACAO ELEGANTE -- INICIO -->
+<div class="my-3" style="height: 3px;"></div>
+<!-- SEPARACAO ELEGANTE -- FIN -->
+<div class="recibo-footer">
+    <div class="row">
+        <div class="col-md-6">
+            <table>
+                <td style="text-align: justify; line-height: 1.4;">
+                    <!-- O título foi recebido para prenotação e análise, conforme art. 186 da Lei 6.015/73, assegurando prioridade no registro. Se inapto para registro, será devolvido com as devidas exigências.
+                    Despesas adicionais serão cobradas do apresentante. Atos extras seguirão o art. 17 da Lei 15.424/2004.
+                    Documentos devem ser retirados mediante apresentação deste comprovante original, das 9h às 17h, dentro de 90 dias, sob risco de incineração. -->
+                    <strong>Declaro que solicitei e li integralmente este orçamento, concordando com seus termos.</strong>
+                    <br>
+                    <strong>ESTE DOCUMENTO NÃO TEM EFEITO DE PRENOTAÇÃO.</strong>
+                    <!-- SEPARACAO ELEGANTE -- INICIO -->
+                    <!-- SEPARACAO ELEGANTE -- FIN -->
+                    <p>
+                        <div class="linha-assinatura"></div>
+                        <p>Apresentante: {{ object.apresentante.nome }}</p>
+                    </p>
+                </td>
+                <td style="text-align: justify; line-height: 1.2;" class="assinatura">{% include "etiquetas/etiqueta-selo.html" %}</td>
+            </table>
+            <!-- <div style="text-align: center;">
+    {% if object.numero_protocolo_firebird %}
+      Selo de Prenotação: <b>{{ object.numero_selo_firebird }}</b> - Código Segurança: <b>{{ object.codigo_seguranca_firebird_formatado }}</b>
+    {% endif %}
+  </div> -->
+            <!-- <table>
+        <tbody>
+          <tr> -->
+            <!-- <td class="assinatura">
+              <div class="linha-assinatura"></div>
+              <p>Apresentante: {{ object.apresentante.nome }}</p>
+            </td> -->
+            <!-- <td class="assinatura">{% include "etiquetas/etiqueta-selo.html" %}</td> -->
+            <!-- <td class="assinatura">
+          <div class="linha-assinatura"></div>
+          <p>Colaborador: {{ user|title }}</p>
+        </td> -->
+            <!-- </tr>
+        </tbody>
+      </table> -->
+        </div>
+    </div>
+</div>

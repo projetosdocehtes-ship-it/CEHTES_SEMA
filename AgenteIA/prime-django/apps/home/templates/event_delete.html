@@ -1,0 +1,50 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <!--        INICIO DA FICHA DE CHECKLIST        -->
+                            {% block content %}
+                                <div class="card" id="card_membro">
+                                    <div class="card-header">
+                                        <span class="font-weight f-20 text-light">Desvincular este membro deste Evento.</span>
+                                    </div>
+                                </div>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <br>
+                                    <a class="btn btn-warning btn-lg text-dark active"
+                                       title="Voltar para a página anterior sem alterar os dados."
+                                       data-bs-toggle="tooltip"
+                                       onclick="getVoltar()">Voltar</a>
+                                    <button class="btn btn-danger ml-2"
+                                            type="submit"
+                                            title="Cancelar o membro deste evento PERMANENTE"
+                                            data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-delete"></i>Confirmar
+                                    </button>
+                                    <script>
+                                        function get_numero(numero) {
+                                            var conteudo = "/protocolos/?numero_protocolo=" + numero
+                                            window.location.href = conteudo;
+                                        }
+
+                                        function getVoltar() {
+                                            window.history.back()
+                                        }
+                                    </script>
+                                {% endblock content %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--   #######     FIM DA FICHA DE CHECKLIST   #######     -->

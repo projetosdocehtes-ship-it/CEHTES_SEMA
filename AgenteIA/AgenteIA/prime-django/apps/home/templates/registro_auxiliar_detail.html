@@ -1,0 +1,478 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% load humanize %}
+{% block breadcrumbs %}
+    {% load replace_value %}
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Livro 03 - Registro Auxiliar</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ object.get_absolute_url }}">Livros</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ object.get_absolute_url }}">Livro 03</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ object.get_absolute_url }}">Detalhes</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    {% get_livro03_pelo_numero value item.numero as registro_auxiliar %}
+    <div class="card" id="card_livro03">
+        <div class="card-header">
+            {% for item in registro_auxiliar %}
+                <h5 class="mr-5">Protocolo: {{ item.0 }} | CNM: {{ item.16 }}</h5>
+                <a class="text-white f-18 ml-5"
+                   href="{% url 'home:importar_registro_auxiliar' numero_registro=item.0|apenas_numeros tipo_registro='A' cartorio_imovel='1' %}"
+                   title="Clique para atualizar a importação do registro auxiliar: {{ item.0|protocolo_formatado }}"
+                   aria-pressed="true"
+                   role="button">
+                    <i class="icon feather icon-download"></i>
+                </a>
+            {% endfor %}
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Registro</th>
+                        <th>Tipo de Cédula</th>
+                        <th>Datas</th>
+                        <th>Outro</th>
+                        {% comment %} <th>Detalhes</th> {% endcomment %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in registro_auxiliar %}
+                        <tr>
+                            <td>
+                                {% comment %} Muda a cor do registro de acordo com a data de cancelamento.{% endcomment %}
+                                {% if item.6  == "" %}
+                                    <span class="btn btn-sm bg-danger activate text-white">{{ item.0 }}</span>
+                                {% else %}
+                                    <span class="btn btn-sm bg-success activate text-white">{{ item.0 }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="cell-content">{{ item.1 }} - Nº {{ item.2 }}</div>
+                                <div class="cell-content">{{ item.7 }}</div>
+                                <div class="cell-content">{{ item.3 }} Grau.</div>
+                            </td>
+                            <td>
+                                <div class="cell-content">Abertura: {{ item.4 }}</div>
+                                <div class="cell-content">Vencimento: {{ item.5 }}</div>
+                                <div class="cell-content">
+                                    Cancelamento: <b>{{ item.6 }}</b>
+                                </div>
+                            </td>
+                            <td>{{ item.8|default:"" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            {% for item in registro_auxiliar %}
+                <a type="button"
+                   href="{% url 'home:livro03_texto' pk=item.16 %}"
+                   target="_blank"
+                   aria-pressed="true"
+                   class="btn btn-sm btn-primary activate text-white">
+                    <i class="icon feather icon-file"></i> Ver Texto
+                </a>
+            {% endfor %}
+            <a type="button"
+               href="#card_livro03_credor"
+               class="btn btn-sm btn-primary  text-white">
+                Credor(es)
+                <span class="badge bg-dark">
+                    {% for item in registro_auxiliar %}{{ item.11 }}{% endfor %}
+                </span></a>
+                <a type="button"
+                   href="#card_livro03_devedor"
+                   class="btn btn-sm btn-danger  text-white">
+                    Devedor(es)
+                    <span class="badge bg-dark">
+                        {% for item in registro_auxiliar %}{{ item.12 }}{% endfor %}
+                    </span></a>
+                    <a type="button"
+                       href="#card_livro03_avalista"
+                       class="btn btn-sm btn-warning text-dark">
+                        Avalista(s)
+                        <span class="badge bg-dark">
+                            {% for item in registro_auxiliar %}{{ item.13 }}{% endfor %}
+                        </span></a>
+                        <a type="button"
+                           href="#card_livro03_envolvidos"
+                           class="btn btn-sm btn-secondary">
+                            Envolvidos
+                            <span class="badge bg-dark">
+                                {% for item in registro_auxiliar %}{{ item.14 }}{% endfor %}
+                            </span></a>
+                            <a type="button"
+                               href="#card_livro03_garantias"
+                               class="btn btn-sm btn-dark  text-white">
+                                Garantia(s)
+                                <span class="badge bg-dark">
+                                    {% for item in registro_auxiliar %}{{ item.15 }}{% endfor %}
+                                </span>
+                            </a>
+                            {% for item in registro_auxiliar %}
+                                <a type="button"
+                                   href="{% url 'home:registro_imagens' pk=item.0|apenas_numeros %}"
+                                   target="_blank"
+                                   class="btn btn-sm btn-danger active text-white">
+                                    <i class="icon feather icon-image"></i> Imagem  <span class="badge bg-dark"></span></a>
+                            {% endfor %}
+                            <!-- Dropdown Button -->
+                            <a class="btn btn-sm btn-primary text-white dropdown-toggle"
+                               type="button"
+                               id="dropdownNumero"
+                               data-bs-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false"><i class="icon feather icon-settings"></i> Opções
+                            </a>
+                            <!-- Dropdown Menu -->
+                            {% for item in registro_auxiliar %}
+                                <div class="dropdown-menu" aria-labelledby="dropdownNumero">
+                                    <!-- Imagem Option -->
+                                    <a class="dropdown-item" href="#">
+                                        <i class="icon feather icon-image"></i>Exame Calculo
+                                    </a>
+                                    <!-- Imagem Option -->
+                                    <a class="dropdown-item" href="#">
+                                        <i class="icon feather icon-image"></i>Livro01Protocolo
+                                    </a>
+                                    <!-- Imagem Option -->
+                                    <a class="dropdown-item" href="#">
+                                        <i class="icon feather icon-image"></i>Pedidos de Certidão
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card" id="card_livro03_credor">
+                    <div class="card-header text-white">
+                        Credor(es)
+                        <span class="badge bg-dark">
+                            {% for item in registro_auxiliar %}{{ item.11 }}{% endfor %}
+                        </span>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Ato</th>
+                                    <th>CPF/CNPJ</th>
+                                    <th>Nome</th>
+                                    <th>Papel</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in registro_auxiliar %}
+                                    <!-- Linhas adicionais para itens envolvidos -->
+                                    {% for envolvidos in item.9 %}
+                                        <tr class="envolvido">
+                                            {% if envolvidos.2 == "Credor" %}
+                                                <td>R.1</td>
+                                                <td>{{ envolvidos.1|formatar_documento }}</td>
+                                                <td>{{ envolvidos.0 }}</td>
+                                                <td>
+                                                    {% if item.6 == '' %}
+                                                        {% if envolvidos.2 == "Credor" %}<span class="badge bg-primary f-12">{{ envolvidos.2 }}</span>{% endif %}
+                                                    {% else %}
+                                                        <div class="cell-content">{{ envolvidos.2 }}</div>
+                                                        <div class="cell-content">
+                                                            <span class="badge bg-success f-12">(BAIXADO)</span>
+                                                        </div>
+                                                    {% endif %}
+                                                </td>
+                                                <!-- Adicione mais células vazias aqui se quiser alinhar com o resto da tabela -->
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#card_livro03"
+                           class="btn btn-sm btn-warning text-dark "
+                           title="Retornar ao topo"
+                           type="button"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                    </div>
+                </div>
+                <!-- HIPOTECAS -->
+                <div class="card" id="card_livro03_devedor">
+                    <div class="card-header text-white">
+                        Devedor(es)
+                        <span class="badge bg-dark">
+                            {% for item in registro_auxiliar %}{{ item.12 }}{% endfor %}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Ato</th>
+                                    <th>CPF/CNPJ</th>
+                                    <th>Nome</th>
+                                    <th>Papel</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in registro_auxiliar %}
+                                    <!-- Linhas adicionais para itens envolvidos -->
+                                    {% for envolvidos in item.9 %}
+                                        <tr class="envolvido">
+                                            {% if envolvidos.2 == "Devedor" %}
+                                                <td>R.1</td>
+                                                <td>{{ envolvidos.1|formatar_documento }}</td>
+                                                <td>{{ envolvidos.0 }}</td>
+                                                <td>
+                                                    {% if item.6 == '' %}
+                                                        {% if envolvidos.2 == "Devedor" %}<span class="badge bg-danger f-12">{{ envolvidos.2 }}</span>{% endif %}
+                                                    {% else %}
+                                                        <div class="cell-content">{{ envolvidos.2 }}</div>
+                                                        <div class="cell-content">
+                                                            <span class="badge bg-success f-12">(BAIXADO)</span>
+                                                        </div>
+                                                    {% endif %}
+                                                </td>
+                                                <!-- Adicione mais células vazias aqui se quiser alinhar com o resto da tabela -->
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#card_livro03"
+                           class="btn btn-sm btn-warning text-dark "
+                           title="Retornar ao topo"
+                           type="button"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                    </div>
+                </div>
+                <!-- Alienação INICIO -->
+                <div class="card" id="card_livro03_avalista">
+                    <div class="card-header text-white">
+                        Avalista(s)
+                        <span class="badge bg-dark">
+                            {% for item in registro_auxiliar %}{{ item.13 }}{% endfor %}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Ato</th>
+                                    <th>CPF/CNPJ</th>
+                                    <th>Nome</th>
+                                    <th>Papel</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in registro_auxiliar %}
+                                    <!-- Linhas adicionais para itens envolvidos -->
+                                    {% for envolvidos in item.9 %}
+                                        <tr class="envolvido">
+                                            {% if envolvidos.2 == "Avalista" %}
+                                                <td>R.1</td>
+                                                <td>{{ envolvidos.1|formatar_documento }}</td>
+                                                <td>{{ envolvidos.0 }}</td>
+                                                <td>
+                                                    {% if item.6 == '' %}
+                                                        {% if envolvidos.2 == "Avalista" %}
+                                                            <span class="badge bg-warning f-12">{{ envolvidos.2 }}</span>
+                                                        {% else %}
+                                                            {{ envolvidos.2 }}
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <div class="cell-content">{{ envolvidos.2 }}</div>
+                                                        <div class="cell-content">
+                                                            <span class="badge bg-success f-12">(BAIXADO)</span>
+                                                        </div>
+                                                    {% endif %}
+                                                </td>
+                                                <!-- Adicione mais células vazias aqui se quiser alinhar com o resto da tabela -->
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#card_livro03"
+                           class="btn btn-sm btn-warning text-dark "
+                           title="Retornar ao topo"
+                           type="button"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                    </div>
+                </div>
+                <div class="card" id="card_livro03_envolvidos">
+                    <div class="card-header text-white">
+                        Envolvidos (Todos) <span class="badge bg-dark">
+                        {% for item in registro_auxiliar %}{{ item.14 }}{% endfor %}
+                    </span>
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Ato</th>
+                                <th>CPF/CNPJ</th>
+                                <th>Nome</th>
+                                <th>Papel</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in registro_auxiliar %}
+                                <!-- Linhas adicionais para itens envolvidos -->
+                                {% for envolvidos in item.9 %}
+                                    <tr class="envolvido">
+                                        <td>R.1</td>
+                                        <td>{{ envolvidos.1|formatar_documento }}</td>
+                                        <td>{{ envolvidos.0 }}</td>
+                                        <td>
+                                            {% if item.6 == '' %}
+                                                {% if envolvidos.2 == "Avalista" %}
+                                                    <span class="badge bg-warning f-12">{{ envolvidos.2 }}</span>
+                                                {% elif envolvidos.2 == "Devedor" %}
+                                                    <span class="badge bg-danger f-12">{{ envolvidos.2 }}</span>
+                                                {% elif envolvidos.2 == "Credor" %}
+                                                    <span class="badge bg-primary f-12">{{ envolvidos.2 }}</span>
+                                                {% else %}
+                                                    {{ envolvidos.2 }}
+                                                {% endif %}
+                                            {% else %}
+                                                <div class="cell-content">{{ envolvidos.2 }}</div>
+                                                <div class="cell-content">
+                                                    <span class="badge bg-success f-12">(BAIXADO)</span>
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                        <!-- Adicione mais células vazias aqui se quiser alinhar com o resto da tabela -->
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <a href="#card_livro03"
+                       class="btn btn-sm btn-warning text-dark "
+                       title="Retornar ao topo"
+                       type="button"
+                       data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                </div>
+            </div>
+            <div class="card" id="card_livro03_garantias">
+                <div class="card-header text-white">
+                    Garantia(s)
+                    <span class="badge bg-dark">
+                        {% for item in registro_auxiliar %}{{ item.15 }}{% endfor %}
+                    </span>
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Dados da Cédula</th>
+                                <th>Quantidade</th>
+                                <th>Imóvel</th>
+                                <th>Descrição e Localidade dos Bens</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in registro_auxiliar %}
+                                <!-- Linhas adicionais para itens envolvidos -->
+                                {% for garantias in item.10 %}
+                                    <tr class="garantias">
+                                        <td>
+                                            <div class="cell-content">
+                                                Espécie: <b>{{ garantias.0 }}</b>
+                                            </div>
+                                            <div class="cell-content">
+                                                Nro. Cédula: <b>{{ garantias.1 }}</b>
+                                            </div>
+                                            <div class="cell-content">
+                                                Grau: <b>{{ garantias.3|default:"" }}</b>
+                                            </td>
+                                        </td>
+                                        <td>
+                                            <div class="cell-content">
+                                                <small>Quantidade: <b>{{ garantias.10|default:"" }}</b></small>
+                                            </div>
+                                            <div class="cell-content">
+                                                <small>Valor: <b>{{ garantias.6|default:"" }}</b></small>
+                                            </div>
+                                            <div class="cell-content">
+                                                <small>Área Plantada: <b>{{ garantias.9|default:"" }}</b></small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% if garantias.4 == "M" %}
+                                                <div class="cell-content">
+                                                    <div class="cell-content">{{ garantias.4|get_descricao_tipo_registro }}:</div>
+                                                    <div class="cell-content">{{ garantias.8 }}</div>
+                                                    <span class="badge bg-primary f-14">
+                                                        <a class="text-white"
+                                                           title="Clique para acessar o Indicador Real."
+                                                           href="{% url 'home:livro04_detail' numero_registro=garantias.5 tipo_registro=garantias.4 cartorio_imovel='1' %}"
+                                                           target="_blank">
+                                                            {{ garantias.5|formatar_numero_registro }}
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                                <div class="cell-content">
+                                                    <small>({{ garantias.11|default:"" }})</small>
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="cell-content">{{ garantias.2|default:"" }}</div>
+                                            <div class="cell-content">
+                                                <small>{{ garantias.7|default:"" }}</small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <a href="#card_livro03"
+                       class="btn btn-sm btn-warning text-dark "
+                       title="Retornar ao topo"
+                       type="button"
+                       data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

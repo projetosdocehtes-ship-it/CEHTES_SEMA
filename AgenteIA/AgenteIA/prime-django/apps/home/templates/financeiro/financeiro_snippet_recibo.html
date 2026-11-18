@@ -1,0 +1,129 @@
+.{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load home_formatos %}
+{% load barcode_filters %}
+{% load static %}
+{% include "recibos/cabecalho_cartorio.html" %}
+{% block stylesheets %}
+    <style>
+         @media print {
+
+              /* Esconde elementos desnecessários durante a impressão */
+              .btn-print {
+                   display: none;
+              }
+         }
+
+         /* Estilos específicos do recibo */
+         #recibo-container {
+              font-family: Arial, sans-serif;
+              max-width: 900px;
+              margin: auto;
+         }
+
+         #recibo-container .receipt-header h1 {
+              border-bottom: 2px solid #000;
+              padding-bottom: 10px;
+         }
+
+         #recibo-container .row {
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              margin-bottom: 20px;
+         }
+
+         #recibo-container .col-md-6 {
+              flex: 0 0 48%;
+              max-width: 48%;
+         }
+
+         #recibo-container .receipt-body p,
+         #recibo-container .receipt-footer p {
+              border-top: 2px solid #000;
+              padding-top: 10px;
+         }
+
+         #recibo-container .receipt-footer {
+              text-align: center;
+              font-style: italic;
+              color: #666;
+         }
+
+         #recibo-container h2 {
+              font-size: 1.25rem;
+              color: #333;
+              margin-bottom: 0.5rem;
+         }
+    </style>
+{% endblock stylesheets %}
+<div class="titulo-recibo"></div>
+<div class="recibo-body borda">
+    <div id="recibo-container" class="container mt-5">
+        <div class="receipt-header border-bottom mb-4">
+            <center>
+                <h1>
+                    {{ titulo }}:
+                </strong> R$ {{ financeiro.valor_transacao|real_br_money_mask }} -
+                {{ financeiro.descricao }}
+            </h1>
+        </center>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Detalhes do Apresentante ou Pagador</h3>
+            {% if financeiro.numero_pedido_certidao %}
+                <p>
+                    <strong>Apresentante:</strong> {{ financeiro.numero_pedido_certidao|get_apresentante_pedido_certidao|default:"" }}
+                </p>
+                <p>
+                    <strong>Interessado:</strong> {{ financeiro.numero_pedido_certidao|get_interessado_pedido_certidao|default:"" }}
+                </p>
+                <p>
+                    <strong>Pagador:</strong> {{ financeiro.nome_interessado|default:"" }}
+                </p>
+            {% else %}
+                <p>
+                    <strong>Nome:</strong> {{ financeiro.pedido.nome_solicitante_formatado }}
+                </p>
+                <p>
+                    <strong>CPF/CNPJ:</strong> {{ financeiro.pedido.documento_apresentante_formatado }}
+                </p>
+                <p>
+                    <strong>Pagador:</strong> {{ financeiro.nome_interessado|default:"" }}
+                </p>
+                {% if financeiro.pedido.endereco %}<p>{{ financeiro.pedido.endereco }}</p>{% endif %}
+            {% endif %}
+        </div>
+        <div class="col-md-6 text-md-right">
+            <h3>Detalhes do Pagamento</h3>
+            <p>
+                <strong>Data:</strong> {{ financeiro.data_transacao|date:"d/m/y" }}
+            </p>
+            <p>
+                <strong>Valor:</strong> R$ {{ financeiro.valor_transacao|real_br_money_mask }}
+            </p>
+            <p>
+                <strong>Operação:</strong> {{ financeiro.tipo_operacao_financeira.descricao }}
+            </p>
+            {% comment %} <p>
+                    <strong>Descrição:</strong> {{ financeiro.descricao }}
+            </p> {% endcomment %}
+        </div>
+    </div>
+    <div class="receipt-body mt-3">
+        <h4>
+            Recebido por: {{ financeiro.colaborador.nome }}
+            <h4>
+            </p>
+            <p>
+                {% if financeiro.numero_pedido_certidao %}
+                    <strong>Descrição:</strong> {{ financeiro.descricao }} - Valor já pago: {{ financeiro.numero_pedido_certidao|get_valor_total_caixa_pedido_certidao|default:"0.00" }}  - {{ user.cartorio.municipio }} - {{ agora }}
+                {% else %}
+                    <strong>Descrição:</strong> {{ financeiro.descricao }} - {{ user.cartorio.municipio }} - {{ agora }}
+                {% endif %}
+            </div>
+            <div class="receipt-footer text-center mt-5"></div>
+        </div>
+    </div>

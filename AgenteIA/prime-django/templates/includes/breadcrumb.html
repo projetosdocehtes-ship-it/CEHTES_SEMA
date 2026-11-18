@@ -1,0 +1,31 @@
+{% load replace_value %}
+<div class="page-header">
+  <div class="page-block">
+    <div class="row align-items-center">
+      <div class="col-md-12">
+        <div class="page-header-title">
+          {% if titulo_pagina %}
+            <h5 class="m-b-10">{{ titulo_pagina|replace_value:"_" }}</h5>
+          {% else %}
+            <h5 class="m-b-10">{{ segment|replace_value:"_" }}</h5>
+          {% endif %}
+        </div>
+        {% if parent %}
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'index' %}"><i class="icon feather icon-home"></i> </a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript:">{{ parent|replace_value:"_" }}</a>
+            </li>
+            {% if segment %}
+              <li class="breadcrumb-item">
+                <a href="javascript:">{{ segment|replace_value:"_" }}</a>
+              </li>
+            {% endif %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,3 @@
+# Configuracoes locais de publicacao e credenciais
+.env
+.env.*

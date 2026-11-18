@@ -1,0 +1,16 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+    <h2>Resultados da busca para "{{ query }}"</h2>
+    <ul>
+        {% for result in results %}
+            <li>
+                <a href="{{ result.object.get_absolute_url }}">{{ result.object.numero }}</a>
+                <p>{{ result.object.tipo }}</p>
+                <p>{{ result.object.municipio }}</p>
+                <p>{{ result.object.texto|truncatewords:20 }}</p>
+            </li>
+        {% empty %}
+            <li>Nenhum resultado encontrado.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

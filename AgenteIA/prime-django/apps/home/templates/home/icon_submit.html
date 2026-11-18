@@ -1,0 +1,8 @@
+{% load crispy_forms_field %}
+<button type="submit"
+        name="{{ field.name }}"
+        class="{{ field.css_class }}"
+        {% if field.id %}id="{{ field.id }}"{% endif %}>
+    {% if field.icon %}<i class="{{ field.icon }}"></i>{% endif %}
+    {{ field.label|safe }}
+</button>

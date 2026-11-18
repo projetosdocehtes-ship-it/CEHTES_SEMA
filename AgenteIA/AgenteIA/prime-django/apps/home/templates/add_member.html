@@ -1,0 +1,45 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% load home_formatos %}
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        {% block content %}
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                {{ form.media }}
+                                <div class="card" id="card_membro">
+                                    <div class="card-header">
+                                        <span class="font-weight f-20 text-light">Adicionar membro ao projeto:</span>
+                                    </div>
+                                </div>
+                                <span class="input-group-text" style="background-color:#ddd;">
+                                    <h4>Informe o Colaborador - {{ form }}</h4>
+                                </span>
+                                <br>
+                                <br>
+                                <a class="btn btn-warning btn-lg text-dark active"
+                                   title="Voltar para a página anterior sem alterar os dados."
+                                   data-bs-toggle="tooltip"
+                                   onclick="getVoltar()">Voltar</a>
+                                <td colspan="2">
+                                    <button type="submit" class="btn btn-info right">Salvar</button>
+                                </td>
+                                <script>
+                                    function getVoltar() {
+                                        window.history.back()
+                                    }
+                                </script>
+                            </form>
+                        {% endblock content %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--   #######     FIM DA FICHA DE CHECKLIST   #######     -->

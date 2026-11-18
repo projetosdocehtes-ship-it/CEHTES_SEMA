@@ -1,0 +1,43 @@
+{% extends "relatorios/relatorio_base_a4.html" %}
+{% block content %}
+    {% load home_formatos %}
+    {% for colaborador, protocolos in protocolos_distribuidos_por_colaborador.items %}
+        <div class="page">
+            <h2>Colaborador: {{ colaborador.nome }}</h2>
+            <p>Data: {{ hoje }}</p>
+            <table class="table">
+                <thead>
+                    <tr role="row">
+                        <th>SL</th>
+                        <th>Protocolo</th>
+                        <th>Entrada</th>
+                        <th>Previsto</th>
+                        <th>Reentrada</th>
+                        <th>Restantes</th>
+                        <th>Distribuição</th>
+                        <th>Observação</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for protocolo in protocolos %}
+                        {% if protocolo.fases_protocolo_colaborador == protocolo.colaborador %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ protocolo.numero_protocolo }}</td>
+                                <td>{{ protocolo.data_protocolo|date:"d/m/y" }}</td>
+                                <td>{{ protocolo.data_prevista }}</td>
+                                <td>{{ protocolo.data_reentrada|date:"d/m/y" }}</td>
+                                <td>{{ protocolo.prazo_previsto_em_dias }}</td>
+                                <td>{{ protocolo.data_distribuicao|date:"d/m/y" }}</td>
+                                <td>{{ protocolo.pedido.observacao|formatar_nome|truncatechars:60 }}</td>
+                                <td>{{ protocolo.status_protocolo_descricao }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="page-break"></div>
+    {% endfor %}
+{% endblock content %}

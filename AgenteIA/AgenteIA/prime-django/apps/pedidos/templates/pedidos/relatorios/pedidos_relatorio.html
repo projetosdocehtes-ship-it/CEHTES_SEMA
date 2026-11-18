@@ -1,0 +1,9 @@
+{% extends "impressao/base_A4.html" %}
+{% load django_tables2 %}
+{% block content %}
+  <div class="header">
+    <h1>Relatório de Itens</h1>
+    <p>Data: {{ hoje }}</p>
+  </div>
+  {% render_table table %}
+{% endblock %}

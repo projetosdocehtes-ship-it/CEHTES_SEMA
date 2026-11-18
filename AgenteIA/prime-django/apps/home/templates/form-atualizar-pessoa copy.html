@@ -1,0 +1,121 @@
+{% extends "layouts/base.html" %}
+{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load pedidos_formatos %}
+{% block title %}
+    Checklist
+{% endblock title %}
+{% block stylesheets %}
+{% endblock stylesheets %}
+{% block content %}
+    <form method="post">
+        <table class="table table-hover">
+            <thead>
+                <td class="text-center p-10 mb-10 bg-info text-white disabled">
+                    <h5>Alterar dados da Pessoa</h5>
+                </td>
+                <td class="text-center p-10 mb-10 bg-info text-white disabled">
+                    <h5>-</h5>
+                </td>
+                <th class="text-center p-10 mb-10 bg-info text-white disabled">
+                    <h5>Número da Ficha: {{ object.numero_ficha|protocolo_formatado }}</h5>
+                </th>
+            </thead>
+        </table>
+        <th>
+            <p class="lead">Preencha todos os campos obrigatórios (*).</p>
+        </th>
+        {% csrf_token %}
+        <table class="table">
+            <th>
+                CPF/CNPJ: {% render_field form.cpf type="number" class="form-control p-10 mb-10 btn-secondary text-black" placeholder=form.cpf.label %}
+            </th>
+            <th></th>
+            <th>
+                Data do cadastro:{% render_field form.criado_em type="text" class="form-control p-10 mb-10 btn-secondary text-black" placeholder=form.criado_em.label %}
+            </th>
+        </table>
+        <table class="table">
+            <tr>
+                Nome: {% render_field form.nome class="form-control p-10 mb-10 btn-secondary text-black" placeholder=form.nome.label %}
+            </tr>
+        </table>
+        <table class="table">
+            <thead>
+                <th>
+                    Documento (RG, CNH):{% render_field form.documento class="form-control p-10 mb-10 btn-info text-black" placeholder=form.documento.label %}
+                </th>
+                <th></th>
+                <th>
+                    Data do nascimento:{% render_field form.data_nascimento type="date" class="form-control p-10 mb-10 btn-info text-black" placeholder=form.data_nascimento.label %}
+                </th>
+                <th></th>
+                <th>
+                    Sexo Nascimento:{% render_field form.sexo class="form-control p-10 mb-10 btn-info text-black required" placeholder=form.sexo.label %}
+                </th>
+                <th></th>
+                <th>
+                    Nacionalidade:{% render_field form.nacionalidade class="form-control p-10 mb-10 btn-info text-black" placeholder=form.nacionalidade.label %}
+                </th>
+                <th></th>
+                <th>
+                    Naturalidade:{% render_field form.naturalidade class="form-control p-10 mb-10 btn-info text-black" placeholder=form.naturalidade.label %}
+                </th>
+            </thead>
+        </table>
+        <table class="table">
+            <tr>
+                Profissão:{% render_field form.profissao class="form-control p-10 mb-10 btn-info text-black" placeholder=form.profissao.label %}
+            </tr>
+            <tr>
+                Nome pai: {% render_field form.nome_pai class="form-control p-10 mb-10 btn-info text-black" placeholder=form.nome_pai.label %}
+            </tr>
+            <tr>
+                Nome mae: {% render_field form.nome_mae class="form-control p-10 mb-10 btn-info text-black" placeholder=form.nome_mae.label %}
+            </tr>
+            <tr>
+                e-mail: {% render_field form.email class="form-control p-10 mb-10 btn-info text-black" placeholder=form.email.label %}
+            </tr>
+            <tr>
+                Endereço: {% render_field form.endereco class="form-control p-10 mb-10 btn-info text-black" placeholder=form.endereco.label %}
+            </tr>
+        </table>
+        <table class="table">
+            <td>
+                Estado Civil:{% render_field form.estado_civil class="form-control p-10 mb-10 btn-info text-black" placeholder=form.estado_civil.label %}
+            </td>
+        </table>
+        <hr>
+        <button type="submit" class="btn btn-sm btn-primary">Confirmar</button>
+        <button type="button"
+                class="btn btn-warning"
+                onclick="window.history.back();">Cancelar</button>
+    </form>
+    <script>
+                                                                                                                                                                                                                                             $(document).ready(function() {
+                                                                                                                                                                                                                                             $("#b1").click(function() {
+                                                                                                                                                                                                                                             $(".rb").show();
+                                                                                                                                                                                                                                             $(".rb").attr("disabled", true);
+
+
+                                                                                                                                                                                                                                             });
+                                                                                                                                                                                                                                             });
+
+
+                                                                                                                                                                                                                                             function getanswers() {
+                                                                                                                                                                                                                                             document.getElementById("UserAnswers").innerHTML = "";
+                                                                                                                                                                                                                                             var e = document.getElementsByTagName("input");
+                                                                                                                                                                                                                                             for (i = 0; i <= e.length; i++) {
+                                                                                                                                                                                                                                             if (e[i].type == "radio") {
+                                                                                                                                                                                                                                             if (e[i].checked) {
+                                                                                                                                                                                                                                             document.getElementById("UserAnswers").innerHTML += "Q " + e[i].name + " As respostas que você selecionou são : " + e[i].value + "<br>";
+                                                                                                                                                                                                                                             }
+                                                                                                                                                                                                                                             }
+
+                                                                                                                                                                                                                                             if (e[i].type == "text") {
+                                                                                                                                                                                                                                             document.getElementById("UserAnswers").innerHTML += "Q " + e[i].name + " As respostas que você selecionou são : " + e[i].value + "<br>";
+                                                                                                                                                                                                                                             }
+                                                                                                                                                                                                                                             }
+                                                                                                                                                                                                                                             }
+    </script>

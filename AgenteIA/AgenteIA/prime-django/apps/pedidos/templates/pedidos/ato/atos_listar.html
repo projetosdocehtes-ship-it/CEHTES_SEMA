@@ -1,0 +1,227 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load pedidos_formatos %}
+{% load humanize %}
+{% load django_tables2 %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        Lista de Atos do Pedido nº {{ pedido.numero_pedido }}
+                        <span class="d-block pt-2 text-white ">
+                            {% if pedido.numero_protocolo_firebird %}
+                                Protocolo nº {{ pedido.numero_protocolo_firebird|formatar_numero_registro }}
+                                &emsp;Selo: {{ pedido.numero_selo_firebird }}
+                                &emsp;Cód. Segurança: {{ pedido.codigo_seguranca_firebird|formatar_codigo_seguranca }}
+                                <a class="text-white"
+                                   title="Atualizar a página para visualizar os dados alterados"
+                                   data-toggle="tooltip"
+                                   data-placement="top"
+                                   style="margin-left: 10px"
+                                   onclick="window.location.reload();">
+                                    <i class="icon feather icon-refresh-ccw f-16"></i>
+                                </a>
+                            </span>
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-striped table-bordered no-footer nowrap">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Atos</th>
+                                <th>Emolumento</th>
+                                <th>Detalhes</th>
+                                <th>Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if atos_orfaos %}
+                                {% for ato in atos_orfaos %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>
+                                            <i class="fas fa-caret-square-right d-none d-md-inline-block"
+                                               title="Ato Principal"></i>
+                                            {{ ato.nome }}
+                                            <br>
+                                            {% if ato.titulo %}<small>{{ ato.titulo }}</small>{% endif %}
+                                            {% if ato.imovel_numero_registro %}
+                                                <p>
+                                                    <b>{{ ato.imovel_tipo_registro|default:"Matrícula" }}:</b> {{ ato.imovel_numero_registro }} RI: {{ ato.imovel_cartorio|default:"1" }}
+                                                </p>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ ato.tipo_emolumento }}
+                                            <br>
+                                            <small>{{ ato.total_com_desconto_tributacao|formatar_moeda }}</small>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            {% for grupo in atos_com_complementares %}
+                                <tr>
+                                    <td>{{ forloop.counter|add:atos_orfaos.count }}</td>
+                                    <td>
+                                        <i class="fas fa-caret-square-right d-none d-md-inline-block"
+                                           title="Ato Principal"></i>
+                                        {{ grupo.principal.nome }}
+                                        <br>
+                                        {% if grupo.principal.titulo %}Titulo: <b>{{ grupo.principal.titulo }}</b>{% endif %}
+                                        {% if grupo.principal.imovel_numero_registro %}
+                                            <br>
+                                            {{ grupo.principal.imovel_tipo_registro|default:"Matrícula" }}: <b>{{ grupo.principal.imovel_numero_registro|formatar_numero_registro }}</b> Num. Ato: <b>{{ grupo.principal.numero_ato|default:"" }}</b> Cartório: <b>{{ grupo.principal.imovel_cartorio|default:"1" }}</b>
+                                        {% endif %}
+                                        <br>
+                                        Valor da Avaliação: {{ grupo.principal.valor_avaliacao|formatar_moeda }}
+                                        <br>
+                                        Valor do Título: {{ grupo.principal.valor_titulo|formatar_moeda }}
+                                    </td>
+                                    <td>
+                                        {{ grupo.principal.tipo_emolumento }}
+                                        <br>
+                                        <small>Código: <b>{{ grupo.principal.codigo_emolumento_individual }}</b>
+                                            - Quantidade: <b>{{ grupo.principal.quantidade }}</b>
+                                            <br>
+                                            Tributação: <b>{{ grupo.principal.tributacao|truncatechars:60 }}</b>
+                                            <br>
+                                            Total do Item: <b>{{ grupo.principal.total_com_desconto_tributacao|formatar_moeda }}</b>
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <a class="btn btn-sm btn-outline-info text-dark"
+                                               href="{{ grupo.principal.get_absolute_url }}">
+                                                <i class="icon feather icon-info"></i>Detalhes
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-primary text-dark"
+                                               href="{{ grupo.principal.get_update_url }}">
+                                                <i class="icon feather icon-edit"></i>Editar Ato
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-primary text-dark"
+                                               href="{% url 'pedidos:ato_detail' grupo.principal.pk %}">
+                                                <i class="icon feather icon-users"></i>  Partes
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a href="{{ grupo.principal.get_ato_complementar_create_url }}"
+                                               class="btn btn-sm btn-outline-primary text-dark"
+                                               style="width: 236px">
+                                                <i class="icon feather icon-plus"> </i>Adicionar Ato Complementar
+                                            </a>
+                                            <a href="{{ grupo.principal.get_delete_url }}"
+                                               class="btn btn-sm btn-outline-danger d-none d-md-inline-block">
+                                                <i class="icon feather icon-trash" title="Excluir"> </i>Excluir
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <a href="{% url 'pedidos:duplicar_ato_protocolo_quantidade' pk=grupo.principal.pk %}"
+                                               class="btn btn-sm btn-outline-info"
+                                               style="width: 130px">
+                                                <i class="icon feather icon-copy m-0"></i>&emsp;Duplicar
+                                            </a>
+                                            <a {% comment %}
+                                               href="{% url 'home:base_conhecimento_protocolo' pedido_item_id=0 ato_id=0 numero_protocolo_pesquisar=0 numero_imovel_id='0' tipo_imovel_id='0' cartorio_imovel_id='0' classe_id='U' %}"
+                                               {% endcomment %}
+                                               class="btn btn-sm btn-outline-secondary"
+                                               style="width: 150px">
+                                                <i class="feather icon-check-square"></i>Check-List Balcão</a>
+                                        </div>
+                                        <div>
+                                            <a class="btn btn-sm text-white"
+                                               style="background-color: #3d0c02"
+                                               href="{% url 'home:minutas_view' pedido_item_id=grupo.principal.id ato_id=grupo.principal.ato_praticavel.home_atos_id %}"
+                                               target="_blank"
+                                               title="Acessar as minutas para o Ato."
+                                               aria-pressed="true">
+                                                &emsp;<i class="icon feather icon-file-text"></i>Minutas&emsp;
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% if grupo.complementares %}
+                                    {% for ato_complementar in grupo.complementares %}
+                                        <tr style="background-color: #ffffff;">
+                                            <td>{{ forloop.parentloop.counter }}. {{ forloop.counter }}</td>
+                                            <!-- Cor de fundo diferente para atos complementares -->
+                                            <td style="padding-left: 20px; font-style: italic;">
+                                                <!-- Indentação e estilo para atos complementares -->
+                                                <i class="fas fa-project-diagram d-none d-md-inline-block"
+                                                   title="Ato Complementar"></i> {{ ato_complementar.nome }}
+                                            </td>
+                                            <td>
+                                                {{ ato_complementar.tipo_emolumento }}
+                                                <br>
+                                                <small>Código: <b>{{ ato_complementar.codigo_emolumento_individual }}</b>
+                                                    - Quantidade: <b>{{ ato_complementar.quantidade }}</b>
+                                                    <br>
+                                                    Tributação: <b>{{ ato_complementar.tributacao|truncatechars:60 }}</b>
+                                                    <br>
+                                                    Total do Item: <b>{{ ato_complementar.total_com_desconto_tributacao|formatar_moeda }}</b>
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-sm btn-outline-info text-dark"
+                                                       href="{{ ato_complementar.get_absolute_url }}">
+                                                        <i class="icon feather icon-info"></i>Detalhes</a>
+                                                    <a class="btn btn-sm  btn-outline-secondary text-dark"
+                                                       href="{{ ato_complementar.get_update_url }}">
+                                                        <i class="icon feather icon-edit"></i>Editar Ato</a>
+                                                    <a href="{{ ato_complementar.get_delete_url }}"
+                                                       class="btn btn-sm btn-outline-danger d-none d-md-inline-block">
+                                                        <i class="icon feather icon-trash" title="Excluir"> </i>Excluir
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <a href="{% url 'pedidos:duplicar_ato_protocolo_quantidade' pk=ato_complementar.pk %}"
+                                                           class="btn btn-sm btn-outline-info"
+                                                           style="width: 130px">
+                                                            <i class="icon feather icon-copy m-0"></i>&emsp;Duplicar
+                                                        </a>
+                                                        <a type="button"
+                                                           {% comment %}
+                                                           href="{% url 'home:base_conhecimento_protocolo' pedido_item_id=0 ato_id=0 numero_protocolo_pesquisar=0 numero_imovel_id='0' tipo_imovel_id='0' cartorio_imovel_id='0' classe_id='U' %}"
+                                                           {% endcomment %}
+                                                           class="btn btn-sm btn-outline-secondary"
+                                                           style="width: 150px">
+                                                            <i class="feather icon-check-square"></i>Check-List Balcão</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex flex-wrap align-items-center">
+                            {% if pedido.numero_protocolo_firebird %}
+                                <a class="btn btn-sm btn-secondary"
+                                   href="{% url 'home:abrir_livro01_por_numero_protocolo' numero_protocolo=pedido.numero_protocolo_firebird %}">
+                                    <i class="fas fa-newspaper d-none d-md-inline-block"></i> Voltar ao Protocolo
+                                </a>
+                            {% else %}
+                                <a class="btn btn-sm btn-secondary" href="{{ pedido.get_absolute_url }}">
+                                    <i class="fas fa-newspaper d-none d-md-inline-block"></i> Voltar ao Pedido
+                                </a>
+                            {% endif %}
+                            {% comment %} <a class="btn btn-sm btn-success text-dark" href="#">
+                                <i class="fas fa-info d-md-inline-block"></i> Visualizar em grade
+                            </a> {% endcomment %}
+                            <a class="btn btn-sm btn-primary text-white"
+                               href="{% url 'pedidos:ato_create' pedido.pk %}">
+                                <i class="icon feather icon-plus d-none d-md-inline-block"></i> Adicionar Ato
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock content %}

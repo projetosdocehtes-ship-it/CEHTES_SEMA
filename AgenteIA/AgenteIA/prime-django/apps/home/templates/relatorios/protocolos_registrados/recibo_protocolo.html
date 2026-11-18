@@ -1,0 +1,27 @@
+{% extends "relatorios/protocolos_registrados/base_relatorio_a4.html" %}
+{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load home_formatos %}
+{% load barcode_filters %}
+{% load static %}
+{% block content %}
+    {% include "recibos/cabecalho_cartorio.html" %}
+    <div class="titulo-relatorio">
+        <h2>{{ titulo }}</h2>
+    </div>
+    {% for relatorio in relatorios_data %}
+        <div class="protocolo">
+            {% with relatorio.protocolo as protocolo %}
+                {% with relatorio.agora as agora %}
+                    {% with relatorio.titulo as titulo %}
+                        {% with relatorio.itens_agrupados as itens_agrupados %}
+                            {% include "relatorios/protocolos_registrados/snippet_recibo_protocolo.html" %}
+                        {% endwith %}
+                    {% endwith %}
+                {% endwith %}
+            {% endwith %}
+        </div>
+    {% endfor %}
+    <small>Impresso por: {{ request.user.username|title }} em {{ agora }}</small>
+{% endblock %}

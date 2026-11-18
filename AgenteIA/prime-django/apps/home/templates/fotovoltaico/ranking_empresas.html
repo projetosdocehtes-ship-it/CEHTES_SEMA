@@ -1,0 +1,107 @@
+{% extends "fotovoltaico/base.html" %}
+{% block title %}Ranking de empresas{% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="card-header bg-dark text-white">
+  <h5>Parâmetros para o Projeto: {{ projeto.nome_projeto }}</h5>
+</div>
+
+<div class="row">
+  <div class="col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+
+          {{ form|crispy }}
+
+          <button class="btn btn-sm btn-primary" title="Clique aqui para gerar o ranking">
+            <i class="fas fa-chart-line"></i>Gerar ranking
+          </button>
+
+          <a class="btn btn-sm btn-warning text-dark"
+            href="{% url 'home:perguntas_list' pk=projeto.id %}"
+            title="Clique aqui para ver ou fazer perguntas para IA">
+            <i class="fas fa-robot"></i>Perguntas p/ IA
+          </a>
+
+          <a href="{% url 'home:quantas_placas' pk=projeto.id %}"
+             class="btn btn-sm btn-outline-success text-dark d-inline-flex align-items-center"
+             title="Clique aqui para CALCULAR a quantidade placas">
+             <i class="fas fa-arrow-left me-3"></i><span class="ms-1">Voltar Placas</span>
+          </a>
+
+          <a href="{% url 'home:projeto_visualizar' pk=projeto.id %}"
+             class="btn btn-sm btn-outline-secondary text-dark d-inline-flex align-items-center">
+             <i class="fas fa-arrow-left me-4"></i><span class="ms-0">Voltar Projeto</span>
+          </a>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8 mt-4 mt-lg-0">
+    {% if ranked %}
+      <div class="card shadow-sm">
+        <div class="card-body alert alert-info">
+          <h4 class="card-title"><b>Ranking:</b></h4>
+          <hr>
+
+          <div class="table-responsive">
+            <table class="table table-sm table-striped align-middle">
+              <thead>
+                <tr>
+                  {% with sample=ranked|first %}
+                    {% for k,v in sample.items %}
+                      <th>
+                        {% if k == "marca" %}Marca
+                        {% elif k == "potencia_nominal" %}Potência (Wp)
+                        {% elif k == "vmp" %}Vmp (V)
+                        {% elif k == "numero_celulas" %}Células
+                        {% elif k == "eficiencia" %}Eficiência (%)
+                        {% elif k == "score" %}Score
+                        {% else %}{{ k|title }}{% endif %}
+                      </th>
+                    {% endfor %}
+                  {% endwith %}
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for row in ranked %}
+                  <tr>
+                    {% for k,v in row.items %}
+                      <td>
+                        {% if k == "eficiencia" %}{{ v|floatformat:2 }}%
+                        {% elif k == "potencia_nominal" or k == "vmp" or k == "score" %}
+                          {{ v|floatformat:2 }}
+                        {% else %}
+                          {{ v }}
+                        {% endif %}
+                      </td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          {% if top %}
+            <div class="alert alert-success mt-3">
+              <b>Recomendação inicial:</b>
+              {{ top.marca|default:"—" }} —
+              potência {{ top.potencia_nominal|floatformat:2 }} Wp,
+              Vmp {{ top.vmp|floatformat:2 }} V,
+              células {{ top.numero_celulas }},
+              eficiência {{ top.eficiencia|floatformat:2 }}%,
+              score {{ top.score|floatformat:3 }}.
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

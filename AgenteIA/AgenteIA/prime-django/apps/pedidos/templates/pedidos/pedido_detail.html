@@ -1,0 +1,504 @@
+{% extends "layouts/base.html" %}
+{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load pedidos_formatos %}
+{% block stylesheets %}
+    <style>
+         . {
+              color: orange;
+         }
+
+         .icon-text-container {
+              display: flex;
+              align-items: center;
+         }
+
+         .icon {
+              margin-right: 10px;
+         }
+
+         .text-container {
+              display: flex;
+              flex-direction: column;
+         }
+    </style>
+{% endblock stylesheets %}
+{% block content %}
+    {% if not pedido %}
+        <p>O número informado não corresponde a um pedido existente!</p>
+    {% else %}
+        <!-- O código que requer um pedido válido -->
+        <div class="card-body">
+            <div class="row justify-content-end">
+                <div class="col-auto">
+                    {% if pedido.primeiro and pedido.anterior %}
+                        <a href="{{ pedido.primeiro.get_absolute_url }}"><i class="fas fa-angle-double-left"></i> Primeiro</a>
+                    {% endif %}
+                </div>
+                <div class="col-auto">
+                    {% if pedido.anterior %}
+                        <a href="{{ pedido.anterior.get_absolute_url }}"><i class="fas fa-angle-left"></i> Anterior</a>
+                    {% endif %}
+                </div>
+                <div class="col-auto">
+                    {% if pedido.seguinte %}
+                        <a href="{{ pedido.seguinte.get_absolute_url }}"> Próximo <i class="fas fa-angle-right"></i></a>
+                    {% endif %}
+                </div>
+                <div class="col-auto">
+                    {% if pedido.ultimo and pedido.seguinte %}
+                        <a href="{{ pedido.ultimo.get_absolute_url }}"> Último <i class="fas fa-angle-double-right"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="card shadow-4">
+                <div class="card-header">
+                    <h5>
+                        {% if pedido.ativo %}
+                            Pedido nº {{ pedido.numero_pedido }}
+                            {% if pedido.numero_protocolo_firebird %}
+                                <span class="badge bg-warning f-18" style="padding-left: 120px;">
+                                    Protocolo nº {{ pedido.numero_protocolo_firebird|formatar_numero_registro }}
+                                    &emsp;Selo: {{ pedido.numero_selo_firebird }}
+                                    &emsp;Cód. Segurança: {{ pedido.codigo_seguranca_firebird|formatar_codigo_seguranca }}
+                                </span>
+                            {% endif %}
+                        {% else %}
+                            <span class="badge bg-danger f-18">Pedido nº {{ pedido.numero_pedido }}</span>
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-calendar f-22 "></i>
+                                <div class="text-container">
+                                    <small>Entrada</small>
+                                    <a href="{{ pedido.apresentante.get_update_url }}" class="ml-1">{{ pedido.data_entrada|date:"DATETIME_FORMAT" }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-calendar f-22"></i>
+                                <div class="text-container">
+                                    <small>Previsão</small>
+                                    <a href="#" class="ml-1">{{ pedido.data_prevista|naturalday }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-calendar f-22"></i>
+                                <div class="text-container">
+                                    <small>Vencimento</small>
+                                    <a href="#" class="ml-1">{{ pedido.data_validade|naturalday }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-calendar f-22"></i>
+                                <div class="text-container">
+                                    <small>Agendado</small>
+                                    {% if pedido.numero_protocolo_firebird %}
+                                        <a href="#" class="ml-1">{{ pedido.numero_protocolo_firebird|get_data_agendamento|date:"d/m/y" }}</a>
+                                    {% else %}
+                                        <a href="#" class="ml-1">Não Agendado</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <!-- Segunda linha -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-user f-22"></i>
+                                <div class="text-container">
+                                    <small>Apresentante</small>
+                                    <a href="{% url 'pedidos:apresentante_update' pk=pedido.apresentante.pk %}"
+                                       class="ml-1">{{ pedido.apresentante.nome|default:"" }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-credit-card f-22"></i>
+                                <div class="text-container">
+                                    <small>Documentos</small>
+                                    <a href="{% url 'pedidos:apresentante_update' pk=pedido.apresentante.pk %}"
+                                       class="ml-1">
+                                        {% if pedido.apresentante.get_documento_formatado %}
+                                            {{ pedido.apresentante.sigla_tipo_documento }} {{ pedido.apresentante.get_documento_formatado|default:"" }}
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="icon-text-container">
+                                <i class="fab fa-whatsapp f-22 m-r-10"></i>
+                                <div class="text-container">
+                                    <small>Contato(s)</small>
+                                    <a href="https://api.whatsapp.com/send/?phone=+{{ pedido.apresentante.telefone|default:''|formatar_telefone|internacionalizar_telefone }}&text=Olá, {{ pedido.apresentante.first_name|title }}, aqui é {{ user.first_name|title }}, do *{{ user.cartorio.nome }}*, tudo bem?. Gostaria de falar com você sobre o seu pedido {{ pedido.numero_pedido }} realizado {{ pedido.data_entrada|naturaltime }}"
+                                       class="ml-1"
+                                       data-bs-toggle="tooltip"
+                                       data-placement="top"
+                                       data-bs-original-title="Abrir Whatsapp (se houver)"
+                                       target="_blank">{{ pedido.apresentante.telefone|default:'Não Informado'|formatar_telefone }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-align-left f-22 m-r-10"></i>
+                                <div class="text-container">
+                                    <small>Observações</small>
+                                    <a href="{{ pedido.apresentante.get_update_url }}" class="ml-1">
+                                        <span class="font-weight-bold">{{ pedido.apresentante.observacao|default:"(Não há observações)" }}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <!-- Terceira linha -->
+                    <div class="row mb-4 mr-10">
+                        <div class="col">
+                            <i class="icon feather icon-list f-22  m-r-10"></i>
+                            <a class="fw-bold"
+                               href="{% url 'pedidos:atos_list' pedido_id=pedido.pk %}">
+                                {{ pedido.atos.count }} Atos
+                            </a>
+                        </div>
+                        <div class="col">
+                            <i class="icon feather icon-home f-22  m-r-10"></i>
+                            <a class="fw-bold"
+                               href="{% url 'pedidos:atos_list' pedido_id=pedido.pk %}">
+                                {% comment %} <i class=" fas fa-home f-22  m-r-10"></i> {% endcomment %}
+                                {{ pedido.imoveis.count }} Imóveis
+                            </a>
+                        </div>
+                        <div class="col">
+                            <i class="icon feather icon-users f-22  m-r-10"></i>
+                            <a class="fw-bold"
+                               href="{% url 'pedidos:pedido_partes_list' pk=pedido.pk %}?next={{ request.path }}">
+                                {{ pedido.partes.count }} Partes
+                            </a>
+                        </div>
+                        <div class="col">
+                            <i class="icon feather icon-paperclip f-22  m-r-10"></i>
+                            <a class="fw-bold"
+                               href="{% url 'ged:arquivos_list' %}?content_type_id={{ pedido_content_type_id }}&object_id={{ pedido.id }}">
+                                {% comment %} <i class=" fas fa-paperclip f-22  m-r-10"></i> {% endcomment %}
+                                {{ pedido.arquivos.count }} Anexos
+                            </a>
+                        </div>
+                        {% comment %} <div class="col">
+                                <a class="fw-bold" href="#selos">
+                                    <i class=" fab fa-sellcast f-22  m-r-10"></i> {{ selos_table.data|length }} SeloEletronico
+                                </a>
+                        </div> {% endcomment %}
+                    </div>
+                    {% comment %} <div class="row mb-4"> {% endcomment %}
+                    {% comment %} <div class="col">
+                                <a class="fw-bold" href="{% url 'ged:arquivos_list' %}?content_type_id={{ pedido_content_type_id }}&object_id={{ pedido.id }}">
+                                    <i class=" fas fa-paperclip f-22  m-r-10"></i> {{ pedido.arquivos.count }} Anexos
+                                </a>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="col">
+                                <a class="fw-bold" href="{% url 'pedidos:atos_list' pedido_id=pedido.pk %}">
+                                    <i class=" fas fa-list-alt f-22  m-r-10"></i> {{ atos_table.data|length }} Atos
+                                </a>
+                    </div> {% endcomment %}
+                    {% comment %} <div class="col">
+                                <a class="fw-bold" href="#eventos">
+                                    <i class=" fas fa-th-list f-22  m-r-10"></i> {{ eventos_table.data|length }} Eventos
+                                </a>
+                    </div> {% endcomment %}
+                    {% comment %} </div> {% endcomment %}
+                    <hr />
+                    <!-- Quarta linha -->
+                    <div class="row mb-4">
+                        <div class="col-md-2">
+                            <div class="icon-text-container">
+                                <i class="mdi mdi-cash-usd f-22 m-r-10"></i>
+                                <div class="text-container">
+                                    <small>Emolumentos</small>
+                                    <a class="ml-1" target="_blank">{{ pedido.total_emolumentos_pedido_de_protocolo|arrendamento_bancario:2|formatar_moeda }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="icon-text-container">
+                                <i class="mdi mdi-cash-usd f-22 m-r-10"></i>
+                                <div class="text-container">
+                                    <small>Recompe</small>
+                                    <a class="ml-1" target="_blank">{{ pedido.total_fundo1_pedido_de_protocolo|arrendamento_bancario:2|formatar_moeda }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="icon-text-container">
+                                <i class="mdi mdi-cash-usd f-22 m-r-10"></i>
+                                <div class="text-container">
+                                    <small>TFJ</small>
+                                    <a class="ml-1" target="_blank">{{ pedido.total_taxa_fiscal_judiciaria_pedido|arrendamento_bancario:2|formatar_moeda }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="icon-text-container">
+                                <i class="mdi mdi-cash-usd f-22 m-r-10"></i>
+                                <div class="text-container">
+                                    <small>ISSQN</small>
+                                    <a class="ml-1" target="_blank">{{ pedido.total_issqn_pedido_de_protocolo|arrendamento_bancario:2|formatar_moeda }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="icon-text-container">
+                                <i class="mdi mdi-cash-usd f-22 m-r-10"></i>
+                                <div class="text-container">
+                                    <div style="font-size: 1.5em; ">Total do Pedido</div>
+                                    <a class="ml-1" target="_blank" style="font-size: 1.5em">
+                                        {{ pedido.total_pedido_de_protocolo|arrendamento_bancario:2|formatar_moeda }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <!-- Quarta linha -->
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="icon-text-container">
+                                    <i class="icon feather icon-user f-22 m-r-10"></i>
+                                    <div class="text-container">
+                                        <small>Criado Por</small>
+                                        <a href=" {{ request.user.get_absolute_url }} " class="ml-1">{{ pedido.criado_por }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="icon-text-container">
+                                    <i class="icon feather icon-user f-22 m-r-10"></i>
+                                    <div class="text-container">
+                                        <small>Criado Em</small>
+                                        <a class="ml-1">{{ pedido.criado_em|naturaltime }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Quinta linha -->
+                    {% comment %} <div class="row mb-4">
+                                    <div class="col">
+                                        <b> ISSQN:</b> <span>{{ pedido.total_issqn_pedido_de_protocolo|arrendamento_bancario:2|formatar_moeda }}</span>
+                                    </div>
+                    </div> {% endcomment %}
+                    <hr />
+                    <div class="row mb-4">
+                        {% comment %} <div class="col-md-2">
+                                <div class="icon-text-container">
+                                    <i class="mdi mdi-cash-multiple f-22 m-r-10"></i>
+                                    <div class="text-container">
+                                        <small>Pago</small>
+                                        <a class="ml-1" target="_blank">{{ 0|arrendamento_bancario:2|formatar_moeda }}</a>
+                                    </div>
+                                </div>
+                        </div> {% endcomment %}
+                        {% comment %} <div class="col-md-2">
+                                <div class="icon-text-container">
+                                    <i class="mdi mdi-cash-multiple f-22 m-r-10"></i>
+                                    <div class="text-container">
+                                        <small>A Pagar</small>
+                                        <a class="ml-1" target="_blank">R$ 0,00</a>
+                                    </div>
+                                </div>
+                        </div> {% endcomment %}
+                    </div>
+                    {% comment %} <p>
+                                        <i class=" fas fa-paper-plane"></i> Protocolado em 16/03/2024 por João Ninguem
+                                    </p>
+                                    <p>
+                                        <i class=" feather icon-x-square"></i> Cancelado em 28/03/2024 por decurso de prazo
+                    </p> {% endcomment %}
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'pedidos:pedido_create' %}"
+                       class="btn btn-sm btn-primary activate  text-white f-12"
+                       title="Criar novo pedido">
+                        <i class="icon feather icon-plus"></i> Novo Pedido
+                    </a>
+                    {% if pedido.numero_protocolo_firebird|default:"" == "" %}
+                        {% if pedido.ativo %}
+                            <a class="btn btn-sm btn-outline-danger"
+                               href="{% url 'pedidos:pedido_protocolo_cancelar' pk=pedido.pk %}">
+                                <i class="fas fa-times"></i> Cancelar Pedido
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                    <a class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'pedidos:ato_create' pedido.pk %}">
+                        <i class=" icon feather icon-plus">
+                        </i>Adicionar Titulo \ Ato
+                    </a>
+                    {% comment %} <a class="btn btn-sm btn-secondary" href="{% url 'pedidos:adicionar_parte' pedido.pk %}">
+                            <i class=" icon feather icon-users">
+                            </i>Adicionar Parte
+                        </a>
+                        <a class="btn btn-sm btn-secondary" href="{% url 'pedidos:adicionar_imovel' pedido.pk %}">
+                            <i class=" icon feather icon-home">
+                            </i>Adicionar Imovel
+                    </a> {% endcomment %}
+                    <!-- Botão para acionar o dropdown -->
+                    <a class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'pedidos:pedidos_list' %}">
+                        <i class="icon feather icon-search">
+                        </i>Pesquisar
+                    </a>
+                    {% if pedido.numero_protocolo_firebird|default:"" == "" %}
+                        <a class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'pedidos:pedido_recibo_print' pedido.pk %}"
+                           target="_blank">
+                            <i class=" icon feather icon-printer">
+                            </i>Orçamento
+                        </a>
+                    {% elif pedido.numero_protocolo_firebird %}
+                        <a class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'pedidos:pedido_recibo_protocolo_print' pedido.pk %}"
+                           target="_blank">
+                            <i class=" icon feather icon-printer">
+                            </i>Comprovante
+                        </a>
+                    {% endif %}
+                    {% if pedido.numero_protocolo_firebird|default:"" == "" %}
+                        <a id="id_prenotar_btn"
+                           class="btn btn-sm btn-secondary"
+                           href="{% url 'pedidos:pedido_protocolar' pedido.pk %}">
+                            <i class=" icon feather icon-upload"></i> Prenotar
+                        </a>
+                    {% elif pedido.numero_protocolo_firebird %}
+                        <a class="btn btn-sm btn-secondary text-white "
+                           href="{% url 'home:distribuicao_protocolo_numero' numero_protocolo=pedido.numero_protocolo_firebird %}"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-edit"></i> Encaminhar
+                        </a>
+                        <a class="btn btn-sm btn-success text-dark font-weight-bold"
+                           href="{% url 'home:enviar_pedido_de_protocolo_ao_caixa' numero_protocolo=pedido.numero_protocolo_firebird valor_total_protocolo=pedido.total_pedido_de_protocolo %}"
+                           data-bs-toggle="tooltip"><i class="fas fa-dollar-sign"></i>Receber
+                        </a>
+                    {% endif %}
+                    <!-- Dropdown Opções -->
+                    <a class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                       type="button"
+                       id="dropdownMenuButton"
+                       data-bs-toggle="dropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false"><i class=" icon feather icon-sliders">
+                    </i>Opções</a>
+                    <!-- Opções do dropdown -->
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item"
+                           href="{% url 'pedidos:duplicar_pedido_de_protocolo' pedido.pk %}">
+                            <i class="icon feather icon-copy m-0"></i>&emsp;Duplicar este pedido
+                        </a>
+                        <a class="dropdown-item"
+                           href="{% url 'pedidos:pedido_export' pedido.pk %}">
+                            <i class=" icon feather icon-upload">
+                            </i>Atualizar sistema anterior
+                        </a>
+                        <a class="dropdown-item" href="{{ pedido.get_protocolo_url }}">
+                            <i class=" icon feather icon-airplay">
+                            </i>Abrir Protocolo
+                        </a>
+                        <a class="dropdown-item"
+                           href="{% url 'ged:arquivo_upload_generico' content_type_id=pedido_content_type_id object_id=pedido.id %}">
+                            <i class="icon feather icon-paperclip">
+                            </i>Anexar Arquivo
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Requerimentos para Este Pedido</h5>
+                            <a class="text-white"
+                               style="background-color: #507CA5"
+                               target="_blank"
+                               data-bs-toggle="tooltip"></a>
+                        </div>
+                        <div class="card-body">{% render_table requerimento_table %}</div>
+                        <div class="card-footer">
+                            <a class="btn btn-sm btn-primary"
+                               href="{% url 'pedidos:requerimento_create' %}">Novo Requerimento</a>
+                            <a class="btn btn-sm btn-success text-dark"
+                               target="_blank"
+                               href="{% url 'pedidos:requerimento_pedido_print' pk=requerimento_inicial_id pedido_id=pedido.numero_pedido %}">
+                                <i class="icon feather icon-printer"></i>Imprimir Requerimento Inicial</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Atos Neste Pedido</h5>
+                            <a class="text-white"
+                               style="background-color: #507CA5"
+                               target="_blank"
+                               data-bs-toggle="tooltip"></a>
+                        </div>
+                        <div class="card-body">
+                            {% for ato in pedido.atos.all %}
+                                <p class="card-text">
+                                    <ul>
+                                        <li>
+                                            <a href="{{ ato.get_absolute_url }}">{{ ato.nome }}
+                                                {% if ato.imovel_numero_registro %}
+                                                    - {{ ato.imovel_tipo_registro.sigla }}.{{ ato.imovel_numero_registro }}
+                                                    {% if ato.numero_ato %}- {{ ato.tipo_ato }}.{{ ato.numero_ato }}{% endif %}
+                                                    {% if ato.valor_avaliacao %}- R${{ ato.valor_avaliacao }}{% endif %}
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </p>
+                            {% endfor %}
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-sm btn-outline-secondary"
+                               href="{% url 'pedidos:ato_create' pedido.pk %}">
+                                <i class=" icon feather icon-plus">
+                                </i>Adicionar Titulo \ Ato
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}
+{% block javascripts %}
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        const link = document.getElementById('id_prenotar_btn');
+
+        link.addEventListener('click', function(event) {
+            // Desativa o link
+            link.classList.add('disabled');
+            link.style.pointerEvents = 'none';
+            link.style.opacity = '0.5';
+        });
+    });
+    </script>
+{% endblock javascripts %}

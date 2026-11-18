@@ -1,0 +1,58 @@
+{% load home_formatos %}
+<div class="card">
+    <div class="card-header">
+        <h5>Credor</h5>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <button type="button"
+                    class="btn btn-sm btn-primary "
+                    data-bs-toggle="modal"
+                    data-bs-target="#addCredorModal"
+                    title="Cadastrar um novo Credor para o protocolo">
+                <i class="icon feather icon-user-plus"></i> Novo Credor
+            </button>
+            {% include 'updateC.html' %}
+            {% if partes_C %}
+                <thead>
+                    <tr>
+                        <th class="p-12 mb-12 bg-secondary text-white"
+                            style="font-size:10px;
+                                   text-align:center">CPF/CNPJ</th>
+                        <th class="p-12 mb-12 bg-secondary text-white"
+                            style="font-size:10px;
+                                   text-align:center">Nome</th>
+                        <th class="p-12 mb-12 bg-secondary text-white"
+                            style="font-size:10px;
+                                   text-align:center">Documento</th>
+                        <th class="p-12 mb-12 bg-secondary text-white"
+                            style="font-size:10px;
+                                   text-align:center">Estado Civil</th>
+                        <th class="p-12 mb-12 bg-secondary text-white"
+                            style="font-size:10px;
+                                   text-align:center">Opções</th>
+                    </tr>
+                </thead>
+            {% endif %}
+            <tbody>
+                {% for partesC in partes_C %}
+                    <tr>
+                        <th scope="row">{{ partesC.pessoa.cpf|default:""|formatar_documento }}</th>
+                        <th scope="row">{{ partesC.pessoa.nome }}</th>
+                        <th scope="row">{{ partesC.pessoa.documento|default:"" }}</th>
+                        <th scope="row">{{ partesC.pessoa.estado_civil|get_descricao_estado_civil }}</th>
+                        <td>
+                            <!-- Botão que irá abrir o modal TRANSMITENTE - Detalhes dos dados do Adquirente selecionado -->
+                            {% include 'modal_detalhes_pessoa_C.html' %}
+                            <!-- Alterar os dados do Transmitente selecionado -->
+                            {% include 'modal_detalhes_pessoa_C.html' %}
+                            <!-- DESVINCULAR Transmitente -->
+                            {% comment %} {% include 'desvincularModalPessoaC.html' %} {% endcomment %}
+                        </td>
+                        <th class="text-right"></th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

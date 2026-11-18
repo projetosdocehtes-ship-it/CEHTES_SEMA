@@ -1,0 +1,307 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% load home_formatos %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    <h3>Importações</h3>
+    <div class="row">
+        {% include "form-importar-protocolo.html" %}
+        {% include "form-importar-imovel-numero.html" %}
+        {% include "form-importar-protocolo-data.html" %}
+        <div class="col-md-4">
+            <form action="{% url 'home:importar_imovel_numero_view' %}"
+                  method="post"
+                  href=".">
+                {% csrf_token %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Registro Geral (L2) ou Registro Auxiliar (L3)</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Tipo de Registro:</span>
+                            <select class="form-select" name="tipo_registro" id="tipo_registro" required>
+                                <option value="M" selected>Matrícula</option>
+                                <option value="T">Transcrição</option>
+                                <option value="I">Inscrição</option>
+                                <option value="A">Registro Auxiliar</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Número</span>
+                            <input type="number"
+                                   class="form-control"
+                                   placeholder="Numero Inicial"
+                                   name="numero_i"
+                                   id="numero_i"
+                                   required>
+                            <input type="number"
+                                   class="form-control"
+                                   placeholder="Numero Final"
+                                   name="numero_f"
+                                   id="numero_f"
+                                   required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Cartório \ RI</span>
+                            <input type="number"
+                                   class="form-control"
+                                   placeholder="digite o número cartório"
+                                   name="cartorio_ri"
+                                   id="cartorio_ri"
+                                   value="1"
+                                   required>
+                        </div>
+                        <button type="submit"
+                                class="btn btn-sm btn-primary "
+                                aria-pressed="true"
+                                role="button">
+                            <i class="icon feather icon-download"></i> Importar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Importar Livro01 - Protocolo por Data</h5>
+                </div>
+                <div class="card-body">
+                    {% comment %} <form class="form-inline" action="{% url 'home:importar_protocolo_data_view' %}" method="post">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">De</div>
+                </div>
+                <input type="date" class="form-control mb-2 mr-sm-2" placeholder="digite a data do protocolo" name="data_protocolo_i" id="data_protocolo_i" required>
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-2 mr-sm-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">Até</div>
+                </div>
+                <input type="date" class="form-control mb-2 mr-sm-2" placeholder="digite a data do protocolo" name="data_protocolo_f" id="data_protocolo_f" required>
+              </div>
+            </div>
+            <div class="col">
+              <button type="submit" class="btn btn-sm btn-primary " aria-pressed="true" role="button">
+                <i class="icon feather icon-download"></i> Importar
+              </button>
+            </div>
+          </div>
+                    </form> {% endcomment %}
+                    {% comment %} <div class="col">
+          <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addImportarProtocoloData" title="Clique para importar por data protocolos de outro sistema">
+            <i class="icon feather icon-download"></i> Importar
+          </button>
+                    </div> {% endcomment %}
+                    <form action="{% url 'home:importar_protocolo_data_view' %}"
+                          method="post"
+                          href=".">
+                        {% csrf_token %}
+                        <input type="hidden" name="parte_id" id="parte_id" value="{{ Protocolo }}" />
+                        <div class="row mb-4">
+                            <div class="input-group mb-12">
+                                <span class="input-group-text">Data</span>
+                                <input type="date"
+                                       class="form-control"
+                                       placeholder="digite a data do protocolo"
+                                       name="data_protocolo_i"
+                                       id="data_protocolo_i"
+                                       value=""
+                                       required>
+                                <input type="date"
+                                       class="form-control"
+                                       placeholder="digite a data do protocolo"
+                                       name="data_protocolo_f"
+                                       id="data_protocolo_f"
+                                       value=""
+                                       required>
+                            </div>
+                        </div>
+                        <!-- BOTOES -->
+                        <button type="submit"
+                                class="btn btn-sm btn-primary "
+                                aria-pressed="true"
+                                role="button">
+                            <i class="icon feather icon-download"></i> Importar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Importar Protocolos por Número</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'home:importar_protocolo' %}" method="post" href=".">
+                        <!-- Não se esqueça dessa tag -->
+                        {% csrf_token %}
+                        <!-- PASSANDO O PROTOCOLO -->
+                        <input type="hidden" name="parte_id" id="parte_id" value="{{ Protocolo }}" />
+                        <!-- NÚMERO -->
+                        <div class="input-group mb-4">
+                            <span class="input-group-text">Número</span>
+                            <input type="number"
+                                   class="form-control"
+                                   placeholder="digite o protocolo"
+                                   name="numero_protocolo_importar"
+                                   id="numero_protocolo_importar"
+                                   value=""
+                                   required>
+                        </div>
+                        <!-- BOTOES -->
+                        <button type="submit"
+                                class="btn btn-sm btn-primary "
+                                aria-pressed="true"
+                                role="button">
+                            <i class="icon feather icon-download"></i> Importar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title ">Importar Protocolos últimos 2 dias</h5>
+                </div>
+                <div class="card-body">
+                    {% comment %} <form class="form-inline"  method="post">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col">
+              <button type="submit" class="btn btn-sm btn-primary " aria-pressed="true" role="button">
+                <i class="icon feather icon-download"></i> Importar
+              </button>
+            </div>
+          </div>
+                    </form> {% endcomment %}
+                    <div class="col">
+                        <a class="btn btn-sm btn-success"
+                           style="font-weight: bold;
+                                  color: #000000"
+                           href="{% url 'home:importar_protocolos_modificados_2_dias_view' %}"
+                           title="Atualizar todos os andamentos do dia."
+                           data-bs-toggle="tooltip">
+                            <i class="icon feather icon-download"></i> Atualizar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title ">Atualizar Novos Andamentos (30 dias)</h5>
+                </div>
+                <div class="card-body">
+                    {% comment %} <form class="form-inline"  method="post">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col">
+              <button type="submit" class="btn btn-sm btn-primary " aria-pressed="true" role="button">
+                <i class="icon feather icon-download"></i> Importar
+              </button>
+            </div>
+          </div>
+                    </form> {% endcomment %}
+                    <div class="col">
+                        <a class="btn btn-sm btn-success"
+                           style="font-weight: bold;
+                                  color: #000000"
+                           href="{% url 'home:importar_protocolos_modificados_view' %}"
+                           title="Atualizar todos os andamentos do dia."
+                           data-bs-toggle="tooltip">
+                            <i class="icon feather icon-download"></i> Atualizar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title ">Gerar Eventos do Protocolo</h5>
+                </div>
+                <div class="card-body">
+                    <div class="col">
+                        <a class="btn btn-sm btn-warning"
+                           style="font-weight: bold;
+                                  color: #000000"
+                           href="{% url 'home:tarefas_agenda' %}"
+                           title="Gerar Eventos para a Agenda do colaborador."
+                           data-bs-toggle="tooltip">
+                            <i class="icon feather icon-download"></i> Atualizar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title ">Importar os Vinculos (Livro 2)</h5>
+                </div>
+                <div class="card-body">
+                    <div class="col">
+                        <a class="btn btn-sm btn-success"
+                           style="font-weight: bold;
+                                  color: #000000"
+                           href="#"
+                           title="Atualizar todos os andamentos do dia."
+                           data-bs-toggle="tooltip">
+                            <i class="icon feather icon-download"></i> Importar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title ">Importar ligações (Livro 3)</h5>
+                </div>
+                <div class="card-body">
+                    <div class="col">
+                        <a class="btn btn-sm btn-warning"
+                           style="font-weight: bold;
+                                  color: #000000"
+                           href="#"
+                           title="Gerar as ligações do Livro 3."
+                           data-bs-toggle="tooltip">
+                            <i class="icon feather icon-download"></i> Importar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title ">Importar Emolumentos Itens</h5>
+                </div>
+                <div class="card-body">
+                    <div class="col">
+                        <a class="btn btn-sm btn-primary"
+                           style="font-weight: bold;
+                                  color: #000000"
+                           href="{% url 'home:importar_emolumentos_itens' %}"
+                           title="Gerar os emolumentos itens."
+                           data-bs-toggle="tooltip">
+                            <i class="icon feather icon-download"></i> Importar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

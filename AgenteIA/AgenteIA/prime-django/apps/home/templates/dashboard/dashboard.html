@@ -1,0 +1,93 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block title %}
+    Dashboard
+{% endblock title %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 col-xl-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Protocolos</h5>
+                    <span class="d-block pt-2 text-white">{{ dias_30_antes }} - {{ hoje }}</span>
+                    <div class="card-header-right">
+                        <div class="btn-group card-option">
+                            <button type="button"
+                                    class="btn dropdown-toggle"
+                                    data-bs-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false">
+                                <i class="icon feather icon-more-horizontal"></i>
+                            </button>
+                            <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                <li class="dropdown-item full-card">
+                                    <a href="#!">
+                                        <span>
+                                            <i class="icon feather icon-maximize"></i>maximize
+                                        </span>
+                                        <span style="display:none">
+                                            <i class="icon feather icon-minimize"></i>Restore
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="dropdown-item minimize-card">
+                                    <a href="#!"><span><i class="icon feather icon-minus"></i> collapse</span>
+                                        <span style="display:none">
+                                            <i class="icon feather icon-plus"></i>expand
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="dropdown-item reload-card">
+                                    <a href="#!"><i class="icon feather icon-refresh-cw"></i> reload</a>
+                                </li>
+                                <li class="dropdown-item close-card">
+                                    <a href="#!"><i class="icon feather icon-trash"></i> remove</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+<div class="card-block">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-6">
+            <h3 class="f-w-300 mb-0">{{ quantidade_protocolos_ultimos_30_dias }}</h3>
+        </div>
+        <div class="col-6">
+            <h6 class="f-w-300 d-flex  align-items-center float-end"
+                title="Diferença em Relação ao Periodo Anterior"
+                data-toggle="tooltip"
+                data-placement="top">
+                {{ diferenca_ultimos_30_dias_e_30_dias_anteriores }}
+                {% if diferenca_ultimos_30_dias_e_30_dias_anteriores > 0 %}
+                    <i class="fas fa-caret-up text-c-green f-24 m-l-10"></i>
+                {% else %}
+                    <i class="fas fa-caret-down text-c-danger f-24 m-l-10"></i>
+                {% endif %}
+            </h6>
+        </div>
+    </div>
+</div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h5>Project Rating</h5>
+    </div>
+    <div class="card-block">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-6">
+                <h2 class="f-w-300 d-flex align-items-center float-left">
+                    4.3 <i class="fas fa-star f-12 m-l-10 text-c-yellow"></i>
+                </h2>
+            </div>
+            <div class="col-6">
+                <h6 class="f-w-300 d-flex  align-items-center float-end">
+                    0.4 <i class="fas fa-caret-up text-c-green f-24 m-l-10"></i>
+                </h6>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+{% endblock content %}

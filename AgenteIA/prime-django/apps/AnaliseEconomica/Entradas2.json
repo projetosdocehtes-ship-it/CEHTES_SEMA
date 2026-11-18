@@ -1,0 +1,169 @@
+{
+  "nome_projeto": "Projeto Teste CEHTES",
+  "conectado_rede": false,
+  "Config_Simulacao": [
+    {
+      "Tipo_Sim": "ViabilidadeEconomica",
+      "Passo_sim": 1,
+      "Tempo_sim": 8760
+    }
+  ],
+  "Clima_Ambiente": [
+    {
+      "clima_id": "Clima_Ambiente",
+      "nome_cidade": "Goiania",
+      "pais": "BR",
+      "data": 20240116
+    }
+  ],
+  "painel_info": [
+    {
+      "pv_id": "PV_1",
+      "fabricante_painel": "CanadianSolar",
+      "modelo_painel": "TOPBiHiKu6-610W",
+      "Pmp": 610,
+      "Isc": 15.97,
+      "Voc": 48,
+      "Imp": 14.96,
+      "Vmp": 40.8,
+      "Uisc": 0.05,
+      "Uvoc": -0.25,
+      "Upmp": -0.29,
+      "material_painel": "Silicio",
+      "eficiencia": 22.6,
+      "quantidade": [531, 1]
+    }
+  ],
+  "inversor_info": [
+    {
+      "inv_id": "Inv_1",
+      "fabricante_inversor": "Deye",
+      "modelo_inversor": "SUN-35K-SG01HP3-EU-BM",
+      "Nm_MPPT": 3,
+      "In_Pmax": 56,
+      "Imax_MPPT": 36,
+      "In_Vnom": 600,
+      "In_Vmin": 150,
+      "In_Vmax": 1000,
+      "In_MPP_Vmin": 150,
+      "In_MPP_Vmax": 850,
+      "Out_Pmax": 38.5,
+      "Out_Imax": 58.4,
+      "Out_VL_nom": 380,
+      "Out_Freq": 60,
+      "Eficiencia": 0.976,
+      "Max_THD": 3,
+      "Fator_pot": 0.9999,
+      "Nm_fases": 3,
+      "smart": false,
+      "quantidade": 1
+    }
+  ],
+  "cargas_info": [
+    {
+      "carga_id": "Load_1",
+      "nome_carga": "Mercado",
+      "tipo_carga": "Comercial",
+      "curva_carga": "perfil_carga_ifg.csv",
+      "s_instalada": 12000,
+      "fp": 0.9999,
+      "v_nom": 380,
+      "f_rede": 60,
+      "quantidade": 1
+    }
+  ],
+  "bateria_info": [
+    {
+      "bateria_id": "Batt_1",
+      "fabricante": "BYD",
+      "modelo": "Battery-Box Premium HVS",
+      "capacidade_kwh": 1000,
+      "tensao_nominal": 480,
+      "potencia_max_carga_kw": 230,
+      "potencia_max_descarga_kw": 230,
+      "soc_min": 20,
+      "soc_max": 100,
+      "soc_inicial": 50,
+      "eficiencia_carga": 0.95,
+      "eficiencia_descarga": 0.95,
+      "vida_util_ciclos": 6000,
+      "quantidade": 1,
+      "periodo_de_carga": {
+        "permitir_carga": true,
+        "horario_carga_permitido": "00:00-24:00"
+      },
+      "periodo_de_descarga": {
+        "permitir_descarga": true,
+        "horario_descarga_permitido": "18:00-21:00"
+      }
+    }
+  ],
+  "barramento_info": [
+    {
+      "bus_id": "Bus_ac_1",
+      "tipo": "AC",
+      "fases": 3,
+      "V_linha_nominal": 380,
+      "V_fase_nominal": 220,
+      "V_min": 0.9,
+      "V_max": 1.1
+    }
+  ],
+  "geradordiesel_info": [
+    {
+      "diesel_id": "Diesel_1",
+      "fabricante": "Cummins",
+      "modelo": "C275D5",
+      "potencia_nominal_kw": 275,
+      "potencia_minima_kw": 82.5,
+      "tensao_nominal": 380,
+      "frequencia": 60,
+      "fases": 3,
+      "fator_potencia": 0.8,
+      "eficiencia_nominal": 0.35,
+      "consumo_especifico_diesel": 0.24,
+      "capacidade_tanque_litros": 500,
+      "custo_diesel_litro": 6.5,
+      "custo_manutencao_hora": 15.0,
+      "custo_investimento": 150000,
+      "vida_util_horas": 30000,
+      "tempo_partida_minutos": 2,
+      "tempo_parada_minutos": 1,
+      "emisso_co2_kg_litro": 2.68,
+      "nivel_ruido_db": 75,
+      "quantidade": 1,
+      "operacao": {
+        "modo_operacao": "backup",
+        "prioridade": 3,
+        "permitir_paralelismo_rede": false,
+        "horario_operacao_permitido": "24h"
+      }
+    }
+  ],
+
+  "tarifas_energia": {
+    "horarios": {
+      "ponta": {
+        "dias_uteis": "18:00-21:00",
+        "fim_semana": "não aplica"
+      },
+      "fora_ponta": {
+        "dias_uteis": "00:00-18:00, 21:00-24:00",
+        "fim_semana": "00:00-24:00"
+      }
+    },
+    "custos_investimento": {
+      "pv_kwp": 8500,
+      "bess_kwh": 5900,
+      "unidade": "R$"
+    }
+  },
+
+  "grafo_conexoes": [
+    { "between": ["Clima_Ambiente", "PV_1"] },
+    { "between": ["PV_1", "Inv_1"] },
+    { "between": ["Batt_1", "Inv_1"] },
+    { "between": ["Inv_1", "Bus_ac_1"] },
+    { "between": ["Bus_ac_1", "Load_1"] }
+  ]
+}

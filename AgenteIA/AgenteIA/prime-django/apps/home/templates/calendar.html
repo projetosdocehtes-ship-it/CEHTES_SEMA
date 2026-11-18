@@ -1,0 +1,54 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block title %}{% endblock %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+    <!-- Wysiwyg editor -->
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/main.css' %}">
+{% endblock stylesheets %}
+{% block content %}
+    <body>
+        <div class="row mb-3">
+            <div class="col-12 text-right">
+                <a href="{% url 'home:criar_projeto' %}" class="btn btn-primary">
+                    <i class="feather icon-list"></i> Ver Projeto(s)
+                </a>
+            </div>
+        </div>
+
+        <!-- Imagem com mapa vinculado -->
+        <img src="https://www.ifell.com.br/wp-content/uploads/2023/02/efeito-solar-funcionamento-energia-solar-001.png"
+             usemap="#solarMap"
+             alt="Funcionamento Energia Solar">
+        <!-- Mapa com áreas clicáveis -->
+        <map name="solarMap">
+            <!-- Área do painel solar -->
+            <area shape="rect"
+                  coords="150,60,330,240"
+                  href="{% url 'home:criar_painel_solar' %}"
+                  alt="Painel Solar"
+                  title="Clique aqui para criar um Painel Solar">
+            <!-- Área do inversor -->
+            <area shape="rect"
+                  coords="200,500,400,700"
+                  href="{% url 'home:criar_inversor' %}"
+                  alt="Casa Solar"
+                  title="Clique aqui para criar um inversor">
+            <!-- Área do controle de carga -->
+            <area shape="rect"
+                  coords="1200,400,1350,550"
+                  href="{% url 'home:criar_controlador_carga' %}"
+                  alt="Inversor"
+                  title="Clique aqui para criar um controlador de Carga">
+            <!-- Área da bateria -->
+            <area shape="rect"
+                  coords="1000,50,1150,200"
+                  href="{% url 'home:criar_bateria' %}"
+                  alt="Bateria"
+                  title="Clique aqui para criar uma bateria">
+        </map>
+    </body>
+{% endblock content %}

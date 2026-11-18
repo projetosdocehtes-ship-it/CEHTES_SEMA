@@ -1,0 +1,108 @@
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(31, 'Para Frente');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(32, 'Para Direito');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(33, 'Para Fundo');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(34, 'Para Esquerda');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(35, 'Endereço do Imóvel Pessoa');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(36, 'Area Construída');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(2, 'Quadra (Lote)');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(4, 'Nome Rua (Lote)');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(5, 'Numero Rua (Lote)');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(3, 'Numero Lote (Lote)');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(6, 'Area Total Lote (Lote)');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(0, 'Nao consta');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(1, 'Setor (Lote)');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(7, 'Imovel Comercial (Lote)');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(8, 'Cadastro municipal (lote) ?');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(9, 'Município (imóvel) ?');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(10, 'Informar CPF ?');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(11, 'Informar Nome ?');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(13, 'Informar Estado Civil ?');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(14, 'Informar Regime de Bens ?');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(15, 'Informar o nome da Fazenda ?');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(16, 'Informar a característica da Fazenda ?');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(17, 'Area Total Fazenda (Rural)');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(18, 'Caracteristica Area Rural (rural) ?');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(19, 'Reserva Legal');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(20, 'Georeferenciada');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(21, 'NIRF');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(22, 'CCIRR');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(23, 'CAR');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(24, 'INCRA');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(25, 'Area Remanescente');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(26, 'Data Validade ITR');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(27, 'Medida Frente');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(28, 'Medida Direito');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(29, 'Medida Fundo');
+INSERT INTO public.home_perguntaacao
+(id, descricao)
+VALUES(30, 'Medida Esquerda');

@@ -1,0 +1,15 @@
+{% if object.numero_protocolo_firebird %}
+    <!-- If the object has a protocol number, then it is a protocol receipt. -->
+    {% load pedidos_formatos %}
+    <div class="card-etiqueta">
+        <div class="card-header">Projeto CEHTES</div>
+        <div class="card-body">
+            <p>Quantidade de atos praticados: {{ atos_agrupados.items|length }}</p>
+            <p>
+                Emol: {{ object.total_emolumentos_pedido|formatar_moeda:False }} ISSQN: {{ object.total_issqn_pedido_de_protocolo|formatar_moeda:False }} RECOMPE: {{ object.total_fundo1_pedido_de_protocolo|formatar_moeda:False }} TJF: {{ object.total_taxa_fiscal_judiciaria_pedido|formatar_moeda:False }} Total: {{ object.total_pedido_de_protocolo|formatar_moeda:False }}
+            </p>
+            <p>Em: {{ object.data_entrada|date:"d/m/y" }}</p>
+        </div>
+        <div class="card-footer">Oficila: ____________________________</div>
+    </div>
+{% endif %}

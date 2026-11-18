@@ -1,0 +1,59 @@
+{% extends "layouts/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% load pedidos_formatos %}
+{% load django_tables2 %}
+{% block breadcrumbs %}
+    {% load replace_value %}
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Detalhes do Ato</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:">Parte do Ato {{ object.ato }}</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:">Detalhes da Parte</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <div class="parte-detail">
+        <h2>Detalhes da Parte: {{ object.nome }}</h2>
+        <p>
+            <strong>ID:</strong> {{ object.id }}
+        </p>
+        <p>
+            <strong>Nome:</strong> {{ object.nome }}
+        </p>
+        <p>
+            <strong>Estado Civil:</strong> {{ object.estado_civil }}
+        </p>
+        <p>
+            <strong>Anotações:</strong> {{ object.anotacoes }}
+        </p>
+        <p>
+            <strong>Cônjuge:</strong> {{ object.conjuge }}
+        </p>
+        <p>
+            <strong>Data de Cadastro:</strong> {{ object.criado_em|date:"DATETIME_FORMAT" }}
+        </p>
+        <p>
+            <strong>Quantidade de Atos:</strong> {{ object.quantidade_atos }}
+        </p>
+        <!-- Links para ações como editar ou deletar -->
+        <a href="{{ object.get_update_url }}">Editar Parte</a> |
+        <a href="{{ object.get_delete_url }}">Deletar Parte</a>
+    </div>
+{% endblock %}

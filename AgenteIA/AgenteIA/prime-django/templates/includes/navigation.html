@@ -1,0 +1,182 @@
+{% load static i18n %}
+{% load home_formatos %}
+{% include "form-exibir-imagem.html" %}
+<!-- [ Header ] start -->
+<header class="navbar pcoded-header navbar-expand-lg navbar-light ">
+    <div class="m-header">
+        <a class="mobile-menu" id="mobile-collapse1" href="#!"></a>
+        <a href="/" class="b-brand">
+            <div class="b-bg">
+                <i class="feather icon-trending-up"></i>
+            </div>
+            <span class="b-title">Projeto CEHTES</span>
+        </a>
+    </div>
+    <a class="mobile-menu" id="mobile-header" href="#!">
+        <i class="feather icon-more-horizontal"></i>
+    </a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto">
+            <li>
+                <a href="#!" class="full-screen" onclick="javascript:toggleFullScreen()"><i class="feather icon-maximize"></i></a>
+            </li>
+            {% comment %} <a href="{% url 'home:pedido_certidao_listar_pedidos' %}">&emsp;Certidões</a>
+            <a href="{% url 'home:financeiro_listar_por_colaborador' %}?data_transacao_inicio={% now 'Y-m-d' %}&data_transacao_fim={% now 'Y-m-d' %}&colaborador={{ request.user.id }}" class="">&emsp;Meu Caixa</a>
+            <a href="{% url 'pedidos:pedidos_list' %}" class="">&emsp;Pedidos</a>
+            <a href="{% url 'home:protocolos_list' %}" class="">&emsp;Protocolo</a> {% endcomment %}
+            {% comment %} {% include "includes/acesso-rapido.html" %} {% endcomment %}
+            <li class="nav-item">
+                <div class="main-search">
+                    <div class="input-group">
+                        <input type="text"
+                               id="m-search"
+                               class="form-control"
+                               placeholder="Pesquisar . . .">
+                        <a href="#!" class="input-group-append search-close">
+                            <i class="feather icon-x input-group-text"></i>
+                        </a>
+                        <span class="input-group-append search-btn btn btn-primary">
+                            <i class="feather icon-search input-group-text"></i>
+                        </span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        {% comment %} <li class="layout-type">
+            <a data-value="dark" data-bs-toggle="tooltip" href="{% url "change_mode" %}"><i class="icon feather icon-sun"></i></a>
+        </li> {% endcomment %}
+        <ul class="navbar-nav ms-auto">
+            {% comment %} <li>
+                <a class="btn btn-sm btn-light"
+                   href="{% url 'home:verificar_protocolos_nao_importado' tipo_importacao='P' %}"
+                   title="Clique para atualizar a importação e sincronismo dos dados"
+                   aria-pressed="true"
+                   role="button">Sincronizado: {{ ""|ultimo_sincronismo }}</a>
+                <img src="{% if user.image %}{{ user.image }}{% else %}{% static 'assets/images/user/avatar-5.jpg' %}{% endif %}"
+                     class="img-radius img-fluid wid-30"
+                     id="avatar-img" />
+            </li> {% endcomment %}
+            <li>
+                <div class="dropdown">
+                    <a class="dropdown-toggle" href="#" data-bs-toggle="dropdown"><i class="icon feather icon-bell"></i></a>
+                    <div class="dropdown-menu dropdown-menu-end notification">
+                        <div class="noti-head">
+                            <h6 class="d-inline-block m-b-0">Notificações</h6>
+                            <div class="float-end">
+                                <a href="#!" class="m-r-10">Marcar como lido</a>
+                                <a href="#!">Limpar</a>
+                            </div>
+                        </div>
+                        <ul class="noti-body">
+                            <li class="n-title">
+                                <p class="m-b-0">NEW</p>
+                            </li>
+                            <li class="notification">
+                                <div class="media">
+                                    <img class="img-radius"
+                                         src="{% static 'assets/images/user/avatar-1.jpg' %}"
+                                         alt="Generic placeholder image">
+                                    <div class="media-body">
+                                        <p>
+                                            <strong>John Doe</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span>
+                                        </p>
+                                        <p>New ticket Added</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="n-title">
+                                <p class="m-b-0">EARLIER</p>
+                            </li>
+                            <li class="notification">
+                                <div class="media">
+                                    <img class="img-radius"
+                                         src="{% static 'assets/images/user/avatar-2.jpg' %}"
+                                         alt="Generic placeholder image">
+                                    <div class="media-body">
+                                        <p>
+                                            <strong>Joseph William</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span>
+                                        </p>
+                                        <p>Prchace New Theme and make payment</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="notification">
+                                <div class="media">
+                                    <img class="img-radius"
+                                         src="{% static 'assets/images/user/avatar-3.jpg' %}"
+                                         alt="Generic placeholder image">
+                                    <div class="media-body">
+                                        <p>
+                                            <strong>Sara Soudein</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>30 min</span>
+                                        </p>
+                                        <p>currently login</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="noti-footer">
+                            <a href="#!">show all</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="{% url 'home:calender' %}" class="displayChatbox"><span class="highlight-number">{{ request|ultimas_mensagens }} -</span><i class="icon feather icon-mail"></i></a>
+            </li>
+            <li>
+                <div class="dropdown drp-user">
+                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="icon feather icon-settings"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end profile-notification">
+                        <div class="pro-head">
+                            <img src="{% if user.image %}{{ user.image }}{% else %}{% static 'assets/images/user/avatar-5.jpg' %}{% endif %}"
+                                 class="img-radius img-fluid wid-80"
+                                 id="avatar-img" />
+                            <span>{{ request.user.username }}</span>
+                            <a href="{% url 'logout' %}" class="dud-logout" title="Logout">
+                                <i class="feather icon-log-out"></i>
+                            </a>
+                        </div>
+                        <ul class="pro-body">
+                            <li>
+                                <a href="/user_profile/" class="dropdown-item"><i class="feather icon-user"></i> Perfil</a>
+                            </li>
+                            <li>
+                                {% comment %} <a href="{% url 'change-password' %}"  class="dropdown-item">
+                                    <i class="icon feather icon-shield m-r-10 h5"></i>
+                                    Alterar Senha
+                                </a> {% endcomment %}
+                                {% comment %} <a href="{% url 'home:criar_projeto' %}" class="dropdown-item">
+                                    <i class="fas fa-project-diagram"></i> Abrir Projeto
+                                </a> {% endcomment %}
+                            </li>
+                            <li>
+                                <a href="{% url 'logout' %}" class="dropdown-item">
+                                    <i class="feather icon-log-out"></i> Sair</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</header>
+<!-- [ Header ] end -->
+<!-- [ Configuração dos Modais de Acesso Rapido ] start -->
+{% comment %} {% url 'home:abrir_imagens' as modal_url_certidoes %}
+{% url 'home:abrir_livro01' as modal_url_lv1 %}
+{% url 'home:abrir_livro02_pelo_numero' as modal_url_lv2 %}
+{% url 'home:abrir_livro03' as modal_url_lv3 %}
+{% url 'home:abrir_livro05' as modal_url_lv5 %}
+{% url 'home:abrir_lv04' as modal_url_lv4 %} {% endcomment %}
+{% url 'home:abrir_imagens' as modal_url_imagens %}
+<!-- [ Inicialização dos Modais de Acesso Rapido ] start -->
+{% comment %} {% include "layouts/base-modal.html" with modal_id="modal-abrir-certidoes-id" modal_title="Abrir Certidões" icon_class="feather icon-home" custom_body_template="body-modal-abrir-certidoes.html" modal_action=modal_url_certidoes %}
+{% include "layouts/base-modal.html" with modal_id="modal-abrir-livro01-id" modal_title="  Abrir Livro 01 - Registro" icon_class="feather icon-home" custom_body_template="body-modal-abrir-lv1.html" modal_action=modal_url_lv1 %}
+{% include "layouts/base-modal.html" with modal_id="modal-abrir-livro02-id" modal_title="  Abrir Livro 02 - Registro Geral" icon_class="feather icon-home" custom_body_template="body-modal-abrir-lv2.html" modal_action=modal_url_lv2 %}
+{% include "layouts/base-modal.html" with modal_id="modal-abrir-livro03-id" modal_title="  Abrir Livro 03 - Registro Auxiliar" icon_class="feather icon-home" custom_body_template="body-modal-abrir-lv3.html" modal_action=modal_url_lv3 %}
+{% include "layouts/base-modal.html" with modal_id="modal-abrir-livro05-id" modal_title="  Pesquisa Pessoa" icon_class="feather icon-users" custom_body_template="body-modal-abrir-lv5.html" modal_action=modal_url_lv5 %}
+{% include "layouts/base-modal.html" with modal_id="modal-abrir-lv04-id" modal_title="  Abrir Livro 04 - Indicador Registro" icon_class="feather icon-home" custom_body_template="body-modal-abrir-lv4.html" modal_action=modal_url_lv4 %} {% endcomment %}
+{% include "layouts/base-modal.html" with modal_id="modal-abrir-imagens-id" modal_title=" Abrir Imagens" icon_class="feather icon-home" custom_body_template="body-modal-abrir-imagens.html" modal_action=modal_url_imagens %}
+<!-- [ Configuração dos Modais de Acesso Rapido ] end -->

@@ -1,0 +1,64 @@
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+<form method="post">
+    <!-- Não se esqueça dessa tag -->
+    {% csrf_token %}
+    <!-- Nome -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Nome</span>
+        </div>
+        {% render_field form.nome class+="form-control" %}
+    </div>
+    <!-- Sobrenome -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Sobrenome</span>
+        </div>
+        {% render_field form.sobrenome class+="form-control" %}
+    </div>
+    <!-- CPF -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">CPF</span>
+        </div>
+        {% render_field form.cpf class+="form-control" %}
+    </div>
+    <!-- Tempo de Serviço -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Tempo de Serviço</span>
+        </div>
+        {% render_field form.tempo_de_servico class+="form-control" %}
+    </div>
+    <!-- Remuneração -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Remuneração XXX</span>
+        </div>
+        {% render_field form.remuneracao class+="form-control" %}
+    </div>
+    <!-- Chefe -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Chefe?</span>
+        </div>
+        {% render_field form.chefe class+="form-control" %}
+    </div>
+    <!-- Biografia -->
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Biografia</span>
+        </div>
+        {% render_field form.biografia class+="form-control" %}
+    </div>
+    <hr>
+    <div class="text-right">
+        <button type="submit"
+                class="btn btn-sm btn-primary "
+                aria-pressed="true"
+                role="button"
+                title="Salvar os dados da Pessoa Selecionada"
+                data-bs-toggle="tooltip">Salvar</button>
+        <button value="" type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+    </div>
+</form>

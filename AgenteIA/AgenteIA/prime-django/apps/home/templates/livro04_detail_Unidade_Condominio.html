@@ -1,0 +1,180 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% load humanize %}
+{% block content %}
+    <div class="card" id="card_real">
+        <div class="card-header">
+            <h5>
+                Ficha Auxiliar do Condominio - {{ imovel.tipo|get_descricao_tipo_registro }}:
+                <span class="font-weight-bold f-24 {% if imovel.encerrado == 'F' %}text-white {% else %}text-white bg-danger{% endif %}">
+                    {{ imovel.numero_formatado }}
+                </span>&nbsp;
+                <span class="font-weight f-22 text-light">- CNM:</span>
+                <span class="font-weight-bold f-22 text-white">{{ imovel.cnm_formatada }}</span>
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-4">
+                    Municipio: <b>{{ imovel.municipio }}</b>
+                </div>
+                <div class="col-4">
+                    Data Abertura: <b>{{ imovel.data_abertura|date:"d/m/y" }}</b>
+                </div>
+                <div class="col-4"></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4">
+                    Cadastro Municipal: <b>
+                    {% for contribuinte_mae in imovel.lista_contribuintes %}{{ contribuinte_mae.numero_contribuinte }}{% endfor %}
+                </b>
+            </div>
+            <div class="col-4"></div>
+            <div class="col-4">
+                Registro Encerrado:
+                <span class="font-weight-bold {% if imovel.encerrado == 'F' %}text-dark{% else %}text-danger{% endif %}">
+                {{ imovel.encerrado|formatar_tipo_encerramento }}</span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-4">
+                Bairro: <b>{{ imovel.enderecos_bairro }}</b>
+            </div>
+            <div class="col-4">
+                Quadra: <b>{{ imovel.enderecos_quadra }}</b>
+            </div>
+            <div class="col-4">
+                Lote: <b>{{ imovel.enderecos_lotes }}</b>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-8">
+                Rua:
+                {% for rua in imovel.ruas.all %}
+                    <b><small class="font-weight-bold">{{ rua.nome }}, {{ rua.numero_edificacao|default_if_none:"" }}</small></b>
+                {% endfor %}
+            </div>
+            <div class="col-4">
+                Área: <b>{{ imovel.enderecos_area }}</b>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card" id="card_real_condominio_origem">
+    <div class="card-header text-white">
+        Condomínio
+        <span class="badge bg-dark">1</span>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Número</th>
+                    <th>Nome do Condomínio e Incorporadora</th>
+                    <th>Data de Incorporação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ imovel.tipo|get_descricao_tipo_registro }}</td>
+                    <td>
+                        <span class="font-weight-bold f-14 {% if imovel.encerrado == 'F' %}text-white {% else %}text-white btn-sm btn-danger{% endif %}">
+                            <a class="text-white"
+                               title="Clique para acessar o Indicador Real."
+                               href="{% url 'home:livro04_detail' numero_registro=imovel.numero tipo_registro=imovel.tipo cartorio_imovel=imovel.cartorio %}"
+                               target="_blank">
+                            {{ imovel.numero|remover_pontuacao|formatar_numero_registro_inteiro }}</span></a>
+                        </td>
+                        <td>
+                            <div class="cell-content text-left">
+                                <b>{{ ficha_auxiliar.0.2 }}, {{ ficha_auxiliar.0.3 }}<b>
+                                </div>
+                                <div class="cell-content text-left">
+                                    <b>{{ ficha_auxiliar.0.4 }}</b>
+                                </div>
+                            </td>
+                            <td>{{ ficha_auxiliar.0.5 }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a href="#card_real"
+                   class="btn btn-sm btn-outline-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+        </div>
+        <div class="card" id="card_real_ficha_unidades_condominio">
+            <div class="card-header text-white">
+                Unidade (Condomínio)
+                <span class="badge bg-dark">{{ unidade_no_condominio|length }}</span>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Matrícula</th>
+                            <th>Detalhes do Endereço</th>
+                            <th>Unidade</th>
+                            <th>Área</th>
+                            <th>Cadastro Municipal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for unidade in unidade_no_condominio %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>
+                                    <span class="badge bg-primary f-14">
+                                        <a class="text-white"
+                                           title="Clique para acessar o Indicador Real."
+                                           href="{% url 'home:livro04_detail' numero_registro=unidade.imovel.numero tipo_registro=unidade.imovel.tipo cartorio_imovel=unidade.imovel.cartorio %}"
+                                           target="_blank">
+                                        {{ unidade.imovel.numero|formatar_numero_registro_inteiro }}</span></a>
+                                    </td>
+                                    <td>
+                                        <div class="info-content">
+                                            Nome: <b>{{ unidade.nome_edificio }}</b>
+                                        </div>
+                                        <div class="info-content">
+                                            Tipo de Unidade: <b>{{ unidade.tipo.descricao }}</b>
+                                        </div>
+                                        <div class="info-content">
+                                            Quadra: <b>{{ unidade.quadra }}</b> - Lote: <b>{{ unidade.lote_auxiliar|default_if_none:"" }}</b>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="info-content">
+                                            <b>{{ unidade.numero_unidade|default_if_none:"" }}</b>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <b>{{ unidade.area }}</b>
+                                        {% comment %} {% for rua in unidade.ruas.all %}
+                                            <li>{{ rua.logradouro.descricao }} {{ rua.nome }} , {{ rua.numero_edificacao|default_if_none:"" }}</li>
+                                        {% endfor %} {% endcomment %}
+                                    </td>
+                                    <td>
+                                        {% for contribuinte in unidade.imovel.lista_contribuintes %}
+                                            <li>{{ contribuinte.numero_contribuinte }}</li>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <a href="#card_real"
+                       class="btn btn-sm btn-outline-warning text-dark "
+                       title="Retornar ao topo"
+                       type="button"
+                       data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                </div>
+            </div>
+        {% endblock %}

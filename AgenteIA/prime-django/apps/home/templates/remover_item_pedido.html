@@ -1,0 +1,42 @@
+<a class="label text-white f-12"  data-bs-toggle="modal"
+   href="javascript:" data-bs-target="#remover{{ pedido_item.0 }}"" title="Retira " data-bs-toggle="tooltip" role="button"> <i class="icon feather icon-trash"></i>Remover {{ pedido_item.0 }} </a>
+                                                                                                                                                              <!-- Modal -->
+                                                                                                                                                              <div class="modal"
+                                                                                                                                                                                   id="remover"
+               tabindex="-1"
+                aria-labelledby="removerItemPedidoLabel"
+                                           aria-hidden="true">
+                     <div class="modal-dialog">
+                                                 <div class="modal-content">
+                                                                              <div class="modal-header" style="background:#000">
+                                                                                                                                  <h4 class="modal-title text-white fs-5" id="removerLabel">
+                                                                                                                                                                                              <i class="icon feather icon-times"></i>  Desvincular o item do pedido
+                                                                                                                                                                                                                                   <p>{{ pedido_item.0 }} - {{ pedido_item.0 }}</p>
+                                                                                                                                                                                                                                   </h4>
+                                                                                                                                                                                                                                   <button type="button"
+                                                                                                                                                                                                                                                           class="btn-close"
+                    data-bs-dismiss="modal"
+                          aria-label="Close"></button>
+                     </div>
+                     <form action="" method="post">
+                                                     {% csrf_token %}
+                                                     <div class="modal-body">
+                                                                               <input type="hidden" name="pedido_item_id" value="{{ pedido_item.0 }}" />
+                                                                                                                                                        <h6>
+                                                                                                                                                        Tem certeza de que deseja desvincular ?
+                                                                                                                                                        <p>
+                                                                                                                                                        pedido_item.0  }}
+                                                                                                                                                        </h5>
+                                                                                                                                                        </p>
+                                                                                                                                                        </h6>
+                                                                                                                                                        </div>
+                                                                                                                                                        <div class="modal-footer">
+                                                                                                                                                                                    <button type="submit" class="btn btn-danger">Desvincular</button>
+                                                                                                                                                                                                                                   <button type="button"
+                                                                                                                                                                                                                                                           class="btn btn-sm btn-secondary"
+                                   data-bs-dismiss="modal">Fechar</button>
+                          </div>
+                          </form>
+                          </div>
+                          </div>
+                          </div>

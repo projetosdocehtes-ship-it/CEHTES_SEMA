@@ -1,0 +1,184 @@
+<button type="button"
+        class="btn btn-sm btn-info "
+        data-bs-toggle="modal"
+        data-bs-target="#modal_detalhes_pessoa{{ partesT.id }}"
+        title="Exibe os dados do Transmitente selecionado "
+        data-bs-toggle="tooltip">
+    <i class="icon feather icon-info"></i> Detalhes
+</button>
+{% load home_formatos %}
+<!-- Modal -->
+<div class="modal"
+     id="modal_detalhes_pessoa{{ partesT.id }}"
+     tabindex="-1"
+     aria-labelledby="modal_detalhes_pessoaLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#000">
+                <h1 class="modal-title text-white fs-5" id="modal_detalhes_pessoaLabel">
+                    <i class="icon feather icon-info"></i>  Dados do Transmitente:
+                </h1>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <input type="hidden" name="parte_id" value="{{ partesT.id }}" />
+            <!-- Corpo do modal -->
+            <div class="modal-body">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">CPF/CNPJ</th>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Data do Cadastro</th>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Ficha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.cpf|default:""|formatar_documento }}</td>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.criado_em|date:"d/m/y" }}</td>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.numero_ficha|protocolo_formatado }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Nome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.nome }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Documento</th>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Sexo</th>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Data de Nascimento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.documento|default:"" }}</td>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.sexo|formato_sexo }}</td>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.data_nascimento|date:"d/m/y" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Estado Civil</th>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Regime de Bens</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.estado_civil.descricao|default:"" }}</td>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.estado_civil_regime.descricao|default:"" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Naturalidade</th>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Nacionalidade</th>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Profissão</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.naturalidade|default:"" }}</td>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.nacionalidade|default:"" }}</td>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.profissao|default:"" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Nome do Pai</th>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Nome da Mãe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.nome_pai|default:"" }}</td>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.nome_mae|default:"" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">Endereço</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.endereco|default:"" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="p-12 mb-12 btn-dark text-white"
+                                style="font-size:12px;
+                                       text-align:left">e-mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-size:14px;text-align:left;">{{ partesT.pessoa.email|default:"" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-sm btn-secondary"
+                        data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>

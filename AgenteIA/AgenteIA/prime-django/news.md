@@ -1,0 +1,4 @@
+- Corrigido a exportação dos pedido de certidão para excel.
+- Refatoração da importação de matricula visualizada da ONR.
+- Corrigido a exibição da quantidade de selo digital nos pedidos de certidão.
+- Criado nova configuração global no env: "CONECTAR_SQLSERVER=False" e "CONECTAR_FIREBIRD=True".

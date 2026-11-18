@@ -1,0 +1,316 @@
+{% load home_formatos %}
+<div class="card" id="itens_pedido_livro_4_5">
+    <div class="card-header">
+        <h5>Livros 4 e 5</h5>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Tipo</th>
+                    <th class="text-center">Número</th>
+                    <th class="text-center">RI</th>
+                    <th class="text-center">Descrição</th>
+                    <th class="text-center">Ato</th>
+                    <th class="text-center">Código</th>
+                    <th class="text-center">Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for livro3 in livro_3 %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td class="btn-secondary text-white text-center">{{ livro3.1|get_descricao_tipo_registro }}</td>
+                        <td class="btn-secondary text-white text-center">{{ livro3.2|formatar_numero_registro|default:"" }}</td>
+                        <td class="btn-secondary text-white text-center">{{ livro3.3 }}</td>
+                        <td class="btn-secondary text-white text-justify">{{ livro3.5 }}</td>
+                        <td class="btn-secondary text-white text-center">{{ livro3.4 }}</td>
+                        <td class="btn-secondary text-white text-left">{{ livro3.0 }}</td>
+                        <td class="btn-secondary text-white text-center">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div style="text-align: center">
+                                                <button class="btn bg-info  align-text-bottom dropdown-toggle"
+                                                        type="button"
+                                                        data-bs-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="False">
+                                                    <i class="icon feather icon-list"></i> Opções;
+                                                </button>
+                                                <div class="dropdown-menu" style="text-align: center">
+                                                    <a class="dropdown-item" href="#!">Opcao 1</a>
+                                                    <a class="dropdown-item" href="#!">Opcao 2</a>
+                                                    <a class="dropdown-item" href="#!">Opcao 3</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a class="btn text-white "
+                                               style="background-color: #3d0c02"
+                                               href="{% url 'home:minuta_lv3' pedido_item_id=livro3.0 %}"
+                                               aria-pressed="true"
+                                               role="button"><i class="icon feather icon-file-text"></i> Minutas</a>
+                                        </td>
+                                        <tr>
+                                            <tr>
+                                                <td>
+                                                    <a class="btn text-white bg-danger  "
+                                                       href="{% url 'home:gerar_minuta_imagem' id=livro3.2 tipo='A' %}"
+                                                       href="{% url 'home:registro_imagens' pk=livro3.pk %}"
+                                                       aria-pressed="true"
+                                                       role="button"><i class="icon feather icon-image"></i> Imagem</a>
+                                                </td>
+                                            </tr>
+                                        </tr>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- AQUI INFORMAR AS PARTES ENVOLVIDAS NO LIVRO 3   -->
+                    <th>
+                        <button data-bs-toggle="button"
+                                aria-pressed="true"
+                                class="btn bg-primary text-white btn-block"
+                                type="button">Devedor(es):</button>
+                    </th>
+                    {% for devedor in livro3.6 %}
+                        <tr>
+                            <th colspan=5>{{ devedor }}</th>
+                        </tr>
+                    {% endfor %}
+                    <th>
+                        <button data-bs-toggle="button"
+                                aria-pressed="true"
+                                class="btn btn-sm btn-warning text-black btn-block"
+                                type="button">Credor(es):</button>
+                    </th>
+                    {% for credor in livro3.7 %}
+                        <tr>
+                            <th colspan=5>{{ credor }}</th>
+                        </tr>
+                    {% endfor %}
+                    <th>
+                        <button data-bs-toggle="button"
+                                aria-pressed="true"
+                                class="btn btn-danger text-white btn-block"
+                                type="button">Avalista(s):</button>
+                    </th>
+                    {% for avalista in livro3.8 %}
+                        <tr>
+                            <th colspan=5>{{ avalista }}</th>
+                        </tr>
+                    {% endfor %}
+                    <th>
+                        <button data-bs-toggle="button"
+                                aria-pressed="true"
+                                class="btn btn-sm btn-secondary text-white btn-block"
+                                type="button">Fiel Depositário(s):</button>
+                    </th>
+                    {% for fiel_depositario in livro3.9 %}
+                        <tr>
+                            <th colspan=5>{{ fiel_depositario }}</th>
+                        </tr>
+                    {% endfor %}
+                    <th>
+                        <button data-bs-toggle="button"
+                                aria-pressed="true"
+                                class="btn btn-dark text-white btn-block"
+                                type="button">Livro 2 (Vinculado ao Registro Auxiliar):</button>
+                    </th>
+                    {% for fiel_depositario in livro3.9 %}
+                        <tr>
+                            <th colspan=5>{{ fiel_depositario }}</th>
+                        </tr>
+                    {% endfor %}
+                    <th>
+                        <button data-bs-toggle="button"
+                                aria-pressed="true"
+                                class="btn btn-info text-dark btn-block"
+                                type="button">Garantia(s):</button>
+                    </th>
+                    {% for fiel_depositario in livro3.9 %}
+                        <tr>
+                            <th colspan=5>{{ fiel_depositario }}</th>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <table class="table">
+            <tbody>
+                {% for livro4 in livro_4 %}
+                    <tr>
+                        <table class="table">
+                            <!-- AQUI VAI GERAR NUMERADOR AUTOMATICO  <th scope="row"></th>    -->
+                            <td class="btn-secondary text-white text-center">{{ livro4.0|get_descricao_tipo_registro }}</td>
+                            <td class="btn-secondary text-white"></td>
+                            <td class="btn-secondary text-white text-center">{{ livro4.1|formatar_numero_registro|default:"" }}</td>
+                            <td class="btn-secondary text-white"></td>
+                            <!-- <td class="btn-secondary text-white text-center">{{ livro4.2 }}</td>  -->
+                            <td class="btn-secondary text-white"></td>
+                            <td class="btn-secondary text-white text-justify">{{ livro4.3 }}</td>
+                            <td class="btn-secondary text-white"></td>
+                            <td class="btn-secondary text-white  align-baseline">
+                                <div style="text-align: center">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div style="text-align: center">
+                                                        <button class="btn bg-info  align-text-bottom dropdown-toggle"
+                                                                type="button"
+                                                                data-bs-toggle="dropdown"
+                                                                aria-haspopup="true"
+                                                                aria-expanded="False">
+                                                            <i class="icon feather icon-list"></i> Opções
+                                                        </button>
+                                                        <div class="dropdown-menu" style="text-align: center">
+                                                            <a class="dropdown-item"
+                                                               href="{% url 'home:pessoal_lv2' pedido_item_id=livro4.8 %}"><i class="icon feather icon-users"></i>  Pessoal</a>
+                                                            <a class="dropdown-item"
+                                                               href="{% url 'home:gerar_minuta_imagem' id=livro4.1 tipo=livro4.0 %}"><i class="icon feather icon-image"></i>  Imagem</a>
+                                                            <a class="dropdown-item" href="#!"><i class="icon feather icon-table"></i>  Doi  </a>
+                                                            {% if livro4.7 == 'R' %}
+                                                                <a class="dropdown-item" href="#!"><i class="icon feather icon-layers"></i>  Incra </a>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                            <table class="table">
+                                <!-- AQUI INFORMAR AS PARTES ENVOLVIDAS    -->
+                                <tr>
+                                    <b>
+                                        <th colspan=1></th>
+                                    </b>
+                                </tr>
+                                <th>
+                                    <button data-bs-toggle="button"
+                                            aria-pressed="true"
+                                            class="btn bg-primary text-white btn-lg"
+                                            type="button">Proprietário(s):</button>
+                                </th>
+                                <table cellpadding="2" cellspacing="2" width="100%" height="100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="p-12 mb-12 bg-secondary text-white"
+                                                style="font-size:12px;
+                                                       text-align:left">Número do Ato</th>
+                                            <th class="p-12 mb-12 bg-secondary text-white"
+                                                style="font-size:12px;
+                                                       text-align:center">Percentual Parte (%)</th>
+                                            <th class="p-12 mb-12 bg-secondary text-white"
+                                                style="font-size:12px;
+                                                       text-align:left">CPF/CNPJ</th>
+                                            <th class="p-12 mb-12 bg-secondary text-white"
+                                                style="font-size:12px;
+                                                       text-align:left">Nome</th>
+                                            <th class="p-12 mb-12 bg-secondary text-white"
+                                                style="font-size:12px;
+                                                       text-align:right">Percentual Total (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for proprietario in livro4.4 %}
+                                            <tr>
+                                                <th style="font-size:14px;text-align:left;">
+                                                    {{ proprietario.0 }}.{{ proprietario.1 }}
+                                                    <th style="font-size:14px;text-align:center;">
+                                                        {{ proprietario.2 }}
+                                                        <th style="font-size:14px;text-align:left;">
+                                                            {{ proprietario.3 }}
+                                                            <th style="font-size:14px;text-align:left;">
+                                                                {{ proprietario.4 }}
+                                                                <th style="font-size:14px;text-align:right;">{{ proprietario.5 }}</th>
+                                                            </th>
+                                                        </th>
+                                                    </th>
+                                                </th>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <table class="table">
+                                    <th>
+                                        <button data-bs-toggle="button"
+                                                aria-pressed="true"
+                                                class="btn btn-sm btn-warning text-black btn-lg"
+                                                type="button">Hipoteca(s):</button>
+                                    </th>
+                                    {% for hipoteca in livro4.5 %}
+                                        <tr>
+                                            <th colspan=5>{{ hipoteca }}</th>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                                <br>
+                                <table class="table">
+                                    <th>
+                                        <button data-bs-toggle="button"
+                                                aria-pressed="true"
+                                                class="btn btn-danger text-white btn-lg"
+                                                type="button">Alienação:</button>
+                                    </th>
+                                </table>
+                                <table class="table">
+                                    {% for alienacao in livro4.6 %}
+                                        <tr>
+                                            <th colspan=5>{{ alienacao }}</th>
+                                        </tr>
+                                    {% endfor %}
+                                    <br>
+                                    <th>
+                                        <button data-bs-toggle="button"
+                                                aria-pressed="true"
+                                                class="btn btn-dark text-white btn-lg"
+                                                type="button">Livro 3 (Vinculado ao Imóvel):</button>
+                                    </th>
+                                    {% for vinculado_l3 in livro4.9 %}
+                                        {% if vinculado_l3 == 'CANCELADO' %}
+                                            <tr>
+                                                <th colspan=5>
+                                                    <button data-bs-toggle="button"
+                                                            aria-pressed="false"
+                                                            class="btn btn-dark text-white btn-block"
+                                                            type="button">Situação Atual: CANCELADO</button>
+                                                </th>
+                                            </tr>
+                                        {% elif vinculado_l3 == 'ABERTO' %}
+                                            <tr>
+                                                <th colspan=5>
+                                                    <button data-bs-toggle="button"
+                                                            aria-pressed="false"
+                                                            class="btn btn-sm btn-warning text-dark btn-block"
+                                                            type="button">Situação Atual: EM ABERTO</button>
+                                                </th>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <th colspan=5>{{ vinculado_l3 }}</th>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </table>
+                            </table>
+                        </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</table>
+</div>
+<div class="card-footer">
+    <a href="#protocolo_detail"
+       class="btn btn-sm btn-warning text-dark "
+       title="Clique para voltar ao topo da página"
+       type="button"
+       data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Voltar</a>
+</div>

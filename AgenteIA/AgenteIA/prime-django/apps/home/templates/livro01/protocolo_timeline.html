@@ -1,0 +1,245 @@
+{% extends "layouts/base.html" %}
+{% load home_formatos %}
+{% load humanize %}
+{% block stylesheets %}
+    <style>
+         /* Estilo para linhas pares */
+        .zebrado-par {
+            background-color: #e6f0fe;
+              /* Cor de fundo para linhas pares */
+        }
+
+         /* Estilo para linhas ímpares */
+        .zebrado-impar {
+            background-color: #ffffff;
+              /* Cor de fundo para linhas ímpares */
+        }
+    </style>
+{% endblock stylesheets %}
+{% block content %}
+    <div class="card" id="card_agenda">
+        <div class="card-header">
+            <h5>Timeline de Protocolos(s):</h5>
+            {% include "includes/voltar.html" %}
+        </div>
+        <div class="card-body table-responsive">
+            <table>
+                <thead>
+                    {% for protocolo in protocolos %}
+                        <tr class="{% if forloop.counter0|divisibleby:2 %}zebrado-par{% else %}zebrado-impar{% endif %}">
+                            <th>
+                                <div class="cell-content text-center">&nbsp;{{ forloop.counter }}&nbsp;-&nbsp;</div>
+                            </th>
+                            <th>&nbsp;</th>
+                            <th>
+                                <div class="cell-content text-center">Protocolo:</div>
+                                <div class="cell-content text-center">
+                                    <a href="{% url 'home:protocolo_search' %}?numero_protocolo={{ protocolo.0.0|remover_pontuacao }}#itens_pedido_historico"
+                                       target="_blank"
+                                       title="Clique para visualizar os detalhes"
+                                       data-bs-toggle="tooltip">
+                                        {% comment %} {% if protocolo.2.0 %}
+                                            <span class="font-weight-bold text-dark f-14 {% if protocolo.2.0|get_andamentos_agrupados_por_status == 'Em Andamento' %}text-white bg-info {% elif protocolo.2.0|get_andamentos_agrupados_por_status == 'Registrado' %}text-white bg-primary {% elif protocolo.2.0|get_andamentos_agrupados_por_status == 'Cancelado' %}text-white bg-danger {% elif protocolo.2.0|get_andamentos_agrupados_por_status == 'Sub judice' %}text-white bg-secondary {% elif protocolo.2.0|get_andamentos_agrupados_por_status == 'Exigência' %} text-dark btn-warning {% elif protocolo.2.0|get_andamentos_agrupados_por_status == 'Em Análise' %} text-dark btn-warning {% endif %}" title="Atualmente o protocolo esta: {{ protocolo.2.0|get_andamentos_agrupados_por_status }}">
+                                                &nbsp;{{ protocolo.0.0|protocolo_formatado }}&nbsp;
+                                            </span>
+                                        {% endif %} {% endcomment %}
+                                    </a>
+                                </div>
+                            </th>
+                            {% comment %} <th>
+                                &nbsp;&nbsp;
+                                <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 448 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+                                </svg>
+                                &nbsp;&nbsp;
+                            </th> {% endcomment %}
+                            {% for agenda in protocolo.1 %}
+                                <div class="col-md-auto">
+                                    <th>
+                                        &nbsp;&nbsp;
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             height="26"
+                                             width="32"
+                                             viewBox="0 0 512 512">
+                                            <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                            <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM294.6 135.1l99.9 107.1c3.5 3.8 5.5 8.7 5.5 13.8s-2 10.1-5.5 13.8L294.6 376.9c-4.2 4.5-10.1 7.1-16.3 7.1C266 384 256 374 256 361.7l0-57.7-96 0c-17.7 0-32-14.3-32-32l0-32c0-17.7 14.3-32 32-32l96 0 0-57.7c0-12.3 10-22.3 22.3-22.3c6.2 0 12.1 2.6 16.3 7.1z" />
+                                        </svg>
+                                        &nbsp;&nbsp;
+                                    </th>
+                                    <th>&nbsp;&nbsp;</th>
+                                    <th>
+                                        <div class="cell-content text-center">{{ agenda.0|remover_numero_texto }}</div>
+                                        <div class="cell-content text-center">
+                                            {% if agenda.2 == '' %}
+                                                {% if agenda.3 == 'A' %}
+                                                    <span class="badge bg-danger f-8">{{ agenda.1 }}</span>
+                                                {% else %}
+                                                    <span class="badge bg-info f-8">{{ agenda.1 }}</span>
+                                                {% endif %}
+                                            {% else %}
+                                                <span class="badge bg-info f-8">{{ agenda.1 }}</span>
+                                            {% endif %}
+                                        </div>
+                                        {% comment %} {% if agenda.2 != '' %}
+                                            <div>&nbsp;&nbsp;</div>
+                                            <div class="text-center">Finalizado:</div>
+                                            <div class="text-center">
+                                                {% if agenda.4 == 'A' %}
+                                                    <span class="badge bg-danger f-8">{{ agenda.2 }}</span>
+                                                {% else %}
+                                                    <span class="badge bg-info f-8">{{ agenda.2 }}</span>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %} {% endcomment %}
+                                    </th>
+                                </div>
+                                {% comment %} {% for item in agenda %}<th>Coluna: {{ agenda }}</th>{% endfor %} {% endcomment %}
+                            {% endfor %}
+                            {% comment %} <th>Coluna {{ protocolo.1 }}</th> {% endcomment %}
+                            {% comment %} <th>
+                                &nbsp;&nbsp;
+                                <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM294.6 135.1l99.9 107.1c3.5 3.8 5.5 8.7 5.5 13.8s-2 10.1-5.5 13.8L294.6 376.9c-4.2 4.5-10.1 7.1-16.3 7.1C266 384 256 374 256 361.7l0-57.7-96 0c-17.7 0-32-14.3-32-32l0-32c0-17.7 14.3-32 32-32l96 0 0-57.7c0-12.3 10-22.3 22.3-22.3c6.2 0 12.1 2.6 16.3 7.1z" />
+                                </svg>
+                                &nbsp;&nbsp;
+                            </th>
+                            <th>Coluna 3</th>
+                            <th>
+                                &nbsp;&nbsp;
+                                <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM294.6 135.1l99.9 107.1c3.5 3.8 5.5 8.7 5.5 13.8s-2 10.1-5.5 13.8L294.6 376.9c-4.2 4.5-10.1 7.1-16.3 7.1C266 384 256 374 256 361.7l0-57.7-96 0c-17.7 0-32-14.3-32-32l0-32c0-17.7 14.3-32 32-32l96 0 0-57.7c0-12.3 10-22.3 22.3-22.3c6.2 0 12.1 2.6 16.3 7.1z" />
+                                </svg>
+                                &nbsp;&nbsp;
+                            </th>
+                            <th>Coluna 4</th>
+                            <th>
+                                &nbsp;&nbsp;
+                                <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM281 385c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l71-71L136 280c-13.3 0-24-10.7-24-24s10.7-24 24-24l182.1 0-71-71c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L393 239c9.4 9.4 9.4 24.6 0 33.9L281 385z" />
+                                </svg>
+                                &nbsp;&nbsp;
+                            </th>
+                            <th>Coluna 5</th> {% endcomment %}
+                        </tr>
+                        <tr>
+                            <th>&nbsp;&nbsp;</th>
+                        </tr>
+                        <tr>
+                            <th>&nbsp;&nbsp;</th>
+                        </tr>
+                    {% endfor %}
+                    {% comment %} <tr>
+                        <th>Protocolo: 123</th>
+                        <th>
+                            &nbsp;&nbsp;
+                            <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 448 512">
+                                <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
+                            </svg>
+                            &nbsp;&nbsp;
+                        </th>
+                        <th>Coluna 2</th>
+                        <th>
+                            &nbsp;&nbsp;
+                            <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512">
+                                <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM294.6 135.1l99.9 107.1c3.5 3.8 5.5 8.7 5.5 13.8s-2 10.1-5.5 13.8L294.6 376.9c-4.2 4.5-10.1 7.1-16.3 7.1C266 384 256 374 256 361.7l0-57.7-96 0c-17.7 0-32-14.3-32-32l0-32c0-17.7 14.3-32 32-32l96 0 0-57.7c0-12.3 10-22.3 22.3-22.3c6.2 0 12.1 2.6 16.3 7.1z" />
+                            </svg>
+                            &nbsp;&nbsp;
+                        </th>
+                        <th>Coluna 3</th>
+                        <th>
+                            &nbsp;&nbsp;
+                            <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512">
+                                <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM294.6 135.1l99.9 107.1c3.5 3.8 5.5 8.7 5.5 13.8s-2 10.1-5.5 13.8L294.6 376.9c-4.2 4.5-10.1 7.1-16.3 7.1C266 384 256 374 256 361.7l0-57.7-96 0c-17.7 0-32-14.3-32-32l0-32c0-17.7 14.3-32 32-32l96 0 0-57.7c0-12.3 10-22.3 22.3-22.3c6.2 0 12.1 2.6 16.3 7.1z" />
+                            </svg>
+                            &nbsp;&nbsp;
+                        </th>
+                        <th>Coluna 4</th>
+                        <th>
+                            &nbsp;&nbsp;
+                            <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512">
+                                <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM281 385c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l71-71L136 280c-13.3 0-24-10.7-24-24s10.7-24 24-24l182.1 0-71-71c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L393 239c9.4 9.4 9.4 24.6 0 33.9L281 385z" />
+                            </svg>
+                            &nbsp;&nbsp;
+                        </th>
+                        <th>Coluna 5</th>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;&nbsp;</th>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;&nbsp;</th>
+                    </tr>
+                    <tr>
+                        <th>Protocolo: 456</th>
+                        <th>
+                            &nbsp;&nbsp;
+
+                                    &nbsp;&nbsp;
+                                    </th>
+                                    <th>Coluna 2</th>
+                                    <th>
+                                    &nbsp;&nbsp;
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z" />
+                                    </svg>
+                                    &nbsp;&nbsp;
+                                    </th>
+                                    <th>Coluna 3</th>
+                                    <th>
+                                    &nbsp;&nbsp;<i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp;
+                                    </th>
+                                    <th>Coluna 4</th>
+                                    <th>
+                                    &nbsp;&nbsp;
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM241 377c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l87-87-87-87c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L345 239c9.4 9.4 9.4 24.6 0 33.9L241 377z" />
+                                    </svg>
+                                    &nbsp;&nbsp;
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 448 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" fill="red" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM281 385c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l71-71L136 280c-13.3 0-24-10.7-24-24s10.7-24 24-24l182.1 0-71-71c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L393 239c9.4 9.4 9.4 24.6 0 33.9L281 385z" fill="red" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM281 385c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l71-71L136 280c-13.3 0-24-10.7-24-24s10.7-24 24-24l182.1 0-71-71c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L393 239c9.4 9.4 9.4 24.6 0 33.9L281 385z" fill="yellow" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM281 385c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l71-71L136 280c-13.3 0-24-10.7-24-24s10.7-24 24-24l182.1 0-71-71c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L393 239c9.4 9.4 9.4 24.6 0 33.9L281 385z" fill="blue" />
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="30" width="30" viewBox="0 0 512 512">
+                                    <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                    <path d="M0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM281 385c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l71-71L136 280c-13.3 0-24-10.7-24-24s10.7-24 24-24l182.1 0-71-71c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L393 239c9.4 9.4 9.4 24.6 0 33.9L281 385z" fill="green" />
+                                    </svg>
+                                    </th>
+                                    <th>Coluna 5</th>
+                                    </tr>
+                    {% endcomment %}
+                </thead>
+                <tbody>
+                    <!-- Linhas de dados aqui -->
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-sm btn-primary"
+               href="{% url 'home:protocolos_list' %}"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"> </i> Voltar a Lista de Protocolos
+            </a>
+        </div>
+    </div>
+{% endblock %}

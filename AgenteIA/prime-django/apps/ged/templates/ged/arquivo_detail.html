@@ -1,0 +1,48 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>Detalhes do Arquivo: {{ arquivo.nome_original|truncatechars:30 }}</h5>
+        </div>
+        <div class="card-body">
+          <p>
+            <b>Nome Original:</b> {{ arquivo.nome_original }}
+          </p>
+          <p>
+            <b>Extensão:</b> {{ arquivo.extensao }}
+          </p>
+          <p>
+            <b>Enviado por:</b> {{ arquivo.usuario.username }}
+          </p>
+          <p>
+            <b>Data de Envio:</b> {{ arquivo.data_envio }}
+          </p>
+          <p>
+            <b>Descrição:</b> {{ arquivo.descricao }}
+          </p>
+          <p>
+            <b>Tamanho:</b> {{ arquivo.tamanho }} bytes
+          </p>
+          <p>
+            <b>Hash:</b> {{ arquivo.hash }}
+          </p>
+          <p>
+            <a href="{% url 'ged:arquivo_download' pk=arquivo.id %}"
+               class="btn btn-sm btn-primary">Download</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <a href="{% url 'ged:arquivos_list' %}" class="btn btn-sm btn-primary">Listar Arquivos</a>
+    </div>
+  </div>
+{% endblock content %}

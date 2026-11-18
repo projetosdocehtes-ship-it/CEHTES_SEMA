@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block title %}Pendências{% endblock %}
+{% block stylesheets %}
+    <style>
+        .modal-content {
+            box-shadow: 0 0 0 5px blue;
+            border: none;
+        }
+    </style>
+{% endblock stylesheets %}
+{% block breadcrumb %}
+    <div>
+        <h1>
+            <i class="fa fa-dashboard"></i> Pendências
+        </h1>
+    </div>
+{% endblock breadcrumb %}
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="card">
+            <div class="card-header">
+                <h5>
+                    Protocolos a Digitalizar: {{ total_protocolos_nao_digitalizados }} <a style="color:white;"></a>
+                </h5>
+                <span style="float: right">
+                    <a class="btn btn-sm btn-dark text-white "
+                       title="Atualizar a página para visualizar os dados alterados"
+                       data-bs-toggle="tooltip"
+                       style="float: right"
+                       onclick="window.location.reload()">
+                        <i class="icon feather icon-refresh-cw" id="theme-inlimpar"></i> Atualizar
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-body">
+                    <div class="table-responsive">
+                        <div id="sampleTable_wrapper"
+                             class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table table-hover table-bordered dataTable no-footer"
+                                           id="sampleTable"
+                                           role="grid"
+                                           aria-describedby="sampleTable_info">
+                                        <thead>
+                                            <tr role="row">
+                                                <th class="sorting_asc"
+                                                    tabindex="0"
+                                                    aria-controls="sampleTable"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-sort="ascending"
+                                                    aria-label="Name: activate to sort column descending">SL</th>
+                                                <th class="sorting"
+                                                    tabindex="0"
+                                                    aria-controls="sampleTable"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Position: activate to sort column ascending"
+                                                    style="width: 417.312px">Protocolo</th>
+                                                <th class="sorting text-center"
+                                                    tabindex="0"
+                                                    aria-controls="sampleTable"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Office: activate to sort column ascending"
+                                                    style="width: 189.281px">Data do Protocolo</th>
+                                                <th class="sorting"
+                                                    tabindex="0"
+                                                    aria-controls="sampleTable"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Age: activate to sort column ascending"
+                                                    style="width: 102.141px">Nome do Apresentante</th>
+                                                <th class="sorting"
+                                                    tabindex="0"
+                                                    aria-controls="sampleTable"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Age: activate to sort column ascending"
+                                                    style="width: 102.141px">Observação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for event in protocolos_nao_digitalizados %}
+                                                <tr role="row" class="odd">
+                                                    <td class="sorting_1">{{ forloop.counter }}</td>
+                                                    <td>
+                                                        <a class="btn btn-sm btn-primary active btn-sm"
+                                                           href="{% url 'home:protocolo_search' %}?numero_protocolo={{ event.numero_protocolo|remover_pontuacao }}"
+                                                           target="_blank"
+                                                           title="Clique para visualizar os detalhes"
+                                                           data-toggle="tooltip">
+                                                            <i class="icon feather icon-info"></i>{{ event.numero_protocolo|remover_pontuacao|protocolo_formatado }}
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-center">{{ event.data_protocolo|date:"d/m/y" }}</td>
+                                                    <td>{{ event.pedido.nome_solicitante_formatado|slice:":40" }}</td>
+                                                    <td>{{ event.pedido.observacao|slice:":50" }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}
+{% block javascripts %}
+{% endblock javascripts %}

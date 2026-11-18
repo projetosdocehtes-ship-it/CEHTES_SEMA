@@ -1,0 +1,6 @@
+INSERT INTO public.home_tipomodelo
+(id, descricao)
+VALUES('437e1778-c780-49d2-90f1-d1416390f895'::uuid, 'Modelos para Andamentos');
+INSERT INTO public.home_tipomodelo
+(id, descricao)
+VALUES('69a82a6c-313d-4726-993d-113a6efb594a'::uuid, 'Andamento');

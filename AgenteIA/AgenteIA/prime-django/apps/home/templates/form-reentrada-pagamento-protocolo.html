@@ -1,0 +1,130 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    {% comment %} <form class="form" action="{% url 'home:reentrada_protocolo_ao_colaborador_view' numero_protocolo=protocolo.numero_protocolo opcao_reentrada=opcao_reentrada %}" method="post"> {% endcomment %}
+    <form class="form" action="." method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="card_distribuir_protocolo_numero">
+                    <div class="card-header">
+                        <h5>
+                            <span class="text-white">{{ caption }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Protocolo:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_numero_protocolo_id"
+                                           id="input_numero_protocolo_id"
+                                           type="text"
+                                           value="{{ protocolo.numero_protocolo }}"
+                                           readonly>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Valor do Protocolo:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_valor_atual_protocolo"
+                                           id="input_valor_atual_protocolo"
+                                           type="text"
+                                           pattern="^\d+(\.\d{1,2})?$"
+                                           title="Por favor, insira um valor monetário válido."
+                                           value="{{ valor_atual_protocolo }}"
+                                           readonly>
+                                </div>
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Total Pago:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_valor_total_pago_protocolo"
+                                           id="input_valor_total_pago_protocolo"
+                                           type="text"
+                                           pattern="^\d+(\.\d{1,2})?$"
+                                           title="Por favor, insira um valor monetário válido."
+                                           value="{{ valor_total_pago_protocolo }}"
+                                           readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>
+                                        <b>Observações:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           type="text"
+                                           value="{{ protocolo.pedido.observacao|formatar_nome }}"
+                                           readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tipo de Ato do Protocolo -->
+                        <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="data_distribuicao_i">
+                                        <b>Data Reentrada</b>
+                                    </label>
+                                    <input type="date" class="form-control" placeholder="digite a data do protocolo" name="data_distribuicao_i" id="data_distribuicao_i" value={{ data_distribuir }} autofocus required>
+                                </div>
+                                <!-- Tipo de Ato do Protocolo -->
+                                <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Diferença:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_valor_diferenca_receber"
+                                           id="input_valor_diferenca_receber"
+                                           type="text"
+                                           title="Por favor, insira um valor monetário válido."
+                                           value="{{ valor_diferenca }}">
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="colaborador_id">
+                                        <b>Encaminhar Para:</b>
+                                    </label>
+                                    <select class="form-select"
+                                            name="colaborador_id"
+                                            id="colaborador_id"
+                                            required>
+                                        <option value="">- Selecione -</option>
+                                        {% for colaborador in colaboradores %}
+                                            <option value={{ colaborador.pk }}>{{ colaborador }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tipo de Ato do Protocolo -->
+                        <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                    </div>
+                    <div class="card-footer">
+                        <!-- Voltar Button -->
+                        <a onclick="window.history.back()"
+                           class="btn btn-secondary text-white "
+                           title="Retornar ao topo"
+                           type="button"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-arrow-left"></i>Voltar</a>
+                        <button type="submit"
+                                class="btn btn-success text-dark"
+                                aria-pressed="true"
+                                role="button">
+                            <i class="fas fa-angle-double-up"></i> Pagamento e Reentrada
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

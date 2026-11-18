@@ -1,0 +1,42 @@
+{% extends "relatorios/relatorio_base_a4.html" %}
+{% block content %}
+    {% load home_formatos %}
+    <div class="page">
+        <div class="header">
+            <h1>Protocolo Distribuidos - Colaborador: {{ colaborador_id|get_nome_colaborador_pelo_id }}</h1>
+            <p>Data Impressão: {{ hoje }}</p>
+        </div>
+        <table class="table">
+            <thead>
+                <tr role="row">
+                    <th>SL</th>
+                    <th>Protocolo</th>
+                    <th>Entrada</th>
+                    <th>Previsto</th>
+                    <th>Reentrada</th>
+                    <th>Restantes</th>
+                    <th>Distribuição</th>
+                    <th>Observação</th>
+                    <th>Status</th>
+                    <th>Andamento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for protocolo in protocolos %}
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ protocolo.numero_protocolo|protocolo_formatado }}</td>
+                    <td>{{ protocolo.data_protocolo|date:"d/m/y" }}</td>
+                    <td>{{ protocolo.data_prevista|date:"d/m/y" }}</td>
+                    <td>{{ protocolo.data_reentrada|date:"d/m/y" }}</td>
+                    <td>{{ protocolo.prazo_previsto_em_dias }}</td>
+                    <td>{{ protocolo.data_distribuicao|date:"d/m/y" }}</td>
+                    <td>{{ protocolo.pedido.observacao|formatar_nome|truncatechars:40 }}</td>
+                    <td>{{ protocolo.status.descricao }}</td>
+                    <td>{{ protocolo.fases_protocolo_colaborador_atual_data|date:"d/m/y" }}</td>
+                    </tr>
+                {% comment %} {% endif %} {% endcomment %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

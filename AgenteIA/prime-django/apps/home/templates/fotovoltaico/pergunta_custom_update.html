@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card shadow-4">
+                    <div class="card-header">
+                        <h5>Adicionar/Alterar</h5>
+                    </div>
+                    <div class="card-block table-border-style">
+                        <form method="post">
+                            {% csrf_token %}
+                            {% for field in form %}<div class="p-2">{{ field|as_crispy_field }}</div>{% endfor %}
+                            <button type="submit" class="btn btn-sm btn-primary shadow-4">Salvar</button>
+                            <button type="cancel" class="btn btn-sm btn-secondary shadow-4">Cancelar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

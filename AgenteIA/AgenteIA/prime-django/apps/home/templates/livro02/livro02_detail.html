@@ -1,0 +1,842 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% load humanize %}
+{% block stylesheets %}
+    <style>
+         .table-styling td.quebra-texto {
+              word-wrap: break-word;
+              white-space: normal;
+              overflow-wrap: break-word;
+         }
+
+         .table {
+              table-layout: fixed;
+         }
+    </style>
+{% endblock stylesheets %}
+{% block content %}
+    <!-- VERIFICAR Lote -->
+    {% comment %} {% get_Rurais value object.pk as rurais %} {% endblok %} {% endcomment %}
+    {% comment %} {% get_Rurais_Nomes value object.pk as rurais_nomes %} {% endcomment %}
+    {% comment %} {% get_vinculos_de_proprietarios_atuais_com_percentual value object.pk as proprietario_atual %} {% endcomment %}
+    <div class="card" id="card_real">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5>
+                <span class="text-white  {% if object.encerrado != 'F' %}bg-danger{% endif %}">Indicador Real - {{ object.tipo_descrito }} {{ object.numero_formatado }}</span>
+            </h5>
+            <div>
+                <a class="btn btn-sm btn-outline text-white"
+                   href="{% url 'home:importar_imovel_pelo_id_view' imovel_id=object.pk %}"
+                   title="Clique para atualizar a importação do imóvel: {{ object.numero|protocolo_formatado }}"
+                   aria-pressed="true"
+                   role="button">
+                    <i class="icon feather icon-download"></i>Reimportar imóvel
+                </a>
+            </div>
+        </div>
+        <div class="card-block">
+            <div class="row mb-3">
+                <div class="col-4">
+                    Municipio: <b>{{ object.municipio }}</b>
+                </div>
+                <div class="col-4">
+                    Data Abertura: <b>{{ object.data_abertura|date:"d/m/y" }}</b>
+                </div>
+                <div class="col-4"></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4">
+                    Cadastro Municipal: <b>{{ object.numeros_contribuinte }}</b>
+                </div>
+                <div class="col-4">
+                    Tipo de Construção:
+                    {% if object.classe == 'R' %}
+                        {% for lote in lotes %}
+                            <!-- VERIFICAR Tipo de Construcao -->
+                            {% get_tipo_construcao_lote value lote.residencial lote.comercial as tipo_construcao %}
+                            <b> {{ tipo_construcao }} </b>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="col-4">
+                    Registro Encerrado:
+                    <span class="font-weight-bold {% if object.encerrado == 'F' %}text-dark{% else %}text-danger{% endif %}">
+                    {{ object.encerrado|formatar_tipo_encerramento }}</span>
+                </div>
+            </div>
+            {% if object.classe == 'R' %}
+                <div class="row mb-3">
+                    <div class="col-4">
+                        {% for rurais_nomes in rurais_nomes %}Fazenda: <b>{{ rurais_nomes.nome }}</b>{% endfor %}
+                    </div>
+                    <div class="col-4">
+                        {% for rurais in rurais %}Caracteristica: <b>{{ rurais.caracteristica }}</b>{% endfor %}
+                    </div>
+                    <div class="col-4"></div>
+                    <div class="col-4"></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-4">
+                        {% for rurais in rurais %}Área: <b>{{ rurais.area }}</b>{% endfor %}
+                    </div>
+                    <div class="col-4">
+                        NIRF: <b>{{ object.numero_nirf }}</b>
+                    </div>
+                    <div class="col-4">
+                        CCIR: <b>{{ object.numero_ccirr }}</b>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-4">
+                        CAR: <b>{{ object.numero_car }}</b>
+                    </div>
+                    <div class="col-4">
+                        GEO: <b>{{ object.numero_incra }}</b>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-4">
+                        ITR: <b>{{ object.numero_itr|default:"" }}</b>
+                    </div>
+                    <div class="col-4">
+                        Validade do ITR: <b>{{ object.data_validade_itr|naturalday|converter_data_para_formato_de_modelo }}</b>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+            {% else %}
+                {% if object.classe == 'C' %}
+                    {% for condominio in condominio_de_origem %}
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                Nome do Edificio: <b>{{ condominio.8 }}</b>
+                            </div>
+                            <div class="col-4">
+                                Tipo: <b>{{ condominio.9 }}</b>
+                            </div>
+                            <div class="col-4">
+                                Número: <b>{{ condominio.7 }}</b>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-8">
+                                Rua: <b>{{ condominio.15 }}</b>
+                            </div>
+                            <div class="col-4">
+                                Área: <b>{{ condominio.11 }}</b>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                Bairro: <b>{{ condominio.14 }}</b>
+                            </div>
+                            <div class="col-4">
+                                Lote: <b>{{ condominio.11 }}</b>
+                            </div>
+                            <div class="col-4">
+                                Quadra: <b>{{ condominio.12 }}</b>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    {% for lote in lotes %}
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                Bairro: <b>{{ lote.setor }}</b>
+                            </div>
+                            <div class="col-4">
+                                Quadra: <b>{{ lote.quadra }}</b>
+                            </div>
+                            <div class="col-4">
+                                Lote: <b>{{ lote.numero_unidade }}</b>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-8">
+                                Rua: <b>{{ lote.unidade_id|get_nomes_das_ruas_pela_unidade }}</b>
+                            </div>
+                            <div class="col-4">
+                                Área: <b>{{ lote.area }}</b>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                Área Residencial: <b>{{ object.area_construida_residencial|default:"" }}</b>
+                            </div>
+                            <div class="col-4">
+                                Área de Construção: <b>{{ object.area_construida|default:"" }}</b>
+                            </div>
+                            <div class="col-4">
+                                Área Comercial: <b>{{ object.area_construida_comercial|default:"" }}</b>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            <a type="button"
+               href="{% url 'home:livro02_texto' pk=object.pk %}"
+               target="_blank"
+               aria-pressed="true"
+               class="btn btn-sm btn-primary activate text-white">
+                <i class="icon feather icon-file"></i> Ver Texto
+            </a>
+            <a type="button"
+               href="#card_real_proprietario"
+               class="btn btn-sm btn-outline-primary  text-dark">
+            Proprietários  <span class="badge bg-dark">{{ proprietario_atual|length }}</span></a>
+            {% if acoes_onus_atual_quantidade > 0 %}
+                <a type="button"
+                   href="#card_real_acoes_onus"
+                   class="btn btn-sm btn-danger  text-white">
+                Ações/Ônus <span class="badge bg-dark">{{ acoes_onus_atual_quantidade }}</span></a>
+            {% endif %}
+            {% if object.alienacoes|length > 0 %}
+                <a type="button"
+                   href="#card_real_alienacoes"
+                   class="btn btn-sm btn-warning text-dark">
+                Alienações  <span class="badge bg-dark">{{ object.alienacoes|length }}</span></a>
+            {% endif %}
+            {% if object.hipotecas|length > 0 %}
+                <a type="button"
+                   href="#card_real_hipotecas"
+                   class="btn btn-sm btn-dark  text-white">
+                Hipotecas  <span class="badge bg-dark">{{ object.hipotecas|length }}</span></a>
+            {% endif %}
+            {% if livro03_atual_quantidade > 0 %}
+                <a type="button"
+                   title="Clique para acessar o Registro Auxiliar."
+                   href="{% url 'home:livro04_detail_idimovel_Livro03' pk=object.pk %}"
+                   target="_blank"
+                   class="btn btn-sm btn-secondary">
+                Livro 3 <span class="badge bg-dark">{{ livro03_atual_quantidade }}</span></a>
+            {% endif %}
+            <!-- Imovel urbano -->
+            {% if object.classe == 'L' %}
+                <!-- Quantidade no Condominio -->
+                {% if quantidade_de_unidades_no_condominio > 0 %}
+                    <a type="button"
+                       href="{% url 'home:livro04_detail_unidade_condominio' pk=object.pk %}"
+                       target="_blank"
+                       class="btn btn-sm btn-success active text-white">
+                    Unidade (Condominio) <span class="badge bg-dark">{{ quantidade_de_unidades_no_condominio }}</span></a>
+                {% endif %}
+                <!-- Quantidade no Loteamento -->
+                {% if loteamento_Quantidade > 0 %}
+                    <a type="button"
+                       href="{% url 'home:livro04_detail_unidade_loteamento' pk=object.pk %}"
+                       target="_blank"
+                       class="btn btn-sm btn-success active text-white">
+                    Unidade (Loteamento) <span class="badge bg-dark">{{ loteamento_Quantidade }}</span></a>
+                {% endif %}
+            {% endif %}
+            {% if object.classe == 'C' %}
+                <a type="button"
+                   href="#card_real_condominio"
+                   class="btn btn-sm btn-info active text-white">
+                Condominio <span class="badge bg-dark">1</span></a>
+            {% endif %}
+            {% if object.tipo_unidade == 'L' %}
+                <a type="button"
+                   href="#card_real_loteamento"
+                   class="btn btn-sm btn-info active text-white">
+                Loteamento <span class="badge bg-dark">1</span></a>
+            {% endif %}
+            <a type="button"
+               href="{% url 'home:registro_imagens' pk=object.pk %}"
+               class="btn btn-sm btn-outline-danger  text-dark">
+                <i class="icon feather icon-image"></i> Imagem  <span class="badge bg-dark"></span></a>
+            <a type="button"
+               href="{% url 'home:livro02_pessoas_list' numero_registro=object.numero tipo_registro=object.tipo cartorio_imovel=object.cartorio %}"
+               target="_blank"
+               class="btn btn-sm btn-secondary  text-dark">
+                <i class="icon feather icon-users"></i> Pessoal  <span class="badge bg-dark"></span></a>
+            <a type="button"
+               href="#card_lembretes"
+               class="btn btn-sm btn-outline-success text-dark">
+                <i class="icon feather icon-file-text"></i> Lembrete <span class="badge bg-dark">{{ object.lembretes_v2|length }}</span></a>
+            <a class="btn btn-sm btn-primary text-white dropdown-toggle"
+               type="button"
+               id="dropdownNumero"
+               data-bs-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false"><i class="icon feather icon-settings"></i> Opções </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownNumero">
+                <!-- Imagem Option -->
+                <a class="dropdown-item" href="#">
+                    <i class="icon feather icon-image"></i> Exame Calculo
+                </a>
+                <!-- Imagem Option -->
+                <a class="dropdown-item" href="#">
+                    <i class="icon feather icon-image"></i> Livro01Protocolo
+                </a>
+                <!-- Imagem Option -->
+                <a class="dropdown-item" href="#">
+                    <i class="icon feather icon-image"></i> Pedidos de Certidão
+                </a>
+                <a class="dropdown-item" href="." target="_blank">
+                    <i class="fas fa-id-card"></i> Gerar Loteamento
+                </a>
+                <a class="dropdown-item" href="." target="_blank">
+                    <i class="fas fa-table"></i> Gerar Condominio
+                </a>
+            </div>
+        </div>
+    </div>
+    {% if lotes %}
+        <div class="card" id="card_real_bairro">
+            <div class="card-header text-white">
+                Bairro <span class="badge bg-dark"></span>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 20px;">Bairro</th>
+                            <th style="width: 1px;">Quadra</th>
+                            <th style="width: 1px;">Lote</th>
+                            <th style="width: 1px;">Área</th>
+                            {% comment %} <th style="width: 1px;">Residencial</th>
+                            <th style="width: 1px;">Comercial</th> {% endcomment %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lote in lotes %}
+                            <tr>
+                                <td>{{ lote.setor }}</td>
+                                <td>{{ lote.quadra }}</td>
+                                <td>{{ lote.numero_unidade }}</td>
+                                <td>{{ lote.area }}</td>
+                                {% comment %} <td>{{ lote.residencial|default:""|formatar_tipo_encerramento }}</td>
+                                <td>{{ lote.comercial|default:""|formatar_tipo_encerramento }}</td> {% endcomment %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer"></div>
+        </div>
+        <div class="card" id="card_real_ruas">
+            <div class="card-header text-white">
+                Rua <span class="badge bg-dark"></span>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 20px;">Nome</th>
+                            <th style="width: 1px;">Número</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rua in rua %}
+                            <tr>
+                                <td>{{ rua.nome }}</td>
+                                <td>{{ rua.numero_edificacao }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer"></div>
+        </div>
+    {% endif %}
+    <div class="card" id="card_real_registro_anterior">
+        <div class="card-header text-white">
+            Registro Anterior
+            <span class="badge bg-dark">{{ object.pk|get_registros_anteriores|length }}</span>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Número</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in object.pk|get_registros_anteriores %}
+                        <tr>
+                            <td>{{ item.tipo|get_descricao_tipo_registro }}</td>
+                            <td>
+                                <span class="badge bg-primary f-14">
+                                    <a class="text-white"
+                                       title="Clique para acessar o Indicador Real."
+                                       href="{% url 'home:livro04_detail' numero_registro=item.numero|remover_pontuacao tipo_registro=item.tipo cartorio_imovel='1' %}"
+                                       target="_blank">
+                                    {{ item.numero|remover_pontuacao|formatar_numero_registro_inteiro }}</span></a>
+                                </td>
+                                <td>{{ item.complemento }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a href="#card_real"
+                   class="btn btn-sm btn-outline-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+        </div>
+        <div class="card" id="card_real_proprietario">
+            <div class="card-header text-white">
+                Proprietários  <span class="badge bg-dark">{{ proprietario_atual|length }}</span>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ato</th>
+                            <th>%</th>
+                            <th>CPF/CNPJ</th>
+                            <th>Nome</th>
+                            <th>Total Percentual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pessoa in proprietario_atual %}
+                            <tr>
+                                <td>{{ pessoa.0 }}</td>
+                                <td>{{ pessoa.1 }}</td>
+                                <td>{{ pessoa.2 }}</td>
+                                <td class="font-weight-bold f-18">
+                                    {% if pessoa.2 != '' %}
+                                        <a type="button"
+                                           href="{% url 'home:pessoal' cpf_cnpj=pessoa.2|apenas_numeros nome=pessoa.3 %}"
+                                           target="_blank"
+                                           class="label">
+                                            <span class="badge bg-dark">{{ pessoa.3 }}</span>
+                                        </a>
+                                    {% else %}
+                                        <a type="button"
+                                           href="{% url 'home:pessoal' cpf_cnpj='0' nome=pessoa.3 %}"
+                                           target="_blank"
+                                           class="label">
+                                            <span class="badge bg-dark">{{ pessoa.3 }}</span>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                                <td>{{ pessoa.4 }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a href="#card_real"
+                   class="btn btn-sm btn-outline-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+        </div>
+        <!-- ACOES/ONUS -->
+        <div class="card" id="card_real_acoes_onus">
+            <div class="card-header text-white">
+                Ações/Ônus  <span class="badge bg-dark">{{ acoes_onus_atual_quantidade }}</span>
+            </div>
+            <div class="card-body">
+                {% if acoes_onus_atual|length > 0 %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Ato</th>
+                                <th>Grau</th>
+                                <th>CPF/CNPJ</th>
+                                <th>Nome</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in acoes_onus_atual %}
+                                <tr>
+                                    <td>{{ item.0 }}</td>
+                                    <td>{{ item.1 }}</td>
+                                    <td>{{ item.2 }}</td>
+                                    <td class="font-weight-bold f-18">
+                                        {% if item.2 != '' %}
+                                            <a type="button"
+                                               href="{% url 'home:pessoal' cpf_cnpj=item.2|apenas_numeros nome=item.3 %}"
+                                               target="_blank"
+                                               class="label">
+                                                <span class="badge bg-dark">{{ item.3 }}</span>
+                                            </a>
+                                        {% else %}
+                                            <a type="button"
+                                               {% comment %}
+                                               href="{% url 'home:pessoal' cpf_cnpj=item.2|apenas_numeros nome=item.3 %}"
+                                               {% endcomment %}
+                                               target="_blank"
+                                               class="label">
+                                                <span class="badge bg-dark">{{ item.3 }}</span>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="#card_real"
+                   class="btn btn-sm btn-outline-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+        </div>
+        <!-- Alienação INICIO -->
+        <div class="card" id="card_real_alienacoes">
+            <div class="card-header text-white">
+                Alienações  <span class="badge bg-dark">{{ object.alienacoes|length }}</span>
+            </div>
+            <div class="card-body">
+                {% if object.alienacoes|length > 0 %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Ato</th>
+                                <th>CPF/CNPJ</th>
+                                <th>Nome</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for alienacao in object.alienacoes %}
+                                <tr>
+                                    <td>{{ alienacao.0 }}</td>
+                                    <td>{{ alienacao.2 }}</td>
+                                    <td class="font-weight-bold f-18">
+                                        {% if alienacao.2 != '' %}
+                                            <a type="button"
+                                               href="{% url 'home:pessoal' cpf_cnpj=item.2|apenas_numeros nome=item.3 %}"
+                                               target="_blank"
+                                               class="label">
+                                                <span class="badge bg-dark">{{ alienacao.3 }}</span>
+                                            </a>
+                                        {% else %}
+                                            <a type="button"
+                                               href="{% url 'home:pessoal' cpf_cnpj=item.2|apenas_numeros nome=item.3 %}"
+                                               target="_blank"
+                                               class="label">
+                                                <span class="badge bg-dark">{{ item.3 }}</span>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="#card_real"
+                   class="btn btn-sm btn-outline-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+        </div>
+        <!-- HIPOTECAS -->
+        <div class="card" id="card_real_hipotecas">
+            <div class="card-header text-white">
+                Hipotecas  <span class="badge bg-dark">{{ object.hipotecas|length }}</span>
+            </div>
+            <div class="card-body">
+                {% if object.hipotecas|length > 0 %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Ato</th>
+                                <th>Grau</th>
+                                <th>CPF/CNPJ</th>
+                                <th>Nome</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for hipoteca in object.hipotecas %}
+                                <tr>
+                                    <td>{{ hipoteca.0 }}</td>
+                                    <td>{{ hipoteca.1 }}</td>
+                                    <td>{{ hipoteca.2 }}</td>
+                                    <td class="font-weight-bold f-18">
+                                        {% if item.2 != '' %}
+                                            <a type="button"
+                                               href="{% url 'home:pessoal' cpf_cnpj=hipoteca.2|apenas_numeros nome=hipoteca.3 %}"
+                                               target="_blank"
+                                               class="label">
+                                                <span class="badge bg-dark">{{ hipoteca.3 }}</span>
+                                            </a>
+                                        {% else %}
+                                            <a type="button"
+                                               href="{% url 'home:pessoal' cpf_cnpj=hipoteca.2|apenas_numeros hipoteca=item.3 %}"
+                                               target="_blank"
+                                               class="label">
+                                                <span class="badge bg-dark">{{ hipoteca.3 }}</span>
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="#card_real"
+                   class="btn btn-sm btn-outline-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+        </div>
+        <div class="card" id="card_real_livro03">
+            <div class="card-header text-white">
+                Livro 3 (Vinculado ao Imóvel) <span class="badge bg-dark">{{ livro03_atual_quantidade }}</span>
+            </div>
+            <div class="card-body">
+                {% if livro03_atual_quantidade > 0 %}
+                    <a type="button"
+                       title="Clique para acessar o Registro Auxiliar."
+                       href="{% url 'home:livro04_detail_idimovel_Livro03' pk=object.pk %}"
+                       target="_blank"
+                       class="btn btn-sm btn-secondary">
+                        Ver detalhes <span class="badge bg-dark">{{ livro03_atual_quantidade }}</span>
+                    </a>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="#card_real"
+                   class="btn btn-sm btn-outline-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+        </div>
+        <div class="card" id="card_lembretes">
+            <div class="card-header text-white">
+                Lembrete <span class="badge bg-dark">{{ object.lembretes_v2|length }}</span>
+            </div>
+            <div class="card-body">
+                {% if object.lembretes_v2|length > 0 %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 1px;">Anexado</th>
+                                <th style="width: 1px;">Nível</th>
+                                <th style="width: 1px;">Criado</th>
+                                <th style="width: 1px;">Atualizado</th>
+                                <th style="width: 1px;">Atualizado por</th>
+                                <th style="width: 80px;">Descrição</th>
+                                <th style="width: 5px;">Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in object.lembretes_v2 %}
+                                <tr>
+                                    <td style="width: 1px;">
+                                        <a class="fw-bold" href="#anexos">
+                                            <i class="fas fa-paperclip f-14  m-r-10" style="color: orange"></i> 0
+                                        </a>
+                                    </td>
+                                    <td style="width: 1px;">{{ item.7|get_nivel_alerta_pelo_id }}</td>
+                                    <td style="width: 1px;">{{ item.2|converter_data_para_formato_de_modelo }}</td>
+                                    <td style="width: 1px;">{{ item.3|converter_data_para_formato_de_modelo }}</td>
+                                    <td style="width: 1px;">{{ item.6|get_nome_colaborador_pelo_id }}</td>
+                                    {% comment %} <td style="width: 86px; font-weight-bold f-14; word-wrap: break-word; white-space: normal; background-color: lightblue">{{ object.4 }}</td> {% endcomment %}
+                                    <td style="width: 86px;  word-wrap: break-word; white-space: normal;">
+                                        <textarea class="form-control"
+                                                  name="lembrete_id"
+                                                  id="lembrete_id"
+                                                  placeholder="Digite o lembrete"
+                                                  rows="5"
+                                                  style="background-color: rgba(173, 216, 230, 0.5)"
+                                                  data-processed="0"
+                                                  data-config="{&quot;skin&quot;: &quot;moono&quot;, &quot;toolbar_Basic&quot;: [[&quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;], [&quot;NumberedList&quot;, &quot;BulletedList&quot;, &quot;-&quot;, &quot;Outdent&quot;, &quot;Indent&quot;, &quot;-&quot;, &quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;], [&quot;RemoveFormat&quot;], [&quot;-&quot;, &quot;Save&quot;, &quot;Preview&quot;, &quot;Print&quot;, &quot;-&quot;], [&quot;Maximize&quot;, &quot;ShowBlocks&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;, &quot;Smiley&quot;, &quot;SpecialChar&quot;, &quot;PageBreak&quot;, &quot;Iframe&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;, &quot;Anchor&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;full&quot;, &quot;height&quot;: 291, &quot;width&quot;: &quot;114%&quot;, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;frame&quot;: &quot;border&quot;, &quot;toolbar_Custom&quot;: [[&quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;], [&quot;NumberedList&quot;, &quot;BulletedList&quot;, &quot;-&quot;, &quot;Outdent&quot;, &quot;Indent&quot;, &quot;-&quot;, &quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;], [&quot;Link&quot;, &quot;Unlink&quot;], [&quot;RemoveFormat&quot;, &quot;Source&quot;]], &quot;language&quot;: &quot;pt-br&quot;}"
+                                                  data-external-plugin-resources="[]"
+                                                  data-type="ckeditortype"
+                                                  required>{{ item.4 }}</textarea>
+                                    </td>
+                                    <td>
+                                        <div style="text-align: left">
+                                            <button class="btn btn-sm btn-secondary align-text-bottom dropdown-toggle"
+                                                    type="button"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-haspopup="true"
+                                                    aria-expanded="False">
+                                                <i class="icon feather icon-list"></i> Opções
+                                            </button>
+                                            <div class="dropdown-menu" style="text-align: left">
+                                                <a class="dropdown-item" href="#!">Alterar</a>
+                                                <a class="dropdown-item" href="#!">Desativar</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'home:criar_lembrete_imovel' imovel_id=object.pk numero_registro=object.numero %}"
+                   class="btn btn-sm btn-primary text-white f-12"
+                   title="Cadastrar novo lembrete ao imóvel">
+                    <i class="icon feather icon-plus"></i> Novo
+                </a>
+                <a href="#card_real"
+                   class="btn btn-sm btn-outline-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+        </div>
+        {% if object.classe == 'L' %}
+            {% if quantidade_de_unidades_no_condominio > 0 %}
+                <div class="card" id="card_real_ficha_unidades_condominio">
+                    <div class="card-header text-white">
+                        Unidade (Condominio)
+                        <span class="badge bg-dark">{{ quantidade_de_unidades_no_condominio }}</span>
+                    </div>
+                    <div class="card-body">
+                        <a type="button"
+                           title="Exibir todas as unidades do Condominio"
+                           href="{% url 'home:livro04_detail_unidade_condominio' pk=object.pk %}"
+                           target="_blank"
+                           class="btn btn-sm btn-success active text-white">
+                            Ver Detalhes <span class="badge bg-dark">{{ quantidade_de_unidades_no_condominio }}</span>
+                        </a>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#card_real"
+                           class="btn btn-sm btn-outline-warning text-dark "
+                           title="Retornar ao topo"
+                           type="button"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                    </div>
+                </div>
+            {% endif %}
+            {% if loteamento_Quantidade > 0 %}
+                <div class="card" id="card_real_ficha_unidades_loteamento">
+                    <div class="card-header text-white">
+                        Unidade (Loteamento)
+                        <span class="badge bg-dark">{{ loteamento_Quantidade }}</span>
+                    </div>
+                    <div class="card-body">
+                        <a type="button"
+                           href="{% url 'home:livro04_detail_unidade_loteamento' pk=object.pk %}"
+                           target="_blank"
+                           title="Exibir todas as unidades do Loteamento"
+                           class="btn btn-sm btn-success active text-white">
+                            Ver Detalhes <span class="badge bg-dark">{{ loteamento_Quantidade }}</span>
+                        </a>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#card_real"
+                           class="btn btn-sm btn-outline-warning text-dark "
+                           title="Retornar ao topo"
+                           type="button"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+        {% if object.classe == 'C' %}
+            <div class="card" id="card_real_condominio">
+                <div class="card-header text-white">
+                    Condominio
+                    <span class="badge bg-dark">1</span>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Número</th>
+                                <th>Condominio</th>
+                                <th>Número</th>
+                                <th>Incorporadora</th>
+                                <th>Data Incorporação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for condominio in condominio_de_origem %}
+                                <tr>
+                                    <td>{{ condominio.0 }}</td>
+                                    <td>
+                                        <span class="badge bg-primary f-14">
+                                            <a class="text-white"
+                                               title="Clique para acessar o Indicador Real."
+                                               href="{% url 'home:livro04_detail' numero_registro=condominio.1|remover_pontuacao tipo_registro=condominio.0 cartorio_imovel=condominio.2 %}"
+                                               target="_blank">
+                                            {{ condominio.1|remover_pontuacao|formatar_numero_registro }}</span></a>
+                                        </td>
+                                        <td>{{ condominio.3 }} {{ item }}</td>
+                                        <td>{{ condominio.6 }}</td>
+                                        <td>{{ condominio.4 }}</td>
+                                        <td>{{ condominio.5|date:"d/m/y" }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#card_real"
+                           class="btn btn-sm btn-outline-warning text-dark "
+                           title="Retornar ao topo"
+                           type="button"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                    </div>
+                </div>
+            {% endif %}
+            {% if object.tipo_unidade == 'L' %}
+                <div class="card" id="card_real_loteamento">
+                    <div class="card-header text-white">
+                        Loteamento
+                        <span class="badge bg-dark">1</span>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Número</th>
+                                    <th>Nome do Loteamento</th>
+                                    <th>Nome Incorporadora</th>
+                                    <th>Data de Registro</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in loteamento_origem %}
+                                    <tr>
+                                        <td>{{ object.0 }}</td>
+                                        <td>
+                                            <span class="badge bg-primary f-14">
+                                                <a class="text-white"
+                                                   title="Clique para acessar o Indicador Real."
+                                                   href="{% url 'home:livro04_detail' numero_registro=object.1|remover_pontuacao tipo_registro=object.0 cartorio_imovel=object.2 %}"
+                                                   target="_blank">
+                                                {{ object.1|remover_pontuacao|formatar_numero_registro }}</span></a>
+                                            </td>
+                                            <td>{{ object.3 }}</td>
+                                            <td>{{ object.4 }}</td>
+                                            <td>{{ object.5|date:"d/m/y" }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#card_real"
+                               class="btn btn-sm btn-outline-warning text-dark "
+                               title="Retornar ao topo"
+                               type="button"
+                               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endblock %}

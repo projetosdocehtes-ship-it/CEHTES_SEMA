@@ -1,0 +1,29 @@
+{% extends "layouts/base.html" %}
+{% load static crispy_forms_tags django_tables2 %}
+{% block content %}
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h5>Detalhes do Registro</h5>
+        </div>
+        <div class="card-block">
+          {% for campo, valor in object.get_fields %}
+            <p>
+              <strong>{{ campo }}:</strong> {{ valor }}
+            </p>
+          {% endfor %}
+          <!-- Botão para excluir -->
+          <form action="{% url url_de_exclusao object.pk %}"
+                method="post">
+            {% csrf_token %}
+            <input type="submit"
+                   value="Excluir"
+                   class="btn btn-sm btn-danger"
+                   onclick="return confirm('Você tem certeza que deseja excluir este registro?');">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

@@ -1,0 +1,66 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block breadcrumbs %}
+  {% load replace_value %}
+  <div class="page-header">
+    <div class="page-block">
+      <div class="row align-items-center">
+        <div class="col-md-12">
+          <div class="page-header-title">
+            <h5 class="m-b-10">Pesquisa de Apresentantes</h5>
+          </div>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'index' %}"><i class="feather icon-home"></i></a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript:">Pedido</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript:">Apresentante</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="javascript:">Pesquisa</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock breadcrumbs %}
+{% block content %}
+  <div class="row">
+    <div class="col-lg-12 ">
+      <div class="card">
+        <div class="card-header">
+          <h5>Apresentantes com o nome informado</h5>
+        </div>
+        <div class="card-body">
+          <p>
+            Encontramos mais de um apresentante com o nome fornecido. Para garantir a precisão dos dados em seu cadastro, por favor, selecione o apresentante correto da lista abaixo. Isso nos ajudará a preencher seu pedido com as informações exatas do apresentante escolhido.
+          </p>
+          {% for apresentante in apresentantes %}
+            <div>
+              <ul>
+                <li>
+                  <p>
+                    {{ apresentante.qualificado }}
+                    &emsp;&emsp;
+                    <a href="{% url 'pedidos:apresentante_seleciona' apresentante.id %}"
+                       class="btn btn-sm btn-primary">Selecionar</a>
+                    &emsp;&emsp;
+                    <a href="{% url 'pedidos:apresentante_desativar' apresentante.id %}"
+                       class="btn btn-sm btn-outline-danger">Desativar</a>
+                  </p>
+                </li>
+              </ul>
+            </div>
+          {% empty %}
+            <p>Nenhum apresentante encontrado.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

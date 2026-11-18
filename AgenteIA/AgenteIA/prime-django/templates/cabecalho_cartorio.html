@@ -1,0 +1,40 @@
+{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load home_formatos %}
+{% load barcode_filters %}
+{% load static %}
+<div class="recibo-header borda">
+    <div class="logo-container">
+        <img src="{% static 'assets/images/icons/brasao-republica-color-min.svg' width='100' height='auto' %}"
+             alt="Logo"
+             class="logo-img">
+    </div>
+    <div class="header-central">
+        <h1>{{ user.cartorio.nome }}</h1>
+        <p>{{ user.cartorio.endereco }}</p>
+        <p>CNPJ: {{ user.cartorio.cnpj_formatado }} | CNS: {{ user.cartorio.cns_formatado }}</p>
+        <p>Fone: {{ user.cartorio.telefones }} | email: {{ user.cartorio.email }}</p>
+        <p>{{ user.cartorio.site|default:"" }}</p>
+        <p>
+            {{ user.cartorio.responsavel.funcao.titulo|default:"Oficial/Registrador(a) " }}: {{ user.cartorio.responsavel.nome_completo }}
+        </p>
+    </div>
+    <div class="barcode-container">
+        <div class="logo-container m-r-10">
+            {% if user.cartorio.logo %}
+                <img src="{{ user.cartorio.logo.url }}"
+                     alt="Logo"
+                     class="logo-img"
+                     width="100"
+                     height="auto">
+            {% else %}
+                <img src="{% static 'assets/images/logo_minas_gerais.png' %}"
+                     alt="Logo"
+                     class="logo-img"
+                     width="100"
+                     height="auto">
+            {% endif %}
+        </div>
+    </div>
+</div>

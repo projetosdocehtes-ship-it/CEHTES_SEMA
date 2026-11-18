@@ -1,0 +1,405 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <script>
+         function getAtualizarPagina() {
+              window.location.reload();
+         }
+    </script>
+    <table class="table">
+        <tbody>
+            {% for pessoa in pessoas %}
+                <tr>
+                    <!-- Nome da Pessoa -->
+                    <td>
+                        <div class="card" id="card_pessoal">
+                            <div class="card-header">
+                                <h5>
+                                    Ficha Pessoal - CPF/CNPJ:
+                                    <br>
+                                    <span class="text-white f-22">{{ pessoa.cpf|formatar_documento }} -
+                                    {{ pessoa.nome|upper }}</span>
+                                </h5>
+                            </div>
+                            <div>
+                                <br>
+                                <br>
+                                &emsp;&emsp;
+                                <a type="button"
+                                   href="#secao-livro02"
+                                   class="btn btn-sm btn-secondary"
+                                   style="font-size: 16px">Livro 02
+                                    <span class="badge bg-dark">{{ quantidade_livro_02 }}</span>
+                                </a>
+                                <a type="button"
+                                   href="#secao-livro03"
+                                   class="btn btn-sm btn-secondary"
+                                   style="font-size: 16px">Livro 03
+                                    <span class="badge bg-dark">{{ quantidade_livro_03 }}</span>
+                                </a>
+                                <a type="button"
+                                   href="#secao-indisponibilidade"
+                                   class="btn btn-sm btn-secondary"
+                                   style="font-size: 16px">Indisponibilidade(s)
+                                    <span class="badge bg-dark">{{ quantidade_indisponibilidades }}</span>
+                                </a>
+                                <a type="button"
+                                   href="#secao-mesmocpfcnpj"
+                                   class="btn btn-sm btn-secondary"
+                                   style="font-size: 16px">Mesmo CPF/CNPJ
+                                    <span class="badge bg-dark">{{ quantidade_cpf_cnpj_igual }}</span>
+                                </a>
+                                <a type="button"
+                                   href="#secao-mesmonome"
+                                   class="btn btn-sm btn-secondary"
+                                   style="font-size: 16px">Mesmo Nome
+                                    <span class="badge bg-dark">{{ quantidade_pessoas_nome_igual }}</span>
+                                </a>
+                            </div>
+                            <div id="secao-livro02" class="card-body table-responsive">
+                                <h5>
+                                    <span class="badge bg-dark text-white">Livro 02</span> - (Quantidade: {{ quantidade_livro_02 }})
+                                </h5>
+                                <table class="table" style="background-color: #e0f2f1;">
+                                    <thead>
+                                        {% if vinculos %}
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Tipo</th>
+                                                <th>Número</th>
+                                                <th>Ato</th>
+                                                <th>%</th>
+                                                <th>Detalhes</th>
+                                                <th>Vinculo</th>
+                                                {% comment %} <th>Transferencia (*)</th> {% endcomment %}
+                                                <th>Estado Cívil</th>
+                                            </tr>
+                                        {% endif %}
+                                    </thead>
+                                    <tbody>
+                                        {% with counter=vinculos|length %}
+                                            {% for vinculo in vinculos %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ vinculo.imovel.tipo|get_descricao_tipo_registro }}</td>
+                                                    <td>
+                                                        <a type="button"
+                                                           href="{% url 'home:livro04_detail' numero_registro=vinculo.imovel.numero tipo_registro=vinculo.imovel.tipo cartorio_imovel=vinculo.imovel.cartorio %}"
+                                                           target="_blank"
+                                                           class="label">
+                                                            <span class="badge {% if vinculo.imovel.encerrado == 'T' %} btn-danger {% else %} btn-primary {% endif %} active f-14">{{ vinculo.imovel.numero|formatar_numero_registro_inteiro }}</span>
+                                                        </a>
+                                                    </td>
+                                                    <!-- Tipo e Número do Ato -->
+                                                    <td>{{ vinculo.tipo_ato }}.{{ vinculo.numero_ato|numero_inteiro }}</td>
+                                                    <!-- Porcentagem da Área -->
+                                                    <td>{{ vinculo.area_pecentual|default_if_none:"0,00" }}</td>
+                                                    <!-- Nome com destaque baseado na situação e tipo de vínculo -->
+                                                    <td>
+                                                        <div class="cell-content">
+                                                            <b>{{ vinculo.imovel.tipo_classe_descricao }}:</b>&emsp;Abertura: {{ vinculo.imovel.data_abertura|default_if_none:"" }}
+                                                            {% for item in vinculo.imovel_id|get_enderecos_do_imovel %}
+                                                                <div class="cell-content">{{ item.0|default_if_none:"" }}</div>
+                                                                <div class="cell-content">{{ item.1|truncatechars:40|default_if_none:"" }}</div>
+                                                                <div class="cell-content">{{ item.2|truncatechars:40|default_if_none:"" }}</div>
+                                                            {% endfor %}
+                                                            <div class="cell-content">Município: {{ vinculo.imovel.municipio }}</div>
+                                                            <div class="cell-content">Registro Anterior: {{ vinculo.imovel.registros_anteriores|truncatechars:30 }}</div>
+                                                            <div class="cell-content">Cadastro Municipal: {{ vinculo.imovel.numeros_contribuinte|truncatechars:30 }}</div>
+                                                        </div>
+                                                    </td>
+                                                    <!-- Situação e Descrição do Tipo de Vínculo -->
+                                                    <td>
+                                                        {% if vinculo.situacao == 'F' %}
+                                                            {% if vinculo.tipo_vinculo.id == 2 %}
+                                                                <span class="badge bg-warning f-12">{{ vinculo.situacao|formatar_situacao }} {{ vinculo.tipo_vinculo.descricao }}</span>
+                                                            {% elif vinculo.tipo_vinculo.id == 4 %}
+                                                                <span class="badge bg-danger f-12">{{ vinculo.situacao|formatar_situacao }} {{ vinculo.tipo_vinculo.descricao }}</span>
+                                                            {% elif vinculo.tipo_vinculo.id == 7 %}
+                                                                <span class="badge bg-primary f-12">{{ vinculo.situacao|formatar_situacao }} {{ vinculo.tipo_vinculo.descricao }}</span>
+                                                            {% else %}
+                                                                {{ vinculo.situacao|formatar_situacao }} {{ vinculo.tipo_vinculo.descricao }}
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <div class="cell-content">{{ vinculo.situacao|formatar_situacao }} {{ vinculo.tipo_vinculo.descricao }}</div>
+                                                            <div class="cell-content">
+                                                                {% if vinculo.situacao != 'F' %}Transferência: <b>{{ vinculo.trasnferido_em|date:"d/m/y" }}<b>{% endif %}
+                                                            </div>
+                                                        {% endif %}
+                                                    </td>
+                                                    <!-- Data de Transferência -->
+                                                    {% comment %} <td>
+                                                        {% if vinculo.situacao != 'F' %}{{ vinculo.trasnferido_em|date:"d/m/y" }}{% endif %}
+                                                    </td> {% endcomment %}
+                                                    <!-- Tipo de EstadoCivil -->
+                                                    <td>{{ vinculo.estado_civil.descricao_estado_civil }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </tbody>
+                                </table>
+                                <br>
+                                <br>
+                                <h5>
+                                    <span class="badge bg-dark text-white">Livro 03</span> - (Quantidade: {{ quantidade_livro_03 }})
+                                </h5>
+                                <table id="secao-livro03" class="table" style="background-color: #e1ccbb;">
+                                    <thead>
+                                        {% if ligacoes %}
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Tipo</th>
+                                                <th>Número</th>
+                                                <th>Ato</th>
+                                                <th>Tipo</th>
+                                                <th>Nro. Cédula</th>
+                                                <th>Figura</th>
+                                                <th>Datas</th>
+                                                <th>Produto/Safra</th>
+                                            </tr>
+                                        {% endif %}
+                                    </thead>
+                                    <tbody>
+                                        {% with counter=ligacoes|length %}
+                                            {% for ligacao in ligacoes %}
+                                                {% if ligacao.registro_auxiliar.id %}
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>
+                                                            <small>{{ 'A'|get_descricao_tipo_registro }}</small>
+                                                        </td>
+                                                        <td>
+                                                            <a type="button"
+                                                               href="{% url 'home:livro03_detail' pk=ligacao.registro_auxiliar.id %}"
+                                                               target="_blank"
+                                                               class="label">
+                                                                <span class="badge {% if ligacao.situacao == 'T' %} btn-danger {% else %} btn-primary {% endif %} active f-14">{{ ligacao.registro_auxiliar.numero|formatar_numero_registro_inteiro }}</span>
+                                                            </a>
+                                                        </td>
+                                                        <td>{{ ligacao.tipo_ato }}.{{ ligacao.numero_ato|numero_inteiro }}</td>
+                                                        <td>{{ ligacao.registro_auxiliar.tipo_registro_auxiliar.nome|truncatechars:25 }}</td>
+                                                        <td>{{ ligacao.registro_auxiliar.numero_cedula|default_if_none:"" }}</td>
+                                                        <td>
+                                                            <div class="cell-content text-left">
+                                                                <small>{{ ligacao.situacao|formatar_situacao }} {{ ligacao.figuras.tipo_figura }}</small>
+                                                            </div>
+                                                            <div class="cell-content text-left">
+                                                                {% if ligacao.registro_auxiliar.cancelado_em|date:"d/m/y" != '' %}
+                                                                    <small>Cancelamento: {{ ligacao.registro_auxiliar.cancelado_em|date:"d/m/y" }}</small>
+                                                                {% endif %}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="cell-content text-left">
+                                                                <small>Abertura: {{ ligacao.registro_auxiliar.data_abertura|date:"d/m/y" }}</small>
+                                                            </div>
+                                                            <div class="cell-content text-left">
+                                                                <small>Vencimento: {{ ligacao.registro_auxiliar.data_vencimento|date:"d/m/y" }}</small>
+                                                            </div>
+                                                            <div class="cell-content text-left">
+                                                                <small>Cancelamento: {{ ligacao.registro_auxiliar.cancelado_em|date:"d/m/y" }}</small>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <small>{{ ligacao.registro_auxiliar.descricao|truncatechars:25 }}</small>
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </tbody>
+                                </table>
+                                <br>
+                                <br>
+                                <h5>
+                                    <span class="badge bg-dark text-white">Indisponibilidade(s)</span> - (CPF/CNPJ de envolvido) - (Quantidade: {{ quantidade_indisponibilidades }})
+                                    {% if indisponibilidades %}
+                                        <br>
+                                        <br>
+                                        Aberto: <span class="badge bg-danger active f-14">{{ quantidade_aberto_indisponibilidade }}</span>
+                                        - Finalizado: <span class="badge bg-success active f-14">{{ quantidade_finalizado_indisponibilidade }}</span>
+                                    {% endif %}
+                                </h5>
+                                <table id="secao-indisponibilidade"
+                                       class="table"
+                                       style="background-color: #d9d9ae">
+                                    <thead>
+                                        {% if indisponibilidades %}
+                                            <tr>
+                                                <th>#</th>
+                                                <th style="text-align: center;">
+                                                    <div class="cell-content">CPF/CNPJ</div>
+                                                    <div class="cell-content">Nome</div>
+                                                </th>
+                                                <th style="text-align: center;">
+                                                    <div class="cell-content">Protocolo de</div>
+                                                    <div class="cell-content">Registro</div>
+                                                </th>
+                                                <th style="text-align: center;">
+                                                    <div class="cell-content">Ato</div>
+                                                    <div class="cell-content">Status</div>
+                                                </th>
+                                                <th style="text-align: center;">Ofício</th>
+                                                <th style="text-align: center;">
+                                                    <div class="cell-content">Protocolo Indisponibilidade</div>
+                                                    <div class="cell-content">Data Registro</div>
+                                                </th>
+                                                <th style="text-align: center;">
+                                                    <div class="cell-content">Protocolo de Cancelamento</div>
+                                                    <div class="cell-content">Data Cancelamento</div>
+                                                </th>
+                                            </tr>
+                                        {% endif %}
+                                    </thead>
+                                    <tbody>
+                                        {% with counter=indisponibilidades|length %}
+                                            {% for indisponibilidade in indisponibilidades %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td style="text-align: center;">
+                                                        <div class="cell-content">{{ indisponibilidade.pessoa_cpf|formatar_documento }}</div>
+                                                        <div class="cell-content">
+                                                            <a type="button"
+                                                               href="{% url 'home:livro05_por_id' id=indisponibilidade.pessoa_id %}"
+                                                               target="_blank"
+                                                               class="label">
+                                                                <span class="badge btn-primary active f-14">{{ indisponibilidade.pessoa_nome|upper }}</span>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        <a type="button"
+                                                           href="{% url 'home:livro05_por_id' id=indisponibilidade.id %}"
+                                                           target="_blank"
+                                                           class="label">
+                                                            <span class="badge {% if indisponibilidade.vinculo == 0 %} btn-danger {% else %} btn-success {% endif %} active f-14">{{ indisponibilidade.id|formatar_numero_registro_inteiro }}</span>
+                                                        </a>
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        <div class="cell-content">{{ indisponibilidade.tipo_ato }}.{{ indisponibilidade.numero_ato }}</div>
+                                                        <div class="cell-content">{{ indisponibilidade.vinculo|status_indisponibilidade }}</div>
+                                                    </td>
+                                                    <td style="text-align: center;">{{ indisponibilidade.numero_do_processo }}</td>
+                                                    <td style="text-align: center;">
+                                                        <div class="cell-content">{{ indisponibilidade.protocolo_indisponibilidade }}</div>
+                                                        <div class="cell-content">{{ indisponibilidade.data_pedido|date:"d/m/y" }}</div>
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        <div class="cell-content">{{ indisponibilidade.cancelamento_indisponibilidade|default_if_none:"" }}</div>
+                                                        <div class="cell-content">{{ indisponibilidade.cancelado_em|date:"d/m/y" }}</div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </tbody>
+                                </table>
+                                <br>
+                                <br>
+                                <h5>
+                                    <span class="badge bg-dark text-white">Mesmo CPF/CNPJ</span> - (Quantidade: {{ quantidade_cpf_cnpj_igual }})
+                                </h5>
+                                <table id="secao-mesmocpfcnpj"
+                                       class="table"
+                                       style="background-color: #98a3ba">
+                                    <thead>
+                                        {% if pessoas_cpf_cnpj_igual %}
+                                            <tr>
+                                                <th>#</th>
+                                                <th>CPF/CNPJ</th>
+                                                <th>Nome</th>
+                                                <th>&emsp;</th>
+                                                <th>&emsp;</th>
+                                                <th>&emsp;</th>
+                                            </tr>
+                                        {% endif %}
+                                    </thead>
+                                    <tbody>
+                                        {% with counter=pessoas_cpf_cnpj_igual|length %}
+                                            {% for pessoas_cpf_cnpj in pessoas_cpf_cnpj_igual %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ pessoas_cpf_cnpj.documento_formatado }}</td>
+                                                    <td>
+                                                        <a type="button"
+                                                           href="{% url 'home:livro05_por_id' id=pessoas_cpf_cnpj.id %}"
+                                                           target="_blank"
+                                                           class="label">
+                                                            <span class="badge btn-primary active f-14">{{ pessoas_cpf_cnpj.nome|upper }}</span>
+                                                        </a>
+                                                    </td>
+                                                    <td>&emsp;</td>
+                                                    <td>&emsp;</td>
+                                                    <td>&emsp;</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </tbody>
+                                </table>
+                                <br>
+                                <br>
+                                <h5>
+                                    <span class="badge bg-dark text-white">Mesmo Nome</span> - (Quantidade: {{ quantidade_pessoas_nome_igual }})
+                                </h5>
+                                <table id="secao-mesmonome" class="table" style="background-color: #c9cfd9">
+                                    <thead>
+                                        {% if pessoas_nome_igual %}
+                                            <tr>
+                                                <th>#</th>
+                                                <th>CPF</th>
+                                                <th>Nome</th>
+                                                <th>Opções</th>
+                                                <th>&emsp;</th>
+                                                <th>&emsp;</th>
+                                            </tr>
+                                        {% endif %}
+                                    </thead>
+                                    <tbody>
+                                        {% with counter=pessoas_nome_igual|length %}
+                                            {% for pessoas_nome in pessoas_nome_igual %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ pessoas_nome.documento_formatado }}</td>
+                                                    <td>
+                                                        <a type="button"
+                                                           href="{% url 'home:pessoal' cpf_cnpj=0 nome=pessoas_nome.nome %}"
+                                                           target="_blank"
+                                                           class="label">
+                                                            <span class="badge btn-primary active f-14">{{ pessoas_nome.nome|upper }}</span>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a type="button"
+                                                           href="#"
+                                                           class="label"
+                                                           title="Juntar o nome e todos os vinculos com a ficha principal acima: {{ pessoa.cpf|formatar_documento }} - {{ pessoa.nome|upper }} ">
+                                                            <span class="badge btn-success text-dark active f-14">Unificar com a ficha principal.</span>
+                                                        </a>
+                                                    </td>
+                                                    <td>&emsp;</td>
+                                                    <td>&emsp;</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endwith %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer">
+                                <!-- Voltar Button -->
+                                <a href="#card_pessoal"
+                                   class="btn btn-sm btn-outline-warning text-dark "
+                                   title="Retornar ao topo"
+                                   type="button"
+                                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                                <a class="btn btn-sm btn-secondary "
+                                   title="Atualizar a página para visualizar os dados alterados"
+                                   data-bs-toggle="tooltip"
+                                   onclick="getAtualizarPagina()"><i class="icon feather icon-refresh-cw" id="theme-inlimpar"></i> Atualizar</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

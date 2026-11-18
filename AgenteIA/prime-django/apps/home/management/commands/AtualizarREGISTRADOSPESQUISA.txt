@@ -1,0 +1,8 @@
+select a.chave_protocolos, 'status_id = 3'
+from andamentos a
+where a.chave_tipos_andamentos = 6;
+
+
+UPDATE public.home_livro01protocolo
+    SET status_id = 3
+WHERE (ID = 50347);

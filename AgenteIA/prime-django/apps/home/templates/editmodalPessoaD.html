@@ -1,0 +1,211 @@
+<button type="button"
+        class="btn btn-sm btn-warning "
+        data-bs-toggle="modal"
+        data-bs-target="#editModalD{{ partesD.pessoa.id }}"
+        title="Alterar dados da pessoa selecionada"
+        data-bs-toggle="tooltip">
+    <i class="icon feather icon-edit"></i> Editar
+</button>
+{% load home_formatos %}
+<!-- Modal -->
+<div class="modal"
+     id="editModalD{{ partesD.pessoa.id }}"
+     tabindex="-1"
+     aria-labelledby="editModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#000">
+                <h1 class="modal-title text-white fs-5" id="editModalLabel">
+                    <i class="icon feather icon-edit"></i>   Última edição: {{ partesD.pessoa.data_alteracao|date:"D, d M Y H:i" }}
+                    <p>
+                        {{ partesD.pessoa.nome }} - {{ partesD.pessoa.cpf|default:""|formatar_documento }}
+                    </h1>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body" style="background:#cdc9c9;">
+                        <input type="hidden" name="parte_id" value="{{ partesD.pessoa.id }}" />
+                        <div class="form-floating mb-1">
+                            <input type="text"
+                                   class="form-control"
+                                   name="documento"
+                                   id="floatingInput"
+                                   placeholder="Documento"
+                                   value="{{ partesD.pessoa.documento }}"
+                                   autofocus
+                                   required="" />
+                            <label for="floatingInput">Documento</label>
+                        </div>
+                        <!-- Inicio - dos GRUPOS na mesma linha -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <!-- OBTER O COMBOBOX DE ESTADO_CIVIL -->
+                                    <label for="estado_civil" style="font-size:14px;text-align:center;">Estado Civil</label>
+                                    <div class="form-floating mb-1">
+                                        <select class="form-select form-select-sm"
+                                                name="estado_civil"
+                                                id="estado_civil">
+                                            <option value="{{ partesD.pessoa.estado_civil }}" selected>
+                                                {{ partesD.pessoa.estado_civil|get_descricao_estado_civil }}
+                                            </option>
+                                            {% if partesD.pessoa.estado_civil|lista_estado_civil %}
+                                                {% for estado_civil in partesD.pessoa.estado_civil|lista_estado_civil %}
+                                                    <option value="{{ estado_civil.0 }}">{{ estado_civil.1 }}</option>
+                                                {% endfor %}
+                                            {% else %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <!-- OBTER O COMBOBOX DE TipoRegimeCasamento -->
+                                    <label for="tipo_regime_casamento" style="font-size:14px; text-align:center">Regime de Bens</label>
+                                    <div class="form-floating mb-1">
+                                        <select class="form-select form-select-sm"
+                                                name="tipo_regime_casamento"
+                                                id="tipo_regime_casamento">
+                                            <option value="{{ partesD.pessoa.estado_civil_regime_id }}" selected>
+                                                {{ partesD.pessoa.estado_civil_regime_id|get_descricao_tipo_regime_casamento }}
+                                            </option>
+                                            {% for tipo_regime_casamento in ''|lista_tipo_regime_casamento %}
+                                                <option value="{{ tipo_regime_casamento.0 }}">{{ tipo_regime_casamento.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FIM - dos GRUPOS na mesma linha -->
+                        <!-- OBTER O COMBOBOX DE SEXO -->
+                        <label for="sexo" style="font-size:14px;text-align:center;">Sexo</label>
+                        <div class="form-floating mb-1">
+                            <select class="form-select form-select-sm" name="sexo" id="sexo">
+                                <option value="{{ partesD.pessoa.sexo }}" selected>{{ partesD.pessoa.sexo|formato_sexo }}</option>
+                                {% if partesD.pessoa.sexo|lista_sexo %}
+                                    {% for item in partesD.pessoa.sexo|lista_sexo %}<option value="{{ item.0 }}">{{ item.1 }}</option>{% endfor %}
+                                {% else %}
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="row">
+                            <br>
+                        </div>
+                        <!-- Inicio - dos GRUPOS na mesma linha -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="form-floating mb-1">
+                                        <input type="text" class="form-control" name="data_nascimento" id="floatingInput" placeholder="Data de Nascimento" value="{{ partesD.pessoa.data_nascimento|date:"d/m/y" }}" />
+                                        <label for="floatingInput">Data de Nascimento</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="form-floating mb-1">
+                                        <input type="text"
+                                               class="form-control"
+                                               name="profissao"
+                                               id="floatingInput"
+                                               placeholder="profissao"
+                                               value="{{ partesD.pessoa.profissao }}" />
+                                        <label for="floatingInput">Profissão</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FIM - dos GRUPOS na mesma linha -->
+                        <div class="form-floating mb-1">
+                            <input type="text"
+                                   class="form-control"
+                                   name="endereco"
+                                   id="floatingInput"
+                                   placeholder="endereco"
+                                   value="{{ partesD.pessoa.endereco }}" />
+                            <label for="floatingInput">Endereço</label>
+                        </div>
+                        <div class="row">
+                            <br>
+                        </div>
+                        <!-- Inicio - dos GRUPOS na mesma linha -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="form-floating mb-1">
+                                        <input type="text"
+                                               class="form-control"
+                                               name="nacionalidade"
+                                               id="floatingInput"
+                                               placeholder="nacionalidade"
+                                               value="{{ partesD.pessoa.nacionalidade }}" />
+                                        <label for="floatingInput">Nacionalidade</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="form-floating mb-1">
+                                        <input type="text"
+                                               class="form-control"
+                                               name="naturalidade"
+                                               id="floatingInput"
+                                               placeholder="naturalidade"
+                                               value="{{ partesD.pessoa.naturalidade }}" />
+                                        <label for="floatingInput">Naturalidade</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FIM - dos GRUPOS na mesma linha -->
+                        <div class="form-floating mb-1">
+                            <input type="text"
+                                   class="form-control"
+                                   name="nome_pai"
+                                   id="floatingInput"
+                                   placeholder="Nome do pai"
+                                   value="{{ partesD.pessoa.nome_pai }}" />
+                            <label for="floatingInput">Nome Pai</label>
+                        </div>
+                        <div class="form-floating mb-1">
+                            <input type="text"
+                                   class="form-control"
+                                   name="nome_mae"
+                                   id="floatingInput"
+                                   placeholder="Nome da mãe"
+                                   value="{{ partesD.pessoa.nome_mae }}" />
+                            <label for="floatingInput">Nome Mãe</label>
+                        </div>
+                        <div class="form-floating mb-1">
+                            <input type="text"
+                                   class="form-control"
+                                   name="email"
+                                   id="floatingInput"
+                                   placeholder="email"
+                                   value="{{ partesD.pessoa.email }}" />
+                            <label for="floatingInput">e-mail</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="icon feather icon-save"></i> Salvar
+                        </button>
+                        <button type="button"
+                                class="btn btn-sm btn-secondary"
+                                data-bs-dismiss="modal">
+                            <i class="btn-close"></i> Fechar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

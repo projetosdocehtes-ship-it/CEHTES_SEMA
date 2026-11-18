@@ -1,0 +1,19 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block content %}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>{{ object.title }}</h5>
+        </div>
+        <div class="card-block">{{ object.content|safe }}</div>
+        <div class="card-footer">
+          <a href="{% url 'template_edit' object.pk %}"
+             class="btn btn-sm btn-primary">Editar</a>
+          <a href="{% url 'template_delete' object.pk %}" class="btn btn-danger">Deletar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

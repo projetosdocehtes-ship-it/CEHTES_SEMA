@@ -1,0 +1,196 @@
+{% extends "layouts/base.html" %}
+{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load home_formatos %}
+{% block breadcrumbs %}
+    {% load replace_value %}
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Detalhes do Protocolo:</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}"><i class="feather icon-home" style="color: orange"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'pedidos:pedidos_list' %}">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:">Protocolo</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:">Detalhes</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <!-- Cabeçalho -->
+    {% if protocolo %}
+        <!-- O código que requer um pedido válido -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Protocolo nº {{ protocolo }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Primeira linha -->
+                        <div class="row mb-3">
+                            <div class="col-lg-4">
+                                <i class="fas fa-calendar-check f-22  m-r-10" style="color: orange"></i> <span class="fw-bold">Entrada:</span> {{ protocolo.data_protocolo|date:"d/m/y" }}
+                            </div>
+                            <div class="col-lg-4">
+                                <i class="fas fa-calendar-check f-22  m-r-10" style="color: orange"></i> Previsão:</span> {{ protocolo.data_prevista|date:"d/m/y" }}
+                                </div>
+                                <div class="col-lg-4">
+                                    <i class="fas fa-calendar-check f-22  m-r-10"
+                                       style="color: orange"
+                                       style="color: orange"></i> <span class="fw-bold">Validade:</span> {{ protocolo.data_validade|date:"d/m/y" }}
+                                </div>
+                            </div>
+                            <hr />
+                            <!-- Segunda linha -->
+                            <div class="row mb-3">
+                                <div class="col-lg-4"></div>
+                                <div class="col-lg-4">
+                                    <span class="fw-bold">Documento:</span>
+                                    {{ protocolo.apresentante.sigla_tipo_documento }} {{ protocolo.apresentante.get_documento_formatado|default:"" }}
+                                </div>
+                                <div class="col-lg-4">
+                                    <span class="fw-bold">Telefone:</span>
+                                    {{ protocolo.apresentante.telefone|default:""|formatar_telefone }}
+                                </div>
+                            </div>
+                            <hr />
+                            <!-- Terceira linha -->
+                            <div class="row mb-3">
+                                <div class="col-lg-4">
+                                    <a class="fw-bold" href="#">
+                                        <i class="fas fa-home f-22  m-r-10" style="color: orange"></i>{{ atos_com_imovel_numero_registro.count }} Imóveis</span>
+                                </a>
+                            </div>
+                            <div class="col-lg-4">
+                                <a class="fw-bold">
+                                    <i class="fas fa-users f-22  m-r-10" style="color: orange"></i> {{ partes_table.data|length }} Partes</span>
+                            </a>
+                        </div>
+                        <div class="col-lg-4">
+                            <a class="fw-bold" href="#selos">
+                                <i class="fab fa-sellcast f-22  m-r-10" style="color: orange"></i> {{ selos_table.data|length }} SeloEletronico</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-lg-4">
+                        <a class="fw-bold"
+                           href="{% url 'ged:arquivos_list' %}?content_type_id={{ pedido_content_type_id }}&protocolo_id={{ pedido.id }}">
+                            <i class="fas fa-paperclip f-22  m-r-10" style="color: orange"></i> {{ protocolo.arquivos.count }} Anexos
+                        </a>
+                    </div>
+                    <div class="col-lg-4"></div>
+                    <div class="col-lg-4">
+                        <a class="fw-bold" href="#eventos">
+                            <i class="fas fa-th-list f-22  m-r-10" style="color: orange"></i> {{ eventos_table.data|length }} Eventos
+                        </a>
+                    </div>
+                </div>
+                <hr />
+                <!-- Quarta linha -->
+                <div class="row mb-3">
+                    <div class="col-lg-4">
+                        <span class="fw-bold">
+                            <i class="fas fa-money-check-alt f-22  m-r-10" style="color: orange"></i> Total do Pedido:
+                        </span>{{ protocolo.total_pedido_de_protocolo|arrendamento_bancario:2|formatar_moeda }}
+                    </div>
+                    <div class="col-lg-4">
+                        <b>TFJ:</b> {{ protocolo.total_taxa_fiscal_judiciaria_pedido|arrendamento_bancario:2|formatar_moeda }}
+                    </div>
+                    <div class="col-lg-4">
+                        <b>Recompe:</b> {{ protocolo.total_fundo1_pedido_de_protocolo|arrendamento_bancario:2|formatar_moeda }}
+                    </div>
+                </div>
+                <!-- Quinta linha -->
+                <div class="row mb-3">
+                    <div class="col-lg-4">
+                        <b> ISSQN:</b> <span>{{ protocolo.total_issqn_pedido_de_protocolo|arrendamento_bancario:2|formatar_moeda }}</span>
+                    </div>
+                    <div class="col-lg-4">
+                        <b>Emolumentos:</b> <span>{{ protocolo.total_emolumentos_pedido|arrendamento_bancario:2|formatar_moeda }}</span>
+                    </div>
+                </div>
+                <hr />
+                <div class="row mb-3">
+                    <div class="col-lg-4">
+                        <span class="fw-bold">
+                            <i class="fas fa-money-bill-wave f-22  m-r-10" style="color: orange"></i> Total Pago:
+                            </span><span>{{ protocolo.total_issqn_pedido_de_protocolo|arrendamento_bancario:2|formatar_moeda }}</span>
+                        </div>
+                        <div class="col-lg-4">
+                            <b> Diferença:</b> <span>R$ 0,00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-sm btn-secondary" href="#" target="_blank">
+                        <i class="icon feather icon-printer">
+                        </i>Imprimir Recibo
+                    </a>
+                    <a class="btn btn-sm btn-secondary" href="#">
+                        <i class="icon feather icon-users">
+                        </i>Adicionar Titulo \ Ato Principal
+                    </a>
+                    {% comment %} <a class="btn btn-sm btn-secondary" href="{% url 'pedidos:adicionar_parte' protocolo.pk %}">
+                            <i class="icon feather icon-users">
+                            </i>Adicionar Parte
+                        </a>
+                        <a class="btn btn-sm btn-secondary" href="{% url 'pedidos:adicionar_imovel' protocolo.pk %}">
+                            <i class="icon feather icon-home">
+                            </i>Adicionar Imovel
+                    </a> {% endcomment %}
+                    <!-- Botão para acionar o dropdown -->
+                    <a class="btn btn-sm btn-secondary dropdown-toggle"
+                       type="button"
+                       id="dropdownMenuButton"
+                       data-bs-toggle="dropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false">Opções</a>
+                    <!-- Opções do dropdown -->
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">
+                            <i class="icon feather icon-user">
+                            </i> Atribuir
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="icon feather icon-mail">
+                            </i> Enviar por
+                            E-mail
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="icon feather icon-trash">
+                            </i> Excluir
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="icon feather icon-upload">
+                            </i> Exportar
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="icon feather icon-upload">
+                            </i> Anexar Arquivo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <p>O número informado não corresponde a um protocolo existente!</p>
+{% endif %}
+{% endblock content %}

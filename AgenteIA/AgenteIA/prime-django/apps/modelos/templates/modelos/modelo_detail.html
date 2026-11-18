@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>Detalhes do Modelo de Texto</h5>
+        </div>
+        <div class="card-body">
+          <h3>{{ modelo_texto.titulo }}</h3>
+          <div>{{ modelo_texto.conteudo|safe }}</div>
+        </div>
+        <div class="card-footer">
+          <a href="{% url 'modelos:modelo_edit' modelo_texto.pk %}"
+             class="btn btn-primary">Editar</a>
+          <a href="{% url 'modelos:modelo_list' %}" class="btn btn-secondary">Voltar à Lista</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

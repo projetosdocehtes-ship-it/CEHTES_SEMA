@@ -1,0 +1,71 @@
+{% load home_formatos %}
+<div class="card" id="itens_pedido_pendencias">
+    <div class="card-header">
+        <h5>
+            <span class="font-weight-bold text-white">Pendências:</span>
+        </h5>
+    </div>
+    <div class="card-body table-responsive">
+        <!-- <p class="mb-0 text-right">Último cancelamento: {{ data_ultima_indisponibilidade_C }} </p> -->
+        <table class="table table-hover">
+            <thead>
+                {% if pendencias %}
+                    <tr>
+                        <th>Perguntas</th>
+                        <th>Resposta</th>
+                        <th>Resposta Correta</th>
+                        <th>Pessoa</th>
+                        <th>Conferente</th>
+                        <th>Conferido</th>
+                        <th>Data</th>
+                        <th>Opções</th>
+                    </tr>
+                {% endif %}
+            </thead>
+            <tbody>
+                {% for partes in pendencias %}
+                    <tr>
+                        <td>
+                            <small>{{ partes.perguntas.questions }}</small>
+                        </td>
+                        <td>
+                            <small>{{ partes.resposta }}</small>
+                        </td>
+                        <td>
+                            <small>{{ partes.resposta_correta }}</small>
+                        </td>
+                        <td>
+                            <small>{{ partes.pessoa.nome }}</small>
+                        </td>
+                        <td>
+                            <small>{{ partes.conferido_usuario_id|get_nome_colaborador_pelo_id }}</small>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <small>
+                                <a class="label bg-danger text-white active f-10">
+                                    <i class="icon feather icon-check"></i> Conferir
+                                </a>
+                            </small>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <a href="#protocolo_detail"
+           class="btn btn-sm btn-outline-warning text-dark "
+           title="Clique para voltar ao topo da página"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        <div class="btn-group mb-2 mr-2">
+            <a href="#protocolo_detail"
+               class="btn btn-sm btn-outline-primary text-dark "
+               title="Próximo ítem"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-up"></i>Próximo</a>
+        </div>
+    </div>
+</div>

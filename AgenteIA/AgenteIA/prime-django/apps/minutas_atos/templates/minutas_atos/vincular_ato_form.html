@@ -1,0 +1,40 @@
+{% extends "layouts/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>Vincular - Ato com a Minuta</h5>
+          </div>
+          <div class="card-body">
+            <form action="." method="post">
+              {% csrf_token %}
+              {% for field in form %}
+                {% if field.name == "conteudo" %}
+                  <div class="document-editor">
+                    <div class="document-editor__toolbar"></div>
+                    <div class="document-editor__editable-container">
+                      <div class="document-editor__editable">{{ field }}</div>
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="p-2">{{ field|as_crispy_field }}</div>
+                {% endif %}
+              {% endfor %}
+              <div class="p-2">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+              </div>
+            </form>
+            <a class="btn btn-sm btn-warning text-dark
+                      title="Voltar para a página anterior sem alterar os dados."
+                                                                           data-bs-toggle="tooltip"
+                                       onclick="window.history.back()"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                                                                                          </div>
+                                                                                          </div>
+                                                                                          </div>
+                                                                                          </div>
+                                                                                          </div>
+                                                                              {% endblock content %}

@@ -1,0 +1,38 @@
+<div class="modal"
+     id="modalImovel"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="modalImovelLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalImovelLabel">Imóvel</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Fechar">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Seu formulário para adicionar um novo imóvel aqui -->
+                <form method="post" action="." id="form-imovel">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit"
+                           value="Salvar"
+                           class="btn btn-sm btn-primary"
+                           id="save-imovel">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" id="save-imovel">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#add-more-imoveis').click(function() {
+        $('#modalImovel').modal('show');
+    });
+</script>

@@ -1,0 +1,24 @@
+SELECT D.NUMERO      AS NUMERO,
+       D.data        AS DATA,
+       D.valor       AS VALOR,
+
+       case when (d.valor > 0) then 'Deposito'
+            else
+                case when (d.LANCAMENTO = 'SELO DIGITAL') then 'Conversao'
+                else 'Devolucao'
+            end
+       end as OPERACAO,
+
+       D.lancamento  AS LANCAMENTO,
+       D.selo        AS SELO,
+       D.codigo      AS CODIGO,
+       D.data_inicio AS DATA_INICIO,
+       D.item        AS ITEM,
+       D.ordem       AS ORDEM
+FROM   DEPOSITO_PREVIO D
+
+WHERE  D.data >= :DATA_INICIO
+AND    D.data <= :DATA_FIM
+AND    D.lancamento like :OPCAO_LANCAMENTO
+
+ORDER BY D.data, D.numero, D.item, D.ORDEM

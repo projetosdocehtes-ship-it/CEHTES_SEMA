@@ -1,0 +1,21 @@
+INSERT INTO public.home_registrovinculado
+(id, descricao)
+VALUES(1, 'Proprietario');
+INSERT INTO public.home_registrovinculado
+(id, descricao)
+VALUES(2, 'Comodatário');
+INSERT INTO public.home_registrovinculado
+(id, descricao)
+VALUES(3, 'Arrendatario');
+INSERT INTO public.home_registrovinculado
+(id, descricao)
+VALUES(4, 'Comandatario');
+INSERT INTO public.home_registrovinculado
+(id, descricao)
+VALUES(5, 'C.Parcial de Bens');
+INSERT INTO public.home_registrovinculado
+(id, descricao)
+VALUES(6, 'Separação Total de Bens');
+INSERT INTO public.home_registrovinculado
+(id, descricao)
+VALUES(0, '');

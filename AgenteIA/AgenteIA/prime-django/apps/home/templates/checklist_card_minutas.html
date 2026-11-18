@@ -1,0 +1,57 @@
+{% load home_formatos %}
+{% load static %}
+<div class="card" id="card_checklist_minuta">
+    <div class="card-header">
+        <h5>4 - Minutas</h5>
+    </div>
+    <div class="card-body">
+        <div class="col-md-6">
+            <form method="post" action=".">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="cbxMinuta">Modelos</label>
+                        </div>
+                        <span class="font-weight-bold ml-2"></span>
+                        <select class="form-control font-weight-bold f-22"
+                                id="cbxMinuta"
+                                name="cbxMinuta">
+                            <option value="">-              Selecione           -</option>
+                            {% for minuta in list_de_minutas %}
+                                <option value={{ minuta }}>{{ minuta }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <span class="font-weight-bold ml-2"></span>
+                        <button class="btn btn-sm btn-primary" type="submit">
+                            <i class="icon feather icon-file-text"></i> Carregar Modelo Selecionado
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card-footer">
+        {% if pedido_item_id|get_texto_imovel > 0 %}
+            <a class="btn bg-success text-white f-14"
+               href="{% url 'home:texto_lv2' pk=pedido_item_id pedido_item_id=pedido_item_id %}"
+               aria-pressed="true"
+               title="Exibir o texto do ato praticado"
+               role="button"><i class="icon feather icon-file"></i>Texto do Ato</a>
+        {% endif %}
+        {% comment %} <button class="btn btn-sm btn-primary text-dark " data-bs-toggle="modal" data-bs-target="#modal_pessoal">
+            <i class="icon feather icon-users"></i> Pessoal
+        </button>
+        <button class="btn btn-sm btn-info text-dark" data-bs-toggle="modal" data-bs-target="#modal_real">
+            <i class="icon feather icon-home mr-2"></i> Real
+        </button> {% endcomment %}
+        <div class="btn-group mb-2 mr-2">
+            <a href="#checklist_livro02"
+               class="btn btn-sm btn-outline-warning text-dark "
+               title="Ítem anterior"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i> Voltar </a>
+        </div>
+    </div>
+</div>

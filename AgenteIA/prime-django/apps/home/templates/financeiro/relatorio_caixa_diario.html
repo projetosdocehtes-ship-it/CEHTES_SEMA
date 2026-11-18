@@ -1,0 +1,272 @@
+{% extends "relatorios/relatorio_base_a4.html" %}
+{% load home_formatos %}
+{% block content %}
+    <div class="titulo-relatorio">
+        <h2>{{ titulo }}</h2>
+    </div>
+    <div class="header">
+        {% if start_date %}
+            <p>Relatório de Caixa de: {{ start_date|date:"d/m/y" }} até {{ end_date|date:"d/m/y" }}</p>
+        {% else %}
+            <p>Relatório de Caixa: {{ hoje|date:"d/m/y" }}</p>
+        {% endif %}
+    </div>
+    <table class="table">
+        <thead>
+            <tr role="row">
+                <th>#</th>
+                <th>Entrada</th>
+                <th>Protocolo</th>
+                <th>Pedido Certidão</th>
+                <th>Valor</th>
+                <th>Operação</th>
+                <th>Anotações</th>
+                <th>Transação</th>
+                <th>Colaborador</th>
+                <th>Descrição</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for financeiro in financeiro_diario %}
+                <tr>
+                    <td style="text-align: center;">{{ forloop.counter }}</td>
+                    <td style="text-align: center;">{{ financeiro.data_transacao|date:"d/m/y" }}</td>
+                    <td style="text-align: center;">{{ financeiro.pedido.protocolo|default_if_none:"" }}</td>
+                    <td style="text-align: center;">{{ financeiro.numero_pedido_certidao|default_if_none:"" }}</td>
+                    <td style="text-align: right;">
+                        {% if financeiro.valor_transacao < 0 %}
+                            <span style="color: red;">{{ financeiro.valor_transacao|real_br_money_mask }}</span>
+                        {% else %}
+                            {{ financeiro.valor_transacao|real_br_money_mask }}
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">{{ financeiro.tipo_operacao_financeira.descricao }}</td>
+                    {% comment %} <td style="text-align: center;">{{ financeiro.tipo_categoria_financeira.descricao }}</td> {% endcomment %}
+                    <td style="text-align: center;">
+                        Data: <b>{{ financeiro.data_original_transacao|date:"d/m/y" }}</b>
+                        {% if financeiro.nome_interessado %}
+                            <br>
+                            Pagador: <b>{{ financeiro.nome_interessado }}</b>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">{{ financeiro.tipo_transacao.descricao }}</td>
+                    <td style="text-align: center;">{{ financeiro.colaborador }}</td>
+                    <td>
+                        {% if financeiro.ativo == 'C' %}
+                            <span style="color: red;">*** Cancelado ***</span>
+                            <br>
+                        {% endif %}
+                        {{ financeiro.descricao }}
+                        {% if financeiro.quantidade_parcela > 1 %}
+                            <br>
+                            <span style="color: blue;">Parcela {{ financeiro.numero_parcela }} de {{ financeiro.quantidade_parcela }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td style="text-align: right; background-color: #f0f0f0;" colspan="10">
+                    <p>
+                        Abertura:
+                        <b>R$ {{ total_abertura_caixa|default_if_none:0|real_br_money_mask }}</b>
+                    </p>
+                    {% comment %} <p>
+                        Geral:
+                        <b>R$ {{ total_abertura_caixa_total_caixa|default_if_none:0|real_br_money_mask }}</b>
+                    </p> {% endcomment %}
+                </td>
+                {% comment %} <td style="text-align: right; background-color: #f0f0f0;" colspan="2"> {% endcomment %}
+                {% comment %} <p>
+                        Receita Bruta:
+                        <b>R$ {{ total_receita|default_if_none:0|real_br_money_mask }}</b>
+                </p> {% endcomment %}
+                {% comment %} <p>
+                        Valor Saídas:
+                        <b>R$ {{ total_saidas|default_if_none:0|real_br_money_mask }}</b>
+                    </p>
+                    <p>
+                        Valor Despesa:
+                        <b>R$ {{ total_despesa|default_if_none:0|real_br_money_mask }}</b>
+                </p> {% endcomment %}
+                {% comment %} </td> {% endcomment %}
+            </tr>
+        </tfoot>
+    </table>
+    <table class="table">
+        <thead>
+            <tr role="row">
+                <th>#</th>
+                <th>
+                    <span style="color: blue;">Entradas</span>
+                </th>
+                <th>
+                    <span style="color: blue;">Valor</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for financeiro_agrupado in financeiro_total_agrupado %}
+                <tr>
+                    <td style="text-align: center; color: blue;">{{ forloop.counter }}</td>
+                    <td style="text-align: center; color: blue;">{{ financeiro_agrupado.operacao_financeira_descricao }}</td>
+                    <td style="text-align: right; color: blue;">
+                        <span style="color: blue;">{{ financeiro_agrupado.total_caixa|real_br_money_mask }}</span>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td style="text-align: right;" colspan="3">
+                    <b><span style="color: blue;">Total Entradas:</span></b> <span style="color: blue;">{{ soma_total_entrada|default_if_none:0|real_br_money_mask }}</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+            <tr role="row">
+                <th>#</th>
+                <th>
+                    <span style="color: red;">Saidas</span>
+                </th>
+                <th>
+                    <span style="color: red;">Valor</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for financeiro_agrupado in financeiro_total_agrupado_despesa_saida_grupo1 %}
+                <tr>
+                    <td style="text-align: center; color: red;">{{ forloop.counter }}</td>
+                    <td style="text-align: center; color: red;">{{ financeiro_agrupado.operacao_financeira_descricao }}</td>
+                    <td style="text-align: right; color: red;">
+                        <span style="color: red;">{{ financeiro_agrupado.total_caixa|real_br_money_mask }}</span>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td style="text-align: right;" colspan="3">
+                    <b><span style="color: red;">Total Saidas:</span></b> <span style="color: red;">{{ soma_total_despesa_saida_grupo1|default_if_none:0|real_br_money_mask }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;" colspan="3">
+                    <b>Total (Entradas - Saidas):</b> {{ total_caixa_saida1|default_if_none:0|real_br_money_mask }}
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;" colspan="3">
+                    <b>Total (Dinheiro - Despesa - Devolução em dinheiro):</b> {{ total_dinheiro_menos_saida|default_if_none:0|real_br_money_mask }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+            <tr role="row">
+                <th>#</th>
+                <th>
+                    <span style="color: red;">Repasses</span>
+                </th>
+                <th>
+                    <span style="color: red;">Valor</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for financeiro_agrupado in financeiro_total_agrupado_despesa_saida_grupo2 %}
+                <tr>
+                    <td style="text-align: center; color: red;">{{ forloop.counter }}</td>
+                    <td style="text-align: center; color: red;">{{ financeiro_agrupado.operacao_financeira_descricao }}</td>
+                    <td style="text-align: right; color: red;">
+                        <span style="color: red;">{{ financeiro_agrupado.total_caixa|real_br_money_mask }}</span>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td style="text-align: right;" colspan="3">
+                    <span style="color: red;"><b>Total:</b> {{ total_caixa_saida2|default_if_none:0|real_br_money_mask }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;" colspan="3">&emsp;</td>
+            </tr>
+            <tr></tr>
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+            <tr role="row">
+                <th>#</th>
+                <th>
+                    <span style="color: red;">Devoluções</span>
+                </th>
+                <th>
+                    <span style="color: red;">Valor</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for financeiro_agrupado in financeiro_total_agrupado_despesa_saida_grupo3 %}
+                <tr>
+                    <td style="text-align: center; color: red;">{{ forloop.counter }}</td>
+                    <td style="text-align: center; color: red;">{{ financeiro_agrupado.operacao_financeira_descricao }}</td>
+                    <td style="text-align: right; color: red;">
+                        <span style="color: red;">{{ financeiro_agrupado.total_caixa|real_br_money_mask }}</span>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td style="text-align: right;" colspan="3">
+                    <b><span style="color: red;">Total:</span></b> <span style="color: red;">{{ total_caixa_saida3|default_if_none:0|real_br_money_mask }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right;" colspan="3">&emsp;</td>
+            </tr>
+            <tr></tr>
+        </tbody>
+    </table>
+
+    {% if lista_pedidos_certidao_nao_confirmados_caixa %}
+        <table class="table">
+            <thead>
+                <tr role="row">
+                    <th style="text-align: left; color: black;" colspan="3">
+                        <span style="color: black;">Pedido(s) de Certidão - Sem Entrada</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align: left; color: black;" colspan="3">{{ lista_pedidos_certidao_nao_confirmados_caixa }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if lista_pedidos_protocolo_nao_confirmados_caixa %}
+        <table class="table">
+            <thead>
+                <tr role="row">
+                    <th style="text-align: left; color: black;" colspan="3">
+                        <span style="color: black;">Protocolos - Sem Entrada</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align: left; color: black;" colspan="3">{{ lista_pedidos_protocolo_nao_confirmados_caixa }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% endif %}
+
+</table>
+{% include "financeiro/chart_receita_despesa.html" %}
+Impresso por: {{ user.username }}
+{% endblock content %}
+{% block javascripts %}
+    {% include "financeiro/script_chart_receita_despesa.html" %}
+{% endblock javascripts %}

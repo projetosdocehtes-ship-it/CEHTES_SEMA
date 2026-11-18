@@ -1,0 +1,49 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <div class="card table-reponsive">
+        <div class="card-header">
+            <h5>
+                Preenchimento de Minuta: <span class="font-weight-bold">{{ perguntas_auxiliares }}</span> -
+                Colaborador:  {{ current_user }}
+            </h5>
+            <p>
+                <div class="cell-content text-white">
+                    Protocolo:  {{ protocolo|protocolo_formatado }} -
+                    Código:  {{ codigo_tabela }} -
+                    {{ tipo_imovel }}: {{ numero_matricula }}  -  {{ numero_ato }}
+                </div>
+            </p>
+        </div>
+        <form action="{% url 'minutas_atos:imprimir_respostas_tela' pedido_item_id=pedido_item_id modelo_id=modelo_id %}"
+              method="post">
+            {% csrf_token %}
+            <div class="card-body">
+                <p>Responda as perguntas abaixo, e clique em Gerar Minuta, para continuar.</p>
+                <div>
+                    {% for it in perguntas_T %}
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">{{ it.questions }}</span>
+                            </div>
+                            <input type="text" class="form-control" name={{ it.id }} aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-warning text-dark "
+                   title="Clique para voltar a página anterior "
+                   type="button"
+                   onclick="getVoltar()"
+                   role="button"><i class="icon feather icon-arrow-left"></i>Voltar</a>
+                <button title="Clique para aplicar as respostas e gerar a minuta"
+                        class="btn bg-primary    text-white"
+                        type="submit">
+                    <i class="icon feather icon-file-text"></i>Gerar Minuta
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

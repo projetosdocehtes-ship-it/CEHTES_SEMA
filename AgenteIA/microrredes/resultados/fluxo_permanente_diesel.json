@@ -1,0 +1,41 @@
+{
+  "analise": "fluxo_potencia",
+  "convergiu": true,
+  "tensoes_pu": {
+    "0": 0.9998530121446965,
+    "1": 1.003140223007017,
+    "2": 1.001496403490333,
+    "3": 1.0014964047488506,
+    "4": 0.9980630025149483,
+    "5": 1.0
+  },
+  "carregamento_linhas_percentual": {
+    "0": 4.508621990584998,
+    "1": 4.508621917802149,
+    "2": 1.7256879581662987e-05,
+    "3": 4.566874348255937,
+    "4": 1.4424394307376278
+  },
+  "arquivo_entrada": "D:\\microrredes\\ProjetoPowerFlow\\Entradas\\Entradas_regime_permanente_diesel.json",
+  "nome_projeto": "Microrrede offgrid - PV, BESS e gerador diesel",
+  "modelo_rede": "entradas_json",
+  "conectado_rede": false,
+  "parametros_linha_padrao": {
+    "length_km": 0.1,
+    "r_ohm_per_km": 0.2,
+    "x_ohm_per_km": 0.08,
+    "c_nf_per_km": 10.0,
+    "max_i_ka": 0.4
+  },
+  "parametros_gerador_diesel_pandapower": {
+    "p_mw_inicial": 0.275,
+    "sn_mva": 0.34375,
+    "max_p_mw": 0.275,
+    "min_p_mw": 0.0825,
+    "vn_kv": 0.38,
+    "xdss_pu": 0.2,
+    "rdss_ohm": 0.01,
+    "cos_phi": 0.8
+  },
+  "arquivo_saida": "resultados\\fluxo_permanente_diesel.json"
+}

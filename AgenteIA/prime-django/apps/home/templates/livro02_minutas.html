@@ -1,0 +1,904 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <h5 class="p-10 mb-10 bg-info text-dark">
+        <div class="dropdown">
+            Protocolo:
+            <a class="btn btn-sm btn-primary text-white  "
+               onclick="get_numero( {{ protocolo }} )"
+               title="Clique para acessar os detalhes"
+               data-bs-toggle="tooltip">{{ protocolo|protocolo_formatado }}</a>
+            Número:
+            <button class="btn btn-sm btn-success text-white  dropdown-toggle"
+                    type="button"
+                    id="dropdownNumero"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                <i class="icon feather icon-list"></i>{{ tipo_registro }}.{{ numero_matricula|formatar_numero_registro }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownNumero">
+                <a class="dropdown-item"
+                   href="{% url 'home:gerar_minuta_imagem' id=numero_matricula tipo=tipo_registro %}"><i class="icon feather icon-image"></i> Imagem</a>
+                <a class="dropdown-item"
+                   href="{% url 'home:pessoal_lv2' pedido_item_id=pedido_item_id %}"><i class="icon feather icon-users"></i> Pessoal</a>
+                <a class="dropdown-item" href="#"><i class="icon feather icon-home"></i> Real</a>
+            </div>
+            <a class="btn btn-warning text-black"
+               onclick="getVoltar()"
+               title="Voltar a tela anterior"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"> Voltar</a>
+        </div>
+        Código: {{ codigo_tabela }} - Ato: {{ numero_ato|default:"" }} - Ato Praticado: {{ ato_praticado }} - Imóvel: {{ imoveis.classe_id|formatar_classe_do_registro }}
+    </h5>
+    <!--   #######     INICIO DA FICHA DE Checklist 	#######       -->
+    <div>
+        <h5 class="p-10 mb-10 bg-secondary text-white text-center">Selecionar minuta:</h5>
+        <div class="row">
+            <div class="col-lg-0">
+                <div class="form-group">
+                    <div class="input-group mb-0">
+                        <!-- OBTER O COMBOBOX DE MINUTAS -->
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-secondary text-white" for="cbxMinuta">Minuta:</span><a></a>
+                        </div>
+                        <select class="form-select form-select-sm"
+                                name="cbxMinuta"
+                                id="cbxMinuta"
+                                autofocus
+                                required>
+                            {% for minuta in list_de_minutas %}
+                                <option value={{ minuta }}>{{ minuta }}
+                                </option>
+                                itemSelecionado = minuta
+                            {% endfor %}
+                        </select>
+                        <!--   BOTOES DAS MINUTAS   -->
+                        <a></a>
+                        <button type="submit"
+                                class="btn text-white"
+                                style="background-color: #507CA5">
+                            <i class="icon feather icon-file-text">Aplicar Modelosss</i>
+                        </button>
+                        {% if pedido_item_id|get_texto_imovel > 0 %}
+                            <a></a>
+                            <a class="btn bg-success text-white f-14"
+                               href="{% url 'home:texto_lv2' pk=pedido_item_id pedido_item_id=pedido_item_id %}"
+                               aria-pressed="true"
+                               role="button"><i class="icon feather icon-file"></i>Texto</a>
+                        {% endif %}
+                        <a></a>
+                        <!-- Botão que irá abrir o modal PESSOAL -->
+                        <button type="button"
+                                class="btn bg-primary text-white "
+                                data-bs-toggle="modal"
+                                data-bs-target="#modal_pessoal">
+                            <i class="icon feather icon-users"></i> Pessoal
+                        </button>
+                        <a></a>
+                        <!-- Botão que irá abrir o modal REAL -->
+                        <button type="button"
+                                class="btn bg-info text-dark "
+                                data-bs-toggle="modal"
+                                data-bs-target="#modal_real">
+                            <i class="icon feather icon-home"></i> Real
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--   #######     FIM DA FICHA DE Checklist   		#######       -->
+    <!-- INICIO DO Modal - INDICADOR REAL -->
+    <div id="modal_real" class="modal fade" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <!-- Conteúdo do modal-->
+            <div class="modal-content">
+                <!-- Cabeçalho do modal -->
+                <div class="modal-header" style="background:#000">
+                    <h5 class="modal-title text-white fs-5">Dados do Imóvel:</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                </div>
+                <!-- Corpo do modal -->
+                <div class="modal-body">
+                    <table cellpadding="2" cellspacing="2" width="100%" height="100%">
+                        <thead>
+                            <tr>
+                                <th>{{ tipo_registro|get_descricao_tipo_registro }}</th>
+                                <th>Município</th>
+                                <th>Data Abertura</th>
+                                <th>Tipo de Registro</th>
+                                <th>Tipo de Construção</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ numero_matricula|formatar_numero_registro }}</a>
+                                </th>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ imoveis.municipio_id }}</a>
+                                </th>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ imoveis.data_abertura_id|date:D, d M Y }}</a>
+                                </th>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ imoveis.classe_id|formatar_classe_do_registro }}</a>
+                                </th>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">'{{ imoveis.comercial_id }}</a>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <th>
+                        <button data-bs-toggle="button"
+                                aria-pressed="true"
+                                class="btn bg-secondary text-white btn-block"
+                                type="button">Endereço:</button>
+                    </th>
+                    {% if imoveis.classe_id == 'R' %}
+                        <table cellpadding="2" cellspacing="2" width="100%" height="100%">
+                            <thead>
+                                <tr>
+                                    <th>Nome Fazenda</th>
+                                    <th>Caracteristicas</th>
+                                    <th>Área</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.nome_fazenda_rural_id }}</a>
+                                    </th>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.caracteristica_rural_id }}</a>
+                                    </th>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.area_rural_id }}</a>
+                                    </th>
+                                </tr>
+                                <thead>
+                                    <tr>
+                                        <th>Reserva Legal</th>
+                                        <th>Georeferenciado</th>
+                                        <th>Remanescente</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.reserva_florestal_id }}</a>
+                                    </th>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.georeferencial_id }}</a>
+                                    </th>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.remanescente_id }}</a>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table cellpadding="2" cellspacing="2" width="100%" height="100%">
+                            <thead>
+                                <tr>
+                                    <th>Cadastro Municipal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <a class="label btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.numero_contribuinte_id }}</a>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    {% endif %}
+                    {% if imoveis.classe_id == 'L' %}
+                        <table cellpadding="2" cellspacing="2" width="100%" height="100%">
+                            <thead>
+                                <tr>
+                                    <th>Bairro</th>
+                                    <th>Quadra</th>
+                                    <th>Lote</th>
+                                    <th>Área</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.setor_id }}</a>
+                                    </th>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.quadra_id }}</a>
+                                    </th>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.numero_unidade_id }}</a>
+                                    </th>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.area_id }}</a>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nome Rua</th>
+                                    <th>Número</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.nome_rua_id }}</a>
+                                    </th>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.numero_rua_id }}</a>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table cellpadding="2" cellspacing="2" width="100%" height="100%">
+                            <thead>
+                                <tr>
+                                    <th>Cadastro Municipal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <a class="btn btn-sm btn-primary     text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ imoveis.numero_contribuinte_id }}</a>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    {% endif %}
+                    <th>
+                        <button data-bs-toggle="button"
+                                aria-pressed="true"
+                                class="btn bg-secondary text-white btn-block"
+                                type="button">Registro Anterior:</button>
+                    </th>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Número</th>
+                                <th>Complemento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ imoveis.anterior_tipo_id }}</a>
+                                </th>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ imoveis.anterior_numero_id|formatar_numero_registro }}</a>
+                                </th>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ imoveis.anterior_complemento_id }}</a>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <th>
+                        <button data-bs-toggle="button"
+                                aria-pressed="true"
+                                class="btn btn-sm btn-secondary text-white btn-block"
+                                type="button">Proprietário(s):</button>
+                    </th>
+                    {% for proprietario in proprietario_atual %}
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <a class="label btn-primary   text-dark f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ proprietario }}</a>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    {% endfor %}
+                </div>
+                <!-- Rodapé do modal-->
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-sm btn-secondary"
+                            data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-sm btn-primary">Copiar Dados</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIM DO Modal - INDICADOR REAL  -->
+    <!-- INICIO DO Modal - INDICADOR PESSOAL -->
+    <div id="modal_pessoal"
+         class="modal fade"
+         role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <!-- Conteúdo do modal-->
+            <div class="modal-content">
+                <!-- Cabeçalho do modal -->
+                <div class="modal-header" style="background:#000">
+                    <h5 class="modal-title text-white fs-5">Dados do Indicador Pessoal:</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                </div>
+                <!-- Corpo do modal -->
+                <div class="modal-body table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{{ tipo_registro|get_descricao_tipo_registro }}</th>
+                                <th>Município</th>
+                                <th>Data Abertura</th>
+                                <th>Tipo de Registro</th>
+                                <th>Tipo de Construção</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ numero_matricula|formatar_numero_registro }}</a>
+                                </th>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ imoveis.municipio_id }}</a>
+                                </th>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ imoveis.data_abertura_id|date:D, d M Y }}</a>
+                                </th>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ imoveis.classe_id|formatar_classe_do_registro }}</a>
+                                </th>
+                                <th>
+                                    <a class="btn btn-sm btn-primary     text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ imoveis.comercial_id }}</a>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Ato</th>
+                                <th>Percentual</th>
+                                <th></th>
+                                <th text-align:right">        CPF/CNPJ
+                                </th>
+                                <th  >
+                                </th>
+                                <th  >
+                                    Nome
+                                </th>
+                                <th  >
+                                    Estado Civil
+                                </th>
+                                <th  >
+                                    Regime de Bens
+                                </th>
+                                <th  >
+                                    Vinculo
+                                </th>
+                                <th  >
+                                    Data Transferencia
+                                </th>
+                            </tr>
+                        </thead>
+                        {% for vinculo in vinculos %}
+                            <tbody>
+                                <tr>
+                                    <th text-align:center;">
+                                        {{ vinculo.tipo_ato }}-{{ vinculo.numero_ato|numero_inteiro }}
+                                    </th>
+                                    <th text-align:right;">
+                                        {{ vinculo.area_pecentual }}
+                                    </th>
+                                    <th text-align:left;"></th>
+                                    <th text-align:right;">
+                                        {{ vinculo.pessoa.cpf|formatar_documento }}
+                                    </th>
+                                    <th text-align:left;"></th>
+                                    <th text-align:left;">
+                                        {{ vinculo.pessoa.nome }}
+                                    </th>
+                                    <th text-align:left;">{{ vinculo.estado_civil.descricao_estado_civil }}</th>
+                                    <th text-align:left;">
+                                        {{ vinculo.tipo_regime_casamento.descricao_regime }}
+                                    </th>
+                                    {% if vinculo.situacao == 'F' %}
+                                        {% if vinculo.tipos_vinculo.id == 7 %}
+                                            <th text-align:left;">
+                                                <a class="btn btn-sm btn-primary     text-white f-12"
+                                                   aria-pressed="true"
+                                                   role="button"> {{ vinculo.tipos_vinculo.descricao }} </a>
+                                            </th>
+                                        {% else %}
+                                            <th text-align:left;">{{ vinculo.tipos_vinculo.descricao }}</th>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if vinculo.situacao == 'T' %}<th text-align:left;">(*){{ vinculo.tipos_vinculo.descricao }}</th>{% endif %}
+                                    <th text-align:center;">{{ vinculo.trasnferido_em|date:D, d M Y }}</th>
+                                </tr>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                    <th>
+                        <button data-bs-toggle="button"
+                                aria-pressed="true"
+                                class="btn bg-secondary text-white btn-block"
+                                type="button">Proprietário(s):</button>
+                    </th>
+                    {% for proprietario in proprietario_atual %}
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <a class="label btn-primary   text-dark f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ proprietario }}</a>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    {% endfor %}
+                </div>
+                <!-- Rodapé do modal-->
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-sm btn-secondary"
+                            data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-sm btn-primary">Copiar Dados</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIM DO Modal - INDICADOR PESSOAL  -->
+</div>
+</div>
+<!-- INICIO DOS ADQUIRENTES E TRANSMITENTES -->
+<!-- <div class="col-lg-12" style="background-color: #002a4f; padding:1px;">   -->
+<div class="col-lg-12">
+    <ul class="nav nav-pills mb-1" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            {% if exibir_Tab_Minuta_Atual == 'A' %}
+                <a class="nav-link "
+                   id="pills-adquirente-tab"
+                   data-bs-toggle="pill"
+                   href="#pills-adquirente"
+                   role="tab"
+                   aria-controls="pills-adquirente"
+                   aria-selected="true">Adquirente</a>
+            {% else %}
+                <a class="nav-link"
+                   id="pills-adquirente-tab"
+                   data-bs-toggle="pill"
+                   href="#pills-adquirente"
+                   role="tab"
+                   aria-controls="pills-adquirente"
+                   aria-selected="true">Adquirente</a>
+            {% endif %}
+        </li>
+        <li class="nav-item">
+            {% if exibir_Tab_Minuta_Atual == 'T' %}
+                <a class="nav-link "
+                   id="pills-profile-tab"
+                   data-bs-toggle="pill"
+                   href="#pills-profile"
+                   role="tab"
+                   aria-controls="pills-profile"
+                   aria-selected="false">Transmitente</a>
+            {% else %}
+                <a class="nav-link"
+                   id="pills-profile-tab"
+                   data-bs-toggle="pill"
+                   href="#pills-profile"
+                   role="tab"
+                   aria-controls="pills-profile"
+                   aria-selected="false">Transmitente</a>
+            {% endif %}
+        </li>
+        {% if imoveis.classe_id == 'R' %}
+            <li class="nav-item">
+                {% if exibir_Tab_Minuta_Atual == 'I' %}
+                    <a class="nav-link "
+                       id="pills-dados-rural-tab"
+                       data-bs-toggle="pill"
+                       href="#pills-dados-r"
+                       role="tab"
+                       aria-controls="pills-dados-r"
+                       aria-selected="false">Dados do Imóvel / Escritura / Título</a>
+                {% else %}
+                    <a class="nav-link"
+                       id="pills-dados-rural-tab"
+                       data-bs-toggle="pill"
+                       href="#pills-dados-r"
+                       role="tab"
+                       aria-controls="pills-dados-r"
+                       aria-selected="false">Dados do Imóvel / Escritura / Título</a>
+                {% endif %}
+            </li>
+        {% else %}
+            <li class="nav-item">
+                {% if exibir_Tab_Minuta_Atual == 'I' %}
+                    <a class="nav-link "
+                       id="pills-dados-urbano-tab"
+                       data-bs-toggle="pill"
+                       href="#pills-dados-u"
+                       role="tab"
+                       aria-controls="pills-dados-u"
+                       aria-selected="false">Dados do Imóvel / Escritura / Título</a>
+                {% else %}
+                    <a class="nav-link"
+                       id="pills-dados-urbano-tab"
+                       data-bs-toggle="pill"
+                       href="#pills-dados-u"
+                       role="tab"
+                       aria-controls="pills-dados-u"
+                       aria-selected="false">Dados do Imóvel / Escritura / Título</a>
+                {% endif %}
+            </li>
+        {% endif %}
+    </ul>
+    <!-- DETALHES DAS TABS -->
+    <div class="tab-content" id="pills-tabContent" bgColor="#6B6B6B">
+        <!-- ADQUIRENTES -->
+        {% if exibir_Tab_Minuta_Atual == 'A' %}
+            <div class="tab-pane fade show "
+                 id="pills-adquirente"
+                 role="tabpanel"
+                 aria-labelledby="pills-adquirente-tab">
+            {% else %}
+                <div class="tab-pane fade"
+                     id="pills-adquirente"
+                     role="tabpanel"
+                     aria-labelledby="pills-adquirente-tab">
+                {% endif %}
+                <!-- Botão que irá abrir o modal -->
+                <button type="button"
+                        class="btn btn-sm btn-success "
+                        data-bs-toggle="modal"
+                        data-bs-target="#addAdquirenteModalAto"
+                        title="Cadastrar um novo Adquirente para o ato">
+                    <i class="fas fa-user-plus"></i>Novo Adquirente
+                </button>
+                {% include 'inserir-adquirente-ato.html' %}
+                <!-- VINCULAR ADQUIRENTE -->
+                {% include 'form-vincular-adquirente-ato.html' %}
+                <!-- COMPARATIVO -->
+                <a class="btn text-white "
+                   style="background-color: #ac2bac"
+                   href="{% url 'home:checklist_imovel' id=pedido_item_id %}"
+                   aria-pressed="true"
+                   role="button"><i class="fas fa-chart-bar"></i>Comparativo</a>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ato Adquirir (%)</th>
+                            <th>DOI (%)</th>
+                            <th>CPF/CNPJ</th>
+                            <th>Nome</th>
+                            <th>Estado Civil</th>
+                            <th>Regime de Bens</th>
+                            <th>Conjugue</th>
+                            <th>Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for adquirente in partes_adquirente %}
+                            <tr>
+                                <th>{{ adquirente.percentual_ato|numero_float|default:"" }}</th>
+                                <th>{{ adquirente.percentual_doi|numero_float|default:"" }}</th>
+                                <th>{{ adquirente.pessoa.cpf|formatar_documento }}</th>
+                                <th>{{ adquirente.pessoa.nome }}</th>
+                                <th>{{ adquirente.estado_civil.descricao_estado_civil }}</th>
+                                <th>{{ adquirente.tipo_regime_casamento.descricao_regime }}</th>
+                                <th>{{ adquirente.pessoa_conjuge.nome }}</th>
+                                <td>
+                                    {% if adquirente.pessoa.nome != '' %}
+                                        <!-- Alterar os dados do Adquirente selecionado -->
+                                        {% include 'editmodalAtoAdquirente.html' %}
+                                        <!-- Alterar os dados do Adquirente selecionado -->
+                                        {% include 'editmodalPessoaAdquirente.html' %}
+                                        <!-- DESVINCULAR Adquirente -->
+                                        {% include 'desvincularModalPessoaAdquirente.html' %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- [ FIM ADQUIRENTES ] -->
+            <!-- TRANSMITENTES -->
+            {% if exibir_Tab_Minuta_Atual == 'T' %}
+                <div class="tab-pane fade show "
+                     id="pills-profile"
+                     role="tabpanel"
+                     aria-labelledby="pills-profile-tab">
+                {% else %}
+                    <div class="tab-pane fade"
+                         id="pills-profile"
+                         role="tabpanel"
+                         aria-labelledby="pills-profile-tab">
+                    {% endif %}
+                    <!-- Botão que irá abrir o modal -->
+                    <button type="button"
+                            class="btn btn-sm btn-success "
+                            data-bs-toggle="modal"
+                            data-bs-target="#addTransmitenteModalAto"
+                            title="Cadastrar um novo Transmitente para o ato">
+                        <i class="fas fa-user-plus"></i>Novo Transmitente
+                    </button>
+                    {% include 'inserir-transmitente-ato.html' %}
+                    <!-- VINCULAR TRANSMITENTES -->
+                    {% include 'form-vincular-transmitente-ato.html' %}
+                    <!-- COMPARATIVO -->
+                    <a class="btn text-white "
+                       style="background-color: #ac2bac"
+                       href="{% url 'home:checklist_imovel' id=pedido_item_id %}"
+                       aria-pressed="true"
+                       role="button"><i class="fas fa-chart-bar"></i>Comparativo</a>
+                    <!-- IMPORTAR PROPRIETARIOS -->
+                    <a class="btn text-white "
+                       style="background-color: #0000ff"
+                       href="{% url 'home:get_proprietarios_lv2' pedido_item_id=pedido_item_id %}"
+                       aria-pressed="true"
+                       role="button"><i class="icon feather icon-users"></i>Importar Proprietários</a>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Número do Ato (baixar)</th>
+                                <th>Ato Transmitir (%)</th>
+                                <th>DOI    (%)</th>
+                                <th>CPF/CNPJ</th>
+                                <th>Nome</th>
+                                <th>Estado Civil</th>
+                                <th>Regime de Bens</th>
+                                <th>Conjugue</th>
+                                <th>Opções</th>
+                            </tr>
+                        </thead>
+                        {% for transmitente in partes_transmitente %}
+                            <tbody>
+                                <tr>
+                                    {% if transmitente.vinculos.numero_ato >= 0 %}
+                                        <th style="font-size:14px;text-align:center;color: red;">
+                                            {{ transmitente.vinculos.tipo_ato }}.{{ transmitente.vinculos.numero_ato|numero_inteiro|default:"" }}
+                                        </th>
+                                    {% else %}
+                                        <th style="font-size:14px;text-align:center;color: red;">
+                                            {{ transmitente.vinculos.tipo_ato }}{{ transmitente.vinculos.numero_ato|default:"" }}
+                                        </th>
+                                    {% endif %}
+                                    <th>{{ transmitente.percentual_ato|numero_float|default:"" }}</th>
+                                    <th>{{ transmitente.percentual_doi|numero_float|default:"" }}</th>
+                                    <th>{{ transmitente.pessoa.cpf|formatar_documento }}</th>
+                                    <th>{{ transmitente.pessoa.nome }}</th>
+                                    <th>{{ transmitente.estado_civil.descricao_estado_civil }}</th>
+                                    <th>{{ transmitente.tipo_regime_casamento.descricao_regime }}</th>
+                                    <th>{{ transmitente.pessoa_conjuge.nome }}</th>
+                                    <td>
+                                        {% if transmitente.pessoa.nome != '' %}
+                                            <!-- Alterar os dados do Transmitente selecionado -->
+                                            {% include 'editmodalAtoTransmitente.html' %}
+                                            <!-- Alterar os dados do Transmitente selecionado -->
+                                            {% include 'editmodalPessoaTransmitente.html' %}
+                                            <!-- DESVINCULAR Transmitente -->
+                                            {% include 'desvincularModalPessoaTransmitente.html' %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+                <!-- [ FIM TRANSMITENTES ] -->
+                <!-- URBANO -->
+                {% if exibir_Tab_Minuta_Atual == 'I' and imoveis.classe_id != 'R' %}
+                    <div class="tab-pane fade show "
+                         id="pills-dados-u"
+                         role="tabpanel"
+                         aria-labelledby="pills-dados-urbano-tab">
+                    {% else %}
+                        <div class="tab-pane fade"
+                             id="pills-dados-u"
+                             role="tabpanel"
+                             aria-labelledby="pills-dados-urbano-tab">
+                        {% endif %}
+                        <!-- Botão que irá abrir o modal -->
+                        <button type="button"
+                                class="btn btn-sm btn-success "
+                                data-bs-toggle="modal"
+                                data-bs-target="#addCheckListEnderecoModal"
+                                title="Cadastrar Endereco da Escritura">
+                            <i class="icon feather icon-home"></i>Novo Endereço
+                        </button>
+                        <!-- Alterar os dados do Transmitente selecionado -->
+                        {% include 'updateEnderecoCheckListUrbano.html' %}
+                        <!-- COMPARATIVO -->
+                        <a class="btn text-white "
+                           style="background-color: #ac2bac"
+                           href="{% url 'home:checklist_imovel' id=pedido_item_id %}"
+                           aria-pressed="true"
+                           role="button"><i class="fas fa-chart-bar"></i>Comparativo</a>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Bairro</th>
+                                    <th>Quadra</th>
+                                    <th></th>
+                                    <th>Lote</th>
+                                    <th></th>
+                                    <th>Aréa</th>
+                                    <th></th>
+                                    <th>Nome da Rua</th>
+                                    <th>Número</th>
+                                    <th></th>
+                                    <th>Município</th>
+                                    <th></th>
+                                    <th>Residencial</th>
+                                    <th></th>
+                                    <th>Comercial</th>
+                                    <th>Opções</th>
+                                </tr>
+                            </thead>
+                            {% for partes_imovel in partes_imovel_urbano %}
+                                <tbody>
+                                    <tr>
+                                        <th>{{ partes_imovel.setor }}</th>
+                                        <th>{{ partes_imovel.quadra|default:"" }}</th>
+                                        <th></th>
+                                        <th>{{ partes_imovel.lote|default:"" }}</th>
+                                        <th></th>
+                                        <th>{{ partes_imovel.area|default:"" }}</th>
+                                        <th></th>
+                                        <th>{{ partes_imovel.nome_rua|default:"" }}</th>
+                                        <th>{{ partes_imovel.numero_casa|default:"" }}</th>
+                                        <th></th>
+                                        <th>{{ partes_imovel.municipio|default:"" }}</th>
+                                        <th></th>
+                                        <th>{{ partes_imovel.residencial|formatar_sim_nao|default:"" }}</th>
+                                        <th></th>
+                                        <th>{{ partes_imovel.comercial|formatar_sim_nao|default:"" }}</th>
+                                        <td>
+                                            {% include 'desvincularModalPessoaEndereco.html' %}
+                                            <!-- Alterar os dados do Endereço selecionado -->
+                                            {% include 'editmodalAtoEndereco.html' %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <!-- [ FIM URBANO ] -->
+                    <!-- RURAL -->
+                    {% if exibir_Tab_Minuta_Atual == 'I' and imoveis.classe_id == 'R' %}
+                        <div class="tab-pane fade show "
+                             id="pills-dados-r"
+                             role="tabpanel"
+                             aria-labelledby="pills-dados-rural-tab">
+                        {% else %}
+                            <div class="tab-pane fade"
+                                 id="pills-dados-r"
+                                 role="tabpanel"
+                                 aria-labelledby="pills-dados-rural-tab">
+                            {% endif %}
+                            <!-- Botão que irá abrir o modal -->
+                            <button type="button"
+                                    class="btn btn-sm btn-success "
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#addCheckListEnderecoRuralModal"
+                                    title="Cadastrar Endereco da Escritura">Novo Endereço</button>
+                            <!-- Alterar os dados do Transmitente selecionado -->
+                            {% include 'updateEnderecoCheckListRural.html' %}
+                            <!-- COMPARATIVO -->
+                            <a class="btn text-white "
+                               style="background-color: #ac2bac"
+                               href="{% url 'home:checklist_imovel' id=pedido_item_id %}"
+                               aria-pressed="true"
+                               role="button"><i class="fas fa-chart-bar"></i>Comparativo</a>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Nome da Fazenda</th>
+                                        <th>Característica</th>
+                                        <th>Aréa Fazenda</th>
+                                        <th>Georeferenciado</th>
+                                        <th>Município</th>
+                                        <th></th>
+                                        <th>Número NIRF</th>
+                                        <th>Número CCIRR</th>
+                                        <th>Número CAR</th>
+                                        <th>Número INCRA</th>
+                                        <th>Opções</th>
+                                    </tr>
+                                </thead>
+                                {% for partes_imovel in partes_imovel_rural %}
+                                    <tbody>
+                                        <tr>
+                                            <th>{{ partes_imovel.nome_fazenda|default:"" }}</th>
+                                            <th>{{ partes_imovel.caracteristica_fazenda|default:"" }}</th>
+                                            <th>{{ partes_imovel.area_fazenda|default:"" }}</th>
+                                            <th>{{ partes_imovel.georefenciada|formatar_sim_nao|default:"" }}</th>
+                                            <th>{{ partes_imovel.municipio|default:"" }}</th>
+                                            <th></th>
+                                            <th>{{ partes_imovel.numero_nirf|default:"" }}</th>
+                                            <th>{{ partes_imovel.numero_ccirr|default:"" }}</th>
+                                            <th>{{ partes_imovel.numero_car|default:"" }}</th>
+                                            <th>{{ partes_imovel.numero_incra|default:"" }}</th>
+                                            <td>
+                                                {% include 'desvincularModalPessoaEnderecoRural.html' %}
+                                                <!-- Alterar os dados do Endereço selecionado -->
+                                                {% include 'editmodalAtoEnderecoRural.html' %}
+                                                <!-- DESVINCULAR endereço -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        <!-- [ FIM RURAL ] -->
+                    </div>
+                </div>
+                <!-- FIM DOS ADQUIRENTES E TRANSMITENTES -->
+            </div>
+        </div>
+    </div>
+{% endblock content %}

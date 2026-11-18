@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Resultado da Simulação</title>
+  <style>
+    body { font-family: system-ui, Arial; padding: 16px; }
+    .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 12px; background: #fff; }
+    .card img { width: 100%; height: auto; display: block; border-radius: 8px; }
+    .meta { margin-bottom: 12px; color: #444; }
+    .title { font-weight: 600; margin: 0 0 8px 0; }
+  </style>
+</head>
+<body>
+  <h2>Projeto {{ projeto_id }} — Resultados</h2>
+  <div class="meta">Passos simulados: {{ passos }}</div>
+
+  <div class="grid">
+    {% for url in urls %}
+      <div class="card">
+        <p class="title">{{ url|cut:"/media/" }}</p>
+        <img src="{{ url }}" alt="Gráfico {{ forloop.counter }}">
+      </div>
+    {% endfor %}
+  </div>
+</body>
+</html>

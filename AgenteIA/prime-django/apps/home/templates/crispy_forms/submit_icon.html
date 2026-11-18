@@ -1,0 +1,9 @@
+{% if value %}
+    <button type="submit"
+            name="{{ name }}"
+            class="{{ css_class }}"
+            {% if button_id %}id="{{ button_id }}"{% endif %}>
+        {% if icon %}<i class="{{ icon }}"></i>{% endif %}
+        {{ value|safe }}
+    </button>
+{% endif %}

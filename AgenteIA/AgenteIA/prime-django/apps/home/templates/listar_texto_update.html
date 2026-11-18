@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <style>
+         input[type=submit] {
+              width: 19%;
+              background-color: #4CAF50;
+              color: white;
+              padding: 12px 12px;
+              margin: 2px 0;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+         }
+
+         input[type=submit]:hover {
+              background-color: #45a049;
+         }
+    </style>
+    <head>
+        <title>
+            Perguntas Auxiliares - Livro 02 (Registros)
+            {% block title %}{% endblock %}
+        </title>
+        <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 11]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description"
+              content="Free Datta Able Admin Template come up with latest Bootstrap 4 framework with basic components, form elements and lots of pre-made layout options" />
+        <meta name="keywords"
+              content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, datta able, datta able bootstrap admin template, free admin theme, free dashboard template" />
+        <meta name="author" content="CodedThemes" />
+        <!-- Favicon icon -->
+        <link rel="icon" href='{% static "assets/images/favicon.ico" type="image/x-icon">
+        <!-- fontawesome icon -->
+        <link rel="stylesheet"
+              href='{% static "assets/fonts/fontawesome/css/fontawesome-all.min.css" %}'>
+        <!-- animation css -->
+        <link rel="stylesheet"
+              href='{% static "assets/plugins/animation/css/animate.min.css" %}'>
+        <!-- vendor css -->
+        <link rel="stylesheet" href='{% static "assets/css/style.css" %}'>
+        <!-- dark mode css -->
+        <link rel="stylesheet" href='{% static "assets/css/dark.css" %}'>
+        <!-- Specific CSS goes HERE -->
+        {% block stylesheets %}
+        {% endblock stylesheets %}
+        <script>
+                                                                                                                                                                                                                                             function getVoltar() {
+                                                                                                                                                                                                                                             window.history.back()
+                                                                                                                                                                                                                                             }
+        </script>
+    </head>
+    <body>
+        <!-- [ Pre-loader ] start -->
+        <div class="loader-bg">
+            <div class="loader-track">
+                <div class="loader-fill"></div>
+            </div>
+        </div>
+        <!-- [ Pre-loader ] End -->
+        {% load home_formatos %}
+        {% include 'includes/sidebar.html' %}
+        {% include 'includes/navigation.html' %}
+        {% block content %}
+        {% endblock content %}
+        {% include 'includes/scripts.html' %}
+        <!-- Specific Page JS goes HERE  -->
+        {% block javascripts %}
+        {% endblock javascripts %}
+        <!-- [ Main Content ] start -->
+        <div class="pcoded-main-container">
+            <div class="pcoded-wrapper">
+                <div class="pcoded-content">
+                    <div class="pcoded-inner-content">
+                        <div class="main-body">
+                            <div class="page-wrapper">
+                                <form action="" method="post">
+                                    <!--        CABECALHO        -->
+                                    <h5 class="p-10 mb-10 bg-info text-white">
+                                        Texto do Ato - Livro 03 - pelo Colaborador:  {{ current_user }}
+                                        <br>
+                                        <br>
+                                        Protocolo:  {{ protocolo|protocolo_formatado }}  -  Ato Praticado:  {{ ato_praticado }}
+                                        <br>
+                                        Número:  {{ tipo_registro }}.{{ numero_registro_auxiliar|formatar_numero_registro }}  -  Número do Ato: {{ numero_ato|default:"" }}
+                                        -  Código da Tabela: {{ codigo_tabela }}
+                                        <br>
+                                    </h5>
+                                    <!--        INICIO DA FICHA        -->
+                                    {% csrf_token %}
+                                    {{ form.media }}
+                                    {{ form.as_p }}
+                                    <input type="submit" value="Salvar">
+                                    <input class="btn bg-warning text-black "
+                                           value="Voltar"
+                                           id="btnVoltar"
+                                           onclick="getVoltar()">
+                                    <!--   #######     FIM DA FICHA   #######     -->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

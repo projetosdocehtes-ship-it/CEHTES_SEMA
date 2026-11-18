@@ -1,0 +1,140 @@
+{
+    "nome_projeto": "Projeto Teste CEHTES",
+    "conectado_rede": false,
+    "Config_Simulacao": [
+        {
+            "Tipo_Sim": "Transiente",
+            "Passo_sim": 2E-5,
+            "Tempo_sim": 1,
+            "Algoritmo_EDO": "RK45",
+            "Tol_relativa": 1E-8
+        }
+    ],
+    "Falhas_sim": [
+        {
+            "Tipo_Falha": "Mudanca_Temperatura",
+            "T_falha": [],
+            "duracao_falha": [],
+            "Val_Temp": []
+        },
+        {
+            "Tipo_Falha": "Mudanca_Irradiancia",
+            "T_falha": [],
+            "duracao_falha": [],
+            "Val_Irrad": []
+        },
+        {
+            "Tipo_Falha": "Mudanca_Carga",
+            "T_falha": [],
+            "duracao_falha": [],
+            "Tipo": [],
+            "Pot_Carga": []
+        },
+        {
+            "Tipo_Falha": "Curto_Circuito_CC",
+            "T_falha": [],
+            "String_falha": [],
+            "duracao_falha": []
+        },
+        {
+            "Tipo_Falha": "Curto_Circuito_CA",
+            "T_falha": [],
+            "duracao_falha": []
+        }
+    ],
+    "Clima_Ambiente": [
+        {
+            "nome_cidade": "Goiania",
+            "pais": "BR",
+            "data": 20240116
+        }
+    ],
+    "painel_info": [
+        {
+            "fabricante_painel": "CanadianSolar",
+            "modelo_painel": "TOPBiHiKu6-610W",
+            "Pmp": 610,
+            "Isc": 15.97,
+            "Voc": 48,
+            "Imp": 14.96,
+            "Vmp": 40.8,
+            "Uisc": 0.05,
+            "Uvoc": -0.25,
+            "Upmp": -0.29,
+            "material_painel": "Silicio",
+            "eficiencia": 22.6,
+            "quantidade": [[21, 1], [21, 1], [21, 1]]
+        }
+        {
+            "fabricante_painel": "Kyocera",
+            "modelo_painel": "teste",
+            "Pmp": 178.65,
+            "Isc": 8.07,
+            "Voc": 29.35,
+            "Imp": 7.57,
+            "Vmp": 23.60,
+            "Uisc": 0.00222,
+            "Uvoc": -0.107,
+            "Upmp": -0.49,
+            "material_painel": "Silicio",
+            "eficiencia": 15,
+            "quantidade": [[18, 1]]
+        }
+    ],
+    "inversor_info": [
+        {
+            "fabricante_inversor": "Deye",
+            "modelo_inversor": "SUN-35K-SG01HP3-EU-BM",
+            "Nm_MPPT": 3,
+            "In_Pmax": 56,
+            "Imax_MPPT": 36,
+            "In_Vnom": 600,
+            "In_Vmin": 150,
+            "In_Vmax": 1000,
+            "In_MPP_Vmin": 150,
+            "In_MPP_Vmax": 850,
+            "Out_Pmax": 38.5,
+            "Out_Imax": 58.4,
+            "Out_Vnom": 380,
+            "Out_Freq": 60,
+            "Eficiencia": 0.976,
+            "Max_THD": 3,
+            "Fator_pot": 1,
+            "quantidade": 1,
+            "smart": false
+        }
+    ],
+    "cargas_info": [
+        {
+            "nome_carga": "Casa_4pessoas",
+            "tipo_carga": "Residencial",
+            "curva_carga": 0,
+            "s_instalada": 38000,
+            "fp": 0.9999,
+            "v_nom": 220,
+            "f_rede": 60,
+            "quantidade": 1
+        }
+    ],
+    "bateria_info": [
+        {
+            "fabricante_bateria": "A123",
+            "modelo_bateria": "ALM12V7",
+            "Tipo_bateria": "Li-ion",
+            "Capacidade": 4.6,
+            "I_charge_max": 15,
+            "I_discharge_max": 10,
+            "V_min": 8,
+            "V_max": 16,
+            "V_nom": 13.2,
+            "DoD": 0.4,
+            "Ciclo_vida": 1000,
+            "quantidade": [0, 0]
+        }
+    ],
+    "geradordiesel_info": [],
+    "geradorbiogas_info": [],
+    "eletrolizador_info": [],
+    "celulahidrogenio_info": [],
+    "turbinaeolica_info": []
+}

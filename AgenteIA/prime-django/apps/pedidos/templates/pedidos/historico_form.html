@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card">
+                    <form method="post">
+                        <div class="card-header">
+                            <h5>Adicionar/Alterar Evento</h5>
+                        </div>
+                        <div class="card-block table-border-style">
+                            {% csrf_token %}
+                            {{ form }}
+                        </div>
+                        <div class="card-footer">
+                            <input type="submit" value="Salvar" class="btn btn-sm btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

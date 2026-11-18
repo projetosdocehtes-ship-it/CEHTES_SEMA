@@ -1,0 +1,47 @@
+{% load static %}
+{% load home_formatos %}
+{% load barcode_filters %}
+<div class="card-etiqueta">
+    <div class="card-header">
+        <b>Projeto CEHTES - <strong>Protocolo nº {{ protocolo.numero_protocolo|formatar_numero_registro|default:"000.000" }} de {{ protocolo.data_protocolo|date:"d/m/y" }} </strong><b>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>
+                        <strong>Poder Judiciário – TJMG</strong>
+                    </p>
+                    <p>
+                        Selo nº {{ protocolo.numero_protocolo|default:"000000" }} |
+                        Cód. Seg. {{ protocolo.numero_protocolo }}
+                    </p>
+                    <p>Quantidade de atos praticados: {{ 1 }}</p>
+                    <p>
+                        Emol: {{ 0|formatar_moeda:False }} ISSQN: {{ 0|formatar_moeda:False }} RECOMPE: {{ 0|formatar_moeda:False }} TJF: {{ 0|formatar_moeda:False }}
+                    </p>
+                    <p>Total: {{ 0|formatar_moeda:False }}</p>
+                    <p>
+                        Consulte este selo em: <a href="https://selos.tjmg.jus.br">https://selos.tjmg.jus.br</a>
+                    </p>
+                    <p>{{ user.cartorio.responsavel.nome_completo }}</p>
+                </div>
+                <div class="col-md-6">
+                    <img class="barcode-img"
+                         height="80%"
+                         width="80%"
+                         src="{{ object.url_selo_digital_mg|gerar_qr_code }}"
+                         alt="QR Code">
+                </div>
+            </div>
+            {% if user.cartorio.responsavel.imagem_assinatura %}
+                <img src="{{ user.cartorio.responsavel.imagem_assinatura.url }}"
+                     alt="Rubrica Digitalizada"
+                     class="rubrica-img">
+            {% else %}
+                {% comment %} <img src="{% static 'assets/images/assinatura_generica_2.png' %}" alt="Rubrica Digitalizada" class="rubrica-img"> {% endcomment %}
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            {% comment %} <p>Oficila: ____________________________</p> {% endcomment %}
+        </div>
+    </div>

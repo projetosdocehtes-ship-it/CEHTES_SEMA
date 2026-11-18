@@ -1,0 +1,15 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+  <div class="container mt-4">
+    <h3>Confirmação de Exclusão</h3>
+    <p>
+      Você tem certeza de que deseja excluir: <b>{{ object.ato_praticavel.nome }}</b>?
+    </p>
+    <form method="post">
+      {% csrf_token %}
+      <input type="submit" value="Confirmar Exclusão" class="btn btn-danger">
+      {% comment %} <a href="{% url 'pedidos:atos_list' view.kwargs.pedido_id %}" class="btn btn-sm btn-secondary">Cancelar</a> {% endcomment %}
+    </form>
+  </div>
+{% endblock %}
+pedido_item_id

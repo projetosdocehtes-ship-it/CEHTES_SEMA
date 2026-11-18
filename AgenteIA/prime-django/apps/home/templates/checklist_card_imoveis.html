@@ -1,0 +1,76 @@
+<!-- CARD IMOVEIS INICIO -->
+{% load home_formatos %}
+<div class="card ">
+    <div class="card-header" id="checklist_imovel">
+        <h5>3 - Imóvel Urbano</h5>
+    </div>
+    <div class="card-body table-reponsive">
+        <!-- COMPARATIVO -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Bairro</th>
+                    <th>Dados do Imóvel</th>
+                    <th>Nome da Rua - Número</th>
+                    <th>Município</th>
+                    <th>Residencial</th>
+                    <th>Comercial</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            {% for partes_imovel in partes_imovel_urbano %}
+                <tbody>
+                    <tr>
+                        <th>{{ partes_imovel.setor }}</th>
+                        <th>
+                            <div class="cell-content">Quadra: {{ partes_imovel.quadra|default:"" }}</div>
+                            <div class="cell-content">Lote: {{ partes_imovel.lote|default:"" }}</div>
+                            <div class="cell-content">Área: {{ partes_imovel.area|default:"" }}</div>
+                            <div class="cell-content">Área Construída: {{ partes_imovel.area_construida_residencial|default:"" }}</div>
+                        </th>
+                        <th>{{ partes_imovel.nome_rua|default:"" }} - número: {{ partes_imovel.numero_casa|default:"" }}</th>
+                        <th>{{ partes_imovel.municipio }}</th>
+                        <th>{{ partes_imovel.residencial|formatar_sim_nao }}</th>
+                        <th>{{ partes_imovel.comercial|formatar_sim_nao }}</th>
+                        <th>
+                            <!-- Alterar os dados do Endereço selecionado -->
+                            <div class="cell-content">{% include 'editmodalAtoEnderecoUrbano.html' %}</div>
+                            <div class="cell-content"></div>
+                            <div class="cell-content">{% include 'desvincularModalPessoaEndereco.html' %}</div>
+                        </th>
+                    </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="card-footer">
+        <button type="button"
+                class="btn btn-sm btn-outline-primary text-dark "
+                data-bs-toggle="modal"
+                data-bs-target="#addCheckListEnderecoUrbanoModal"
+                title="Cadastrar Endereco da Escritura">
+            <i class="icon feather icon-home"></i> Novo Endereço
+        </button>
+        {% include 'updateEnderecoCheckListUrbano.html' %}
+        <a class="btn btn-sm text-white "
+           style="background-color: #ac2bac"
+           href="{% url 'home:checklist_imovel' id=pedido_item_id %}"
+           aria-pressed="true"
+           role="button">
+            <i class="fas fa-chart-bar"></i> Comparativo
+        </a>
+        <div class="btn-group mb-2 mr-2">
+            <a href="#checklist_transmitenteadquirente"
+               class="btn btn-sm btn-outline-warning text-dark "
+               title="Ítem anterior"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i> Voltar </a>
+            <a href="#card_checklist_minuta"
+               class="btn btn-sm btn-outline-primary text-dark "
+               title="Próximo ítem"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i> Próximo </a>
+        </div>
+    </div>
+</div>
+<!-- CARD IMOVEIS FIM -->

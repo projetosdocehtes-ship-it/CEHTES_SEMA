@@ -1,0 +1,17 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load home_formatos %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title text-center">Escolha o certificado digital</h5>
+        </div>
+        <div class="card-body">{% crispy form %}</div>
+        <div class="card-footer">
+            {% if request.user.is_superuser %}
+                <a href="{% url 'home:certificado_create' %}" class="btn btn-primary">Cadastrar certificado</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

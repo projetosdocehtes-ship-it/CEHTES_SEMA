@@ -1,0 +1,58 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% load django_tables2 %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Livro 01 - Protocolos</h5>
+                </div>
+                <div class="card-body">
+                    {% if filter %}
+                        <form action=""
+                              class="d-flex flex-row flex-wrap align-items-center"
+                              method="get">
+                            {% for field in filter.form %}<div class="p-2">{{ field|as_crispy_field }}</div>{% endfor %}
+                            <div class="col-md-12">
+                                <div class="p-2">
+                                    <button type="submit" class="btn btn-sm btn-primary mt-3">
+                                        <i class="fa-solid fa-filter"></i> Filtrar
+                                    </button>
+                                    <a href="{% url 'home:protocolos_list' %}"
+                                       class="btn btn-sm btn-outline-danger mt-3"><i class="fa-solid fa-eraser"></i> Limpar</a>
+                                    <button type="submit"
+                                            name="export"
+                                            value="excel"
+                                            class="btn btn-sm btn-outline-success mt-3 text-dark">
+                                        <i class="fa-solid fa-file-export"></i>Exportar para Excel
+                                    </button>
+                                    <a href="{% url 'home:verificar_protocolos_nao_importado' tipo_importacao='P' %}"
+                                       class="btn btn-sm btn-outline-warning mt-3 text-dark"
+                                       title="Atualizar protocolos não importados ..."
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-refresh-cw"></i>Atualizar Parcial
+                                    </a>
+                                    <a href="{% url 'home:verificar_protocolos_nao_importado' tipo_importacao='T' %}"
+                                       class="btn btn-sm btn-outline-secondary mt-3 text-dark"
+                                       title="Atualizar protocolos não importados ..."
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-refresh-cw"></i>Atualizar Total
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    {% endif %}
+                    {% render_table table %}
+                </div>
+                <div class="card-footer">
+                    <p>Total: {{ table.count_records }} Registros</p>
+                    {% for key, botao in botoes.items %}
+                        <a href="{{ botao.url }}" class="btn btn-primary">{{ botao.label }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

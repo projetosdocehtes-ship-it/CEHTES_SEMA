@@ -1,0 +1,66 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    {% load humanize %}
+    {% block stylesheets %}
+        <style>
+            .timeline {
+                position: relative;
+                padding-left: 20px;
+                list-style: none;
+            }
+
+            .timeline:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                width: 2px;
+                height: 100%;
+                background: #c5c5c5;
+            }
+
+            .timeline-item {
+                margin-bottom: 20px;
+                position: relative;
+            }
+
+            .timeline-icon {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: inline-block;
+                position: absolute;
+                left: -15px;
+                top: 0;
+                text-align: center;
+                line-height: 30px;
+            }
+
+            .cumprida .timeline-icon {
+                background: green;
+                color: white;
+            }
+
+            .pendente .timeline-icon {
+                background: grey;
+                color: white;
+            }
+
+            .timeline-content {
+                padding-left: 40px;
+                background: lightblue;
+                padding: 10px;
+                border-radius: 5px;
+            }
+        </style>
+    {% endblock stylesheets %}
+    <h1>Andamentos do Protocolo {{ protocolo.pk }}</h1>
+    <ul>
+        {% for andamento in andamentos %}
+            <li>Data: {{ andamento.data }} - Serviço: {{ andamento.tipo_andamento }}</li>
+        {% empty %}
+            <li>Nenhum andamento registrado para este protocolo.</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

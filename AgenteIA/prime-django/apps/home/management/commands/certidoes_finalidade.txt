@@ -1,0 +1,24 @@
+ INSERT INTO public.certidoes_finalidade
+(id, nome, ativo)
+VALUES('a9e4c9bc-83f6-4874-906b-5e37bcee2baf'::uuid, 'Investigação para contratação ou interposição de ações judicias.', true);
+INSERT INTO public.certidoes_finalidade
+(id, nome, ativo)
+VALUES('d02dc899-b7a2-494e-882c-88cf02920450'::uuid, 'Investigação jurídica sobre o imóvel, sua titularidade ou limitações ao direito de propriedade.', true);
+INSERT INTO public.certidoes_finalidade
+(id, nome, ativo)
+VALUES('b6050ea5-a6a4-45cb-bde4-37043ce9ec4c'::uuid, 'Investigação jurídico-econômica sobre crédito, solvência ou responsabilidade civil.', true);
+INSERT INTO public.certidoes_finalidade
+(id, nome, ativo)
+VALUES('f506f7d5-ceee-46f7-afc3-5912b410233c'::uuid, 'Investigação jurídico-econômica para fins de avaliação de crédito, solvência ou responsabilidade civil.', true);
+INSERT INTO public.certidoes_finalidade
+(id, nome, ativo)
+VALUES('c6dc8fef-ab31-4473-a146-a0fd3d6f27fd'::uuid, 'Investigação jurídica sobre o imóvel, sua titularidade ou limitações ao direito de propriedade para fins de contratação ou processamento de inventário.', true);
+INSERT INTO public.certidoes_finalidade
+(id, nome, ativo)
+VALUES('cf3fba42-a705-4140-ac4c-5d683313d21d'::uuid, 'Investigação para instrução de processos judiciais ou administrativos.', true);
+INSERT INTO public.certidoes_finalidade
+(id, nome, ativo)
+VALUES('12483a6e-8810-44bf-92b6-185032ad29df'::uuid, 'O solicitante da certidão digital é titular de algum direito real registrado sobre o imóvel.', true);
+INSERT INTO public.certidoes_finalidade
+(id, nome, ativo)
+VALUES('449981a1-e890-44c3-af9c-c7f9f2810eba'::uuid, 'Não desejo declarar a finalidade.', true);

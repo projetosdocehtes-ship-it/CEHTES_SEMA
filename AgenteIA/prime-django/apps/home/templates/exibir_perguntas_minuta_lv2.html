@@ -1,0 +1,53 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <div class="card table-reponsive">
+        <div class="card-header">
+            <h5>
+                Preenchimento de Minuta: <span class="font-weight-bold">{{ perguntas_auxiliares }}</span> -
+                Colaborador:  {{ current_user }}
+            </h5>
+            <p>
+                <div class="cell-content text-white">
+                    Protocolo:  {{ protocolo|protocolo_formatado }} -
+                    Ato Praticado:  {{ codigo_tabela }} {{ ato_praticado }} {{ numero_matricula }}
+                </div>
+            </p>
+        </div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="card-body">
+                <p>Responda as perguntas abaixo, e clique em Gerar Minuta, para continuar.</p>
+                <div>
+                    {% for it in perguntas_T %}
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">{{ it.questions }}</span>
+                            </div>
+                            <input type="text" class="form-control" name=O-{{ it.id }}-{{ it.id }}-{{ it.id }} aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-warning text-dark "
+                   type="button"
+                   onclick="getVoltar()"
+                   role="button">Voltar</a>
+                <input type="submit"
+                       class="btn bg-secondary text-white"
+                       value="Aplicar Dados"
+                       id="b2"
+                       onclick="#">
+                <a class="btn bg-primary    text-white  "
+                   href="{% url 'home:gerar_minuta_lv2' pedido_item_id=pedido_item_id %}"
+                   role="button">Gerar Minuta</a>
+                <a class="btn bg-success text-white f-14"
+                   {% if pedido_item_id|get_texto_imovel > 0 %} href="{% url 'home:texto_lv2' pk=pedido_item_id pedido_item_id=pedido_item_id %}" {% else %} href="{% url 'home:minuta_lv2_texto' pedido_item_id=pedido_item_id %}" {% endif %}
+                   aria-pressed="true"
+                   role="button"><i class="icon feather icon-file"></i>Texto</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

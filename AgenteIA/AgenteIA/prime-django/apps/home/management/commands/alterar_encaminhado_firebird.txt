@@ -1,0 +1,4 @@
+UPDATE ANDAMENTOS A
+SET    CHAVE_FUNCIONARIOS_DESTINO = 1000023
+WHERE  A.chave_tipos_andamentos IN (6,9,10,11,21,69)
+and    a.chave_funcionarios = CHAVE_FUNCIONARIOS_DESTINO

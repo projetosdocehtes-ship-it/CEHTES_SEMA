@@ -1,0 +1,9 @@
+INSERT INTO public.home_perguntasetor
+(id, descricao)
+VALUES(1, 'Geral');
+INSERT INTO public.home_perguntasetor
+(id, descricao)
+VALUES(2, 'Adquirentes');
+INSERT INTO public.home_perguntasetor
+(id, descricao)
+VALUES(3, 'Transmitentes');

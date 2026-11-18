@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <style>
+         .fixed-size-btn {
+              width: 100px;
+              /* Ajuste o tamanho conforme necessário */
+              display: inline-block;
+         }
+    </style>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Adicionar/Editar Andamento: {{ form.instance.pedido.numero_pedido }}</h5>
+                </div>
+                <div class="card-block table-border-style">
+                    <form action=".", method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            {% if not form.instance.pk %}
+                                <div class="col-md-4">{{ form.data_hora | as_crispy_field }}</div>
+                                <div class="col-md-4">{{ form.tipo_andamento | as_crispy_field }}</div>
+                                <div class="col-md-4">{{ form.colaborador_destino | as_crispy_field }}</div>
+                            {% endif %}
+                            {% if form.instance.ativo %}<div class="col-md-12">{{ form.modelos_de_texto | as_crispy_field }}</div>{% endif %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">{{ form.descricao }}</div>
+                        </div>
+                        {% if form.instance.ativo %}<button type="submit" class="btn btn-sm btn-primary">Salvar</button>{% endif %}
+                        <button type="cancel" class="btn btn-sm btn-danger">Cancelar</button>
+                        {% comment %} <a href="{% url 'home:pedido_certidao_detalhes' pedido_id %}" class="btn btn-sm btn-outline-danger">Cancelar</a> {% endcomment %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <script>
+        document.getElementById('id_modelos_de_texto').addEventListener('change', function() {
+            var modeloId = this.value;
+            if (modeloId) {
+                var objectPk = '{{ object.pk|escapejs }}'; // Certifique-se de que a PK é tratada como uma string
+                var url = `/modelo_de_texto_pedido_certidao/${modeloId}/pedido_certidao/${objectPk}/`;
+                fetch(url)
+                    .then(response => {
+                        console.log(response); // Verifique o status e a resposta
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Verifica se a instância do editor existe e se tem o método setData.
+                        if (window.editors) {
+                            const firstEditor = window.editors.id_descricao;
+                            firstEditor.model.change(writer => {
+                                // Cria um fragmento de conteúdo a partir do texto.
+                                const contentFragment = firstEditor.data.processor.toView(data.conteudo);
+                                const modelFragment = firstEditor.data.toModel(contentFragment);
+                                // Insere o conteúdo na posição atual do cursor.
+                                firstEditor.model.insertContent(modelFragment, firstEditor.model.document.selection);
+                            }); // Usa o método setData para atualizar o conteúdo do editor.
+                        } else {
+                            console.error('Instância do editor não encontrada ou método setData não disponível.');
+                        }
+                    })
+                    .catch(error => console.error('Erro ao buscar o modelo de texto:', error));
+            }
+        });
+    </script>
+{% endblock javascripts %}

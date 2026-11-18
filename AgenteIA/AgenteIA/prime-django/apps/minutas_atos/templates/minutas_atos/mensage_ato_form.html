@@ -1,0 +1,26 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block content %}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>
+            <span class="font-weight f-20 text-light">Mensagem: Dados da Minuta deste Ato atualizados</span>
+          </div>
+          <div class="card-block"></div>
+        </div>
+        <div class="card-footer">
+          <a class="btn btn-sm btn-warning text-dark"
+             title="Voltar para a página anterior sem alterar os dados."
+             data-bs-toggle="tooltip"
+             onclick="getVoltar()"><i class="icon feather icon-printer d-none d-md-inline-block"></i> Voltar</a>
+          <script>
+            function getVoltar() {
+              window.history.back()
+            }
+          </script>
+        </div>
+      </div>
+    </div>
+  {% endblock content %}

@@ -1,0 +1,7 @@
+INSERT INTO public.comum_prazolegal
+(id, valor, unidade_id, eh_prazo_util)
+VALUES(1, 5, 1, true);
+
+INSERT INTO public.comum_prazolegal
+(id, valor, unidade_id, eh_prazo_util)
+VALUES(5, 20, 1, false);

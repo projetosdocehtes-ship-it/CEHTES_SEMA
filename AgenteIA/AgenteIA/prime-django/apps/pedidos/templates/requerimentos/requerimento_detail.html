@@ -1,0 +1,105 @@
+{% extends "layouts/base.html" %}
+{% load django_tables2 %}
+{% block content %}
+  <!-- Cabeçalho -->
+  {% if requerimento %}
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>{{ requerimento.nome }}</h5>
+          </div>
+          <div class="card-body">
+            <p>{{ requerimento.observacao|safe }}</p>
+            {% if not requerimento.documentos.count %}
+              <p>
+                Não há documentos cadastrados para este requerimento. <a href="{% url 'pedidos:documento_para_requerimento_create' %}">Adicionar Documentos</a>
+              </p>
+            {% endif %}
+            <div class="accordion card">
+              {% for documento in requerimento.documentos.all %}
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="{{ documento.id }}">
+                    <button class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ documento.id }}"
+                            aria-expanded="true"
+                            aria-controls="collapse{{ documento.id }}">{{ documento.nome }}</button>
+                  </h2>
+                  <div id="collapse{{ documento.id }}"
+                       class="accordion-collapse collapse"
+                       aria-labelledby="heading{{ documento.id }}"
+                       data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                      <div class="row">
+                        <div class="col">
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Observações</h5>
+                              {{ documento.observacao|default:"Sem observações"|safe }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Justificativas</h5>
+                              {{ documento.observacao|default:"Sem Justificativas"|safe }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Orgão Emissor</h5>                             
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">Imagem</h5>
+                              {{ documento.imagem }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </br>
+                  </br>
+                  <a href="{{ documento.get_update_url }}" target="_blank" class="m-l-10"><small>Alterar</small></a>
+                  <a href="{{ documento.get_delete_url }}" target="_blank" class="m-l-10"><small>Excluir</small></a>
+                  <a href="{{ documento.get_print_url }}" target="_blank" class="m-l-10"><small>Imprimir</small></a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-between">
+        <a class="btn btn-sm btn-primary"
+           href="{% if next_url %}{{ next_url }}{% else %}{% url 'pedidos:pedidos_list' %}{% endif %}">Retornar ao Pedido</a>
+        <a class="btn btn-sm btn-secondary"
+           href="{{ requerimento.get_print_url }}"><i class="icon feather icon-printer"></i>Imprimir</a>
+        {% comment %} <a class="btn btn-sm btn-success text-dark"
+           href="{% url 'pedidos:requerimento_pedido_print' pk=requerimento.pk pedido_id=1 %}">
+          <i class="icon feather icon-printer"></i>Imprimir com Dados do Apresentante</a>
+        <a class="dropdown dropdown-toggle ms-auto" {% endcomment %}
+           id="dropdownMenuButton"
+           data-bs-toggle="dropdown"
+           aria-haspopup="true"
+           aria-expanded="false"><i class="icon feather icon-settings"></i></a>
+        <div class="dropdown-menu"
+             aria-labelledby="dropdownMenuButton{{ record.pk }}">
+          <a class="dropdown-item" href="{{ requerimento.get_update_url }}">Alterar Requerimento</a>
+          <a class="dropdown-item"
+             href="{% url 'pedidos:documento_para_requerimento_create' %}">Incluir Documento</a>
+          <a class="dropdown-item" href="{% url 'pedidos:requerimento_create' %}">Criar um novo Requerimento</a>
+          <!-- Adicione mais links de ação conforme necessário -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,237 @@
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(40, 'Qual o percentual da PARTE do adquirente ?', '', '.', '.', '.', '.', 'Informar o percentual', 'T', '.', '.', NULL, '.', 'N', 40, 0, 2);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(20, 'Qual o UFEMG ?', '', '.', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 20, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10006, 'Qual o número da Quadra ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10006, 2, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10008, 'Qual o nome da Rua ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10008, 4, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10016, 'Qual a area da Fazenda ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10016, 17, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10017, 'Existe Reserva Legal ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10017, 19, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10019, 'Qual o número do NIRF ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10019, 21, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10021, 'Qual o númerdo do CAR ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10021, 23, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10024, 'Qual a data de validade do ITR ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10024, 26, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10026, 'Qual metros direito :', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10026, 28, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10025, 'Qual metros frente :', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10025, 27, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10027, 'Qual metros fundo :', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10027, 29, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10028, 'Qual metros esquerdo :', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10028, 30, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10029, 'lado para frente', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10029, 31, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10030, 'lado para direito', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10030, 32, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10032, 'lado para esquerda', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10032, 34, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10031, 'lado para fundo', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10031, 33, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10033, 'Qual Endereço da Sede da Empresa ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10033, 35, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(16, '11 - Qual a área construida ?', '.', '.', '.', '.', '.', '.', 'T', '.', 'municipio.docx', '', '.', 'N', 10010, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10010, 'Qual a área do imóvel ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10010, 6, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(32, 'Qual nome do PAI do transmitente ?', '', '.', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 32, 0, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(34, 'Qual o endereço do transmitente ?', '', '.', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 34, 0, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(36, 'Qual o percentual da PARTE do transmitente ?', '', '.', '.', '.', '.', 'Informar o percentual númerico', 'T', '.', '.', NULL, '.', 'N', 36, 0, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(46, 'Qual número do cadastro municipal ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', '.', NULL, '.', 'N', 46, 8, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10034, 'Qual a área construída ?', '.', '.', '.', '.', '.', '.', 'E', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10010, 36, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(11, '07 - Qual bairro/setor ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'bairro.docx', '', '.', 'N', 11, 1, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10000, 'Observacao', 'OBSERVACAO', '.', '.', '.', '.', '.', 'T', '.', '.', '', '.', 'N', 10000, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10001, 'Qual o CPF do Transmitente ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir ato do indicador pessoal.', 'Municipio.docx', '', '.', 'N', 10001, 10, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10003, 'Qual o estado civil do Transmitente ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir ato do indicador pessoal.', 'Municipio.docx', '', '.', 'N', 10003, 13, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10007, 'Qual o número do Lote ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10007, 3, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10005, 'Qual o nome do Setor/Bairro ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10005, 1, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10009, 'Qual o número casa ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10009, 5, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10011, 'Imóvel é Comercial ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10011, 7, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10013, 'Qual o municipio do Imóvel ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10013, 9, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10015, 'Qual a caracteristica da Fazenda ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10015, 16, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10018, 'Existe Georeferenciamento ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10018, 20, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10020, 'Qual número do CCIR ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10020, 22, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10022, 'Qual número do INCRA ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10022, 24, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10023, 'Existe Area Remanescente ?', '.', '.', '.', '.', '.', '.', 'E', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10023, 25, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10002, 'Qual o nome do Transmitente ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir ato do indicador pessoal.', 'Municipio.docx', '', '.', 'N', 10002, 11, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10012, 'Imóvel é Residencial ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10012, 7, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10014, 'Qual o nome da Fazenda ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', 'Municipio.docx', '', '.', 'N', 10014, 15, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10004, 'Qual o regime de bens do Transmitente ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir ato do indicador pessoal.', 'Municipio.docx', '', '.', 'N', 10004, 14, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(35, 'Qual data de casamento do transmitente ?', '', '.', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 35, 0, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(33, 'Qual nome da MAE do transmitente ?', '', '.', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 33, 0, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(42, 'Qual nome do PAI adquirente ?', '', '.', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 42, 0, 2);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(37, 'Qual data de casamento do adquirente ?', '', '.', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 37, 0, 2);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(38, 'Qual nome da MAE do adquirente ?', '', '.', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 38, 0, 2);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(43, 'Qual a profissão do adquirente ?', '', '.', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 43, 0, 2);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(12, '08 - Qual a quadra ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', '.', NULL, '.', 'N', 12, 2, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(31, 'Qual a profissão do transmitente ?', '', '.', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 31, 0, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(44, 'Qual o endereço do adquirente ?', '', '.', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 44, 0, 2);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(13, '09 - Qual o lote ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', '.', NULL, '.', 'N', 13, 3, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(14, '10 - Qual a área total da matricula  ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', '.', NULL, '.', 'N', 14, 6, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(17, '12 - Qual o nome da Rua ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', '.', NULL, '.', 'N', 17, 4, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(18, '13 - Qual o número da rua ?', '.', '.', '.', '.', '.', '.', 'T', 'Conferir na ficha do Imóvel', '.', NULL, '.', 'N', 18, 5, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(27, 'Qual o estado civil do transmitente ?', 'Solteiro', 'Casado', 'Divorciado', 'Viúvo(a)', 'Outros', '.', 'E', '.', '.', NULL, '.', 'N', 27, 0, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(30, 'Qual o estado civil  ?', 'Solteiro', 'Casado', 'Divorciado', 'Viúvo(a)', 'Outros', '.', 'E', '.', '.', NULL, '.', 'N', 30, 0, 2);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(15, '04 - Imóvel é residencial ou comercial  ?', 'Residencial', 'Comercial', 'Lote', '.', '.', '.', 'E', 'Verificar no indicador real o tipo do imóvel.', '.', NULL, '.', 'N', 15, 7, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(8, 'Conferir o nùmero da matricula ?', 'Correto', 'Errado', '.', '.', '.', 'Errado', 'T', '.', '.', NULL, '.', 'N', 8, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(1, '01 - Qual comarca pertence o imóvel ?', 'Monte Carmelo', 'Iraí de Minas', 'Romária', 'Celso Bueno', '.', '.', 'E', '.', 'Municipio.docx', NULL, '.', 'N', 1, 9, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(28, 'Qual sexo de nascimento  ?', 'Feminino', 'Masculino', '.', '.', '.', '.', 'E', '.', '.', NULL, '.', 'N', 28, 0, 2);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(26, 'Qual sexo de nascimento do transmitente ?', 'Feminino', 'Masculino', '.', '.', '.', '.', 'E', '.', '.', NULL, '.', 'N', 26, 0, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(29, 'Apresentou RG/CNH/OUTROS ?', 'Não', 'Sim', '.', '.', '.', 'Sim', 'E', '.', '.', NULL, '.', 'N', 29, 0, 2);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(25, 'Transmitente apresentou RG/CNH/OUTROS  ?', 'Não', 'Sim', '.', '.', '.', 'Sim', 'E', '.', '.', NULL, '.', 'N', 25, 0, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(23, 'Apresentou CPF/CNPJ ?', 'Não', 'Sim', '.', '.', '.', 'Sim', 'E', 'Solicitar o documento de CPF ou CNPJ.', '.', NULL, '.', 'N', 23, 0, 2);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(10, 'Contrato social e alteração contratual devidamente registradas na Junta Comercial juntamente com a Certidão Simplificada atualizada ou Certidão do Ofício de Registro Civil das Pessoas Jurídicas quando sociedades não empresárias (cópias autenticadas ou expedidas eletronicamente) ?', 'Não', 'Sim', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 10, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(7, 'Conferir a sequência das folhas  ex: ( 1/3, 2/2, 3/3 ) ?', 'Não', 'Sim', '.', '.', '.', 'Não', 'T', '.', '.', NULL, '.', 'N', 7, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(9, 'Requerimento contendo a qualificação completa da empresa bem como de seu representante legal e com firma reconhecida', 'Não', 'Sim', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 9, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(19, '05 - ITBI devidamente quitado ?', 'Não', 'Sim', '.', '.', '.', 'Sim', 'E', 'Solicitar na prefeitura guia do ITBI do ano vigente.', '.', NULL, '.', 'N', 19, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(45, '02 - Possui inscrição municipal?', 'Não', 'Sim', '.', '.', '.', 'Sim', 'E', '. escrever na guia de ITBI', 'Inscricao_Original.docx', NULL, '.', 'N', 45, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(22, '06 - Imovel e menor que 125 ?', 'Não', 'Sim', 'Igual', '.', '.', 'Não', 'E', '.', '.', NULL, '.', 'N', 22, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(6, 'Conferir o nome do imóvel rural ?', 'Não', 'Sim', '.', '.', '.', 'Não', 'T', '.', '.', NULL, '.', 'N', 6, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(24, 'Transmitente apresentou CPF/CNPJ   ?', 'Não', 'Sim', '.', '.', '.', 'Sim', 'E', 'Solicitar o documento de CPF ou CNPJ.', '.', NULL, '.', 'N', 24, 0, 3);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(21, '03 - Escritura Pública de Compra e Venda original ou em forma de certidão ?', 'Não', 'Sim', '.', '.', '.', 'Sim', 'E', '.', '.', NULL, '.', 'N', 21, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(4, 'Conferir data  do requerimento ( dia, mês e ano ) ?', 'Não', 'Sim', '.', '.', '.', 'Não', 'T', '.', '.', NULL, '.', 'N', 4, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(3, 'Conferir requerimento se está  assinado e com firma reconhecida ?', 'Não', 'SIm', '.', '.', '.', 'Não', 'T', '.', '.', NULL, '.', 'N', 3, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(5, 'Conferir se apresentou uma via do recibo de inscrição em original ?', 'Não', 'SIm', '.', '.', '.', 'Não', 'T', '.', '.', NULL, '.', 'N', 5, 0, 1);
+INSERT INTO public.home_pergunta
+(id, questions, option1, option2, option3, option4, option5, corrans, categoria, observacao, previsao_legal, texto, resposta_auxiliar, pergunta_ativa, ordem, acoes_id, setores_id)
+VALUES(2, 'Tipo de Imóvel: Rural ou Urbano ?', 'Rural', 'Urbano', '.', '.', '.', '.', 'T', '.', '.', NULL, '.', 'N', 2, 0, 1);

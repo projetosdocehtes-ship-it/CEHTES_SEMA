@@ -1,0 +1,758 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block breadcrumbs %}
+    {% load replace_value %}
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Detalhes do Projeto:{{ ato }}</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ ato.get_pedido_url }}">{{ ato.pedido }}</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:">Evento</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {% if event.title == 'Novo Projeto' %}
+            <div class="card">
+                <div class="card-header">
+                    <h5>Detalhes do Projeto:</h5>
+                </div>
+                <div class="card-body">
+                    {% if data_atual > event.end_time %}
+                        <h5 class="card-title">
+                            <span class="badge bg-danger text-white">{{ event.title }}</span>
+                        </h5>
+                    {% else %}
+                        <h5 class="card-title">{{ event.title }}</h5>
+                    {% endif %}
+                    <p class="card-text">{{ event.description }}</p>
+                    <p class="card-text">
+                        <b> De: </b> {{ event.start_time|date:"D, d M Y H:i" }}
+                        <br>
+                        <b>Até: </b> {{ event.end_time|date:"D, d M Y" }}
+                        {% if event.start_time_checked %}
+                            <br>
+                            <br>
+                            <b>Lido: </b> {{ event.start_time_checked|date:"D, d M Y H:i" }}
+                        {% endif %}
+                        {% if event.end_time_checked %}
+                            <br>
+                            <b>Finalizado: </b> {{ event.end_time_checked|date:"D, d M Y H:i" }}
+                        {% endif %}
+                    </p>
+                    <p class="card-text">
+                        <b>Encaminhado Por: </b> {{ event.user }}
+                        <br>
+                        <b>Encaminhado Para: </b>{{ event.auth_user }}
+                    </p>
+                    <p class="card-text">
+                        <b>Url: </b>{{ event.url }}
+                    </p>
+                    <p class="card-text">
+                        <b>Origem do Evento: </b>{{ event.origem|origem_evento }} {{ event.numero|protocolo_formatado }}
+                    </p>
+                </div>
+                <div class="card-footer">
+                    {% if event.origem == 'P' %}
+                        <a class="btn btn-sm btn-primary"
+                           href="{% url 'home:abrir_livro01_por_numero_protocolo' numero_protocolo=event.numero %}"
+                           title="Clique para visualizar os detalhes"
+                           data-bs-toggle="tooltip"><i class="feather icon-eye"></i>Ver Protocolo: {{ event.numero|protocolo_formatado }}
+                        </a>
+                    {% endif %}
+                    {% if event.origem == 'C' %}
+                        <a class="btn btn-sm btn-primary"
+                           href="{% url 'home:pedido_certidao_detalhes_numero_certidao' numero_pedido_certidao=event.numero %}"
+                           title="Clique para visualizar os detalhes"
+                           data-bs-toggle="tooltip"><i class="feather icon-eye"></i>Ver Pedido de Certidão: {{ event.numero|protocolo_formatado }}
+                        </a>
+                    {% endif %}
+                    <a class="btn btn-sm btn-primary"
+                       href="{% url 'home:event_edit' event.pk %}"
+                       title="Alterar os dados deste evento"
+                       data-bs-toggle="tooltip">
+                        <i class="fas fa-edit"></i>
+                        Alterar
+                    </a>
+                    <a class="btn btn-sm btn-danger"
+                       href="{% url 'home:event_remove_complete' event.pk %}"
+                       title="Cancela o evento permanente."
+                       data-bs-toggle="tooltip"><i class="icon feather icon-delete"></i> Cancelar
+                    </a>
+                    <a class="btn btn-sm btn-outline-info text-dark"
+                       href="{% url 'home:event_lido' event.pk %}"
+                       title="Confirmar Leitura do evento."
+                       data-bs-toggle="tooltip"><i class="icon feather icon-user"></i> Confirmar Inicio
+                    </a>
+                    <a class="btn btn-sm btn-outline-success text-dark"
+                       href="{% url 'home:event_finalizado' event.pk %}"
+                       title="Confirmar Evento Finalizado."
+                       data-bs-toggle="tooltip"><i class="icon feather icon-info"></i> Finalizar Projeto
+                    </a>
+                    <a class="btn btn-sm btn-outline-success text-dark"
+                       href="#"
+                       title="Confirmar Evento Finalizado."
+                       data-bs-toggle="tooltip"><i class="icon feather icon-info"></i> Importar Dados Metereológicos
+                    </a>
+                    <a class="btn btn-sm btn-outline-success text-dark"
+                       href="#"
+                       title="Confirmar Evento Finalizado."
+                       data-bs-toggle="tooltip"><i class="icon feather icon-info"></i> Curva de Consumo
+                    </a>
+                    <a class="btn btn-sm btn-outline-primary text-dark "
+                       href="{% url 'home:calender' %}"
+                       title="Volta"
+                       data-bs-toggle="tooltip"><i class="icon feather icon-calendar"></i> Voltar </a>
+                    {% comment %} <a href="{% url 'home:dashboard_data' %}" class="btn btn-sm btn-warning text-dark " title="Retornar a página anterior" type="button" data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>  Dashboard</a> {% endcomment %}
+                </div>
+            </div>
+        {% endif %}
+        {% if event.title == 'Cadastrar Equipamento' %}
+            <div class="card">
+                <div class="card-header">
+                    <h5>Detalhes do Equipamento:</h5>
+                </div>
+                <div class="card-body">
+                    {% if data_atual > event.end_time %}
+                        <h5 class="card-title">
+                            <span class="badge bg-danger text-white">{{ event.title }}</span>
+                        </h5>
+                    {% else %}
+                        <h5 class="card-title">{{ event.title }}</h5>
+                    {% endif %}
+                    <p class="card-text">{{ event.description }}</p>
+                    <p class="card-text">
+                        <b> De: </b> {{ event.start_time|date:"D, d M Y H:i" }}
+                        <br>
+                        <b>Até: </b> {{ event.end_time|date:"D, d M Y" }}
+                        {% if event.start_time_checked %}
+                            <br>
+                            <br>
+                            <b>Lido: </b> {{ event.start_time_checked|date:"D, d M Y H:i" }}
+                        {% endif %}
+                        {% if event.end_time_checked %}
+                            <br>
+                            <b>Finalizado: </b> {{ event.end_time_checked|date:"D, d M Y H:i" }}
+                        {% endif %}
+                    </p>
+                    <p class="card-text">
+                        <b>Encaminhado Por: </b> {{ event.user }}
+                        <br>
+                        <b>Encaminhado Para: </b>{{ event.auth_user }}
+                    </p>
+                    <p class="card-text">
+                        <b>Url: </b>{{ event.url }}
+                    </p>
+                    <p class="card-text">
+                        <b>Origem: </b>{{ event.origem|origem_evento }} {{ event.numero|protocolo_formatado }}
+                    </p>
+                </div>
+                <div class="card-footer">
+                    {% if event.origem == 'P' %}
+                        <a class="btn btn-sm btn-primary"
+                           href="{% url 'home:abrir_livro01_por_numero_protocolo' numero_protocolo=event.numero %}"
+                           title="Clique para visualizar os detalhes"
+                           data-bs-toggle="tooltip"><i class="feather icon-eye"></i>Ver Protocolo: {{ event.numero|protocolo_formatado }}
+                        </a>
+                    {% endif %}
+                    {% if event.origem == 'C' %}
+                        <a class="btn btn-sm btn-primary"
+                           href="{% url 'home:pedido_certidao_detalhes_numero_certidao' numero_pedido_certidao=event.numero %}"
+                           title="Clique para visualizar os detalhes"
+                           data-bs-toggle="tooltip"><i class="feather icon-eye"></i>Ver Pedido de Certidão: {{ event.numero|protocolo_formatado }}
+                        </a>
+                    {% endif %}
+                    <a class="btn btn-sm btn-primary"
+                       href="{% url 'home:event_edit' event.pk %}"
+                       title="Alterar os dados deste evento"
+                       data-bs-toggle="tooltip">
+                        <i class="fas fa-edit"></i>
+                        Alterar
+                    </a>
+                    <a class="btn btn-sm btn-danger"
+                       href="{% url 'home:event_remove_complete' event.pk %}"
+                       title="Cancela o evento permanente."
+                       data-bs-toggle="tooltip"><i class="icon feather icon-delete"></i> Cancelar
+                    </a>
+                    <a class="btn btn-sm btn-outline-primary text-dark "
+                       href="{% url 'home:calender' %}"
+                       title="Volta"
+                       data-bs-toggle="tooltip"><i class="icon feather icon-calendar"></i> Voltar</a>
+                    {% comment %} <a href="{% url 'home:dashboard_data' %}" class="btn btn-sm btn-warning text-dark " title="Retornar a página anterior" type="button" data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>  Dashboard</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Bateria - (Equipamento):</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Tipo de Bateria</th>
+                                    <th>Tensão Celula</th>
+                                    <th>Capacidade</th>
+                                    <th>Taxa de Descarga</th>
+                                    <th>Eficiência</th>
+                                    <th>Estado de Carga</th>
+                                    <th>Profundidade de Descarga</th>
+                                    <th>Densidade de Energia</th>
+                                    <th>Número máximo ciclos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-active">
+                                    <th scope="row">1</th>
+                                    <td>Sealed Lead-Acid Battery</td>
+                                    <td>727-0414(12V7.2Ah)</td>
+                                    <td>Bateria Chumbo Acido</td>
+                                    <td>Approx 18mÙ</td>
+                                    <td>7.2Ah@10hr-rate to 1.80V per cell @250C</td>
+                                    <td>3% ao mês</td>
+                                    <td>2.16A</td>
+                                    <td>12</td>
+                                    <td>7.2Ah@10hr-rate to 1.80V per cell @250C</td>
+                                    <td>13.5 to 13.8 VDC/unit Average at 250C</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Victron Energy Lithium</td>
+                                    <td>Volt Lithium NG batteries</td>
+                                    <td>Bateria Litio</td>
+                                    <td>12,8 V, 25,6 V e 51,2 V</td>
+                                    <td>várias capacidades</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>192 kWh em um sistema de 12 V e até 384 kWh em um sistema de 24 V e 48 V</td>
+                                    <td>50</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {% comment %} <a href="{% url 'home:dashboard_data' %}" class="btn btn-sm btn-warning text-dark " title="Retornar a página anterior" type="button" data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>  Dashboard</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Controlador de Carga - (Equipamento):</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Tensão Máxima Bateria</th>
+                                    <th>Tensão Máxima Sistema</th>
+                                    <th>Corrente Carga</th>
+                                    <th>Corrente Descarga</th>
+                                    <th>Eficiência</th>
+                                    <th>Tipo controle Carga</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-active">
+                                    <th scope="row">1</th>
+                                    <td>VOLT</td>
+                                    <td>MPPT 40A</td>
+                                    <td>120V</td>
+                                    <td>12Vdc</td>
+                                    <td>40A</td>
+                                    <td>12V</td>
+                                    <td>99</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {% comment %} <a href="{% url 'home:dashboard_data' %}" class="btn btn-sm btn-warning text-dark " title="Retornar a página anterior" type="button" data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>  Dashboard</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Painel Solar - (Equipamento):</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Material de Construção</th>
+                                    <th>Potencia Maxima</th>
+                                    <th>Tensao Nominal</th>
+                                    <th>Corrente Nominal</th>
+                                    <th>VOC</th>
+                                    <th>ISC</th>
+                                    <th>Eficiencia</th>
+                                    <th>Tensao Maxima</th>
+                                    <th>Coef Temperatura Maxima</th>
+                                    <th>Coef Temperatura VOC</th>
+                                    <th>Coef Temperatura ISC</th>
+                                    <th>Temperatura Operação</th>
+                                    <th>Número Células</th>
+                                    <th>Tensão Potencia Máxima</th>
+                                    <th>Corrente Potencia Máxima</th>
+                                    <th>Curva Eficiencia</th>
+                                    <th>Curva Tensao Corrente</th>
+                                    <th>Area Placa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-active">
+                                    <th scope="row">1</th>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {% comment %} <a href="{% url 'home:dashboard_data' %}" class="btn btn-sm btn-warning text-dark " title="Retornar a página anterior" type="button" data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>  Dashboard</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Inversor de Frequência - (Equipamento):</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Temperatura Módulo</th>
+                                    <th>Eficiência</th>
+                                    <th>Número MQQT</th>
+                                    <th>Corrente Max. Entrada</th>
+                                    <th>Corrente Max. Curto</th>
+                                    <th>Tensao DC Min</th>
+                                    <th>Tensao DC Max</th>
+                                    <th>Tensao Maxima</th>
+                                    <th>Por Entrada Maxima</th>
+                                    <th>Por Saída Maxima</th>
+                                    <th>Corrente Saída Nominal</th>
+                                    <th>Tensão Saída</th>
+                                    <th>Frequencia Saída</th>
+                                    <th>THD</th>
+                                    <th>Fator de Pontencia</th>
+                                    <th>Derating Temperatura</th>
+                                    <th>Curva Eficiencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-active">
+                                    <th scope="row">1</th>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {% comment %} <a href="{% url 'home:dashboard_data' %}" class="btn btn-sm btn-warning text-dark " title="Retornar a página anterior" type="button" data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>  Dashboard</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Gerador de Biogás - (Equipamento):</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Potencia Nominal</th>
+                                    <th>Eficiencia Eletrica</th>
+                                    <th>Eficiencia Termica</th>
+                                    <th>Frequencia</th>
+                                    <th>Rotacao Nominal</th>
+                                    <th>Tensoes de Geracao</th>
+                                    <th>Numero Fases Saida</th>
+                                    <th>Consumo Combustivel</th>
+                                    <th>Nivel Emissao</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-active">
+                                    <th scope="row">1</th>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {% comment %} <a href="{% url 'home:dashboard_data' %}" class="btn btn-sm btn-warning text-dark " title="Retornar a página anterior" type="button" data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>  Dashboard</a> {% endcomment %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h5>Celula de Hidrogênio - (Equipamento):</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Tipo Celula</th>
+                                    <th>Nro. Celulas Stack</th>
+                                    <th>Potencial Nomimal</th>
+                                    <th>Tensao nominal de Saida</th>
+                                    <th>Corrente nominal saida</th>
+                                    <th>Consumo Hidrogeno</th>
+                                    <th>Eficiencia</th>
+                                    <th>Degradacao de Tempo</th>
+                                    <th>Degradacao reiniciar sistema</th>
+                                    <th>Curva Eficiencia</th>
+                                    <th>Sainda Agua</th>
+                                    <th>Temperatura Maxima</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-active">
+                                    <th scope="row">1</th>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {% comment %} <a href="{% url 'home:dashboard_data' %}" class="btn btn-sm btn-warning text-dark " title="Retornar a página anterior" type="button" data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>  Dashboard</a> {% endcomment %}
+                </div>
+            </div>
+        {% endif %}
+        {% if event.title == 'Novo Projeto' %}
+            <div class="card" id="card_membro">
+                <div class="card-header">
+                    <h5 class="text-light">Membros do Projeto:</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table ">
+                        <tbody>
+                            {% for member in eventmember %}
+                                <tr role="row">
+                                    <td>{{ member.user.username }}</td>
+                                    <td>
+                                        <a type="button"
+                                           class="btn btn-sm btn-primary"
+                                           href="{% url 'home:start_membro_event' event_id=event.id member_id=member.user_id %}"
+                                           title="Colaborador informa que iniciou o evento."
+                                           data-bs-toggle="tooltip"><i class="icon feather icon-play"></i>Iniciar</a>
+                                        <a type="button"
+                                           class="btn btn-sm btn-secondary"
+                                           href="{% url 'home:selecionar_membro_event' event_id=event.id member_id=member.user_id %}"
+                                           title="Colaborador somente selecionar o evento para ele. Não inicia o evento."
+                                           data-bs-toggle="tooltip">
+                                            <i class="icon feather icon-paperclip auth-icon"></i>Selecionar</a>
+                                        <a type="button"
+                                           class="btn btn-sm btn-danger "
+                                           href="{% url 'home:remove_event' member.id %}"
+                                           title="Desvincula o membro deste evento."
+                                           data-bs-toggle="tooltip"><i class="fas fa-share-square"></i>Desvincular</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <a type="button"
+                       class="btn btn-sm btn-outline-primary"
+                       href="{% url 'home:add_eventmember' event.id %}"><i class="icon feather icon-user"></i>Adicionar membro</a>
+                </div>
+            </div>
+            <div class="card" id="card_fotovoltaico">
+                <div class="card-header">
+                    <h5 class="text-light">Fotovoltaico:</h5>
+                </div>
+                <div class="card-body"></div>
+                <div class="card-footer">
+                    <a type="button" class="btn btn-sm btn-outline-primary" href="#"><i class="icon feather icon-user"></i>Adicionar</a>
+                </div>
+            </div>
+            <div class="card" id="card_biogas">
+                <div class="card-header">
+                    <h5 class="text-light">Biogás:</h5>
+                </div>
+                <div class="card-body"></div>
+                <div class="card-footer">
+                    <a type="button" class="btn btn-sm btn-outline-primary" href="#"><i class="icon feather icon-user"></i>Adicionar</a>
+                </div>
+            </div>
+            <div class="card" id="card_hidrogenio">
+                <div class="card-header">
+                    <h5 class="text-light">Hidrogênio:</h5>
+                </div>
+                <div class="card-body"></div>
+                <div class="card-footer">
+                    <a type="button" class="btn btn-sm btn-outline-primary" href="#"><i class="icon feather icon-user"></i>Adicionar</a>
+                </div>
+            </div>
+            <div class="card" id="card_bateria">
+                <div class="card-header">
+                    <h5 class="text-light">Bateria:</h5>
+                </div>
+                <div class="card-body"></div>
+                <div class="card-footer">
+                    <a type="button" class="btn btn-sm btn-outline-primary" href="#"><i class="icon feather icon-user"></i>Adicionar</a>
+                </div>
+            </div>
+        {% endif %}
+        {% if event.title == 'Abrir Projeto' %}
+            <div class="card" id="card_projetos">
+                <div class="card-header">
+                    <h5 class="text-light">Projetos cadastrados:</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nome Projeto</th>
+                                    <th>Descrição</th>
+                                    <th>Opções</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-active">
+                                    <th scope="row">1</th>
+                                    <td>Projeto 001</td>
+                                    <td>Descrição......</td>
+                                    <td>
+                                        <a class="btn-sm" href="#">
+                                            <i class='fas fa-edit'></i> Editar
+                                        </a>
+                                        <a class="btn-sm text-danger" href="#">
+                                            <i class="fas fa-times"></i> Cancelar
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Projeto 002</td>
+                                    <td>Descrição......</td>
+                                    <td>
+                                        <a class="btn-sm" href="#">
+                                            <i class='fas fa-edit'></i> Editar
+                                        </a>
+                                        <a class="btn-sm text-danger" href="#">
+                                            <i class="fas fa-times"></i> Cancelar
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr class="table-success">
+                                    <th scope="row">3</th>
+                                    <td>Projeto 003</td>
+                                    <td>Descrição......</td>
+                                    <td>
+                                        <a class="btn-sm" href="#">
+                                            <i class='fas fa-edit'></i> Editar
+                                        </a>
+                                        <a class="btn-sm text-danger" href="#">
+                                            <i class="fas fa-times"></i> Cancelar
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">4</th>
+                                    <td>Projeto 004</td>
+                                    <td>Descrição......</td>
+                                    <td>
+                                        <a class="btn-sm" href="#">
+                                            <i class='fas fa-edit'></i> Editar
+                                        </a>
+                                        <a class="btn-sm text-danger" href="#">
+                                            <i class="fas fa-times"></i> Cancelar
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr class="table-warning">
+                                    <th scope="row">5</th>
+                                    <td>Projeto 005</td>
+                                    <td>Descrição......</td>
+                                    <td>
+                                        <a class="btn-sm" href="#">
+                                            <i class='fas fa-edit'></i> Editar
+                                        </a>
+                                        <a class="btn-sm text-danger" href="#">
+                                            <i class="fas fa-times"></i> Cancelar
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">6</th>
+                                    <td>Projeto 006</td>
+                                    <td>Descrição......</td>
+                                    <td>
+                                        <a class="btn-sm" href="#">
+                                            <i class='fas fa-edit'></i> Editar
+                                        </a>
+                                        <a class="btn-sm text-danger" href="#">
+                                            <i class="fas fa-times"></i> Cancelar
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr class="table-danger">
+                                    <th scope="row">7</th>
+                                    <td>Projeto 007</td>
+                                    <td>Descrição......</td>
+                                    <td>
+                                        <a class="btn-sm" href="#">
+                                            <i class='fas fa-edit'></i> Editar
+                                        </a>
+                                        <a class="btn-sm text-danger" href="#">
+                                            <i class="fas fa-times"></i> Cancelar
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">8</th>
+                                    <td>Projeto 008</td>
+                                    <td>Descrição......</td>
+                                    <td>
+                                        <a class="btn-sm" href="#">
+                                            <i class='fas fa-edit'></i> Editar
+                                        </a>
+                                        <a class="btn-sm text-danger" href="#">
+                                            <i class="fas fa-times"></i> Cancelar
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr class="table-info">
+                                    <th scope="row">9</th>
+                                    <td>Projeto 009</td>
+                                    <td>Descrição......</td>
+                                    <td>
+                                        <a class="btn-sm" href="#">
+                                            <i class='fas fa-edit'></i> Editar
+                                        </a>
+                                        <a class="btn-sm text-danger" href="#">
+                                            <i class="fas fa-times"></i> Cancelar
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <a type="button" class="btn btn-sm btn-primary" href="#"><i class="icon feather icon-user"></i>Abrir Projeto
+        </a>
+        <a type="button" class="btn btn-sm btn-outline-secondary" href="#"><i class="icon feather icon-user"></i>Importar Projeto
+        </a>
+        <a type="button"
+           class="btn btn-sm btn-outline-success text-dark"
+           href="#"><i class="icon feather icon-user"></i>Copiar Projeto
+        </a>
+        <a type="button" class="btn btn-sm btn-outline-info text-dark" href="#"><i class="icon feather icon-user"></i>Configurar Projeto
+        </a>
+    </div>
+</div>
+</form>
+{% endblock content %}

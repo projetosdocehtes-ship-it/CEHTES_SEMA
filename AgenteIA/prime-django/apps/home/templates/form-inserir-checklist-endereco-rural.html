@@ -1,0 +1,257 @@
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% comment %} <!--   --> {% endcomment %}
+{% block content %}
+    <!-- Modal -->
+    <div class="modal"
+         id="addCheckListEnderecoRuralModal"
+         tabindex="-1"
+         aria-labelledby="addCheckListEnderecoRuralModalLabel"
+         aria-hidden="True">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark fs-5"
+                        id="addCheckListEnderecoRuralModalLabel">
+                        <i class="icon feather icon-check"></i>   Checklist - Criar - Endereço - Rural
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Fechar">
+                        <span aria-hidden="true"> &times; </span>
+                    </button>
+                </div>
+                <!-- PASSANDO O ITEM DO PROTOCOLO - URBANO -->
+                <form action="{% url 'home:cadastra_ChecklistEndereco_Rural' pedido_item_id=pedido_item_id opcao_imovel='R' %}"
+                      method="post">
+                    <!-- Não se esqueça dessa tag -->
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <!-- PASSANDO O pedido_item_id -->
+                        <input type="hidden" name="partes_imovel" id="partes_imovel" value={{ pedido_item_id }} />
+                        <!-- Municipio -->
+                        <div class="input-group mb-3">
+                            <!-- OBTER O COMBOBOX DO MUNICIPIO -->
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" for="municipio">Município</span>
+                            </div>
+                            <select class="form-select"
+                                    name="municipio"
+                                    id="municipio"
+                                    autofocus
+                                    required>
+                                {% for cidade in cidades %}
+                                    <option value={{ cidade.id }}>{{ cidade.nome }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Nome da Fazenda -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nome da Fazenda</span>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder=""
+                                   name="nome_fazenda"
+                                   id="nome_fazenda"
+                                   value=""
+                                   autofocus
+                                   required>
+                        </div>
+                        <!-- CARACTERISTICA -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Característica</span>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder=""
+                                   name="caracteristica_fazenda"
+                                   id="caracteristica_fazenda"
+                                   value=""
+                                   autofocus
+                                   required>
+                        </div>
+                        <!-- AREA_FAZENDA -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <!-- AREA_FAZENDA -->
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Aréa da Fazenda</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="area_fazenda"
+                                               id="area_fazenda"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <!-- N CCIRR -->
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Número do CCIRR</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="numero_ccirr"
+                                               id="numero_ccirr"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- NUMERO DO CAR -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <!-- N CAR -->
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Número do CAR</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="numero_car"
+                                               id="numero_car"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <!-- N INCRA -->
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Número do INCRA</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="numero_incra"
+                                               id="numero_incra"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- NUMERO DO NIRF -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <!-- N NIRF -->
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Número do NIRF</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="numero_nirf"
+                                               id="numero_nirf"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <!-- data_validade_itr  -->
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Data Validade do NIRF</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="data_validade_itr"
+                                               id="data_validade_itr"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- RESERVA LEGAL -->
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <!-- RESERVA LEGAL -->
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Reserva Legal</span>
+                                        </div>
+                                        <select class="form-select"
+                                                name="reserva_legal"
+                                                id="reserva_legal"
+                                                autofocus
+                                                required>
+                                            <option value="N" selected>Não</option>
+                                            <option value="S">Sim</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <!-- GEORENCIADA -->
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Georefenciada</span>
+                                        </div>
+                                        <select class="form-select"
+                                                name="georefenciada"
+                                                id="georefenciada"
+                                                autofocus
+                                                required>
+                                            <option value="N" selected>Não</option>
+                                            <option value="S">Sim</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- BOTOES -->
+                        <div class="modal-footer">
+                            <button type="submit"
+                                    class="btn btn-sm btn-primary "
+                                    aria-pressed="true"
+                                    role="button">
+                                <i class="icon feather icon-save"></i> Salvar
+                            </button>
+                            <button value=""
+                                    type="button"
+                                    class="btn btn-sm btn-secondary "
+                                    data-bs-dismiss="modal">
+                                <i class="btn-close"></i> Fechar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

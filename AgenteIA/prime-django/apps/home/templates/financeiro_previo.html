@@ -1,0 +1,40 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block title %}
+    Prévio
+{% endblock title %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Financeiro - Prévio</h5>
+                </div>
+                <div class="card-body">
+                    <h6>Informe o periodo das informações</h6>
+                    <form class="row row-cols-md-6 g-3 align-items-center needs-validation"
+                          method="get">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="date" class="form-control" name="data_pesquisa_i" id="data_pesquisa_i" value={{ data_inicio }} required>
+                                <div class="valid-feedback">Looks good!</div>
+                                <input type="date" class="form-control" name="data_pesquisa_f" id="data_pesquisa_f" value={{ data_fim }} required>
+                                <div class="valid-feedback">Looks good!</div>
+                                <button type="submit"
+                                        class="btn btn-sm btn-primary "
+                                        aria-pressed="true"
+                                        title="Clique aqui para gerar o relatório para download."
+                                        role="button">
+                                    <i class="icon feather icon-download-cloud f-16"></i> Gerar Relatório
+                                    {% comment %} <i class="far fa-file-excel f-16"></i> Gerar Relatório {% endcomment %}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

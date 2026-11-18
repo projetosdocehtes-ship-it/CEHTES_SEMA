@@ -1,0 +1,69 @@
+{% load pedidos_formatos %}
+{% if ato.titulo %}
+  Titulo: <b>{{ ato.titulo }}</b>
+  <br>
+  <small>{{ ato.titulo_descricao }}</small>
+{% endif %}
+Ato: <b>{{ ato }}</b> - ({{ ato.codigo_emolumento_individual }})
+{% comment %} <p>
+  <small>{{ ato.ato_praticavel.descricao|default:"" }}</small>
+</p> {% endcomment %}
+<!-- <b>Data:</b> {{ ato.criado_em }} -->
+{% if ato.imovel_numero_registro %}
+  <p>
+    {{ ato.imovel_tipo_registro|default:"Matrícula" }}: <b>{{ ato.imovel_numero_registro|formatar_numero_registro }}</b> RI: {{ ato.imovel_cartorio|default:"1" }}
+  </p>
+{% endif %}
+{% if ato.valor_titulo %}<b>Valor no Título:</b> {{ ato.valor_titulo|formatar_moeda }}{% endif %}
+{% if ato.valor_avaliacao %}
+  <p>
+    <b>Valor de Avaliação:</b> {{ ato.valor_avaliacao|formatar_moeda }}
+  </p>
+{% endif %}
+{% if ato.tipo_emolumento %}
+  <div class="accordion card" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button collapsed f-14"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseOne"
+                aria-expanded="false"
+                aria-controls="collapseOne">
+          <b>Emolumento:&emsp;</b>  {{ ato.tipo_emolumento }} - {{ ato.total_com_desconto_tributacao|formatar_moeda }} - Quantidade: {{ ato.quantidade }}
+        </button>
+      </h2>
+      <div id="collapseOne"
+           class="accordion-collapse collapse"
+           aria-labelledby="headingOne"
+           data-bs-parent="#accordionExample"
+           style="">
+        <div class="accordion-body">
+          <li>
+            <b>Emolumento:</b> {{ ato.emolumento_liquido_com_desconto_tributacao|formatar_moeda }}
+          </li>
+          <li>
+            <b>TFJ:</b>  {{ ato.taxa_fiscal_judiciaria_com_desconto_tributacao|formatar_moeda }}
+          </li>
+          <li>
+            <b>Recompe:</b>  {{ ato.fundo1_com_desconto_tributacao|formatar_moeda }}
+          </li>
+          <li>
+            <b>ISSQN:</b>  {{ ato.issqn_com_desconto_tributacao|formatar_moeda }}
+          </li>
+          <li>
+            <b>Tributação:</b>  {{ ato.tributacao }}
+          </li>
+          <li>
+            <b>Código Tabela:</b>  {{ ato.codigo_emolumento_individual }}
+          </li>
+          <li>
+            <b>Quantidade:</b>  {{ ato.quantidade }}
+          </li>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+Selo Digital:
+{% if ato.pedido.numero_selo_firebird %}<b>{{ ato.pedido.numero_selo_firebird }}</b>{% endif %}

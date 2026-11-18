@@ -1,0 +1,4 @@
+{{ object.numero }}
+{{ object.tipo }}
+{{ object.municipio }}
+{{ object.texto }}

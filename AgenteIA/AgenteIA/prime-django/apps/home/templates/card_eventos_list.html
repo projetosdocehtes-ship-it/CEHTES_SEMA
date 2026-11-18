@@ -1,0 +1,105 @@
+{% comment %} card_andamentos_list.html {% endcomment %}
+{% load home_formatos %}
+{% load tz %}
+<script>
+    function getAtualizarPagina() {
+        window.location.reload();
+    }
+
+    function openNewTab() {
+
+    }
+</script>
+<div class="card" id="itens_pedido_eventos">
+    <div class="card-header">
+        <h5>
+            <span class="font-weight-bold text-white">7 - Andamento do Protocolo {{ protocolo }}</span>
+        </h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <tr>
+                <thead>
+                    <th>#</th>
+                    <th>Data</th>
+                    <th>Serviços</th>
+                    <th>Colaborador</th>
+                    <th>Encaminhado</th>
+                    <th>Opções</th>
+                </thead>
+            </tr>
+            <tbody>
+                {% for andamento in protocolo.andamentos %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ andamento.data|date:"DATETIME_FORMAT" }}</td>
+                        <td>
+                            {% with andamento.status_display as status %}
+                                {% if status.class %}
+                                    <span class="badge {{ status.class }} f-12">{{ status.text }}</span>
+                                {% else %}
+                                    {{ status.text }}
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+                        <td>{{ andamento.colaborador }}</td>
+                        <td>
+                            <a href="{% url 'home:distribuidos_por_colaborador' colaborador_id=andamento.colaborador_destino_id %}"
+                               target="_blank"
+                               class="btn btn-sm text-dark  "
+                               title="Clique para ver Colaborador.">
+                                <span class="badge btn-info activate f-12 font-weight-bold">{{ andamento.colaborador_destino }}</span>
+                            </a>
+                        </td>
+                        <td>
+                            {% if andamento.texto|length > 0 %}
+                                <a class="btn btn-sm btn-info"
+                                   href="{% url 'home:andamento_texto_detail' pk=andamento.pk %}"
+                                   target="_blank"
+                                   aria-pressed="true"><i class="icon feather icon-file"></i> Ver Texto
+                                </a>
+                            {% else %}
+                                <a class="btn btn-sm btn-secondary"
+                                   href="{% url 'home:andamento_texto_detail' pk=andamento.pk %}"
+                                   target="_blank"
+                                   aria-pressed="true"><i class="icon feather icon-file"></i> Criar Texto
+                                </a>
+                            {% endif %}
+                            {% comment %} <a href="#!"
+    onclick="Evento_Opcoes_Historico()"
+    class="label bg-info text-white f-12">Opções</a> {% endcomment %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <button type="submit"
+                class="btn btn-sm btn-primary  text-white f-12"
+                title="Cadastrar novo andamento para o evento do protocolo">
+            <i class="icon feather icon-plus"></i> Novo Evento
+        </button>
+        <a type="button"
+           href="{% url 'home:agenda_protocolo' protocolos=protocolo %}"
+           target="_blank"
+           class="btn btn-sm btn-success active-blue text-dark">
+            <i class="fas fa-calendar-alt" aria-hidden="true"></i> Agenda
+        </a>
+        <a class="btn btn-sm btn-secondary text-white "
+           title="Atualizar a página para visualizar os dados alterados"
+           data-bs-toggle="tooltip"
+           onclick="getAtualizarPagina()"><i class="icon feather icon-refresh-ccw" id="theme-inlimpar"></i> Atualizar
+        </a>
+        <a href="#protocolo_detail"
+           class="btn btn-sm btn-warning text-dark "
+           title="Clique para voltar ao topo da página"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        <a href="#itens_pedido_caixa"
+           class="btn btn-sm btn-primary text-dark "
+           title="Próximo ítem"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+    </div>
+</div>

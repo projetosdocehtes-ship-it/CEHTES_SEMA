@@ -1,0 +1,363 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block stylesheets %}
+    <style>
+        .document-editor {
+            border: 1px solid var(--ck-color-base-border);
+            border-radius: var(--ck-border-radius);
+            max-height: 700px;
+            display: flex;
+            flex-flow: column nowrap;
+        }
+
+        .document-editor__toolbar {
+            z-index: 1;
+            box-shadow: 0 0 5px hsla(0, 0%, 0%, .2);
+            border-bottom: 1px solid var(--ck-color-toolbar-border);
+        }
+
+        .document-editor__toolbar .ck-toolbar {
+            border: 0;
+            border-radius: 0;
+        }
+
+        .document-editor__editable-container {
+            padding: calc(2 * var(--ck-spacing-large));
+            background: #eee;
+            overflow-y: scroll;
+        }
+
+        .document-editor__editable-container .ck-editor__editable.ck-editor__editable_inline {
+            width: 21cm;
+            min-height: 29.7cm;
+            padding: 1cm 2cm 2cm;
+            border: 1px hsl(0, 0%, 82.7%) solid;
+            border-radius: var(--ck-border-radius);
+            background: white;
+            box-shadow: 0 0 5px hsla(0, 0%, 0%, .1);
+            margin: 0 auto;
+        }
+
+        .document-editor .ck-content,
+        .document-editor .ck-heading-dropdown .ck-list .ck-button__label {
+            font: 16px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .document-editor .ck-heading-dropdown .ck-list .ck-button__label {
+            line-height: calc(1.7 * var(--ck-line-height-base) * var(--ck-font-size-base));
+            min-width: 6em;
+        }
+
+        .document-editor .ck-heading-dropdown .ck-list .ck-button:not(.ck-heading_paragraph) .ck-button__label {
+            transform: scale(0.8);
+            transform-origin: left;
+        }
+
+        .document-editor .ck-content h2,
+        .document-editor .ck-heading-dropdown .ck-heading_heading1 .ck-button__label {
+            font-size: 2.18em;
+            font-weight: normal;
+        }
+
+        .document-editor .ck-content h2 {
+            line-height: 1.37em;
+            padding-top: .342em;
+            margin-bottom: .142em;
+        }
+
+        .document-editor .ck-content h3,
+        .document-editor .ck-heading-dropdown .ck-heading_heading2 .ck-button__label {
+            font-size: 1.75em;
+            font-weight: normal;
+            color: hsl(203, 100%, 50%);
+        }
+
+        .document-editor .ck-heading-dropdown .ck-heading_heading2.ck-on .ck-button__label {
+            color: var(--ck-color-list-button-on-text);
+        }
+
+        .document-editor .ck-content h3 {
+            line-height: 1.86em;
+            padding-top: .171em;
+            margin-bottom: .357em;
+        }
+
+        .document-editor .ck-content h4,
+        .document-editor .ck-heading-dropdown .ck-heading_heading3 .ck-button__label {
+            font-size: 1.31em;
+            font-weight: bold;
+        }
+
+        .document-editor .ck-content h4 {
+            line-height: 1.24em;
+            padding-top: .286em;
+            margin-bottom: .952em;
+        }
+
+        .document-editor .ck-content p {
+            font-size: 1em;
+            line-height: 1.63em;
+            padding-top: .5em;
+            margin-bottom: 1.13em;
+        }
+
+        .document-editor .ck-content blockquote {
+            font-family: Georgia, serif;
+            margin-left: calc(2 * var(--ck-spacing-large));
+            margin-right: calc(2 * var(--ck-spacing-large));
+        }
+    </style>
+{% endblock stylesheets %}
+{% block content %}
+    {% comment %} <form action="{% url 'home:editModalNotaDevolucao' %}" method="post">
+        {% csrf_token %}
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h5>Nota de Exigência - Protocolo:</h5>
+                    <a href="{% url 'home:protocolo_search' %}?numero_protocolo={{ object.pedido_item_id|get_numero_protocolo_filter }}" class="font-weight-bold text-white f-24" title="Clique para acessar o protocolo" data-bs-toggle="tooltip">
+                        <h5>{{ object.pedido_item_id|get_numero_protocolo_filter|protocolo_formatado }}</h5>
+                    </a>
+                </div>
+                <div></div>
+                <div>
+                    <h5>
+                        Número:
+                        <span class="badge bg-success f-20 font-weight-bold">{{ object.pedido_item_id|tipo_registro }}.
+                        {{ object.pedido_item_id|get_numero_registro_por_pedido|formatar_numero_registro|default:"" }}</span>
+                    </h5>
+                    <h5>
+                        -  Ato Praticado: <b>{{ object.pedido_item_id|get_ato_praticado }} ({{ object.pedido_item_id|get_codigo_tabela }})</b>
+                    </h5>
+                    <h5>
+                        -  Número do Ato: <b>{{ object.pedido_item_id|get_numero_do_ato_pelo_pedido_item_id|default:"" }}</b>
+                    </h5>
+                    <h5>
+                        -  Tipo de Imóvel: <b>{{ object.pedido_item_id|get_classe_do_imovel_pelo_pedido_item_id|formatar_classe_do_registro }}</b>
+                    </h5>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="col-mb-12">
+                    <input type="hidden" name="id" value="{{ object.id }}" />
+                    <input type="hidden" name="pedido_item_id" value="{{ object.pedido_item_id }}" />
+                    <input type="hidden" name="pedido_id" value="{{ object.pedido_id }}" />
+                    <!-- Texto da Ficha -->
+                    <div class="django-ckeditor-widget" data-field-id="texto_id" style="display: inline-block">
+                        <textarea name="texto_id" cols="40" rows="10" id="texto_id" data-processed="0" data-config="{&quot;skin&quot;: &quot;moono&quot;, &quot;toolbar_Basic&quot;: [[&quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;], [&quot;NumberedList&quot;, &quot;BulletedList&quot;, &quot;-&quot;, &quot;Outdent&quot;, &quot;Indent&quot;, &quot;-&quot;, &quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;], [&quot;RemoveFormat&quot;], [&quot;-&quot;, &quot;Save&quot;, &quot;Preview&quot;, &quot;Print&quot;, &quot;-&quot;], [&quot;Maximize&quot;, &quot;ShowBlocks&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;, &quot;Smiley&quot;, &quot;SpecialChar&quot;, &quot;PageBreak&quot;, &quot;Iframe&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;, &quot;Anchor&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;full&quot;, &quot;height&quot;: 291, &quot;width&quot;: &quot;114%&quot;, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;frame&quot;: &quot;border&quot;, &quot;toolbar_Custom&quot;: [[&quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;], [&quot;NumberedList&quot;, &quot;BulletedList&quot;, &quot;-&quot;, &quot;Outdent&quot;, &quot;Indent&quot;, &quot;-&quot;, &quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;], [&quot;Link&quot;, &quot;Unlink&quot;], [&quot;RemoveFormat&quot;, &quot;Source&quot;]], &quot;language&quot;: &quot;pt-br&quot;}" data-external-plugin-resources="[]" data-id="texto_id" data-type="ckeditortype">{{ object.texto|safe }}
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <!-- Botoes para Salvar Texto da FICHA -->
+                <button type="submit" class="btn btn-sm btn-success activate text-dark" role="button">
+                    <i class="fas fa-save"></i> Salvar Nota
+                </button>
+                <a class="btn btn-sm btn-secondary text-white" href="{% url 'home:minuta_lv2' pedido_item_id=object.pedido_item_id %}" role="button"><i class="icon feather icon-file-text"></i>Voltar Inicio do Check-List</a>
+                <a class="btn btn-sm btn-secondary text-white" href="{% url 'home:protocolo_search' %}?numero_protocolo={{ object.pedido_item_id|get_numero_protocolo_filter }}" title="Clique para acessar os detalhes" data-bs-toggle="tooltip"> Voltar Protocolo: {{ object.pedido_item_id|get_numero_protocolo_filter|protocolo_formatado }} </a>
+                <input class="btn btn-sm btn-warning text-dark " value="Voltar" title="Voltar a página anterior " size="8" id="b1" onclick="history.back()">
+            </div>
+        </div>
+    </form> {% endcomment %}
+    <!--   #######     FIM DA FICHA DE Checklist   #######     -->
+    <!-- INICIO DO Modal - INDICADOR REAL -->
+    {% comment %} {% include 'modal_real.html' %}
+        <!-- FIM DO Modal - INDICADOR REAL  -->
+        <!-- INICIO DO Modal - INDICADOR PESSOAL -->
+    {% include 'modal_pessoal.html' %} {% endcomment %}
+    <!-- FIM DO Modal - INDICADOR PESSOAL  -->
+    <form action="{% url 'home:editModalNotaDevolucao' %}" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <!-- [ Document-editor ] start -->
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>
+                            Nota de Exigência - Protocolo:
+                            <a href="{% url 'home:protocolo_search' %}?numero_protocolo={{ object.pedido_item_id|get_numero_protocolo_filter }}"
+                               target="_blank"
+                               class="btn-sm bg-primary font-weight-bold text-white f-20"
+                               title="Clique para acessar o protocolo"
+                               data-bs-toggle="tooltip">
+                                <span class="badge bg-primary f-16 font-weight-bold text-white">{{ object.pedido_item_id|get_numero_protocolo_filter|protocolo_formatado }}</span>
+                            </a>
+                        </h5>
+                        <div class="card-header-right">
+                            <div class="btn-group card-option">
+                                <button type="button"
+                                        class="btn dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                    <i class="icon feather icon-more-horizontal"></i>
+                                </button>
+                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                    <li class="dropdown-item full-card">
+                                        <a href="#!"><span><i class="icon feather icon-maximize"></i> maximize</span><span style="display:none"><i class="icon feather icon-minimize"></i> Restore</span></a>
+                                    </li>
+                                    <li class="dropdown-item minimize-card">
+                                        <a href="#!"><span><i class="icon feather icon-minus"></i> collapse</span><span style="display:none"><i class="icon feather icon-plus"></i> expand</span></a>
+                                    </li>
+                                    <li class="dropdown-item reload-card">
+                                        <a href="#!"><i class="icon feather icon-refresh-cw"></i> reload</a>
+                                    </li>
+                                    <li class="dropdown-item close-card">
+                                        <a href="#!"><i class="icon feather icon-trash"></i> remove</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <input type="hidden" name="id" value="{{ object.id }}" />
+                        <input type="hidden"
+                               name="pedido_item_id"
+                               value="{{ object.pedido_item_id }}" />
+                        <input type="hidden" name="pedido_id" value="{{ object.pedido_id }}" />
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <h5>
+                                    <b>{{ object.pedido_item_id|get_classe_do_imovel_pelo_pedido_item_id|formatar_classe_do_registro }}  </b>
+                                    <a title="Exibe os dados do Registro Geral."
+                                       class="font-weight-bold text-white f-16"
+                                       href="{% url 'home:livro04_detail' numero_registro=object.pedido_item_id|get_numero_registro_por_pedido tipo_registro=object.pedido_item_id|tipo_registro cartorio_imovel=object.pedido_item_id|get_numero_ri %}"
+                                       target="_blank">
+                                        <span class="badge bg-success f-16 font-weight-bold text-white">{{ object.pedido_item_id|tipo_registro }}.
+                                            {{ object.pedido_item_id|get_numero_registro_por_pedido|formatar_numero_registro|default:"" }}</span>
+                                    </a>
+                                    Ato: <b>{{ object.pedido_item_id|get_numero_do_ato_pelo_pedido_item_id|default:"" }} - {{ object.pedido_item }} ({{ object.pedido_item.codigo_tabela }})</b>
+                                </h5>
+                            </div>
+                        </div>
+                        {% comment %} <div class="document-editor">
+                            <div class="document-editor__toolbar"></div>
+                            <div class="document-editor__editable-container">
+                                <div class="document-editor__editable">{{ object.texto|safe }}</div>
+                            </div>
+                        </div> {% endcomment %}
+                        <div class="django-ckeditor-widget "
+                             data-field-id="texto_id"
+                             style="display: inline-block;
+                                    width: 100%">
+                            <textarea name="texto_id" cols="40" rows="10" id="texto_id" data-processed="0" data-config="{&quot;skin&quot;: &quot;moono&quot;, &quot;toolbar_Basic&quot;: [[&quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;], [&quot;NumberedList&quot;, &quot;BulletedList&quot;, &quot;-&quot;, &quot;Outdent&quot;, &quot;Indent&quot;, &quot;-&quot;, &quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;], [&quot;RemoveFormat&quot;], [&quot;-&quot;, &quot;Save&quot;, &quot;Preview&quot;, &quot;Print&quot;, &quot;-&quot;], [&quot;Maximize&quot;, &quot;ShowBlocks&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;, &quot;Smiley&quot;, &quot;SpecialChar&quot;, &quot;PageBreak&quot;, &quot;Iframe&quot;]], &quot;toolbar_Full&quot;: [[&quot;Styles&quot;, &quot;Format&quot;, &quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;, &quot;Anchor&quot;], [&quot;Image&quot;, &quot;Flash&quot;, &quot;Table&quot;, &quot;HorizontalRule&quot;], [&quot;TextColor&quot;, &quot;BGColor&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;Source&quot;]], &quot;toolbar&quot;: &quot;full&quot;, &quot;height&quot;: 291, &quot;width&quot;: &quot;100%&quot;, &quot;filebrowserWindowWidth&quot;: 940, &quot;filebrowserWindowHeight&quot;: 725, &quot;frame&quot;: &quot;border&quot;, &quot;toolbar_Custom&quot;: [[&quot;Bold&quot;, &quot;Italic&quot;, &quot;Underline&quot;], [&quot;NumberedList&quot;, &quot;BulletedList&quot;, &quot;-&quot;, &quot;Outdent&quot;, &quot;Indent&quot;, &quot;-&quot;, &quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;], [&quot;Link&quot;, &quot;Unlink&quot;], [&quot;RemoveFormat&quot;, &quot;Source&quot;]], &quot;language&quot;: &quot;pt-br&quot;}" data-external-plugin-resources="[]" data-id="texto_id" data-type="ckeditortype">{{ object.texto|safe }}
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <!-- Botoes para Salvar Texto da FICHA -->
+                        {% comment %} <a class="btn btn-danger font-weight-bold text-white" title="Gerar a nota de devolução em PDF" href="{% url 'home:download_pdf_file' pedido_item_id=object.pedido_item_id %}" aria-pressed="true" role="button"><i class="feather icon-award"></i>Assinar PDF</a> {% endcomment %}
+                        <button type="submit" class="btn bg-success text-white" role="button">
+                            <i class="fas fa-save"></i> Salvar Nota
+                        </button>
+                        <a class="btn btn-sm btn-warning text-dark"
+                           href="{% url 'home:minuta_lv2' pedido_item_id=object.pedido_item_id %}"
+                           role="button"><i class="icon feather icon-file-text"></i>Voltar Check-List</a>
+                        {% comment %} <a class="btn btn-sm btn-secondary text-white" href="{% url 'home:protocolo_search' %}?numero_protocolo={{ object.pedido_item_id|get_numero_protocolo_filter }}" title="Clique para acessar os detalhes" data-bs-toggle="tooltip"> Voltar Protocolo: {{ object.pedido_item_id|get_numero_protocolo_filter|protocolo_formatado }} </a> {% endcomment %}
+                        <a class="btn btn-sm btn-secondary text-white "
+                           title="Atualizar a página para visualizar os dados alterados"
+                           data-bs-toggle="tooltip"
+                           onclick="getAtualizarPagina()"><i class="icon feather icon-refresh-cw" id="theme-inlimpar"></i> Atualizar</a>
+                        <input class="btn btn-sm btn-warning text-dark "
+                               value="Voltar"
+                               title="Voltar a página anterior "
+                               size="8"
+                               id="b1"
+                               onclick="history.back()">
+                    </div>
+                </div>
+            </div>
+            <!-- [ Document-editor ] end -->
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Assinar PDF digitalmente:</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'home:anexar_nota_devolucao' object.pedido_item_id %} "
+                          method="post"
+                          enctype="multipart/form-data">
+                        <!-- Não se esqueça dessa tag -->
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            {% if assinar_nota_devolucao_digital == 'S' %}
+                                <!-- PASSANDO O pedido_item_id -->
+                                {% comment %} <input type="hidden" name="id" id="id" value={{ object.pedido_item_id  }} /> {% endcomment %}
+                                <div class="icon">
+                                    <div class="input-group">
+                                        <input type="file"
+                                               name="files"
+                                               class="form-control"
+                                               id="name_arquivo"
+                                               aria-describedby="inputGroupFileAddon04"
+                                               aria-label="Upload"
+                                               {% comment %}
+                                               multiple
+                                               {% endcomment %}
+                                               required="required">
+                                        <button class="btn bg-danger text-white"
+                                                type="submit"
+                                                id="inputGroupFileAddon04"
+                                                title="Anexar Nota de Exigência para o protocolo"
+                                                data-bs-toggle="tooltip">
+                                            <i class="feather icon-award"></i>Assinar PDF</i>
+                                    </button>
+                                </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- PASSANDO O ITEM DO PROTOCOLO - URBANO -->
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                {% comment %} <div class="card-header">
+                    <h5>Arquivos vinculados - Enviar ou Imprimir:</h5>
+                </div> {% endcomment %}
+                {% comment %} <div class="card-body"> {% endcomment %}
+                {% comment %} {% include "card_imagens_nota_devolucao.html" %} {% endcomment %}
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <!-- Ckeditor js -->
+    <script src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+    {% comment %} <script src="{% static 'assets/js/plugins/ckeditor5/document/ckeditor.js' %}"></script> {% endcomment %}
+    {% comment %} <script src="{% static 'assets/js/plugins/ckeditor/translations/pt-br.js' %}"></script> {% endcomment %}
+    <script type="text/javascript">
+        (function() {
+            DecoupledEditor
+                .create(document.querySelector('.document-editor__editable'), {
+                    language: 'pt-br',
+                })
+                .then(editor => {
+                    const toolbarContainer = document.querySelector('.document-editor__toolbar');
+                    toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        })();
+    </script>
+    <script>
+        function getAtualizarPagina() {
+            window.location.reload();
+        }
+
+        function openNewTab() {
+
+        }
+    </script>
+{% endblock javascripts %}

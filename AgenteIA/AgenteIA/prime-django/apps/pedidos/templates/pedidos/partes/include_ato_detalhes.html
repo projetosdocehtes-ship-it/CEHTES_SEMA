@@ -1,0 +1,29 @@
+{% load pedidos_formatos %}
+<p>
+  <b>{{ object.nome }}</b>
+  <br>
+  <small>{{ object.tipo_ato.descricao }}</small>
+</p>
+<p>
+  <b>Titulo:</b> {{ object.titulo }}
+</p>
+{% if object.tipo_emolumento %}
+  <p>
+    <b>Emolumento:</b> {{ object.tipo_emolumento }} - {{ object.valor_emolumento_calculado_com_desconto_tributacao|formatar_moeda }}
+  </p>
+{% endif %}
+{% if object.imovel_numero_registro %}
+  <p>
+    <b>{{ object.imovel_tipo_registro|default:"Matrícula" }}:</b> {{ object.imovel_numero_registro }} RI: {{ object.imovel_cartorio|default:"1" }}
+  </p>
+{% endif %}
+{% if object.valor_titulo %}
+  <p>
+    <b>Valor no Título:</b> {{ object.valor_titulo|formatar_moeda }}
+  </p>
+{% endif %}
+{% if object.valor_avaliacao %}
+  <p>
+    <b>Valor de Avaliação:</b> {{ object.valor_avaliacao|formatar_moeda }}
+  </p>
+{% endif %}

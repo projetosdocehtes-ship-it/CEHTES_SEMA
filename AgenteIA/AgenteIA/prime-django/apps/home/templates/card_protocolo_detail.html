@@ -1,0 +1,201 @@
+{% load home_formatos %}
+{% load humanize %}
+<div class="card" id="protocolo_detail">
+    <div class="card-header">
+        <a href="{{ protocolo.get_absolute_url }}">
+            <h5 class="font-weight-bold text-white">Detalhes do Protocolo:</h5>
+            {% comment %} <span class="font-weight-bold text-white f-22"> {{ protocolo.numero_protocolo|protocolo_formatado }}</span> {% endcomment %}
+        </a>
+        <span title="Atualmente o protocolo esta:"
+              class="{% if protocolo.status_protocolo_descricao == 'Em Andamento' %} bg-success {% elif protocolo.status_protocolo_descricao == 'Registrado' %} bg-primary {% elif protocolo.status_protocolo_descricao == 'Cancelado' %} bg-danger {% elif protocolo.status_protocolo_descricao == 'Sub udice' %} bg-secondary {% elif protocolo.status_protocolo_descricao == 'Exigência' %} btn-warning text-dark {% elif protocolo.status_protocolo_descricao == 'Em Análise' %} btn-info {% elif protocolo.status_protocolo_descricao == 'Em Registro' %} btn-info {% endif %}">
+            <span class="font-weight-bold mx-4 text-white">{{ protocolo }} ({{ protocolo.status_protocolo_descricao }})</span>
+        </span>
+        {% if existem_protocolos_em_andamento %}
+            <span title="Visualizar outros protocolo(s):" class="bg-danger">
+                <span class="font-weight-bold mx-4 text-white">Outros protocolos em andamento: {{ total_protocolos_em_andamento }}</span>
+            </span>
+        {% endif %}
+        <a class="text-white f-18 mx-4"
+           href="{% url 'home:importar_protocolo' numero_protocolo=protocolo.numero_protocolo %}"
+           title="Importar protocolo: {{ protocolo }}"
+           aria-pressed="true"
+           role="button">
+            <i class="icon feather icon-download"></i>
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-3">
+                Data: <b> {{ protocolo.data_protocolo|date:"d/m/y" }}</b>
+                <br>
+                {% if protocolo.data_reentrada %}Reentrada: <b> {{ protocolo.data_reentrada|date:"d/m/y" }}</b>{% endif %}
+            </div>
+            <div class="col-3">
+                Previsão: <b>{{ protocolo.pedido_id|proxima_data_prevista|date:"d/m/y" }}</b>
+            </div>
+            <div class="col-3">
+                Validade: <b>{{ protocolo.pedido_id|proxima_data_valida|date:"d/m/y" }}</b>
+            </div>
+            <div class="col-3">
+                {% if exigencia|length < 1 and exigencia_positivas|length < 1 %}
+                    {% if protocolo.pedido_id|primeira_data_exigencia|verificar_data_fase == 0 %}
+                        Qualif. Positiva ou Negativa: <b> {{ protocolo.pedido_id|primeira_data_exigencia|date:"d/m/y" }}</b>
+                    {% elif protocolo.pedido_id|primeira_data_exigencia|verificar_data_fase == 1 %}
+                        Qualif. Positiva ou Negativa: <b><span class="badge bg-warning f-12">Vencendo: {{ protocolo.pedido_id|primeira_data_exigencia|date:"d/m/y" }}</span></b>
+                    {% elif protocolo.pedido_id|primeira_data_exigencia|verificar_data_fase == 2 %}
+                        Qualif. Positiva ou Negativa: <b><span class="badge bg-danger f-12">Atrasado: {{ protocolo.pedido_id|primeira_data_exigencia|date:"d/m/y" }}</span></b>
+                    {% else %}
+                        Qualif. Positiva ou Negativa: <b><span class="badge bg-warning f-12">{{ protocolo.pedido_id|primeira_data_exigencia|date:"d/m/y" }}</span></b>
+                    {% endif %}
+                {% else %}
+                    Qualif. Positiva ou Negativa: <b>{{ protocolo.pedido_id|primeira_data_exigencia|date:"d/m/y" }}</b>
+                {% endif %}
+            </div>
+        </div>
+        <hr />
+        <div class="row mb-12">
+            <div class="col-md-6">
+                <a href="#itens_pedido_apresentante"
+                   title="Exibir os dados do Apresentante.">
+                    <span class="badge bg-secondary f-12">Apresentante:</span>
+                </a>
+                {% if protocolo.nome_apresentante != None %}
+                    <span class="font-weight-bold f-14">&emsp;{{ protocolo.nome_apresentante|upper }}</span>
+                {% endif %}
+            </div>
+            <div class="col-md-2">
+                Telefones: <b>{{ protocolo.pedido.telefone|formatar_telefone }}</b>
+                {% if protocolo.pedido.telefone and protocolo.pedido.telefone1 %},{% endif %}
+                <b>{{ protocolo.pedido.telefone1|formatar_telefone }}</b>
+            </div>
+            <div class="col-md-4">
+                Observações: <span class="font-weight-bold">{{ protocolo.observacao_pedido|default:"" }}</span>
+            </div>
+            <hr />
+            <div class="row mb-3">
+                <div class="col">
+                    <a href="#itens_pedido_titulo_principal"
+                       title="Acessar os dados do Título Principal."><span class="badge bg-secondary f-12">Título Principal:</span></a> <span class="font-weight-bold">{{ quantidade_titulo_principal }}</span>
+                </div>
+                <div class="col">
+                    <a href="#itens_pedido_partes"
+                       title="Exibir as partes envolvidas no Título."><span class="badge bg-secondary f-12">Partes</span></a> <span class="font-weight-bold">{{ protocolo.partes_protocolo|length }}</span>
+                </div>
+                <div class="col">
+                    <a href="#selos" title="Exibir a quantidade de SeloEletronico."><span class="badge bg-secondary f-12">Selos Eletrônicos:</span></a> <span class="font-weight-bold">{{ protocolo.selos|length }}</span>
+                </div>
+                <div class="col">
+                    <a href="{% url 'home:anexos_list' protocolo.pk %}"> <i class="icon feather icon-paperclip"></i>  {{ protocolo.anexos.count|default:0 }} Anexos</a>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <a href="#itens_pedido" title="Exibir os valores cobrados de cada item."><span class="badge bg-secondary f-12">Itens:</span></a> <span class="font-weight-bold">{{ protocolo.itens|length }}</span>
+                </div>
+                <div class="col">
+                    <a href="#itens_pedido_livro2"
+                       title="Exibir os dados do Registro Geral."><span class="badge bg-secondary f-12">Livro 2:</span></a> <span class="font-weight-bold">{{ livro_2|length }}</span>
+                </div>
+                <div class="col">
+                    <a href="#itens_pedido_livro3"
+                       title="Exibir os dados do Registro Auxiliar"><span class="badge bg-secondary f-12">Livro 3:</span></a> <span class="font-weight-bold">{{ livro_3|length }}</span>
+                </div>
+                {% comment %} <div class="col">
+            <a href="{% url 'home:andamentos_list' protocolo.pk %}" title="Exibir os andamentos do protocolo"><span class="badge bg-secondary f-12">Eventos:</span></a>
+            <span class="font-weight-bold">{{ protocolo.andamentos|length }}</span>
+                </div> {% endcomment %}
+                {% comment %} <div class="col">
+                    <a href="{% url 'home:protocolo_andamentos' protocolo.pk %}"> <span class="f-16"><i class="icon feather icon-list"></i> </span> {{ protocolo.andamentos|length|default:0 }} Andamento(s)</a>
+                </div> {% endcomment %}
+                <div class="col">
+                    <a href="{{ protocolo.get_andamentos_url }}"> <span class="f-16"><i class="icon feather icon-list"></i> </span> {{ protocolo.andamentos|length|default:0 }} Andamento(s)</a>
+                </div>
+            </div>
+            <hr />
+            <div class="row mb-3">
+                <div class="col">
+                    Emolumentos: <span class="font-weight-bold">{{ valor_total_emolumentos|formatar_moeda }}</span>
+                </div>
+                <div class="col">
+                    Taxa Fisc. Judic.: <span class="font-weight-bold">{{ valor_total_tfj|formatar_moeda }}</span>
+                </div>
+                <div class="col">
+                    ISSQN: <span class="font-weight-bold">{{ valor_total_issqn|formatar_moeda }}</span>
+                </div>
+                <div class="col">
+                    Recompe: <span class="font-weight-bold">{{ valor_total_recompe|formatar_moeda }}</span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    Total: <span class="font-weight-bold">{{ valor_total_protocolo|formatar_moeda }}</span>
+                </div>
+                <div class="col">
+                    <a href="#itens_pedido_caixa"
+                       title="Exibir os valores enviados/confirmados no caixa."><span class="badge bg-secondary f-12">Caixa:</span></a> <span class="font-weight-bold">{{ valor_total_caixa|formatar_moeda }}</span>
+                </div>
+                <div class="col">
+                    <span class="font-weight-bold {% if valor_diferenca > 0 %}text-danger{% else %}text-success{% endif %}">
+                        Diferença:
+                    {{ valor_diferenca|formatar_moeda }}</span>
+                </div>
+                <div class="col"></div>
+            </div>
+            <hr />
+            <div class="row mb-12">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        Colaborador Atual: <b><span class="font-weight-bold">{{ protocolo.colaborador }}</span></b>
+                    </div>
+                    <div class="col-md-9">
+                        Ultimo Andamento: <b><span class="font-weight-bold">{{ protocolo.ultimo_andamento_formatado }}</span></b>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a type="button"
+               href="{{ protocolo.get_recibo_url }}"
+               class="btn btn-sm btn-secondary">
+                <i class="icon feather icon-printer"></i> Recibo
+            </a>
+            <a type="button"
+               href="#itens_pedido_card_imagem_devolucao"
+               class="btn btn-sm {% if exigencia|length == 0 %}btn-secondary{% else %}btn-outline-warning text-dark{% endif %}">Exigência <span class="badge bg-dark">{{ exigencia|length }}</span></a>
+            {% comment %} <a type="button" href="#itens_pedido_pendencias" class="btn {% if pendencias|length == 0 %}btn-secondary{% else %}btn-danger{% endif %}">Pendências <span class="badge bg-dark">{{ pendencias|length }}</span></a> {% endcomment %}
+            <a type="button" href="#indisponib" class="btn btn-sm btn-secondary">Indisponibilidades <span class="badge bg-dark">{{ protocolo.pessoas_com_indisponibilidade|length }}</span></a>
+            {% comment %} class="btn btn-sm  {% if quantidade_lri == 0 %}btn-secondary{% else %}btn-danger{% endif %}">Indisponibilidades <span class="badge bg-dark">{{ protocolo.pessoas_com_indisponibilidade|length }}</span></a> {% endcomment %}
+            <a type="button"
+               href="#itens_pedido_contraditorio"
+               class="btn btn-sm btn-secondary">
+                Contraditório <span class="badge bg-dark">0</span>
+            </a>
+            <a type="button"
+               href="{% url 'home:reprotocolar_protocolo_numero' numero_protocolo=protocolo.numero_protocolo %}"
+               target="_blank"
+               class="btn btn-sm btn-secondary">
+                <i class="fas fa-angle-double-up" aria-hidden="true"></i> Reprotocolar
+            </a>
+            <a type="button"
+               href="{% url 'home:agenda_protocolo' protocolos=protocolo.numero_protocolo %}"
+               target="_blank"
+               class="btn btn-sm btn-secondary">
+                <i class="fas fa-calendar-alt" aria-hidden="true"></i> Agenda
+            </a>
+            {% for livro2_Titulo in titulo_principal %}
+                {% if forloop.first %}
+                    <a type="button"
+                       href="{% url 'home:base_conhecimento_protocolo' pedido_item_id=livro2_Titulo.pk ato_id=livro2_Titulo.ato.id  numero_protocolo_pesquisar=protocolo.numero_protocolo numero_registro_id=livro2_Titulo.numero_registro tipo_registro_id=livro2_Titulo.tipo_registro cartorio_imovel_id=livro2_Titulo.numero_ri classe_id=livro2_Titulo.pedido_item|get_classe_do_imovel_pelo_pedido_item_id %}"
+                       class="btn btn-sm btn-secondary">Check-List Balcão</a>
+                {% endif %}
+            {% endfor %}
+            <a href="#itens_pedido_apresentante"
+               class="btn btn-sm btn-outline-primary text-dark "
+               title="Próximo ítem"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+            {% comment %} <a class="btn btn-sm btn-icon btn-secondary" href="{% url 'home:importar_protocolo' numero_protocolo=protocolo.numero_protocolo %}" title="Importar protocolo: {{ protocolo }}" aria-pressed="true" role="button">
+        <i class="icon feather icon-download"></i>
+            </a> {% endcomment %}
+        </div>
+    </div>

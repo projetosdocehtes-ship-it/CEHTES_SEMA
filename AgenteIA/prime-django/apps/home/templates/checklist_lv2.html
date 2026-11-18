@@ -1,0 +1,56 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <div class="card">
+        <div class="card-header" id="checklist_livro02">
+            <h5>
+                Realizar o Checklist para o Protocolo:
+            <a class="f-26 text-white"
+               href="{% url 'home:protocolo_detail' protocolo|get_id_protocolo_pelo_numero %}"
+               span
+               class="badge bg-secondary font-weight-bold text-white f-20">{{ protocolo|protocolo_formatado }}</span>
+        </a>
+    </h5>
+</div>
+<div class="card-body">
+    <div>
+        <span class="badge bg-secondary font-weight-bold text-white f-20">{{ tipo_registro|get_descricao_tipo_registro }} {{ numero_matricula|formatar_numero_registro_inteiro }} - Imóvel: {{ classe_imovel|formatar_classe_do_registro }}
+        </span>
+    </div>
+    <div>
+        <span class="badge bg-white font-weight-bold text-dark f-16">Ato Praticado: {{ numero_ato|default:"" }} ({{ ato_praticado }}) - Código da Tabela: {{ codigo_tabela }}</span>
+    </div>
+</div>
+<div class="card-footer">
+    {% if pedido_item_id|get_texto_imovel > 0 %}
+        <a class="btn bg-success text-white f-14"
+           href="{% url 'home:texto_lv2' pk=pedido_item_id pedido_item_id=pedido_item_id %}"
+           aria-pressed="true"
+           title="Exibir o texto do ato praticado"
+           role="button"><i class="icon feather icon-file"></i>Texto do Ato</a>
+    {% endif %}
+    <a class="btn btn-sm btn-outline-warning text-dark"
+       title="Voltar para a página anterior sem alterar os dados"
+       data-bs-toggle="tooltip"
+       onclick="getVoltar()">Voltar</a>
+    <div class="btn-group mb-2 mr-2">
+        <a href="#checklist_adquirente"
+           class="btn btn-sm btn-outline-1 - Adquirentesprimary text-dark "
+           title="Próximo ítem"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+    </div>
+</div>
+</div>
+{% include "checklist_card_adquirente.html" %}
+{% include "checklist_card_transmitente.html" %}
+{% if classe_imovel == 'R' %}
+    {% include "checklist_card_imoveis_rural.html" %}
+{% else %}
+    {% include "checklist_card_imoveis.html" %}
+{% endif %}
+{% include "checklist_card_minutas.html" %}
+{% comment %} {% include "modal_real.html" %}
+{% include "modal_pessoal.html" %} {% endcomment %}
+{% endblock content %}

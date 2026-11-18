@@ -1,0 +1,67 @@
+{% load home_formatos %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% comment %} <!--   --> {% endcomment %}
+{% block content %}
+    <!-- Modal -->
+    <div class="modal"
+         id="addDocumentosModal"
+         tabindex="-1"
+         aria-labelledby="addDocumentosModalLabel"
+         aria-hidden="True">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDocumentosModalLabel">
+                        <i class="icon feather icon-plus"></i>   Anexar Documentos - Protocolo: {{ Protocolo|protocolo_formatado }}
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- PASSANDO O PROTOCOLO DO DOCUMENTO -->
+                <form action="anexar_documento/"
+                      method="post"
+                      enctype="multipart/form-data">
+                    <!-- Não se esqueça dessa tag -->
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <!-- PASSANDO O PROTOCOLO DOCUMENTO -->
+                        <input type="text" name="parte_id" id="parte_id" value="{{ Protocolo }}" />
+                        <hr>
+                        <br>
+                        <br>
+                        <input type="file"
+                               name="files"
+                               id="name_arquivo"
+                               multiple
+                               required="required" />
+                        <br>
+                        <br>
+                        <!-- BOTOES -->
+                        <div class="modal-footer">
+                            <button type="submit"
+                                    class="btn btn-sm btn-primary "
+                                    href="anexar_documento/"
+                                    aria-pressed="true"
+                                    role="button">
+                                <i class="fa fa-paperclip"></i> Anexar
+                            </button>
+                            <button value=""
+                                    type="button"
+                                    class="btn btn-sm btn-secondary "
+                                    data-bs-dismiss="modal">
+                                <i class="btn-close"></i> Fechar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div align="center">
+                    <h3 style="color: black;">{{ new_url }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

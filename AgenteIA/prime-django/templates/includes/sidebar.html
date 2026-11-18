@@ -1,0 +1,115 @@
+{% load i18n static admin_datta %}
+<style>
+  .menu-item-separator {
+    border-bottom: 1px solid #ccc;
+    margin: 10px 0;
+  }
+</style>
+
+<nav class="pcoded-navbar navbar-collapsed">
+  <div class="navbar-wrapper">
+    <div class="navbar-brand header-logo">
+      <a href="{% url 'home:calender' %}" class="b-brand" title="" data-bs-toggle="tooltip">
+        <div class="b-bg f-45">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div>
+          <span class="b-title">Projeto CEHTES</span><br>
+        </div>
+      </a>
+      <a class="mobile-menu" id="mobile-collapse" href="javascript:void(0)"><span></span></a>
+    </div>
+
+    <div class="navbar-content scroll-div">
+      <ul class="nav pcoded-inner-navbar">
+
+        {% if request.user.is_authenticated %}
+
+          <!-- Projetos -->
+          <li class="pcoded-hasmenu {% if 'distribuicao' in parent %}active pcoded-trigger{% endif %}">
+            <a href="javascript:void(0)" class="nav-link">
+              <span class="pcoded-micon"><i class="fas fa-project-diagram text-c-green"></i></span>
+              <span class="pcoded-mtext">Projetos</span>
+            </a>
+            <ul class="pcoded-submenu">
+              <li><a href="{% url 'home:criar_projeto' %}">Abrir Projeto</a></li>
+              <li><a href="{% url 'home:criar_projeto' %}">Novo Projeto</a></li>
+            </ul>
+          </li>
+
+          <!-- Título -->
+          <li class="pcoded-menu-caption"><label>Cadastro</label></li>
+
+          <!-- Equipamento -->
+          <li class="pcoded-hasmenu {% if 'certidoes' in parent %}active pcoded-trigger{% endif %}">
+            <a href="javascript:void(0)" class="nav-link">
+              <span class="pcoded-micon"><i class="fas fa-file-alt text-c-blue"></i></span>
+              <span class="pcoded-mtext">Equipamento</span>
+            </a>
+            <ul class="pcoded-submenu">
+              <li><a href="{% url 'home:criar_bateria' %}">Bateria</a></li>
+              <li><a href="{% url 'home:criar_hidrogenio' %}">Célula de Hidrogênio</a></li>
+              <li><a href="{% url 'home:criar_controlador_carga' %}">Controlador de Carga</a></li>
+              <li><a href="{% url 'home:criar_inversor' %}">Inversor de Frequência</a></li>
+              <li><a href="{% url 'home:criar_painel_solar' %}">Painel Solar</a></li>
+            </ul>
+          </li>
+
+        {% endif %}
+
+        {% if not request.user.is_authenticated %}
+          <li class="pcoded-hasmenu">
+            <a href="javascript:void(0)" class="nav-link">
+              <span class="pcoded-micon"><i class="icon feather icon-lock"></i></span>
+              <span class="pcoded-mtext">Conectar</span>
+            </a>
+            <ul class="pcoded-submenu">
+              <li><a href="{% url 'login' %}">Acessar</a></li>
+            </ul>
+          </li>
+        {% endif %}
+
+        {% admin_get_menu as app_list %}
+        <li class="pcoded-menu-caption"><label>Entrada de Dados</label></li>
+
+        <li class="pcoded-hasmenu {% if 'configuracao' in segment %}active pcoded-trigger{% endif %}">
+          <a href="javascript:void(0)" class="nav-link">
+            <span class="pcoded-micon"><i class="icon feather icon-layout"></i></span>
+            <span class="pcoded-mtext">Configurações</span>
+          </a>
+          <ul class="pcoded-submenu">
+            <li><a href="/admin/home/configuracao/">Armazenamento</a></li>
+            <li><a href="/admin/cartorios/funcao/">Biogás</a></li>
+            <li><a href="/admin/cartorios/usuario/">Célula Hidrogênio</a></li>
+            <li><a href="{{ user.cartorio.get_absolute_url }}">Configuração</a></li>
+            <li><a href="{{ user.cartorio.get_absolute_url }}">Fotovoltaico</a></li>
+          </ul>
+        </li>
+
+        <li class="pcoded-menu-caption"><label>Saída</label></li>
+        <li class="pcoded-hasmenu {% if 'cartorios' in segment %}active pcoded-trigger{% endif %}">
+          <a href="javascript:void(0)" class="nav-link">
+            <span class="pcoded-micon"><i class="icon feather icon-layout"></i></span>
+            <span class="pcoded-mtext">Sistema</span>
+          </a>
+          <ul class="pcoded-submenu">
+            <li><a href="{{ user.cartorio.get_absolute_url }}">Saída Sistema</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script src="{% static 'admin_datta/assets/js/vendor-all.min.js' %}"></script>
+<script src="{% static 'admin_datta/assets/js/plugins/bootstrap.min.js' %}"></script>
+<script src="{% static 'admin_datta/assets/js/pcoded.min.js' %}"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (typeof pcoded !== "undefined" && typeof pcoded.init === "function") {
+      pcoded.init();
+    }
+  });
+</script>

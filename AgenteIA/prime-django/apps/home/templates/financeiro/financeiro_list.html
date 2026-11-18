@@ -1,0 +1,61 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% load django_tables2 %}
+{% load querystring_tags %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>Lista do Financeiro</h5>
+        </div>
+        <div class="card-body table-responsive">
+            <form class="row row-cols-md-auto g-3 align-items-center mb-3" method="get">
+                {% for field in filter.form %}<div class="p-2">{{ field|as_crispy_field }}</div>{% endfor %}
+                <div class="col-md-12">
+                    <button type="submit" id="btn-submit" class="btn btn-sm btn-primary mt-3">
+                        <i class="fa-solid fa-filter"></i> Filtrar
+                    </button>
+                    <button type="cancel"
+                            id="btn-cancel"
+                            class="btn btn-sm btn-outline-danger mt-3">
+                        <i class="fa-solid fa-eraser"></i> Limpar
+                    </button>
+                    <a class="btn btn-sm btn-outline-success mt-3 text-dark"
+                       href="{% url 'home:caixa_receita' %}"
+                       data-bs-toggle="tooltip">
+                        <i class="icon feather icon-plus"></i> Receita
+                    </a>
+                    <a class="btn btn-sm btn-outline-danger mt-3"
+                       href="{% url 'home:caixa_despesa' %}"
+                       data-bs-toggle="tooltip">
+                        <i class="icon feather icon-plus"></i> Despesa
+                    </a>
+                    <a class="btn btn-sm btn-outline-warning mt-3 text-dark"
+                       href="{% url 'home:caixa_saida' %}"
+                       data-bs-toggle="tooltip">
+                        <i class="icon feather icon-plus"></i> Saída
+                    </a>
+                    <a href="{% url 'home:impressao_recibos-caixa' %}?{% query_transform request %}"
+                       target="_blank"
+                       title="Imprimir"
+                       class="btn btn-sm btn-secondary mt-3"> <i class=" fas fa-print m-r-10 "> </i> Relatório </a>
+                    {% comment %} <a href="{% export_url 'xlsx' %}" title="Atualizar a página para visualizar os dados alterados" class="btn btn-sm btn-secondary mt-3">
+                    <i class="fas fa-download m-r-10"></i>Exportar</a> {% endcomment %}
+                        <a class="btn btn-sm btn-outline-warning mt-3 text-dark"
+                           href="{% url 'home:caixa_verificar_diferenca' %}"
+                           data-bs-toggle="tooltip"> <i class="feather-github"></i>Diferença</a>
+                        <a class="btn btn-sm btn-sm btn-secondary mt-3"
+                           title="Fechar Caixa do Dia - Clique para fechar e confirmar o recebimento"
+                           href="{% url 'home:caixa_fechar' %}">
+                            <i class="fas fa-check"></i>Fechar Caixa<span class="badge bg-dark"></span>
+                        </a>
+                    </div>
+                </form>
+                {% render_table table %}
+                {% include "financeiro/chart_receita_despesa.html" %}
+            </div>
+        </div>
+    {% endblock content %}
+    {% block javascripts %}
+        {% include "financeiro/script_chart_receita_despesa.html" %}
+    {% endblock %}

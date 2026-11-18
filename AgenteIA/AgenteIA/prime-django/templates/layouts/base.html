@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+{% load i18n l10n static admin_datta %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_direction as direction %}
+{% get_admin_setting as admin_setting %}
+{% load home_formatos %}
+<html lang="pt-br">
+    <head>
+        <title>
+            Projeto CEHTES -
+            {% block title %}{{ title }}{% endblock %}
+        </title>
+        <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 11]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js' %}"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js' %}"></script>
+        <![endif]-->
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="Tecnologia para Projeto CEHTES" />
+        <meta name="keywords" content="Cartorios, Sistemas" />
+        <meta name="author" content="Prime" />
+        <!-- Favicon icon -->
+        <link rel="icon"
+              href="{% static 'assets/images/favicon.ico' %}"
+              type="image/x-icon">
+        <script src="{% static 'assets/js/plugins/jquery.min.js' %}"></script>
+        <!-- fontawesome icon -->
+        <link rel="stylesheet"
+              href="{% static 'assets/fonts/fontawesome/css/fontawesome-all.min.css' %}">
+        <!-- lightbox css -->
+        <link rel="stylesheet"
+              href="{% static 'assets/css/plugins/lightbox.min.css' %}">
+        <!-- Material Design Icons css -->
+        <link rel="stylesheet"
+              href="{% static 'assets/fonts/material/css/materialdesignicons.min.css' %}">
+        <!-- animation css -->
+        <link rel="stylesheet"
+              href="{% static 'assets/css/plugins/animate.min.css' %}">
+        <link rel="stylesheet"
+              href="{% static 'assets/css/plugins/perfect-scrollbar.css' %}">
+        <!-- vendor css -->
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+        {% block extrahead %}
+        {% endblock extrahead %}
+        <!-- Specific CSS goes HERE -->
+        {% block stylesheets %}
+        {% endblock stylesheets %}
+        {{ form.media.css }}
+    </head>
+    <body>
+        <!-- [ Pre-loader ] start -->
+        <div class="loader-bg">
+            <div class="loader-track">
+                <div class="loader-fill"></div>
+            </div>
+        </div>
+        <!-- [ Pre-loader ] End -->
+        {% if request.user.is_authenticated %}
+            {% include "includes/navigation.html" %}
+        {% endif %}
+        {% include "includes/sidebar.html" %}
+        {% if request.user.is_authenticated and request.user.is_superuser %}
+            {% include "includes/header-user-list.html" %}
+            {% include "includes/header-chat.html" %}
+        {% endif %}
+        <!-- [ Main Content ] start -->
+        <div class="pcoded-main-container">
+            <div class="pcoded-wrapper">
+                <div class="pcoded-content">
+                    <div class="pcoded-inner-content">
+                        <div class="main-body">
+                            <!-- [ Notifications and messages ] start -->
+                            {% if messages %}
+                                <div aria-live="polite" aria-atomic="true" class="position-relative">
+                                    <div class="toast-container position-fixed top-0 end-0 p-3"
+                                         style="z-index: 1050">
+                                        {% for message in messages %}
+                                            <div class="toast align-items-center text-bg-{{ message.tags|message_color }} border-0"
+                                                 role="alert"
+                                                 aria-live="assertive"
+                                                 aria-atomic="true"
+                                                 data-bs-delay="5000">
+                                                <div class="d-flex">
+                                                    <div class="toast-body">{{ message|safe }}</div>
+                                                    <button type="button"
+                                                            class="btn-close me-2 m-auto"
+                                                            data-bs-dismiss="toast"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <!-- [ Notifications and messages ] end -->
+                            <div class="page-wrapper">
+                                <!-- [ breadcrumb ] start -->
+                                {% comment %} {% block breadcrumbs %}
+                                    {% include "includes/breadcrumb.html" %}
+                                {% endblock breadcrumbs %} {% endcomment %}
+                                <!-- [ breadcrumb ] end -->
+                                <div class="container">
+                                    {% block content %}
+                                    {% endblock content %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "layouts/base-modal-info.html" %}
+        {% include "includes/scripts.html" %}
+        <!-- Specific Page JS goes HERE  -->
+        <script src='{% static "assets/js/menu-setting.js" %}'></script>
+        {% block javascripts %}
+        {% endblock javascripts %}
+        {{ form.media.js }}
+    </body>
+</html>

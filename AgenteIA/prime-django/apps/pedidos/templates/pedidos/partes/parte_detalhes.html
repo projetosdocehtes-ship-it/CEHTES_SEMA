@@ -1,0 +1,74 @@
+{% extends "layouts/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% load pedidos_formatos %}
+{% load django_tables2 %}
+{% block breadcrumbs %}
+    {% load replace_value %}
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Detalhes do Ato</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:">Pedido de Protocolo</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:">Detalhes do Ato</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">Pedido de Protocolo {{ object.pedido_protocolo }}</div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Detalhes do Ato</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Exibição dos detalhes do Ato -->
+                    {% include "pedidos_protocolo/ato_principal/include_ato_detalhes.html" %}
+                    <!-- Adicione mais campos conforme necessário -->
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <a href="{{ object.get_pedido_url }}" class="btn btn-sm btn-secondary"><i class='fas fa-newspaper'> </i>Ver Pedido</a>
+                        <a href="{{ object.get_update_url }}" class="btn btn-sm btn-primary"><i class="icon feather icon-edit"> </i>Editar</a>
+                        <a href="{{ object.get_delete_url }}"
+                           class="btn btn-sm btn-icon d-none d-md-inline-block"><i class='icon feather icon-trash ' title="Excluir"> </i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if object and atos_complementares_agrupados_table %}
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Atos Complementares</h5>
+                    </div>
+                    <div class="card-block table-border-style">{% render_table atos_complementares_agrupados_table %}</div>
+                    <div class="card-footer">
+                        <a href="{{ object.get_ato_complementar_criar_url }}"
+                           class="btn btn-sm btn-primary"><i class="icon feather icon-plus"> </i>Adicionar Ato Complementar</a>
+                        <a href="{{ object.get_listar_url }}" class="btn btn-sm btn-secondary"><i class="icon feather icon-eye"> </i>Ver Todos os Atos</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

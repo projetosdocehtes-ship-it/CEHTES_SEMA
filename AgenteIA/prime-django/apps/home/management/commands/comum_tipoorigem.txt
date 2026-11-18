@@ -1,0 +1,30 @@
+INSERT INTO public.comum_tipoorigem
+(id, nome)
+VALUES(1, 'Balcão');
+INSERT INTO public.comum_tipoorigem
+(id, nome)
+VALUES(2, 'ONR - Matrícula Visualizada');
+INSERT INTO public.comum_tipoorigem
+(id, nome)
+VALUES(3, 'ONR - Ofício');
+INSERT INTO public.comum_tipoorigem
+(id, nome)
+VALUES(4, 'ONR - Consulta Eletrônica');
+INSERT INTO public.comum_tipoorigem
+(id, nome)
+VALUES(5, 'ONR - Penhora Online SPH');
+INSERT INTO public.comum_tipoorigem
+(id, nome)
+VALUES(0, 'Balcão Protocolo');
+INSERT INTO public.comum_tipoorigem
+(id, nome)
+VALUES(6, 'ONR - Certidões a Emitir');
+INSERT INTO public.comum_tipoorigem
+(id, nome)
+VALUES(7, 'ONR - e-Protocolo');
+INSERT INTO public.comum_tipoorigem
+(id, nome)
+VALUES(8, 'ONR - Intimação');
+INSERT INTO public.comum_tipoorigem
+(id, nome)
+VALUES(9, 'ONR - Penhora Online PH');

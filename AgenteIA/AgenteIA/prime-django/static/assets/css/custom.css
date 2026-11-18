@@ -1,0 +1,10 @@
+.badge.bg-warning {
+    color: #343a40; /* Esta é a cor padrão do text-dark no Bootstrap */
+}
+.linha-vertical {
+    border-left: 2px solid black; /* Espessura e cor da linha */
+    height: 100px; /* Altura da linha */
+}
+.card-header h5 {
+    color: white;
+}

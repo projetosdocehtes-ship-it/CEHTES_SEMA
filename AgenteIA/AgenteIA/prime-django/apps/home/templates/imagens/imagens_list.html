@@ -1,0 +1,121 @@
+{% extends "layouts/base.html" %}
+{% block extrahead %}
+{% endblock extrahead %}
+{% load static %}
+{% block stylesheets %}
+    <style>
+        .modal-dialog.modal-dialog-centered {
+            max-width: 800px !important;
+        }
+    </style>
+{% endblock stylesheets %}
+{% block title %}Imagens do Registro {{ object.numero_formatado }}{% endblock %}
+{% block content %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Imagens do Registro {{ object.numero_formatado }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for url in urls %}
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="thumbnail mb-4">
+                                        <div class="thumb">
+                                            <a data-lightbox="{{ url }}">
+                                                <img src="{{ url }}"
+                                                     class="img-fluid img-thumbnail m-b-10"
+                                                     alt=""
+                                                     width="35%"
+                                                     height="100">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary" onclick="imprimirImagens()">Imprimir</button>
+                    </div>
+                </div>
+                <!-- [ Gallery-Grid ] end -->
+            </div>
+        </div>
+        <div class="modal fade modal-lightbox"
+             id="lightboxModal"
+             tabindex="-1"
+             aria-labelledby="lightboxModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0">
+                    <button type=" button"
+                            class="btn-close btn-close-white position-absolute bottom-500 start-100 translate-middle1"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    <div class="modal-body p-0">
+                        <img src="" alt="images" class="modal-image img-fluid w-500">
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock content %}
+{% block javascripts %}
+    <script>
+        var lightboxModal = new bootstrap.Modal(document.getElementById('lightboxModal'));
+        var elem = document.querySelectorAll("[data-lightbox]");
+        for (var j = 0; j < elem.length; j++) {
+            elem[j].addEventListener('click', function() {
+                var imagespath = event.target;
+                if (imagespath.tagName == "IMG") {
+                    imagespath = imagespath.parentNode;
+                }
+                var recipient = imagespath.getAttribute('data-lightbox');
+                var image = document.querySelector('.modal-image');
+                image.setAttribute('src', recipient);
+                image.style.width = '100%'; // Adiciona um estilo inline para forçar a imagem a ter 100% de largura
+                lightboxModal.show();
+            });
+        }
+
+        function removeClassByPrefix(node, prefix) {
+            for (let i = 0; i < node.classList.length; i++) {
+                let value = node.classList[i];
+                if (value.startsWith(prefix)) {
+                    node.classList.remove(value);
+                }
+            }
+        }
+    </script>
+    <script>
+        function imprimirImagens() {
+                  // Cria uma nova janela
+            var win = window.open('', '_blank');
+
+                  // Obtém as imagens dentro dos cards
+            var imagens = document.querySelectorAll('div.card img');
+
+                  // Para cada imagem
+            for (var i = 0; i < imagens.length; i++) {
+                       // Cria uma nova imagem na nova janela
+                var img = win.document.createElement('img');
+                img.src = imagens[i].src;
+
+                       // Define a largura da imagem para 100%
+                img.style.width = '100%';
+
+                       // Adiciona a imagem à nova janela
+                win.document.body.appendChild(img);
+
+                       // Adiciona uma quebra de linha após cada imagem
+                win.document.body.appendChild(win.document.createElement('br'));
+            }
+
+                  // Imprime a nova janela
+            win.print();
+        }
+    </script>
+{% endblock javascripts %}
+fimprimi

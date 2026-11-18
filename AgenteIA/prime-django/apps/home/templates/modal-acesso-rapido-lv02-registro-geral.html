@@ -1,0 +1,70 @@
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% comment %} <!--   --> {% endcomment %}
+{% block content %}
+    <!-- Modal -->
+    <div class="modal"
+         id="modal-acesso-rapido-livro02-registro-geral"
+         tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="{% url 'home:livro03_registro_auxiliar' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title">ivro 02 (Registros)</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- PASSANDO O NUMERO -->
+                    <!-- Não se esqueça dessa tag -->
+                    <div class="modal-body">
+                        <!-- PASSANDO O PROTOCOLO -->
+                        {% comment %} <input type="hidden" name="parte_id" id="parte_id" value="{{ Protocolo }}" /> {% endcomment %}
+                        <!-- TIPO E NUMERO -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Tipo</span>
+                            </div>
+                            <select class="form-select" name="tipo_registro" id="tipo_registro" required>
+                                <option value="M" selected>Matrícula</option>
+                                <option value="T">Transcrição</option>
+                                <option value="I">Inscrição</option>
+                            </select>
+                        </div>
+                        <!-- NÚMERO -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Número</span>
+                            </div>
+                            <input type="number"
+                                   class="form-control"
+                                   placeholder="Informe o numero para pesquisar!"
+                                   name="numero_informado"
+                                   id="numero_informado"
+                                   value=""
+                                   required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-sm btn-secondary"
+                                data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-sm btn-primary">Salvar mudanças</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $("#modal-acesso-rapido-livro02-registro-geral").on('shown.bs.modal', function() {
+                $(this).find('#numero_informado').focus();
+            });
+        });
+    </script>
+{% endblock javascripts %}

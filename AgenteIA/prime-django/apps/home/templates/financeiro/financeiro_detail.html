@@ -1,0 +1,107 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>Detalhes Financeiros</h5>
+        </div>
+        <div class="card-body">
+            {% if financeiro.ativo == 'C' %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>Atenção!</strong> Este pagamento foi cancelado.
+                </div>
+            {% endif %}
+            {% if financeiro.pedido %}
+                <div class="alert alert-warning" role="alert">
+                    <strong>Atenção!</strong> Este pagamento está vinculado a um protocolo.
+                </div>
+                <div>
+                    <strong>Protocolo:</strong> <b>{{ financeiro.pedido.protocolo }}</b>
+                </div>
+            {% endif %}
+            {% if financeiro.pedido_certidao_id %}
+                <div class="alert alert-warning" role="alert">
+                    <strong>Atenção!</strong> Este pagamento está vinculado a um pedido de certidão.
+                </div>
+                <div>
+                    <strong>Pedido de Certidão:</strong> <b>{{ financeiro.numero_pedido_certidao }}</b>
+                </div>
+            {% endif %}
+            <div>
+                <strong>Data do Pagamento:</strong> <b>{{ financeiro.data_transacao|date:"d/m/y" }}</b>
+            </div>
+            <div>
+                <strong>Data de Pagamento Inicial:</strong> <b>{{ financeiro.data_original_transacao|date:"d/m/y" }}</b>
+            </div>
+            <div>
+                <strong>Descrição:</strong> <b>{{ financeiro.descricao }}</b>
+            </div>
+            <div>
+                <strong>Nome interessado - (PAGADOR):</strong> <b>{{ financeiro.nome_interessado|default_if_none:"" }}</b>
+            </div>
+            <div>
+                <strong>Operação:</strong> <b>{{ financeiro.tipo_operacao_financeira.descricao }}</b>
+            </div>
+            <div>
+                <strong>Categoria:</strong> <b>{{ financeiro.tipo_categoria_financeira.descricao }}</b>
+            </div>
+            <div>
+                <strong>Transação:</strong> <b>{{ financeiro.tipo_transacao.descricao }}</b>
+            </div>
+            <div>
+                <strong>Valor Pago:</strong> R$ <b>{{ financeiro.valor_transacao|real_br_money_mask }}</b>
+            </div>
+            {% comment %} <div>
+                <strong>Cheque:</strong> {{ financeiro.cheque }}
+            </div> {% endcomment %}
+            <div>
+                <strong>Colaborador:</strong> <b>{{ financeiro.colaborador }}</b>
+            </div>
+            {% if financeiro.ativo == 'C' %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>Data Transação Cancelado:</strong> <b>{{ financeiro.data_transacao_cancelado }}</b>
+                    <br>
+                    <strong>Valor Original:</strong> <b>{{ financeiro.valor_transacao_cancelado }}</b>
+                    <br>
+                    <strong>Colaborador Cancelou:</strong> <b>{{ financeiro.colaborador_transacao_cancelado }}</b>
+                </div>
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-outline-warning text-dark font-weight-bold mt-3"
+               data-bs-toggle="tooltip"
+               onclick="getVoltar()">
+                <i class="icon feather icon-refresh-cw"></i>Voltar à lista</a>
+            {% comment %} <a class="btn btn-outline-info text-dark font-weight-bold mt-3" href="{% url 'home:financeiro_listar' %}"><i class="icon feather icon-refresh-cw"></i>Voltar à lista</a>
+            {% endcomment %}
+            <a class="btn btn-outline-warning text-dark font-weight-bold mt-3"
+               href="{% url 'home:caixa_editar' pk=financeiro.pk %}"> <i class="fas fa-edit"></i>Editar</a>
+            <a href="{% url 'home:financeiro_recibo_print' financeiro.pk %}"
+               target="_blank"
+               class="btn btn-outline-primary text-dark font-weight-bold mt-3">
+                <i class="icon feather icon-printer d-none d-md-inline-block"></i>Imprimir Recibo</a>
+            <a class="btn btn-outline-danger text-dark font-weight-bold mt-3"
+               href="{% url 'home:caixa_despesa' %}"
+               data-bs-toggle="tooltip">
+                <i class="icon feather icon-minus"></i>Incluir despesa
+            </a>
+            <a class="btn btn-outline-warning text-dark font-weight-bold mt-3"
+               href="{% url 'home:caixa_saida' %}"
+               data-bs-toggle="tooltip">
+                <i class="icon feather icon-plus"></i>Incluir Saída
+            </a>
+            <a class="btn btn-outline-success text-dark font-weight-bold mt-3"
+               href="{% url 'home:caixa_receita' %}"
+               data-bs-toggle="tooltip">
+                <i class="icon feather icon-plus"></i> Incluir receita
+            </a>
+            <script>
+                function getVoltar() {
+                    window.history.back()
+                    window.history.back()
+                }
+            </script>
+        </div>
+    </div>
+{% endblock content %}

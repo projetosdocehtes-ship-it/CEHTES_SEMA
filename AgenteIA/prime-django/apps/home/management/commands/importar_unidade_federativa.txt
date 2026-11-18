@@ -1,0 +1,81 @@
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(35, 'SP', 'São Paulo', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(41, 'PR', 'Paraná', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(42, 'SC', 'Santa Catarina', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(43, 'RS', 'Rio Grande do Sul', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(50, 'MS', 'Mato Grosso do Sul', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(11, 'RO', 'Rondônia', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(12, 'AC', 'Acre', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(13, 'AM', 'Amazonas', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(14, 'RR', 'Roraima', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(15, 'PA', 'Pará', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(16, 'AP', 'Amapá', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(17, 'TO', 'Tocantins', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(21, 'MA', 'Maranhão', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(24, 'RN', 'Rio Grande do Norte', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(25, 'PB', 'Paraíba', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(26, 'PE', 'Pernambuco', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(27, 'AL', 'Alagoas', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(28, 'SE', 'Sergipe', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(29, 'BA', 'Bahia', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(31, 'MG', 'Minas Gerais', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(33, 'RJ', 'Rio de Janeiro', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(51, 'MT', 'Mato Grosso', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(52, 'GO', 'Goiás', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(53, 'DF', 'Distrito Federal', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(22, 'PI', 'Piauí', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(23, 'CE', 'Ceará', NULL, NULL);
+INSERT INTO public.comum_unidadefederativa
+(id, sigla, nome, pais_id, numero_interno)
+VALUES(32, 'ES', 'Espírito Santo', NULL, NULL);

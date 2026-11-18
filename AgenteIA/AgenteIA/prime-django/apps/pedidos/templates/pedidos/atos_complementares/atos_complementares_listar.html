@@ -1,0 +1,20 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load django_tables2 %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Atos do Pedido</h5>
+                </div>
+                <div class="card-block table-border-style">{% render_table table %}</div>
+                <div class="card-footer">
+                    {% for key, botao in botoes.items %}
+                        <a href="{{ botao.url }}" class="btn btn-sm {{ botao.class }}">{{ botao.label }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

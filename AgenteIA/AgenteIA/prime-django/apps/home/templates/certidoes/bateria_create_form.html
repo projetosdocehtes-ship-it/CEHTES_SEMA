@@ -1,0 +1,82 @@
+{% extends "layouts/base.html" %}
+{% load static crispy_forms_tags django_tables2 %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block title %}
+    {{ title }}
+{% endblock title %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>{{ title }}</h5>
+        </div>
+        <div class="card-block table-border-style">{% crispy form %}</div>
+
+        <div class="card-header">
+            <h5>Baterias cadastradas: {{ total_baterias }}</h5>
+        </div>
+
+        <div class="card-body table-responsive">
+            <table class="table">
+                <tr>
+                    <thead>
+                        <th>#</th>
+                        <th>Número</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Tipo de Bateria</th>
+                        <th>Tensão Celula</th>
+                        <th>Capacidade</th>
+                        <th>Taxa de Descarga</th>
+                        <th>Eficiência</th>
+                        <th>Estado de Carga</th>
+                        <th>Profundidade de Descarga</th>
+                        <th>Densidade de Energia</th>
+                        <th>Número máximo ciclos</th>
+                    </thead>
+                </tr>
+                <tbody>
+                    {% for bateria in baterias %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ bateria.numero_bateria }}</td>
+                            <td>{{ bateria.marca }}</td>
+                            <td>{{ bateria.modelo }}</td>
+                            <td>{{ bateria.tipo_de_bateria }}</td>
+                            <td>{{ bateria.tensao_celula }}</td>
+                            <td>{{ bateria.capacidade }}</td>
+                            <td>{{ bateria.taxa_de_descarga }}</td>
+                            <td>{{ bateria.eficiencia }}</td>
+                            <td>{{ bateria.estado_de_carga }}</td>
+                            <td>{{ bateria.profundidade_de_descarga }}</td>
+                            <td>{{ bateria.densidade_de_energia }}</td>
+                            <td>{{ bateria.numero_maximo_ciclos }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#carregarDados').click(function() {
+                var dadosSelecionados = $('#busca_id').find('option:selected').text();
+                console.log("Dados Selecionados: ", dadosSelecionados);
+
+                var partes = dadosSelecionados.split(' | ');
+                if (partes.length === 4) {
+                    console.log("Partes do dado: ", partes);
+
+                    $('#nome_apresentante_id').val(partes[0]);
+                    $('#documento_id').val(partes[1]);
+                    $('#telefone_id').val(partes[2]);
+                    $('#email_id').val(partes[3]);
+                        // Ajuste conforme necessário para outros campos
+                }
+            });
+        });
+    </script>
+{% endblock javascripts %}

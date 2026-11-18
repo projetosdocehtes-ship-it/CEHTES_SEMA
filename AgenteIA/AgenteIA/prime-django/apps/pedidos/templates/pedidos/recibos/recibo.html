@@ -1,0 +1,14 @@
+{% extends "recibos/base_recibo_a4.html" %}
+{% block content %}
+  <div class="recibo">
+    <!-- Conteúdo do recibo -->
+    <div class="via">
+      {% include "pedidos/recibos/snippet_recibo.html" %}
+      <small>1º Via - Cliente - Impresso por: {{ user.username|title }} em {{ agora }}</small>
+    </div>
+    <div class="via">
+      {% include "pedidos/recibos/snippet_recibo.html" %}
+      <small>2º Via - Cartório - Impresso por: {{ user.username|title }} em {{ agora }}</small>
+    </div>
+  </div>
+{% endblock %}

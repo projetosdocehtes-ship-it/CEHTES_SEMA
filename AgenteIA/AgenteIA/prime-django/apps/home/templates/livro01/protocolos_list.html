@@ -1,0 +1,90 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% load django_tables2 %}
+{% block breadcrumbs %}
+    {% load replace_value %}
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Livro 01 - Protocolos</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ object.get_absolute_url }}">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ object.get_absolute_url }}">Livros</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ object.get_absolute_url }}">Livro 01</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ object.get_absolute_url }}">Listagem de Protocolos</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Lista de Protocolos</h5>
+                </div>
+                <div class="card-block table-border-style">
+                    {% if filter %}
+                        <div class="row">
+                            <form class="d-flex flex-row flex-wrap align-items-center" method="get">
+                                {% for field in filter.form %}
+                                    <div class="p-2">
+                                        {% if forloop.first %}
+                                            {{ field|as_crispy_field|add_class:"form-control" }}{% add_attr field "id=first-field" %}
+                                        {% else %}
+                                            {{ field|as_crispy_field|add_class:"form-control" }}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                                <div class="col-md-12">
+                                    <div class="p-2">
+                                        <button type="submit" class="btn btn-sm btn-primary mt-2">Filtrar</button>
+                                        <a href="{% url 'home:protocolos_list' %}"
+                                           class="btn btn-sm btn-outline-danger mt-2">Limpar</a>
+                                        <button type="submit"
+                                                name="export"
+                                                value="excel"
+                                                class="btn btn-sm btn-outline-success mt-2 text-dark">
+                                            Exportar para Excel
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    {% endif %}
+                    {% render_table table %}
+                </div>
+                <div class="card-footer">
+                    {% for key, botao in botoes.items %}
+                        <a href="{{ botao.url }}" class="btn btn-sm btn-primary">{{ botao.label }}</a>
+                    {% endfor %}
+                    <p>Total: {{ table.count_records }} Registros</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block extra_js %}
+    <script type="text/javascript">
+    window.onload = function() {
+        document.getElementById("numero_protocolo").focus();
+    };
+    </script>
+{% endblock extra_js %}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>
+            {% block title %}
+                Relatório {{ titulo }}
+            {% endblock title %}
+        </title>
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <button class="no-print" onclick="window.print()">Imprimir</button>
+        <div class="page">
+            <section>
+                {% block content %}<!-- Conteúdo do relatório -->{% endblock %}
+            </section>
+            <footer>
+                {% comment %} {% block footer %}<p>Informações de Rodapé</p>{% endblock %} {% endcomment %}
+            </footer>
+        </div>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

@@ -1,0 +1,332 @@
+<div></div>
+<a class="label text-white f-12"
+   style="background-color: #466887"
+   data-bs-toggle="modal"
+   href="javascript:"
+   data-bs-target="#myModal{{ partes_imovel.id }}"
+   title="Alterar dados do imóvel selecionada"
+   data-bs-toggle="tooltip">
+    <i class="icon feather icon-edit ml-3 mr-2"></i>Alterar
+</button>
+{% load home_formatos %}
+<!-- Modal -->
+<div class="modal"
+     id="myModal{{ partes_imovel.id }}"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#000">
+                <h4 class="modal-title text-white fs-5" id="myModalLabel">
+                    <i class="icon feather icon-edit"></i>  Alterando dados do Imóvel - Urbano:
+                    <p>{{ partes_imovel.setor }}</p>
+                </h4>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action={% url 'home:editModalAtoParteEndereco' %} method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <!-- Inicio - na mesma linha -->
+                        <input type="hidden" name="parte_id" value="{{ partes_imovel.id }}" />
+                        <!-- Inicio - na mesma linha -->
+                        <input type="hidden"
+                               name="pedido_item_id"
+                               value="{{ partes_imovel.pedido_item_id }}" />
+                        <!-- Inicio - na mesma linha -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Municipio</span>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   name="municipio"
+                                   id="municipio"
+                                   placeholder="municipio"
+                                   value="{{ partes_imovel.municipio }}" />
+                        </div>
+                        <!-- Inicio - na mesma linha -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Bairro&nbsp;</span>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   name="setor"
+                                   id="setor"
+                                   placeholder="setor"
+                                   value="{{ partes_imovel.setor }}" />
+                        </div>
+                        <!-- Inicio - na mesma linha -->
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Quadra</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="quadra"
+                                               id="quadra"
+                                               placeholder="quadra"
+                                               value="{{ partes_imovel.quadra }}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Lote</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="lote"
+                                               id="lote"
+                                               placeholder="lote"
+                                               value="{{ partes_imovel.lote }}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Area</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="area"
+                                               id="area"
+                                               placeholder="area"
+                                               value="{{ partes_imovel.area }}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Inicio - na mesma linha -->
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Nome da Rua</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="nome_rua"
+                                               id="nome_rua"
+                                               placeholder="nome_rua"
+                                               value="{{ partes_imovel.nome_rua }}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Número da Rua</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="numero_casa"
+                                               id="numero_casa"
+                                               placeholder="numero_casa"
+                                               value="{{ partes_imovel.numero_casa }}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Residencial -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <!-- OBTER O COMBOBOX DE RESIDENCIAL -->
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text mr-4">Residencial</span>
+                                        </div>
+                                        <select class="form-select"
+                                                name="residencial"
+                                                id="residencial"
+                                                autofocus
+                                                required>
+                                            <option value="N" selected>Não</option>
+                                            <option value="S">Sim</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <!-- OBTER O COMBOBOX DE RESIDENCIAL -->
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Comercial</span>
+                                        </div>
+                                        <select class="form-select"
+                                                name="comercial"
+                                                id="comercial"
+                                                autofocus
+                                                required>
+                                            <option value="N" selected>Não</option>
+                                            <option value="S">Sim</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Inicio - na mesma linha -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Qual metros frente</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="m_frente_metros"
+                                               id="m_frente_metros"
+                                               placeholder="m_frente_metros"
+                                               value="{{ partes_imovel.m_frente_metros }}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Lado para frente</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="p_frente_metros"
+                                               id="p_frente_metros"
+                                               placeholder="p_frente_metros"
+                                               value="{{ partes_imovel.p_frente_metros }}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Inicio - na mesma linha -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Qual metros direito</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="m_direito_metros"
+                                               id="m_direito_metros"
+                                               placeholder="m_direito_metros"
+                                               value="{{ partes_imovel.m_direito_metros }}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Lado para direito</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="p_direito_metros"
+                                               id="p_direito_metros"
+                                               placeholder="p_direito_metros"
+                                               value="{{ partes_imovel.p_direito_metros }}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Inicio - na mesma linha -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Qual metros esquerdo</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="m_esquerdo_metros"
+                                               id="m_esquerdo_metros"
+                                               placeholder="m_esquerdo_metros"
+                                               value="{{ partes_imovel.m_esquerdo_metros }}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Lado para esquerdo</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="p_esquerdo_metros"
+                                               id="p_esquerdo_metros"
+                                               placeholder="p_esquerdo_metros"
+                                               value="{{ partes_imovel.p_esquerdo_metros }}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Inicio - na mesma linha -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Qual metros fundo</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="m_fundo_metros"
+                                               id="m_fundo_metros"
+                                               placeholder="m_fundo_metros"
+                                               value="{{ partes_imovel.m_fundo_metros }}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Lado para fundo</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="p_fundo_metros"
+                                               id="p_fundo_metros"
+                                               placeholder="p_fundo_metros"
+                                               value="{{ partes_imovel.p_fundo_metros }}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="icon feather icon-save"></i> Salvar
+                        </button>
+                        <button type="button"
+                                class="btn btn-sm btn-secondary"
+                                data-bs-dismiss="modal">
+                            <i class="btn-close"></i> Fechar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

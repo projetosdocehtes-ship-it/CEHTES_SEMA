@@ -1,0 +1,28 @@
+{% extends "layouts/base.html" %}
+{% load django_tables2 %}
+{% block content %}
+  <!-- Cabeçalho -->
+  {% if object %}
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>{{ documento.nome }}</h5>
+          </div>
+          <div class="card-body">
+            <h5>{{ documento.nome }}</h5>
+            <p>{{ documento.observacao }}</p>
+          </div>
+          <div class="card-footer">
+            <a class="btn btn-sm btn-secondary"
+               href="{% url 'pedidos:documento_para_requerimento_update' documento.pk %}">Editar</a>
+            <a class="btn btn-sm btn-secondary"
+               href="{% url 'pedidos:documento_para_requerimento_delete' documento.pk %}">Deletar</a>
+            <a class="btn btn-sm btn-secondary"
+               href="{% url 'pedidos:documento_para_requerimento_create' %}">Adicionar Documento</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

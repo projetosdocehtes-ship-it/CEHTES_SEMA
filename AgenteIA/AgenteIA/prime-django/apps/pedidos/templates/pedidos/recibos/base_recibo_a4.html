@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>
+            {% block title %}Recibo{% endblock %}
+        </title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: Arial, sans-serif;
+                font-size: 12px;
+            /* Tamanho base da fonte para o corpo do documento */
+                background-color: #333;
+                color: black;
+            }
+
+            .page {
+                width: 210mm;
+                min-height: 297mm;
+                margin: 5mm auto;
+                background: white;
+                border: 1px solid black;
+            }
+
+            .via {
+                display: block;
+            /* Usar block para garantir que o elemento seja tratado como um bloco */
+
+                page-break-inside: avoid;
+            /* Evita que uma .via seja dividida entre duas páginas */
+                margin-top: 20mm;
+            /* Ajusta conforme a necessidade para a margem superior */
+            }
+
+            .via:first-child {
+                page-break-before: auto;
+            /* Evita que a primeira via tenha uma quebra de página antes dela */
+                margin-top: 0;
+            /* Sem margem superior para a primeira via */
+            }
+
+            @media screen {
+                .page {
+                    padding: 10mm;
+                }
+
+                .via {
+                    page-break-before: auto;
+                /* Evita que a primeira via tenha uma quebra de página antes dela */
+                    margin-top: 20mm;
+                /* Ajusta conforme a necessidade para a margem superior */
+                }
+            }
+
+            @media print {
+
+                body,
+                .page {
+                    box-shadow: none;
+                    border: 0px;
+                }
+
+            }
+
+            .via {
+                page-break-before: auto;
+            /* Evita que a primeira via tenha uma quebra de página antes dela */
+                margin-top: 20mm;
+            /* Ajusta conforme a necessidade para a margem superior */
+            }
+
+            table {
+                width: 100%;
+            /* Ajuste conforme necessário */
+                border-collapse: collapse;
+            }
+
+            table,
+            th,
+            td {
+                border: 0px solid #ddd;
+            /* Adicione uma borda fina para definir as células */
+            }
+
+            th,
+            td {
+
+                padding: 5px;
+            /* Espaçamento interno para cada célula */
+                text-align: left;
+            /* Alinhamento do texto para a esquerda, ajuste conforme necessário */
+                line-height: 0.8;
+            /* Espaçamento entre as linhas */
+            }
+
+            .recibo-body-dados-pedido {
+                font-weight: bold;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            /* Cor de fundo para cabeçalhos */
+            }
+
+            tr:hover {
+                background-color: #f5f5f5;
+            /* Cor de fundo para o hover (passar o mouse por cima) de linhas */
+            }
+
+            .center {
+                text-align: center;
+            }
+
+            .right {
+                text-align: right;
+            }
+
+            .recibo-footer {
+                margin-bottom: 0.2rem;
+                border: 1px solid black;
+                border-radius: 5px;
+                padding: 4px;
+            /* Adiciona um espaço de 5 pixels entre o conteúdo e a borda */
+                line-height: 1;
+            /* Espaçamento entre as linhas */
+                text-align: justify;
+            /* Justifica o texto */
+            }
+
+            p {
+
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+
+            h1 {
+                padding: auto;
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+
+            .header {
+                text-align: center;
+            }
+
+            .borda {
+                border: 1px solid black;
+                border-radius: 5px;
+                padding: 5px;
+            }
+
+
+
+            .recibo-header {
+                display: flex;
+                align-items: center;
+            /* Alinha verticalmente no centro */
+                justify-content: space-between;
+            /* Posiciona o logo à esquerda, o conteúdo central no meio e o código de barras à direita */
+                padding: 5px;
+            /* Espaçamento interno */
+                border: 1px solid black;
+            /* Borda do cabeçalho */
+                border-radius: 5px;
+            /* Arredondamento da borda */
+            }
+
+            .logo-container {
+                flex: 0 0 100px;
+            /* Não permite que o logo cresça ou encolha, com base na largura máxima */
+            }
+
+            .logo-img {
+                max-width: 100%;
+            /* faz a imagem ocupar no máximo 100% da largura do contêiner */
+                max-height: 100px;
+            /* altura máxima que você deseja */
+                height: auto;
+            /* mantém a proporção da imagem */
+            }
+
+
+
+            .header-central {
+                flex-grow: 1;
+            /* Permite que o conteúdo central cresça para ocupar o espaço restante */
+                text-align: center;
+            /* Centraliza o texto do conteúdo central */
+            }
+
+            .barcode-container {
+                flex: 0 0 100px;
+            /* Não permite que o código de barras cresça ou encolha, com base na largura máxima */
+            }
+
+            .barcode-img {
+                width: 100%;
+            /* Faz a imagem ocupar 100% da largura do contêiner */
+                height: auto;
+            /* Mantém a proporção da imagem */
+            }
+
+            .titulo-recibo {
+                text-align: center;
+            /* Centraliza o texto do título */
+                font-size: 0.8rem;
+                font-weight: bold;
+                margin-bottom: 0.2rem;
+                margin-top: 0.2rem;
+            /* Adiciona margem no topo se necessário */
+            }
+        </style>
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <div class="page">
+            <section>
+                {% block content %}<!-- Conteúdo do relatório -->{% endblock %}
+            </section>
+            <footer>
+                {% comment %} {% block footer %}<p>Informações de Rodapé</p>{% endblock %} {% endcomment %}
+            </footer>
+        </div>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

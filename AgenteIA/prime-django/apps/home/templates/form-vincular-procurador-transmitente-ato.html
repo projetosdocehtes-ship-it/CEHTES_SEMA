@@ -1,0 +1,178 @@
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% comment %} <!--   --> {% endcomment %}
+{% block content %}
+    <!-- Modal -->
+    <div class="modal"
+         id="addVincularProcuradorTransmitenteModal"
+         tabindex="-1"
+         aria-labelledby="addVincularProcuradorTransmitenteModalLabel"
+         aria-hidden="True">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title text-dark fs-5"
+                        id="addVincularProcuradorTransmitenteModalLabel">
+                        <i class="icon feather icon-check"></i>   Vincular Procurador - Transmitente
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- PASSANDO O ITEM DO PROTOCOLO -->
+                <form action="{% url 'home:vincular_ChecklistPessoa' pedido_item_id=pedido_item_id opcao_pessoa='T' %}"
+                      method="post">
+                    <!-- Não se esqueça dessa tag -->
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <!-- PASSANDO O pedido_item_id -->
+                        <input type="hidden" name="pedido_item" id="pedido_item" value={{ pedido_item_id }} />
+                        <!-- CPF -->
+                        <div class="input-group mb-12">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">CPF/CNPJ</span>
+                            </div>
+                            <input type="number"
+                                   class="form-control"
+                                   placeholder="digite o cpf/cnpj"
+                                   name="cpf"
+                                   id="cpf"
+                                   value=""
+                                   required>
+                        </div>
+                        <br>
+                        <div class="input-group mb-12">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Procurador</span>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="digite o nome"
+                                   name="nome"
+                                   id="nome"
+                                   value=""
+                                   autofocus
+                                   required>
+                        </div>
+                        <br>
+                        <!-- Pessoa -->
+                        <div class="input-group mb-12">
+                            <!-- OBTER O COMBOBOX DA pessoa -->
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" for="pessoa">Pessoa</span>
+                            </div>
+                            <select class="form-select" name="pessoa" id="pessoa" autofocus required>
+                                {% for transmitente in partes_transmitente %}
+                                    <option value={{ transmitente.pessoa }}>{{ transmitente.pessoa.nome }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <br>
+                        <!-- Inicio - na mesma linha -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Livro</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="numero_livro"
+                                               id="numero_livro"
+                                               placeholder="numero_livro"
+                                               value="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Folha</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="numero_folha"
+                                               id="numero_folha"
+                                               placeholder="numero_folha"
+                                               value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Cartório Lavrado</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="numero_cartorio_procuracao"
+                                               id="numero_cartorio_procuracao"
+                                               placeholder="digite o cartório origem da procuração"
+                                               value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Data da Procuração</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="data_procuracao"
+                                               id="data_procuracao"
+                                               placeholder="digite a data da procuração"
+                                               value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Data da Validade</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               name="data_validade_procuracao"
+                                               id="data_validade_procuracao"
+                                               placeholder="digite a data da validade da procuração"
+                                               value="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- BOTOES -->
+                        <div class="modal-footer">
+                            <button type="submit"
+                                    class="btn btn-sm btn-primary "
+                                    aria-pressed="true"
+                                    role="button">
+                                <i class="icon feather icon-save"></i> Salvar
+                            </button>
+                            <button value=""
+                                    type="button"
+                                    class="btn btn-sm btn-secondary "
+                                    data-bs-dismiss="modal">
+                                <i class="btn-close"></i> Fechar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

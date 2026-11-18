@@ -1,0 +1,33 @@
+{% extends "layouts/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+    {% load crispy_forms_tags %}
+    {% load django_tables2 %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Alterar Ato Principal</h5>
+                </div>
+                <div class="card-body">{% crispy form %}</div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-lg-auto">
+                            <a href="{{ object.get_pedido_url }}" class="btn btn-sm btn-secondary"><i class="fas fa-newspaper d-none d-md-inline-block"></i> Voltar ao Pedido</a>
+                        </div>
+                        <div class="col-lg-auto">
+                            <form action="{{ object.get_excluir_url }}" method="post">
+                                {% csrf_token %}
+                                <input type="submit"
+                                       value="Excluir"
+                                       class="btn btn-sm btn-danger"
+                                       onclick="return confirm('Você tem certeza que deseja excluir este registro?');">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

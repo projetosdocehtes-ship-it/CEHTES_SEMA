@@ -1,0 +1,29 @@
+{
+  "analise": "fluxo_potencia",
+  "convergiu": true,
+  "tensoes_pu": {
+    "0": 0.9998530096196095,
+    "1": 1.0031402179772233,
+    "2": 1.0014963984523,
+    "3": 0.9980629999853244,
+    "4": 1.0
+  },
+  "carregamento_linhas_percentual": {
+    "0": 1.4424565988676001,
+    "1": 4.508622013189589,
+    "2": 4.508621951641087,
+    "3": 4.566874359831387
+  },
+  "arquivo_entrada": "D:\\microrredes\\ProjetoPowerFlow\\Entradas\\Entradas_regime_permanente.json",
+  "nome_projeto": "ProjetoPowerFlow - regime permanente",
+  "modelo_rede": "entradas_json",
+  "conectado_rede": true,
+  "parametros_linha_padrao": {
+    "length_km": 0.1,
+    "r_ohm_per_km": 0.2,
+    "x_ohm_per_km": 0.08,
+    "c_nf_per_km": 10.0,
+    "max_i_ka": 0.4
+  },
+  "arquivo_saida": "resultados\\fluxo_permanente_amostra.json"
+}

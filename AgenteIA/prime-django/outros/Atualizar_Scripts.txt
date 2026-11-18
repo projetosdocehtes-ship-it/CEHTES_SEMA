@@ -1,0 +1,5 @@
+# ATUALIZAR NO CLIENTE AS BASES DE DADOS
+
+http://127.0.0.1:8000/admin/cartorios/usuario/
+
+http://127.0.0.1:8000/comum/commands/

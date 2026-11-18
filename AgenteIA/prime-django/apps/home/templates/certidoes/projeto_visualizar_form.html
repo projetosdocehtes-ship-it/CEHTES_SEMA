@@ -1,0 +1,239 @@
+{% extends "layouts/base.html" %}
+{% load static crispy_forms_tags %}
+{% block title %}
+    {{ object.nome_projeto }}
+{% endblock title %}
+{% block stylesheets %}
+    <style>
+         .input-group-text {
+              display: flex;
+              align-items: center;
+         }
+
+         .input-group .form-control {
+              margin-bottom: 0 !important;
+         }
+    </style>
+{% endblock stylesheets %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>Dados do Projeto: {{ object.nome_projeto }}</h5>
+        </div>
+
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {% crispy form %}
+             </form>
+        </div>
+
+        {% if object.fotovoltaico %}
+            <div class="card-body">
+                <h3>Fotovoltaico</h3>
+
+                {% if painel_solar_list %}
+                    {% for pps in painel_solar_list %}
+                        <div class="card-header">
+                            <h5>Painel Solar:</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                   <thead>
+                                        <th>#</th>
+                                        <th>Número</th>
+                                        <th>Marca</th>
+                                        <th>Pmp [W]</th>
+                                        <th>Isc [A]</th>
+                                        <th>Voc [V]</th>
+                                        <th>Imp [A]</th>
+                                        <th>Vmp [V]</th>
+                                        <th>Uisc [A/°C]</th>
+                                        <th>Uvoc [V/°C]</th>
+                                        <th>Upmp [%/°C]</th>
+                                        <th>Material</th>
+                                        <th>Eficiência [%]</th>
+                                   </thead>
+                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ pps.painelsolar.numero_hidrogenio }}</td>
+                                        <td>{{ pps.painelsolar.marca }}</td>
+                                        <td>{{ pps.painelsolar.coef_temp_pot_max_upmax }}</td>
+                                        <td>{{ pps.painelsolar.isc }}</td>
+                                        <td>{{ 29.35 }}</td>
+                                        <td>{{ pps.painelsolar.corrente_maxima_potencia }}</td>
+                                        <td>{{ pps.painelsolar.vmp }}</td>
+                                        <td>{{ 0 }}</td>
+                                        <td>{{ pps.painelsolar.coef_temp_voc_uvoc }}</td>
+                                        <td>{{ pps.painelsolar.coef_temp_isc_uisc }}</td>
+                                        <td>{{ pps.painelsolar.tipo_de_celula }}</td>
+                                        <td>{{ pps.painelsolar.eficiencia }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    <!-- adicione aqui qualquer outro campo relacionado -->
+                    {% endfor %}
+
+                    {% for inv in inversor_list %}
+                        <div class="card-header">
+                            <h5>Inversor de Frequência:</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table small">
+                                <tr>
+                                   <thead>
+                                        {% comment %} <th>#</th>
+                                        <th>Número de Painéis</th>
+                                        <th>Número de MPPTs</th>
+                                        <th>Potência Máxima Entrada [kW]</th>
+                                        <th>Corrente Máxima MPPT [A]</th>
+                                        <th>Tensão Nominal Entrada [V]</th>
+                                        <th>Tensão Mínima Entrada [V]</th>
+                                        <th>Tensão Máxima Entrada [V]</th>
+                                        <th>MPPT Tensão Mínima [V]</th>
+                                        <th>MPPT Tensão Máxima [V]</th>
+                                        <th>Potência Máxima Saída [kW]</th>
+                                        <th>Corrente Máxima Saída [A]</th>
+                                        <th>Tensão Nominal Saída [V]</th>
+                                        <th>Frequência de Saída [Hz]</th>
+                                        <th>Eficiência do Inversor [%]</th>
+                                        <th>Máximo THD [%]</th>
+                                        <th>Fator de Potência</th> {% endcomment %}
+
+                                        <th>#</th>
+                                        <th>Painéis</th>
+                                        <th>MPPTs</th>
+                                        <th>P.M.E</th>
+                                        <th>CM. MPPT</th>
+                                        <th>Te.N.E</th>
+                                        <th>Te.Mi.E</th>
+                                        <th>Te.Ma.E</th>
+                                        <th>MPPT T.Mí.</th>
+                                        <th>MPPT T.Ma.</th>
+                                        <th>P.Ma.S</th>
+                                        <th>C.M.S</th>
+                                        <th>Te.N.S</th>
+                                        <th>Fr. Saída</th>
+                                        <th>Ef. Inv.</th>
+                                        <th>Máx. THD [%]</th>
+                                        <th>Fator de Pot.</th>
+                                   </thead>
+                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ inv.inversor.numero_paineis }}</td>
+                                        <td>{{ inv.inversor.numero_mppts }}</td>
+                                        <td>{{ inv.inversor.potencia_maxima_entrada }}</td>
+                                        <td>{{ inv.inversor.corrente_maxima }}</td>
+                                        <td>{{ inv.inversor.tensao_nominal_entrada }}</td>
+                                        <td>{{ inv.inversor.tensao_minima_entrada }}</td>
+                                        <td>{{ inv.inversor.tensao_maxima_entrada }}</td>
+                                        <td>{{ inv.inversor.mppt_tensao_minima }}</td>
+                                        <td>{{ inv.inversor.mppt_tensao_maxima }}</td>
+                                        <td>{{ inv.inversor.potencia_maxima_saida }}</td>
+                                        <td>{{ inv.inversor.corrente_maxima_saida }}</td>
+                                        <td>{{ inv.inversor.tensao_nominal_saida }}</td>
+                                        <td>{{ inv.inversor.frequencia_saida }}</td>
+                                        <td>{{ inv.inversor.eficiencia_inversor }}</td>
+                                        <td>{{ inv.inversor.maximo_tdh }}</td>
+                                        <td>{{ inv.inversor.fator_potencia }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    <!-- adicione aqui qualquer outro campo relacionado -->
+                    {% endfor %}
+
+                {% else %}
+                    <p class="text-muted">Nenhum painel fotovoltaico cadastrado para este projeto.</p>
+                {% endif %}
+            </div>
+
+        {% endif %}
+
+        {% if object.biogas %}
+            <div class="card-body">
+                <h3>Biogás</h3>
+
+                <div class="card-header">
+                    <h5>Gerador de Biogás: </h5>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if object.hidrogenio %}
+            <div class="card-body">
+                <h3>Hidrogênio</h3>
+
+                <div class="card-header">
+                    <h5>Célula de Hidrogênio: </h5>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if object.baterias %}
+            <div class="card-body">
+                <h3>Baterias</h3>
+
+                <div class="card-header">
+                    <h5>Bateria: </h5>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="card-footer">
+            <a href="{% url 'home:projeto_editar' pk=object.id %}"
+                                   class="btn btn-sm btn-info text-dark">Alterar
+            </a>
+
+            <a class="btn btn-sm btn-primary text-dark"
+                href="{% url 'home:quantas_placas' pk=object.id %}">
+                🚀 Começar
+            </a>
+
+            <a href="{% url 'home:sugerir_equipamento_fotovoltaico' projeto_id=object.id %}"
+                class="btn btn-sm btn-outline-warning text-dark">Sugerir Equipamento Painel Fotovoltaico</a>
+            <a href="http://localhost:8501/"
+                target="_blank"
+                class="btn btn-sm btn-primary">
+                <i class='icon feather icon-eye f-14'></i>Simular
+            </a>
+            <a href="{% url 'home:criar_projeto' %}"
+               class="btn btn-sm btn-outline-warning text-dark">Projeto(s)</a>
+
+            <a class="btn btn-sm btn-outline-success text-dark"
+                href="#"
+                title="Confirmar Evento Finalizado."
+                data-bs-toggle="tooltip"><i class="icon feather icon-info"></i> Importar Dados Metereológicos
+            </a>
+
+            <a href="https://www.google.com/maps?q={{ object.latitude }},{{ object.longitude }}" target="_blank"
+                class="btn btn-sm btn-warning text-dark">Google Maps
+            </a>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fields = document.querySelectorAll('.quantidade-field');
+
+            fields.forEach(field => {
+                field.addEventListener('input', function() {
+                    if (parseInt(field.value) > 0) {
+                        field.style.backgroundColor = '#d4edda'; // Verde claro
+                    } else {
+                        field.style.backgroundColor = ''; // Reseta a cor
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock javascripts %}

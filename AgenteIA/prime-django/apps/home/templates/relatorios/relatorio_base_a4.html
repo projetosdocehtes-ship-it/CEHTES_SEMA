@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      {% block title %}Relatório {{ titulo }}{% endblock %}
+    </title>
+          <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
+          <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+          <!--[if lt IE 10]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js' %}"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js' %}"></script>
+		<![endif]-->
+          <!-- Meta -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="" />
+          <!-- Favicon icon -->
+    <link rel="icon"
+          href="{% static 'assets/images/favicon.ico' %}"
+          type="image/x-icon">
+          <!-- fontawesome icon -->
+    <link rel="stylesheet"
+          href="{% static 'assets/fonts/fontawesome/css/fontawesome-all.min.css' %}">
+          <!-- animation css -->
+    <link rel="stylesheet"
+          href="{% static 'assets/css/plugins/animate.min.css' %}">
+          <!-- Specific CSS goes HERE -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+                    /* Tamanho base da fonte para o corpo do documento */
+        background-color: #333;
+        color: black;
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 5mm auto;
+        background: white;
+        border: 1px solid black;
+      }
+
+      .via {
+        display: block;
+                    /* Usar block para garantir que o elemento seja tratado como um bloco */
+        page-break-inside: avoid;
+                    /* Evita que uma .via seja dividida entre duas páginas */
+        margin-top: 5mm;
+                    /* Ajusta conforme a necessidade para a margem superior */
+      }
+
+      .via:first-child {
+        page-break-before: auto;
+                    /* Evita que a primeira via tenha uma quebra de página antes dela */
+        margin-top: 0;
+                    /* Sem margem superior para a primeira via */
+      }
+
+      @media screen {
+        .page {
+          padding: 10mm;
+        }
+
+        .via {
+          page-break-before: auto;
+                         /* Evita que a primeira via tenha uma quebra de página antes dela */
+          margin-top: 5mm;
+                         /* Ajusta conforme a necessidade para a margem superior */
+        }
+
+
+      }
+
+
+
+      .via {
+        page-break-before: auto;
+                    /* Evita que a primeira via tenha uma quebra de página antes dela */
+        margin-top: 5mm;
+                    /* Ajusta conforme a necessidade para a margem superior */
+      }
+
+      table {
+        width: 100%;
+                    /* Ajuste conforme necessário */
+        border-collapse: collapse;
+      }
+
+      table,
+      th,
+      td {
+        border: 0px solid #ddd;
+                    /* Adicione uma borda fina para definir as células */
+      }
+
+      th,
+      td {
+
+        padding: 3px;
+                    /* Espaçamento interno para cada célula */
+        text-align: left;
+                    /* Alinhamento do texto para a esquerda, ajuste conforme necessário */
+        line-height: 1.5;
+                    /* Espaçamento entre as linhas */
+      }
+
+      .recibo-body-dados-pedido {
+        font-weight: bold;
+      }
+
+      th {
+        background-color: #f2f2f2;
+                    /* Cor de fundo para cabeçalhos */
+      }
+
+      tr:hover {
+        background-color: #f5f5f5;
+                    /* Cor de fundo para o hover (passar o mouse por cima) de linhas */
+      }
+
+      .center {
+        text-align: center;
+      }
+
+      .right {
+        text-align: right;
+      }
+
+      .recibo-footer {
+        margin-bottom: 0.2rem;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 2px;
+                    /* Adiciona um espaço de 5 pixels entre o conteúdo e a borda */
+        line-height: 1;
+                    /* Espaçamento entre as linhas */
+        text-align: justify;
+                    /* Justifica o texto */
+      }
+
+      p {
+
+        margin-top: 3px;
+        margin-bottom: 3px;
+      }
+
+      h1 {
+        padding: auto;
+        margin-top: 3px;
+        margin-bottom: 3px;
+      }
+
+      .header {
+        text-align: center;
+      }
+
+      .borda {
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 3px;
+      }
+
+      .recibo-header {
+        display: flex;
+        align-items: center;
+                    /* Alinha verticalmente no centro */
+        justify-content: space-between;
+                    /* Posiciona o logo à esquerda, o conteúdo central no meio e o código de barras à direita */
+        padding: 2px;
+                    /* Espaçamento interno */
+        border: 1px solid black;
+                    /* Borda do cabeçalho */
+        border-radius: 5px;
+                    /* Arredondamento da borda */
+      }
+
+      .logo-container {
+        flex: 0 0 100px;
+                    /* Não permite que o logo cresça ou encolha, com base na largura máxima */
+      }
+
+      .logo-img {
+        max-width: 100%;
+                    /* faz a imagem ocupar no máximo 100% da largura do contêiner */
+        max-height: 100px;
+                    /* altura máxima que você deseja */
+        height: auto;
+                    /* mantém a proporção da imagem */
+      }
+
+
+
+      .header-central {
+        flex-grow: 1;
+                    /* Permite que o conteúdo central cresça para ocupar o espaço restante */
+        text-align: center;
+                    /* Centraliza o texto do conteúdo central */
+      }
+
+      .barcode-container {
+        flex: 0 0 100px;
+                    /* Não permite que o código de barras cresça ou encolha, com base na largura máxima */
+      }
+
+      .barcode-img {
+        width: 100%;
+                    /* Faz a imagem ocupar 100% da largura do contêiner */
+        height: auto;
+                    /* Mantém a proporção da imagem */
+      }
+
+      .titulo-recibo {
+        text-align: center;
+                    /* Centraliza o texto do título */
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-bottom: 0.2rem;
+        margin-top: 0.2rem;
+                    /* Adiciona margem no topo se necessário */
+      }
+
+      .assinatura {
+        text-align: left;
+        vertical-align: bottom;
+      }
+
+      .linha-assinatura {
+        border-bottom: 1px solid black;
+        width: 300px;
+        height: 20px;
+        margin-bottom: 3px;
+      }
+
+      .row {
+        display: flex;
+        justify-content: center;
+                    /* Centraliza horizontalmente */
+        align-items: flex-start;
+                    /* Alinha ao topo, considerando alturas diferentes */
+        flex-wrap: wrap;
+                    /* Permite que os itens envolvam em múltiplas linhas se necessário */
+        padding: 2px;
+      }
+
+      .table tfoot td div {
+        margin-bottom: 5px;
+      }
+
+      .card-etiqueta {
+        position: relative;
+        font-family: 'Arial', sans-serif;
+        font-size: 10px;
+        background-color: #e9ffe9;
+                    /* cor de fundo clara */
+        border: 1px solid #006600;
+                    /* borda sólida verde-escura */
+        border-radius: 10px;
+                    /* bordas arredondadas */
+        display: block;
+                    /* Torna o elemento um bloco dentro do flex context */
+        flex-wrap: wrap;
+                    /* Permite que os itens envolvam em múltiplas linhas se necessário */
+        width: 350px;
+                    /* largura máxima para controle em dispositivos maiores */
+      }
+
+      .card-etiqueta .card-header {
+        background-color: #006600;
+                    /* cor de fundo verde-escura */
+        color: white;
+                    /* texto branco */
+        padding: 10px;
+        border-top-left-radius: 9px;
+                    /* arredondamento superior esquerdo da borda */
+        border-top-right-radius: 9px;
+                    /* arredondamento superior direito da borda */
+        margin: 0px;
+                    /* alinhar com a borda externa do card */
+        margin-bottom: 10px;
+                    /* espaço entre o cabeçalho e o conteúdo */
+      }
+
+      .card-etiqueta .card-body {
+        position: relative;
+        color: #333;
+                    /* cor do texto escuro */
+        flex-grow: 1;
+                    /* permite que o conteúdo cresça para ocupar o espaço restante */
+        margin-bottom: 0px;
+                    /* espaço entre o conteúdo e o rodapé */
+      }
+
+      .card-etiqueta .card-footer {
+        font-size: 0.8em;
+                    /* texto pequeno para o rodapé */
+        color: #666;
+                    /* cor do texto mais clara */
+        text-align: center;
+                    /* centraliza o texto */
+        padding-top: 10px;
+                    /* espaço no topo do rodapé */
+      }
+
+      @media print {
+
+        body,
+        .page {
+          box-shadow: none;
+          border: 0px;
+          background-color: white;
+        }
+
+        .card-etiqueta {
+          background-color: #e9ffe9 !important;
+                         /* Força a cor de fundo */
+          color: #333 !important;
+                         /* Força a cor do texto */
+          border: 1px solid #006600 !important;
+                         /* Força a cor da borda */
+          box-shadow: none !important;
+                         /* Remove sombras que não são necessárias na impressão */
+        }
+
+        .card-etiqueta .card-header {
+          background-color: #006600 !important;
+                         /* Força a cor de fundo do cabeçalho */
+          color: white !important;
+                         /* Força a cor do texto no cabeçalho */
+        }
+
+        .card-etiqueta .card-footer {
+          color: #666 !important;
+                         /* Força a cor do texto no rodapé */
+        }
+
+
+
+      }
+
+      .rubrica-img {
+        position: absolute;
+        bottom: -55%;
+                    /* Use porcentagens para manter a relação baseada no card-body */
+        right: 75%;
+        width: 25%;
+                    /* Ajuste a largura baseada em uma porcentagem do card-body */
+        z-index: 100;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 1em;
+        font-family: 'Arial', sans-serif;
+        text-align: left;
+        border: 1px solid #dddddd;
+      }
+
+      .table th,
+      .table td {
+        border: 1px solid #dddddd;
+      }
+
+      .table thead th {
+        background-color: #f2f2f2;
+        color: #333;
+        text-align: center;
+      }
+
+      .table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      .table tfoot td {
+        background-color: #f0f0f0;
+        text-align: right;
+        font-weight: bold;
+      }
+
+      .table tfoot td[colspan="2"],
+      .table tfoot td[colspan="3"] {
+        text-align: left;
+      }
+    </style>
+    {% block stylesheets %}{% endblock %}
+  </head>
+  <body>
+    <button class="btn btn-primary no-print" onclick="window.print()">Imprimir</button>
+    <div class="page">
+      <section>
+        {% include "recibos/cabecalho_cartorio.html" %}
+        {% block content %}<!-- Conteúdo do relatório -->{% endblock %}
+      </section>
+      <footer>
+                    {% comment %} {% block footer %}<p>Informações de Rodapé</p>{% endblock %} {% endcomment %}
+      </footer>
+    </div>
+    <script src="{% static 'assets/js/plugins/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/bootstrap.min.js' %}"></script>
+          <!-- Specific Page JS goes HERE  -->
+    {% block javascripts %}
+    {% endblock javascripts %}
+  </body>
+</html>

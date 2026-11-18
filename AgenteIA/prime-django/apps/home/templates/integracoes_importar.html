@@ -1,0 +1,496 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <h3>Serviços de Importação</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Ofício Eletrônico (ONR)</h5>
+                        <a class="text-white"
+                           style="background-color: #507CA5"
+                           href="https://oficioeletronico.com.br/"
+                           target="_blank"
+                           data-bs-toggle="tooltip">Certidão</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file" name="document" class="form-control">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary"
+                                        type="submit"
+                                        id="inputGroupFileAddon04"
+                                        data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white"
+                                        href="#!"
+                                        data-bs-toggle="tooltip">
+                                    WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Ofício Eletrônico (ONR)</h5>
+                        <a class="text-white"
+                           style="background-color: #507CA5"
+                           href="https://oficioeletronico.com.br/"
+                           target="_blank"
+                           data-bs-toggle="tooltip">e-Protocolo</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file"
+                                   name="document"
+                                   class="form-control"
+                                   id="inputGroupFile04"
+                                   aria-describedby="inputGroupFileAddon04"
+                                   aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary"
+                                        type="submit"
+                                        id="inputGroupFileAddon04"
+                                        data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white"
+                                        href="#!"
+                                        data-bs-toggle="tooltip">
+                                    WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Ofício Eletrônico (ONR)</h5>
+                        <a class="text-white"
+                           style="background-color: #507CA5"
+                           href="https://oficioeletronico.com.br/"
+                           target="_blank"
+                           data-bs-toggle="tooltip">Indisponibilidade de bens</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file"
+                                   name="document"
+                                   class="form-control"
+                                   id="inputGroupFile04"
+                                   aria-describedby="inputGroupFileAddon04"
+                                   aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary"
+                                        type="submit"
+                                        id="inputGroupFileAddon04"
+                                        data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white"
+                                        href="#!"
+                                        data-bs-toggle="tooltip">
+                                    WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Ofício Eletrônico (ONR)</h5>
+                        <a class="text-white"
+                           style="background-color: #507CA5"
+                           href="https://oficioeletronico.com.br/"
+                           target="_blank"
+                           data-bs-toggle="tooltip">Intimação</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file"
+                                   name="document"
+                                   class="form-control"
+                                   id="inputGroupFile04"
+                                   aria-describedby="inputGroupFileAddon04"
+                                   aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary"
+                                        type="submit"
+                                        id="inputGroupFileAddon04"
+                                        data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white"
+                                        href="#!"
+                                        data-bs-toggle="tooltip">
+                                    WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Ofício Eletrônico (ONR)</h5>
+                        <a class="text-white"
+                           style="background-color: #507CA5"
+                           href="https://oficioeletronico.com.br/"
+                           target="_blank"
+                           data-bs-toggle="tooltip">Ofícios</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file"
+                                   name="document"
+                                   class="form-control"
+                                   id="inputGroupFile04"
+                                   aria-describedby="inputGroupFileAddon04"
+                                   aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary"
+                                        type="submit"
+                                        id="inputGroupFileAddon04"
+                                        data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white"
+                                        href="#!"
+                                        data-bs-toggle="tooltip">
+                                    WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Ofício Eletrônico (ONR)</h5>
+                        <a class="text-white"
+                           style="background-color: #507CA5"
+                           href="https://oficioeletronico.com.br/"
+                           target="_blank"
+                           data-bs-toggle="tooltip">Matrícula Visualizada</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file"
+                                   name="document"
+                                   class="form-control"
+                                   id="inputGroupFile04"
+                                   aria-describedby="inputGroupFileAddon04"
+                                   aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary"
+                                        type="submit"
+                                        id="inputGroupFileAddon04"
+                                        data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white"
+                                        href="#!"
+                                        data-bs-toggle="tooltip">
+                                    WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Ofício Eletrônico (ONR)</h5>
+                        <a class="text-white"
+                           style="background-color: #507CA5"
+                           href="https://oficioeletronico.com.br/"
+                           target="_blank"
+                           data-bs-toggle="tooltip">Penhora</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file"
+                                   name="document"
+                                   class="form-control"
+                                   id="inputGroupFile04"
+                                   aria-describedby="inputGroupFileAddon04"
+                                   aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary"
+                                        type="submit"
+                                        id="inputGroupFileAddon04"
+                                        data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white"
+                                        href="#!"
+                                        data-bs-toggle="tooltip">
+                                    WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Ofício Eletrônico (ONR)</h5>
+                        <a class="text-white"
+                           style="background-color: #507CA5"
+                           href="https://oficioeletronico.com.br/"
+                           target="_blank"
+                           data-bs-toggle="tooltip">Pesquisa de bens</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file"
+                                   name="document"
+                                   class="form-control"
+                                   id="inputGroupFile04"
+                                   aria-describedby="inputGroupFileAddon04"
+                                   aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary"
+                                        type="submit"
+                                        id="inputGroupFileAddon04"
+                                        data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white"
+                                        href="#!"
+                                        data-bs-toggle="tooltip">
+                                    WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>SAEC</h5>
+                        <a class="text-white"
+                           style="background-color: #507CA5"
+                           href="https://oficioeletronico.com.br/"
+                           target="_blank"
+                           data-bs-toggle="tooltip">Usucapião</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file"
+                                   name="document"
+                                   class="form-control"
+                                   id="inputGroupFile04"
+                                   aria-describedby="inputGroupFileAddon04"
+                                   aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary"
+                                        type="submit"
+                                        id="inputGroupFileAddon04"
+                                        data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white"
+                                        href="#!"
+                                        data-bs-toggle="tooltip">
+                                    WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Ofício Eletrônico (ONR)</h5>
+                        <a class="text-white"
+                           style="background-color: #507CA5"
+                           href="https://oficioeletronico.com.br/"
+                           target="_blank"
+                           data-bs-toggle="tooltip">Regulação Fiduciária</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file"
+                                   name="document"
+                                   class="form-control"
+                                   id="inputGroupFile04"
+                                   aria-describedby="inputGroupFileAddon04"
+                                   aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary"
+                                        type="submit"
+                                        id="inputGroupFileAddon04"
+                                        data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white"
+                                        href="#!"
+                                        data-bs-toggle="tooltip">
+                                    WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+        {% comment %} <h3>Serviços de Exportação</h3> {% endcomment %}
+        {% comment %} <div class="row"> {% endcomment %}
+        {% comment %} <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Gerar PGM (ONR)</h5>
+                        <a class="text-white" style="background-color: #507CA5" href="#" target="_blank" data-bs-toggle="tooltip">Livro 02</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Certidao_Cri|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file" name="document" class="form-control" id="inputGroupFile04_Cri" aria-describedby="inputGroupFileAddon04_Cri" aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary" type="submit" id="inputGroupFileAddon04_Cri" data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white" href="#!" data-bs-toggle="tooltip"> WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Gerar PGM (ONR)</h5>
+                        <a class="text-white" style="background-color: #507CA5" href="#" target="_blank" data-bs-toggle="tooltip">Livro 03</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Certidao_Cri|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file" name="document" class="form-control" id="inputGroupFile04_Cri" aria-describedby="inputGroupFileAddon04_Cri" aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary" type="submit" id="inputGroupFileAddon04_Cri" data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white" href="#!" data-bs-toggle="tooltip"> WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Exportar para Ofício Eletrônico (ONR)</h5>
+                        <a class="text-white" style="background-color: #507CA5" href="https://oficioeletronico.com.br/" target="_blank" data-bs-toggle="tooltip">Livro 04</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file" name="document" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary" type="submit" id="inputGroupFileAddon04" data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white" href="#!" data-bs-toggle="tooltip"> WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Exportar para Ofício Eletrônico (ONR)</h5>
+                        <a class="text-white" style="background-color: #507CA5" href="https://oficioeletronico.com.br/" target="_blank" data-bs-toggle="tooltip">Livro 05</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Intimacao|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file" name="document" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary" type="submit" id="inputGroupFileAddon04" data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white" href="#!" data-bs-toggle="tooltip"> WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
+        </div> {% endcomment %}
+        {% comment %} <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Anexar Documento Protocolo</h5>
+                        <a class="text-white" style="background-color: #507CA5" href="https://oficioeletronico.com.br/" target="_blank" data-bs-toggle="tooltip">Protocolo</a>
+                    </div>
+                    <div class="card-body">
+                        <p>Última importação: {{ Servicos_01_Certidao_Cri|date:"d/m/y" }}</p>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file" name="document" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" multiple>
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary" type="submit" id="inputGroupFileAddon04" data-bs-toggle="tooltip">
+                                    <i class="icon feather icon-paperclip "></i>Anexar
+                                </button>
+                                <button class="btn-sm bg-success text-white" href="#!" data-bs-toggle="tooltip"> WebService    <i class="icon feather icon-download-cloud "></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
+        </div> {% endcomment %}
+        {% comment %} </div> {% endcomment %}
+    </form>
+{% endblock content %}

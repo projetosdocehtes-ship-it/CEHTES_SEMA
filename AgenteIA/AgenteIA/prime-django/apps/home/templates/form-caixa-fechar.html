@@ -1,0 +1,62 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    <form class="form" action="." method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="card_distribuir_protocolo_numero">
+                    <div class="card-header">
+                        <h5>
+                            <span class="text-white">Fechar Caixa - Após isto os colaboradores não poderam alterados dados</span>
+                            <br>
+                            &emsp;
+                            <br>
+                            <span class="text-white">Data Fechamento do Caixa: {{ data_transacao }}</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label>
+                                        <b>Observações:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="descricao_cancelamento_id"
+                                           id="descricao_cancelamento_id"
+                                           type="text"
+                                           title="Por favor, insira a motivo de observação."
+                                           value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-warning text-dark"
+                               title="Fechar Caixa do Dia - Clique para fechar e confirmar o recebimento"
+                               href="{% url 'home:confirmar_fechamento_caixa' %}">
+                                <i class="fas fa-angle-double-up"></i> Confirmar Fechar Caixa<span class="badge bg-dark"></span>
+                            </a>
+                            <!-- Voltar Button -->
+                            <a onclick="window.history.back()"
+                               class="btn btn-secondary text-white "
+                               title="Retornar ao topo"
+                               type="button"
+                               data-bs-toggle="tooltip"><i class="icon feather icon-arrow-left"></i>Voltar</a>
+                            <a class="btn btn-danger text-white"
+                               title="Abrir o caixa do Dia - Clique para abrir o caixa do dia"
+                               href="{% url 'home:confirmar_abrir_caixa_dia' %}">
+                                <i class="fas fa-angle-double-up"></i> Reabertura do Caixa do Dia<span class="badge bg-dark"></span>
+                            </a>
+                            {% comment %} <button type="submit" class="btn btn-warning text-dark" aria-pressed="true" role="button">
+                                <i class="fas fa-angle-double-up"></i> Confirmar Fechar Caixa
+                            </button> {% endcomment %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+{% endblock content %}

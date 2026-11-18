@@ -1,0 +1,80 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+{% load django_tables2 %}
+{% load home_formatos %}
+{% block content %}
+    <h3 class="mb-4">Ofício Eletrônico (ONR) - e-Protocolo</h3>
+    <div class="col-md-12">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-group input-group mb-4">
+                <input type="file"
+                       name="document"
+                       class="form-control"
+                       id="inputGroupFile04"
+                       aria-describedby="inputGroupFileAddon04"
+                       aria-label="Upload"
+                       required="required">
+                <div class="input-group-append">
+                    <a>&emsp;</a>
+                    <button class="btn btn-primary"
+                            type="submit"
+                            id="inputGroupFileAddon04"
+                            data-bs-toggle="tooltip">
+                        <i class="icon feather icon-paperclip "></i>Importar do XML
+                    </button>
+                    <button class="btn bg-success text-white" href="#!" data-bs-toggle="tooltip">
+                        <i class="icon feather icon-download-cloud "></i>Importar da Web
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <span style="float: right">
+                    <p>Última importação: {{ data_servicos_matricula_visualiza }}</p>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h5>Pedidos de e-Protocolo: {{ quantidade_certidoes }}</h5>
+        </div>
+        <div class="card-body table-responsive">
+            {% if filter %}
+                <form class="row row-cols-md-auto align-items-center mb-3" method="get">
+                    {% for field in filter.form %}<div class="p-2">{{ field|as_crispy_field }}</div>{% endfor %}
+                    <input type="submit"
+                           id="btn-submit"
+                           class="btn btn-primary mt-4"
+                           value="Filtrar">
+                </form>
+            {% endif %}
+            <a class="btn btn-sm  btn-outline-success text-dark f-12"
+               href="{{ impressao_url }}"
+               target="_blank"
+               id="btn-print">
+                <i class="icon feather icon-printer d-none d-md-inline-block"></i> Imprimir Recibo
+            </a>
+            {% comment %} <a class="btn btn-outline-primary text-dark f-12" href="{% url 'home:pedido_certidao_gerar_selo_onr_todo_dia_atual' origem_id=7 %}" title="Selar para os itens que não tenham sido selados ainda">
+                                <i class="icon feather icon-check-circle"></i> Selar para todos não selados
+            </a> {% endcomment %}
+            <a class="btn btn-sm btn-outline-warning text-dark f-12 "
+               title="Atualizar a página para visualizar os dados alterados"
+               data-bs-toggle="tooltip"
+               onclick="window.location.reload()">
+                <i class="icon feather icon-refresh-ccw" id="theme-inlimpar"></i> Atualizar
+            </a>
+            {% comment %} <a class="btn btn-outline-success activate text-dark f-12" href="{% url 'home:relatorio' %}" title="Gerar relatorio">
+                                <i class="icon feather icon-file"></i> Relatório
+            </a> {% endcomment %}
+            <a class="btn btn-sm btn-outline-primary activate text-dark f-12 "
+               href="{% url 'home:download_excel_protocolo_onr' origem=7 data_inicio=data_inicial data_fim=data_final %}"
+               aria-pressed="true"
+               role="button">
+                <i class="icon feather icon-file"></i> Exportar Excel
+            </a>
+            {% render_table table %}
+        </div>
+    </div>
+{% endblock content %}

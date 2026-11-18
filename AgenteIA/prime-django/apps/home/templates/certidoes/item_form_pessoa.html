@@ -1,0 +1,85 @@
+{% extends "layouts/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load django_tables2 %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    {% if titulo_card %}
+                        <h5>{{ titulo_card }} - {{ object.numero_pedido }}</h5>
+                    {% else %}
+                        {% if object %}
+                            <h5>Editar Pessoa ou Empresa - {{ object.numero_pedido }}</h5>
+                        {% else %}
+                            <h5>Adicionar Pessoa ou Empresa - {{ object.numero_pedido }}</h5>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-12">{{ form.nome|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.tipo_documento|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.documento|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.rg|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.estado_civil|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.nacionalidade|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.profissao|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.anotacoes|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.endereco|as_crispy_field }}</div>
+                            <hr />
+                            <div class="col-md-12">{{ form.nome_conjuge|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.tipo_documento_conjuge|as_crispy_field }}</div>
+                            <div class="col-md-6">{{ form.documento_conjuge|as_crispy_field }}</div>
+                        </div>
+                        <hr />
+                        <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+                        <button type="submit"
+                                class="btn btn-sm btn-outline-info"
+                                name="action"
+                                value="save_and_add_another">Salvar e Adicionar Outro</button>
+                    </form>
+                    {% for key, botao in botoes.items %}
+                        <a href="{{ botao.url }}" class="btn btn-sm {{ botao.class }}">{{ botao.label }}</a>
+                    {% endfor %}
+                </div>
+                <div class="card-footer">
+                    <div class="col-md-12">
+                        {% if object %}
+                            <a href="{% url 'home:pedido_certidao_imoveis_listar' pedido_id=object.pedido_id %}"
+                               class="btn btn-sm btn-secondary">Ver Imóveis</a>
+                            <a href="{% url 'home:pedido_certidao_pessoas_list' pedido_id=object.pedido_id %}"
+                               class="btn btn-sm btn-secondary">Ver Pessoas</a>
+                            <a href="{% url 'home:pedido_certidao_andamentos' pedido_id=object.pedido_id %}"
+                               class="btn btn-sm btn-secondary">Ver Andamentos</a>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-lg-auto">
+                                        <!-- Buttons for editing and deleting, if necessary -->
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if url_de_exclusao %}
+                            <form action="{% url 'home:pedido_certidao_excluir_imovel' object.pk %}"
+                                  method="post">
+                                {% csrf_token %}
+                                <input type="submit"
+                                       value="Excluir"
+                                       class="btn btn-sm btn-danger"
+                                       onclick="return confirm('Você tem certeza que deseja excluir este registro?');">
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if object and certidoes_table %}
+            {% include "certidoes/partials/partial_list_certidoes.html" %}
+        {% endif %}
+    </div>
+{% endblock content %}

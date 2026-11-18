@@ -1,0 +1,54 @@
+PUBLICACAO CEHTES SEMA
+
+1. CONFIGURACAO
+Abra o arquivo .env nesta pasta no Bloco de Notas.
+CEHTES_REPOSITORIO: URL HTTPS do repositorio, sem virgula no final.
+CEHTES_BRANCH: branch de destino. Ja aponta para a importacao preparada.
+CEHTES_ORIGEM: pasta cujas subpastas serao copiadas.
+CEHTES_COPIA_REVISADA: copia temporaria do commit 4629fa1.
+GITHUB_USUARIO: preencha com seu login pessoal autorizado no GitHub.
+Nao coloque senha ou token. O .env fica excluido da publicacao.
+Use caminhos literais; variaveis como %USERPROFILE% nao sao expandidas.
+
+2. ACESSO AO REPOSITORIO
+A conta bierley123 recebeu erro 403 no envio anterior.
+O dono pode conceder acesso pelo repositorio > Settings > Collaborators
+(ou Collaborators & teams), e o convidado precisa aceitar o convite.
+Se voce usa outra conta com acesso de escrita, use esse login no .env.
+O nome do dono do repositorio pode ser uma organizacao: nesse caso,
+autentique sua conta pessoal com acesso, nao o nome da organizacao.
+
+3. AUTENTICACAO
+No PowerShell, substitua SEU_LOGIN pelo mesmo login colocado no .env:
+
+git credential-manager github login --username SEU_LOGIN --browser --force
+
+No navegador, confira qual conta esta conectada e conclua o login e 2FA.
+O Git Credential Manager guarda a credencial fora dos scripts.
+Este comando foi conferido no Git Credential Manager instalado.
+Alterar git user.name ou user.email nao muda a conta autenticada.
+
+4. ENVIO
+Reenviar-CEHTES-Revisado.bat envia o commit ja preparado, sem refazer copia.
+Ele confere se o repositorio e a branch da copia coincidem com o .env.
+Publicar-CEHTES.bat prepara uma nova copia com os arquivos atuais,
+incluindo os scripts novos, mostra a revisao e pede PUBLICAR antes do envio.
+Se a branch ja existe no remoto, a nova copia parte dela e faz push normal,
+sem force. Se quiser outra importacao, altere CEHTES_BRANCH no .env.
+Para usar Reenviar, mantenha a branch correspondente a copia revisada.
+Nao apague a copia temporaria antes de concluir o envio do commit revisado.
+
+5. VALIDACAO SEM ENVIO
+Na pasta destes arquivos:
+powershell.exe -NoProfile -File .\Publicar-CEHTES.ps1 -VerificarConfiguracao
+powershell.exe -NoProfile -File .\Reenviar-CEHTES-Revisado.ps1 -VerificarConfiguracao
+
+Se continuar o erro 403, confira o login no .env, a conta autenticada,
+o aceite do convite e a permissao de escrita. Repositorios de organizacao
+podem exigir autorizacao adicional definida pela organizacao.
+
+REFERENCIA
+https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository
+
+As credenciais anteriormente encontradas em arquivos do remoto precisam
+ser revogadas no servico de origem; retira-las desta versao nao apaga o historico.

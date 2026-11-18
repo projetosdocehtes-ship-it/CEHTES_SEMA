@@ -1,0 +1,48 @@
+{% load home_formatos %}
+{% include "form-importar-protocolo.html" %}
+{% include "form-importar-protocolo-data.html" %}
+<div class="card-body">
+    <div class="row justify-content-end">
+        <div class="col-auto">
+            {% if protocolo.primeiro and protocolo.anterior %}
+                <a href="{{ protocolo.primeiro.get_absolute_url }}"><i class="fas fa-angle-double-left"></i> Primeiro: {{ protocolo.primeiro }}</a>
+            {% endif %}
+        </div>
+        <div class="col-auto">
+            {% if protocolo.anterior %}
+                <a href="{{ protocolo.anterior.get_absolute_url }}"><i class="fas fa-angle-left"></i> Anterior: {{ protocolo.anterior }}</a>
+            {% endif %}
+        </div>
+        <div class="col-auto">
+            {% if protocolo.seguinte %}
+                <a href="{{ protocolo.seguinte.get_absolute_url }}">
+                Próximo: {{ protocolo.seguinte }} <i class="fas fa-angle-right"></i></a>
+            {% endif %}
+        </div>
+        <div class="col-auto">
+            {% if protocolo.ultimo and protocolo.seguinte %}
+                <a href="{{ protocolo.ultimo.get_absolute_url }}">
+                Último: {{ protocolo.ultimo }} <i class="fas fa-angle-double-right"></i></a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script>
+    function validarSubmissao() {
+        var numeroProtocolo = document.getElementById("numero_protocolo").value;
+        alert(numeroProtocolo);
+        if (!numeroProtocolo) {
+            alert("Por favor, informe um protocolo.");
+            return false; // Isso impedirá a submissão do formulário
+        }
+
+        return true; // Permite a submissão do formulário
+    }
+</script>
+<script>
+    function resetarFormulario() {
+        document.getElementById("meuFormulario").reset();
+        window.location.href = '{% url '
+        protocolos: protocolo_detail ' %}';
+    }
+</script>

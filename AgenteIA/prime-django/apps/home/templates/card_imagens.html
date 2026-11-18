@@ -1,0 +1,73 @@
+{% load home_formatos %}
+{% load static %}
+<div class="card" id="itens_pedido_card_imagem">
+    <div class="card-header">
+        <h5>
+            <span class="font-weight-bold text-white">Documentos: {{ protocolo }}</span>
+        </h5>
+    </div>
+    <div class="card-body">
+        <!-- Aqui as imagens ligadas ao protocolo.    end -->
+        <!-- Botão que irá abrir o modal -->
+        <!--
+                    <a type="button" href="{% url 'home:anexar_documento' id=protocolo.numero_protocolo  %}" class="btn btn-sm btn-primary " title="Cadastrar documentos para o protocolo" aria-pressed="true" role="button">Novo documento</a>
+        -->
+        <!-- Alterar os dados do Adquirente selecionado -->
+        <table cellpadding="0" cellspacing="0" width="100%" height="100%">
+            <tr>
+                <thead>
+                    <th></th>
+                </thead>
+            </tr>
+            <tbody>
+                {% if imagens_protocolo %}
+                    {% for imagems in imagens_protocolo %}
+                        <tr role="row" class="odd">
+                            <td class="sorting_1">{{ forloop.counter }}</td>
+                            <td align="left">
+                                {% with protocolo_path=imagems %}
+                                    <button type="button" class="btn btn-sm btn-danger">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             width="16"
+                                             height="16"
+                                             fill="currentColor"
+                                             class="bi bi-file-earmark-pdf"
+                                             viewBox="0 0 16 16">
+                                            <!-- Conteúdo do SVG omitido para brevidade -->
+                                        </svg>
+                                        <a class="btn btn-sm btn-danger font-weight-bold link-dark link-offset-2 link-underline-opacity-45 link-underline-opacity-100-hover"
+                                           title="Exibir os documentos do protocolo (títulos e documentos) em PDF"
+                                           href="{% url 'home:visualizar_pdf' opcao_pasta='P' numero=numero arquivo=imagems %}"
+                                           target="_blank"
+                                           aria-pressed="true"
+                                           role="button"><i class="bi bi-file-earmark-pdf"></i>{{ imagems|get_apenas_nome_do_arquivo }} </a>
+                                    </button>
+                                {% endwith %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <p>Não há anexos</p>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        {% include "updateServicos_01_Documentos.html" %}
+        <a href="{% url 'home:importar_titulos_protocolos' %}"
+           class="btn btn-sm btn-primary active text-white "
+           title="Atualizar a página para visualizar os dados alterados"
+           type="button"><i class="icon feather icon-refresh-cw" id="theme-inlimpar"></i> Atualizar
+        </a>
+        <a href="#protocolo_detail"
+           class="btn btn-sm btn-warning text-dark "
+           title="Clique para voltar ao topo da página"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        <a href="#indisponib"
+           class="btn btn-sm btn-primary text-dark "
+           title="Próximo ítem"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+    </div>
+</div>

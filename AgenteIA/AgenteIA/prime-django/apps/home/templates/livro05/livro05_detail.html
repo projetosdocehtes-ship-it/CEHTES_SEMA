@@ -1,0 +1,45 @@
+{% extends "layouts/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% load home_formatos %}
+{% load django_tables2 %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Detalhes da Pessoa: {{ pessoa.nome }}</h5>
+        </div>
+        <div class="card-body">
+            <div class="parte-detail">
+                <p>
+                    <strong>ID:</strong> {{ pessoa.id }}
+                </p>
+                <p>
+                    <strong>Nome:</strong> {{ pessoa.nome }}
+                </p>
+                <p>
+                    <strong>Estado Civil:</strong> {{ pessoa.estado_civil }}
+                </p>
+                <p>
+                    <strong>Anotações:</strong> {{ pessoa.anotacoes }}
+                </p>
+                <p>
+                    <strong>Cônjuge:</strong> {{ pessoa.conjuge }}
+                </p>
+                <p>
+                    <strong>Data de Cadastro:</strong> {{ pessoa.criado_em|date:"DATETIME_FORMAT" }}
+                </p>
+                <p>
+                    <strong>Quantidade de Vinculos:</strong> {{ pessoa.quantidade_de_vinculos }}
+                </p>
+                {% comment %} <!-- Links para ações como editar ou deletar -->
+                                                                <a href="{{ pessoa.get_update_url }}">Editar Pessoa</a> |
+                <a href="{{ pessoa.get_delete_url }}">Deletar Pessoa</a> {% endcomment %}
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'home:livro05_list' %}" class="btn btn-primary">Voltar</a>
+        </div>
+    </div>
+{% endblock %}

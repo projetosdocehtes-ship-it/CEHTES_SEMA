@@ -1,0 +1,165 @@
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(1, 'Requerimento (Assinado e com firma reconhecida)');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(2, 'Alvará de Construção');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(3, 'Carta de Habite-se');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(4, 'Certidão Negativa de Débitos ou Positiva com Efeito de Negativa, com os dados do imóvel;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(5, 'Caso foi Declaração de Mutirão Total assinada pelo proprietário com firma reconhecida;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(6, 'TRT/ART');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(7, 'Planta do Imóvel;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(8, 'Obs: Se houver Declaração sob as penas da Lei ou Certidão Negativa de Débitos, colocar antes da TRT.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(9, 'Verificar qualificação dos vendedores e compradores; (Se for separação de bens convencional ou comunhão universal de bens após 1977, DEVE HAVER PACTO);');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(10, 'Descrição do imóvel (lote, quadra, se tiver casa o n°, área da matricula;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(11, 'Se atentar ao endereço, sócios, se o endereço da escritura e da matricula estão iguais, caso contrário pedir Alteração Contratual.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(12, 'Título de Domínio; ');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(13, 'Valor Declarado/Fiscal;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(14, 'Verificar a quantidade de vendedores, estado civil e anuentes se tiver.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(15, 'Verificar forma de pagamento (Como pagou? É o valor maior? É igual?)');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(16, 'Verificar se a escritura tem “Em Tempo”;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(17, 'Se o pagamento for em moeda corrente e o valor for superior a R$30.000,00 solicitar declaração de recursos próprios.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(18, 'Obs: - Se a escritura tiver mais de 5 anos que foi lavrada, verificar se tem Certidão de Reavaliação do Imóvel. - Anuentes pode ser somente nome e CPF.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(19, 'Requerimento');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(20, 'Certidão Atual;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(21, 'Memorial Descritivo;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(22, 'Certidão da Prefeitura (Igual o memorial);');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(23, 'Termo de Verificação;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(24, 'Certidão de Avaliação de Área Nova;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(25, 'TRT;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(26, 'Mapas (Assinado por técnico, proprietário)');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(27, 'Certidão de Alteração de Loteamento.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(28, 'Memorial Descritivo da Quadra');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(29, 'Requerimento de retificação;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(30, 'Declaração Civil e Criminal;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(31, 'Certidão Atual do Imóvel (até 90 dias)');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(32, 'Memorial Descritivo');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(33, 'Certidão de Avaliação da Área Nova ou Declaração de Valor dos Proprietários, ou Declaração do Agrimensor e dos proprietários á margem do Art. 1.150 do Provimento 93/CCJ/2020.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(34, 'Anuência dos Confrontantes (esposo e esposa, caso seja falecido anexar cópia autenticada do termo de inventariante) ** mas, se a matricula tiver mais de um proprietário basta um assinar, essa anuência pode ser no mapa ou em folha separada.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(35, 'TRT (Assinado pelo técnico e pelo proprietário). - Dados do imóvel.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(36, 'ITR e CCIR em dia.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(37, 'CAR');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(38, 'Toda vez que a área tiver 20% de acréscimo ou decréscimo deve haver vistoria do Oficial.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(39, 'CD com dados da Propriedade.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(40, 'Mapas');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(41, 'Requerimento de retificação;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(42, 'Declaração Civil e Criminal;');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(43, 'Certidão Atual do Imóvel (até 90 dias)');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(44, 'Memorial Descritivo');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(45, 'Certidão da Prefeitura igual o memorial');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(46, 'Termo de Verificação');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(47, 'Certidão de Avaliação da Área Nova');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(48, 'Anuência dos Confrontantes (esposo e esposa, caso seja falecido anexar cópia autenticada do termo de inventariante) ** mas, se a matricula tiver mais de um proprietário basta um assinar, essa anuência pode ser no mapa ou em folha separada.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(49, 'TRT (Assinado pelo técnico e pelo proprietário). - Dados do imóvel.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(50, 'ITR e CCIR em dia.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(51, 'CAR');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(52, 'Toda vez que a área tiver 20% de acréscimo ou decréscimo deve haver vistoria do Oficial.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(53, 'CD com dados da Propriedade.');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(54, 'Mapas');
+INSERT INTO public.home_ordemdigitalizarbalcao
+(id, "text")
+VALUES(55, 'OBS: Não envolve a justiça, por isso é administrativa e há consenso entre as partes.');

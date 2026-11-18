@@ -1,0 +1,1068 @@
+<!-- https://fullcalendar.io/docs/eventTimeFormat -->
+<!-- https://fullcalendar.io/docs/eventClick -->
+<!-- view-source:https://fullcalendar.io/docs/eventClick-demo -->
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+    <head>
+        <title>
+             Dashboard
+            {% block title %}{% endblock %}
+        </title>
+        <meta name="description" content="Event Dashboard" />
+        <!-- Twitter meta-->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:site" content="@sajib1066" />
+        <meta property="twitter:creator" content="@sajib1066" />
+        <!-- Open Graph Meta-->
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Vali Admin" />
+        <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme" />
+        <meta property="og:url" content="https://sajib1066.github.io/" />
+        <meta property="og:image"
+              content="https://sajib1066.github.io/images/me.jpg" />
+        <meta property="og:description" content="Event Dashboard" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- Main CSS-->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
+        <!-- Font-icon css-->
+        <link rel="stylesheet"
+              type="text/css"
+              href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 11]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+        <!-- Meta -->
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description"
+              content="Free Datta Able Admin Template come up with latest Bootstrap 4 framework with basic components, form elements and lots of pre-made layout options" />
+        <meta name="keywords"
+              content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, datta able, datta able bootstrap admin template, free admin theme, free dashboard template" />
+        <meta name="author" content="CodedThemes" />
+        <!-- Favicon icon -->
+        <link rel="icon"
+              href="{{ ASSETS_ROOT }}/images/favicon.ico"
+              type="image/x-icon">
+        <!-- fontawesome icon -->
+        <link rel="stylesheet"
+              href="{{ ASSETS_ROOT }}/fonts/fontawesome/css/fontawesome-all.min.css">
+        <!-- animation css -->
+        <link rel="stylesheet"
+              href="{{ ASSETS_ROOT }}/plugins/animation/css/animate.min.css">
+        <!-- vendor css -->
+        <link rel="stylesheet" href="{{ ASSETS_ROOT }}/css/style.css">
+        <!-- dark mode css -->
+        <link rel="stylesheet" href="{{ ASSETS_ROOT }}/css/dark.css">
+        <!-- <link rel="stylesheet"
+       href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"> -->
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script> -->
+        <script src="https://momentjs.com/downloads/moment.min.js"></script>
+        <script src="https://momentjs.com/downloads/moment-timezone-with-data.min.js"></script>
+        <!-- Specific CSS goes HERE -->
+        {% block stylesheets %}
+            <link href="{% static 'assets/calender/main.css' %}" rel="stylesheet" />
+        {% endblock stylesheets %}
+        <script>
+            function getVoltar() {
+                window.history.back()
+            }
+        </script>
+        <style>
+            .modal-content {
+                box-shadow: 0 0 0 5px blue;
+                border: none;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- [ Pre-loader ] start -->
+        <div class="loader-bg">
+            <div class="loader-track">
+                <div class="loader-fill"></div>
+            </div>
+        </div>
+        <!-- [ Pre-loader ] End -->
+        {% load home_formatos %}
+        {% include 'includes/sidebar.html' %}
+        {% include 'includes/navigation.html' %}
+        {% include 'includes/scripts.html' %}
+        <!-- Specific Page JS goes HERE  -->
+        {% block javascripts %}
+        {% endblock javascripts %}
+        <!-- [ Main Content ] start -->
+        <div class="pcoded-main-container">
+            <div class="pcoded-wrapper">
+                <div class="pcoded-content">
+                    <div class="pcoded-inner-content">
+                        <div class="main-body">
+                            <div class="page-wrapper">
+                                <form action="" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {% block breadcrumb %}
+                                    {% endblock breadcrumb %}
+                                    {% block content %}
+                                        <!--
+<div class="row">
+
+    <div class="col-lg-5 col-6">
+
+        <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+            <center>
+                <p>
+                    <h5 class="text-white">Pedido Certidão (CRI)<br><h3 class="text-white">
+                    <a class="text-white" style="background-color: #507CA5" href="https://www.crimg.com.br/#/home-login" target="_blank" title="Acessar site da CRI." data-bs-toggle="tooltip">Certidão - Eletrônica</a>
+                    </h3></a>
+                    </h5>
+                </p>
+
+                <div class="inner">
+                    Data da última importação: {{ Servicos_01_Certidao_Cri|date:D, d M Y }} <p></p>
+                </div>
+
+                <div class="icon"></div>
+
+                <div class="input-group">
+                    <input type="file" name="document" class="form-control" id="inputGroupFile04_Cri" aria-describedby="inputGroupFileAddon04_Cri" aria-label="Upload">
+                    <button class="btn bg-primary text-white" type="submit" id="inputGroupFileAddon04_Cri" title="Anexar o arquivo XML do site da CRI." data-bs-toggle="tooltip">Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i></button>
+                </div>
+
+                <p></p>
+-->
+                                        <h1>
+                                            <i class="fa fa-dashboard"></i> Serviços Importar:
+                                        </h1>
+                                        <div class="row">
+                                            <!-- INICIO - GRAVAR CERTIDAO ONR -->
+                                            <div class="col-lg-5 col-6">
+                                                <!-- small box -->
+                                                <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                    <center>
+                                                        <p>
+                                                            <h5 class="text-white">
+                                                                Ofício Eletrônico (ONR)
+                                                                <br>
+                                                                <h3 class="text-white">
+                                                                    <a class="text-white"
+                                                                       style="background-color: #507CA5"
+                                                                       href="https://oficioeletronico.com.br/"
+                                                                       target="_blank"
+                                                                       title="Acessar site do Ofício Eletrônico."
+                                                                       data-bs-toggle="tooltip">Certidão</a>
+                                                                </h3>
+                                                            </a>
+                                                        </h5>
+                                                    </p>
+                                                    <div class="inner">
+                                                        Data da última importação: {{ Servicos_01_Intimacao|date:D, d M Y }}
+                                                        <p></p>
+                                                    </div>
+                                                    <div class="icon"></div>
+                                                    <div class="input-group">
+                                                        <input type="file"
+                                                               name="document"
+                                                               class="form-control"
+                                                               id="inputGroupFile04"
+                                                               aria-describedby="inputGroupFileAddon04"
+                                                               aria-label="Upload">
+                                                        <button class="btn bg-primary text-white"
+                                                                type="submit"
+                                                                id="inputGroupFileAddon04"
+                                                                title="Anexar o arquivo XML do site da ONR. Caso exista alguma intimação."
+                                                                data-bs-toggle="tooltip">
+                                                            Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                        </button>
+                                                    </div>
+                                                    <p></p>
+                                                    <a class="btn bg-success text-white  mr-2"
+                                                       href="#"
+                                                       title="Importar do site da ONR."
+                                                       data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <!-- FIM - CERTIDAO ONR -->
+                                        <!-- INICIO - GRAVAR ePROTOCOLO ONR -->
+                                        <div class="col-lg-5 col-6">
+                                            <!-- small box -->
+                                            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                <center>
+                                                    <p>
+                                                        <h5 class="text-white">
+                                                            Ofício Eletrônico (ONR)
+                                                            <br>
+                                                            <h3 class="text-white">
+                                                                <a class="text-white"
+                                                                   style="background-color: #507CA5"
+                                                                   href="https://oficioeletronico.com.br/"
+                                                                   target="_blank"
+                                                                   title="Acessar site do Ofício Eletrônico."
+                                                                   data-bs-toggle="tooltip">e-Protocolo</a>
+                                                            </h3>
+                                                        </a>
+                                                    </h5>
+                                                </p>
+                                                <div class="inner">
+                                                    Data da última importação: {{ Servicos_01_Intimacao|date:D, d M Y }}
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon"></div>
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                           name="document"
+                                                           class="form-control"
+                                                           id="inputGroupFile04"
+                                                           aria-describedby="inputGroupFileAddon04"
+                                                           aria-label="Upload">
+                                                    <button class="btn bg-primary text-white"
+                                                            type="submit"
+                                                            id="inputGroupFileAddon04"
+                                                            title="Anexar o arquivo XML do site da ONR. Caso exista alguma intimação."
+                                                            data-bs-toggle="tooltip">
+                                                        Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <p></p>
+                                                <a class="btn bg-success text-white  mr-2"
+                                                   href="#"
+                                                   title="Importar do site da ONR."
+                                                   data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                            </center>
+                                        </div>
+                                        </div>
+                                    <!-- FIM - GRAVAR ePROTOCOLO ONR -->
+                                    <!-- INICIO - LINHA DIVISORIA -->
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    <!-- FIM - LINHA DIVISORIA -->
+                                    <!-- INICIO - GRAVAR LRI ONR -->
+                                        <div class="col-lg-5 col-6">
+                                        <!-- small box -->
+                                            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                <center>
+                                                    <p>
+                                                        <h5 class="text-white">
+                                                            Ofício Eletrônico (ONR)
+                                                            <br>
+                                                            <h3 class="text-white">
+                                                                <a class="text-white"
+                                                                   style="background-color: #507CA5"
+                                                                   href="https://oficioeletronico.com.br/"
+                                                                   target="_blank"
+                                                                   title="Acessar site do Ofício Eletrônico."
+                                                                   data-bs-toggle="tooltip">Indisponibilidade de bens</a>
+                                                            </h3>
+                                                        </a>
+                                                    </h5>
+                                                </p>
+                                                <div class="inner">
+                                                    Data da última importação: {{ Servicos_01_Intimacao|date:D, d M Y }}
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon"></div>
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                           name="document"
+                                                           class="form-control"
+                                                           id="inputGroupFile04"
+                                                           aria-describedby="inputGroupFileAddon04"
+                                                           aria-label="Upload">
+                                                    <button class="btn bg-primary text-white"
+                                                            type="submit"
+                                                            id="inputGroupFileAddon04"
+                                                            title="Anexar o arquivo XML do site da ONR. Caso exista alguma intimação."
+                                                            data-bs-toggle="tooltip">
+                                                        Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <p></p>
+                                                <a class="btn bg-success text-white  mr-2"
+                                                   href="#"
+                                                   title="Importar do site da ONR."
+                                                   data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                            </center>
+                                        </div>
+                                        </div>
+                                <!-- FIM - GRAVAR LRI ONR -->
+                                <!-- INICIO - GRAVAR INTIMACAO ONR -->
+                                        <div class="col-lg-5 col-6">
+                                    <!-- small box -->
+                                            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                <center>
+                                                    <p>
+                                                        <h5 class="text-white">
+                                                            Ofício Eletrônico (ONR)
+                                                            <br>
+                                                            <h3 class="text-white">
+                                                                <a class="text-white"
+                                                                   style="background-color: #507CA5"
+                                                                   href="https://oficioeletronico.com.br/"
+                                                                   target="_blank"
+                                                                   title="Acessar site do Ofício Eletrônico."
+                                                                   data-bs-toggle="tooltip">Intimação</a>
+                                                            </h3>
+                                                        </a>
+                                                    </h5>
+                                                </p>
+                                                <div class="inner">
+                                                    Data da última importação: {{ Servicos_01_Intimacao|date:D, d M Y }}
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon"></div>
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                           name="document"
+                                                           class="form-control"
+                                                           id="inputGroupFile04"
+                                                           aria-describedby="inputGroupFileAddon04"
+                                                           aria-label="Upload">
+                                                    <button class="btn bg-primary text-white"
+                                                            type="submit"
+                                                            id="inputGroupFileAddon04"
+                                                            title="Anexar o arquivo XML do site da ONR. Caso exista alguma intimação."
+                                                            data-bs-toggle="tooltip">
+                                                        Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <p></p>
+                                                <a class="btn bg-success text-white  mr-2"
+                                                   href="#"
+                                                   title="Importar do site da ONR."
+                                                   data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                            </center>
+                                        </div>
+                                        </div>
+                            <!-- FIM - GRAVAR INTIMACAO ONR -->
+                            <!-- INICIO - LINHA DIVISORIA -->
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                            <!-- FIM - LINHA DIVISORIA -->
+                            <!-- INICIO - GRAVAR OFICIOS ONR -->
+                                        <div class="col-lg-5 col-6">
+                                <!-- small box -->
+                                            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                <center>
+                                                    <p>
+                                                        <h5 class="text-white">
+                                                            Ofício Eletrônico (ONR)
+                                                            <br>
+                                                            <h3 class="text-white">
+                                                                <a class="text-white"
+                                                                   style="background-color: #507CA5"
+                                                                   href="https://oficioeletronico.com.br/"
+                                                                   target="_blank"
+                                                                   title="Acessar site do Ofício Eletrônico."
+                                                                   data-bs-toggle="tooltip">Ofícios</a>
+                                                            </h3>
+                                                        </a>
+                                                    </h5>
+                                                </p>
+                                                <div class="inner">
+                                                    Data da última importação: {{ Servicos_01_Intimacao|date:D, d M Y }}
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon"></div>
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                           name="document"
+                                                           class="form-control"
+                                                           id="inputGroupFile04"
+                                                           aria-describedby="inputGroupFileAddon04"
+                                                           aria-label="Upload">
+                                                    <button class="btn bg-primary text-white"
+                                                            type="submit"
+                                                            id="inputGroupFileAddon04"
+                                                            title="Anexar o arquivo XML do site da ONR. Caso exista alguma intimação."
+                                                            data-bs-toggle="tooltip">
+                                                        Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <p></p>
+                                                <a class="btn bg-success text-white  mr-2"
+                                                   href="#"
+                                                   title="Importar do site da ONR."
+                                                   data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                            </center>
+                                        </div>
+                                        </div>
+                        <!-- FIM - GRAVAR OFICIOS ONR -->
+                        <!-- INICIO - GRAVAR MATRICULA VISUALIZADA ONR -->
+                                        <div class="col-lg-5 col-6">
+                            <!-- small box -->
+                                            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                <center>
+                                                    <p>
+                                                        <h5 class="text-white">
+                                                            Ofício Eletrônico (ONR)
+                                                            <br>
+                                                            <h3 class="text-white">
+                                                                <a class="text-white"
+                                                                   style="background-color: #507CA5"
+                                                                   href="https://oficioeletronico.com.br/"
+                                                                   target="_blank"
+                                                                   title="Acessar site do Ofício Eletrônico."
+                                                                   data-bs-toggle="tooltip">Matrícula Visualizada</a>
+                                                            </h3>
+                                                        </a>
+                                                    </h5>
+                                                </p>
+                                                <div class="inner">
+                                                    Data da última importação: {{ Servicos_01_Intimacao|date:D, d M Y }}
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon"></div>
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                           name="document"
+                                                           class="form-control"
+                                                           id="inputGroupFile04"
+                                                           aria-describedby="inputGroupFileAddon04"
+                                                           aria-label="Upload">
+                                                    <button class="btn bg-primary text-white"
+                                                            type="submit"
+                                                            id="inputGroupFileAddon04"
+                                                            title="Anexar o arquivo XML do site da ONR. Caso exista alguma intimação."
+                                                            data-bs-toggle="tooltip">
+                                                        Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <p></p>
+                                                <a class="btn bg-success text-white  mr-2"
+                                                   href="#"
+                                                   title="Importar do site da ONR."
+                                                   data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                            </center>
+                                        </div>
+                                        </div>
+                    <!-- FIM - GRAVAR MATRICULA VISUALIZADA ONR -->
+                    <!-- INICIO - LINHA DIVISORIA -->
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                    <!-- FIM - LINHA DIVISORIA -->
+                    <!-- INICIO - GRAVAR PENHORA ONR -->
+                                        <div class="col-lg-5 col-6">
+                        <!-- small box -->
+                                            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                <center>
+                                                    <p>
+                                                        <h5 class="text-white">
+                                                            Ofício Eletrônico (ONR)
+                                                            <br>
+                                                            <h3 class="text-white">
+                                                                <a class="text-white"
+                                                                   style="background-color: #507CA5"
+                                                                   href="https://oficioeletronico.com.br/"
+                                                                   target="_blank"
+                                                                   title="Acessar site do Ofício Eletrônico."
+                                                                   data-bs-toggle="tooltip">Penhora</a>
+                                                            </h3>
+                                                        </a>
+                                                    </h5>
+                                                </p>
+                                                <div class="inner">
+                                                    Data da última importação: {{ Servicos_01_Intimacao|date:D, d M Y }}
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon"></div>
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                           name="document"
+                                                           class="form-control"
+                                                           id="inputGroupFile04"
+                                                           aria-describedby="inputGroupFileAddon04"
+                                                           aria-label="Upload">
+                                                    <button class="btn bg-primary text-white"
+                                                            type="submit"
+                                                            id="inputGroupFileAddon04"
+                                                            title="Anexar o arquivo XML do site da ONR. Caso exista alguma intimação."
+                                                            data-bs-toggle="tooltip">
+                                                        Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <p></p>
+                                                <a class="btn bg-success text-white  mr-2"
+                                                   href="#"
+                                                   title="Importar do site da ONR."
+                                                   data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                            </center>
+                                        </div>
+                                        </div>
+                <!-- FIM - GRAVAR PENHORA ONR -->
+                <!-- INICIO - GRAVAR PESQUISA DE BENS -->
+                                        <div class="col-lg-5 col-6">
+                    <!-- small box -->
+                                            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                <center>
+                                                    <p>
+                                                        <h5 class="text-white">
+                                                            Ofício Eletrônico (ONR)
+                                                            <br>
+                                                            <h3 class="text-white">
+                                                                <a class="text-white"
+                                                                   style="background-color: #507CA5"
+                                                                   href="https://oficioeletronico.com.br/"
+                                                                   target="_blank"
+                                                                   title="Acessar site do Ofício Eletrônico."
+                                                                   data-bs-toggle="tooltip">Pesquisa de bens</a>
+                                                            </h3>
+                                                        </a>
+                                                    </h5>
+                                                </p>
+                                                <div class="inner">
+                                                    Data da última importação: {{ Servicos_01_Intimacao|date:D, d M Y }}
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon"></div>
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                           name="document"
+                                                           class="form-control"
+                                                           id="inputGroupFile04"
+                                                           aria-describedby="inputGroupFileAddon04"
+                                                           aria-label="Upload">
+                                                    <button class="btn bg-primary text-white"
+                                                            type="submit"
+                                                            id="inputGroupFileAddon04"
+                                                            title="Anexar o arquivo XML do site da ONR. Caso exista alguma intimação."
+                                                            data-bs-toggle="tooltip">
+                                                        Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <p></p>
+                                                <a class="btn bg-success text-white  mr-2"
+                                                   href="#"
+                                                   title="Importar do site da ONR."
+                                                   data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                            </center>
+                                        </div>
+                                        </div>
+            <!-- FIM - GRAVAR PESQUISA DE BENS ONR -->
+            <!-- INICIO - LINHA DIVISORIA -->
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+            <!-- FIM - LINHA DIVISORIA -->
+            <!-- INICIO - GRAVAR USUCAPIAO ONR -->
+                                        <div class="col-lg-5 col-6">
+                <!-- small box -->
+                                            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                <center>
+                                                    <p>
+                                                        <h5 class="text-white">
+                                                            SAEC
+                                                            <br>
+                                                            <h3 class="text-white">
+                                                                <a class="text-white"
+                                                                   style="background-color: #507CA5"
+                                                                   href="https://oficioeletronico.com.br/"
+                                                                   target="_blank"
+                                                                   title="Acessar site do Ofício Eletrônico."
+                                                                   data-bs-toggle="tooltip">Usucapião</a>
+                                                            </h3>
+                                                        </a>
+                                                    </h5>
+                                                </p>
+                                                <div class="inner">
+                                                    Data da última importação: {{ Servicos_01_Intimacao|date:D, d M Y }}
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon"></div>
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                           name="document"
+                                                           class="form-control"
+                                                           id="inputGroupFile04"
+                                                           aria-describedby="inputGroupFileAddon04"
+                                                           aria-label="Upload">
+                                                    <button class="btn bg-primary text-white"
+                                                            type="submit"
+                                                            id="inputGroupFileAddon04"
+                                                            title="Anexar o arquivo XML do site da ONR. Caso exista alguma intimação."
+                                                            data-bs-toggle="tooltip">
+                                                        Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <p></p>
+                                                <a class="btn bg-success text-white  mr-2"
+                                                   href="#"
+                                                   title="Importar do site da ONR."
+                                                   data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                            </center>
+                                        </div>
+                                        </div>
+        <!-- FIM - GRAVAR USUCAPIAO ONR -->
+        <!-- INICIO - GRAVAR REGULAÇÃO FIDUCIARIA ONR -->
+                                        <div class="col-lg-5 col-6">
+            <!-- small box -->
+                                            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                <center>
+                                                    <p>
+                                                        <h5 class="text-white">
+                                                            Ofício Eletrônico (ONR)
+                                                            <br>
+                                                            <h3 class="text-white">
+                                                                <a class="text-white"
+                                                                   style="background-color: #507CA5"
+                                                                   href="https://oficioeletronico.com.br/"
+                                                                   target="_blank"
+                                                                   title="Acessar site do Ofício Eletrônico."
+                                                                   data-bs-toggle="tooltip">Regulação Fiduciária</a>
+                                                            </h3>
+                                                        </a>
+                                                    </h5>
+                                                </p>
+                                                <div class="inner">
+                                                    Data da última importação: {{ Servicos_01_Intimacao|date:D, d M Y }}
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon"></div>
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                           name="document"
+                                                           class="form-control"
+                                                           id="inputGroupFile04"
+                                                           aria-describedby="inputGroupFileAddon04"
+                                                           aria-label="Upload">
+                                                    <button class="btn bg-primary text-white"
+                                                            type="submit"
+                                                            id="inputGroupFileAddon04"
+                                                            title="Anexar o arquivo XML do site da ONR. Caso exista alguma intimação."
+                                                            data-bs-toggle="tooltip">
+                                                        Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <p></p>
+                                                <a class="btn bg-success text-white  mr-2"
+                                                   href="#"
+                                                   title="Importar do site da ONR."
+                                                   data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                            </center>
+                                        </div>
+                                        </div>
+    <!-- FIM - GRAVAR REGULAÇÃO FIDUCIARIA ONR -->
+    <!-- INICIO - LINHA DIVISORIA -->
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+    <!-- FIM - LINHA DIVISORIA -->
+                                        </div>
+                                        <h1>
+                                            <i class="fa fa-dashboard"></i> Serviços Exportar:
+                                        </h1>
+                                        <div class="row">
+    <!-- INICIO - GERAR PGM - LIVRO 2 -->
+                                            <div class="col-lg-5 col-6">
+        <!-- small box -->
+                                                <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                    <center>
+                                                        <p>
+                                                            <h5 class="text-white">
+                                                                Gerar PGM (ONR)
+                                                                <br>
+                                                                <h3 class="text-white">
+                                                                    <a class="text-white"
+                                                                       style="background-color: #507CA5"
+                                                                       href="#"
+                                                                       target="_blank"
+                                                                       title="Enviar dados para ONR."
+                                                                       data-bs-toggle="tooltip">Livro 02</a>
+                                                                </h3>
+                                                            </a>
+                                                        </h5>
+                                                    </p>
+                                                    <div class="inner">
+                                                        Data da última importação: {{ Servicos_01_Certidao_Cri|date:D, d M Y }}
+                                                        <p></p>
+                                                    </div>
+                                                    <div class="icon"></div>
+                                                    <div class="input-group">
+                                                        <input type="file"
+                                                               name="document"
+                                                               class="form-control"
+                                                               id="inputGroupFile04_Cri"
+                                                               aria-describedby="inputGroupFileAddon04_Cri"
+                                                               aria-label="Upload">
+                                                        <button class="btn bg-primary text-white"
+                                                                type="submit"
+                                                                id="inputGroupFileAddon04_Cri"
+                                                                title="Anexar o arquivo XML."
+                                                                data-bs-toggle="tooltip">
+                                                            Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                        </button>
+                                                    </div>
+                                                    <p></p>
+                                                    <a class="btn bg-success text-white  mr-2"
+                                                       href="#"
+                                                       title="Importar do site."
+                                                       data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                                </center>
+                                            </div>
+                                        </div>
+<!-- FIM - GERAR PGM - LIVRO 2 -->
+<!-- INICIO - GERAR PGM - LIVRO 3 -->
+                                        <div class="col-lg-5 col-6">
+    <!-- small box -->
+                                            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                <center>
+                                                    <p>
+                                                        <h5 class="text-white">
+                                                            Gerar PGM (ONR)
+                                                            <br>
+                                                            <h3 class="text-white">
+                                                                <a class="text-white"
+                                                                   style="background-color: #507CA5"
+                                                                   href="#"
+                                                                   target="_blank"
+                                                                   title="Acessar site."
+                                                                   data-bs-toggle="tooltip">Livro 03</a>
+                                                            </h3>
+                                                        </a>
+                                                    </h5>
+                                                </p>
+                                                <div class="inner">
+                                                    Data da última importação: {{ Servicos_01_Certidao_Cri|date:D, d M Y }}
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon"></div>
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                           name="document"
+                                                           class="form-control"
+                                                           id="inputGroupFile04_Cri"
+                                                           aria-describedby="inputGroupFileAddon04_Cri"
+                                                           aria-label="Upload">
+                                                    <button class="btn bg-primary text-white"
+                                                            type="submit"
+                                                            id="inputGroupFileAddon04_Cri"
+                                                            title="Anexar o arquivo XML."
+                                                            data-bs-toggle="tooltip">
+                                                        Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <p></p>
+                                                <a class="btn bg-success text-white  mr-2"
+                                                   href="#"
+                                                   title="Importar do site."
+                                                   data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                            </center>
+                                        </div>
+                                        </div>
+<!-- FIM - GERAR PGM - LIVRO 3 -->
+<!-- INICIO - LINHA DIVISORIA -->
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5 col-6">
+                                            <div class="small-box p-2 mb-2 text-white">
+                                                <center>
+                                                </center>
+                                            </div>
+                                        </div>
+<!-- FIM - LINHA DIVISORIA -->
+<!-- INICIO - EXPORTAR LIVRO 4 -->
+                                        <div class="col-lg-5 col-6">
+    <!-- small box -->
+                                            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                <center>
+                                                    <p>
+                                                        <h5 class="text-white">
+                                                            Exportar para Ofício Eletrônico (ONR)
+                                                            <br>
+                                                            <h3 class="text-white">
+                                                                <a class="text-white"
+                                                                   style="background-color: #507CA5"
+                                                                   href="https://oficioeletronico.com.br/"
+                                                                   target="_blank"
+                                                                   title="Acessar site do Ofício Eletrônico."
+                                                                   data-bs-toggle="tooltip">Livro 04</a>
+                                                            </h3>
+                                                        </a>
+                                                    </h5>
+                                                </p>
+                                                <div class="inner">
+                                                    Data da última importação: {{ Servicos_01_Intimacao|date:D, d M Y }}
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon"></div>
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                           name="document"
+                                                           class="form-control"
+                                                           id="inputGroupFile04"
+                                                           aria-describedby="inputGroupFileAddon04"
+                                                           aria-label="Upload">
+                                                    <button class="btn bg-primary text-white"
+                                                            type="submit"
+                                                            id="inputGroupFileAddon04"
+                                                            title="Anexar o arquivo XML do site da ONR."
+                                                            data-bs-toggle="tooltip">
+                                                        Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <p></p>
+                                                <a class="btn bg-success text-white  mr-2"
+                                                   href="#"
+                                                   title="Importar do site da ONR."
+                                                   data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                            </center>
+                                        </div>
+                                        </div>
+<!-- FIM - GRAVAR EXPORTAR LIVRO 4 -->
+<!-- INICIO - EXPORTAR BDL ONR -->
+                                        <div class="col-lg-5 col-6">
+    <!-- small box -->
+                                            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                                                <center>
+                                                    <p>
+                                                        <h5 class="text-white">
+                                                            Exportar para Ofício Eletrônico (ONR)
+                                                            <br>
+                                                            <h3 class="text-white">
+                                                                <a class="text-white"
+                                                                   style="background-color: #507CA5"
+                                                                   href="https://oficioeletronico.com.br/"
+                                                                   target="_blank"
+                                                                   title="Acessar site do Ofício Eletrônico."
+                                                                   data-bs-toggle="tooltip">Livro 05</a>
+                                                            </h3>
+                                                        </a>
+                                                    </h5>
+                                                </p>
+                                                <div class="inner">
+                                                    Data da última importação: {{ Servicos_01_Intimacao|date:D, d M Y }}
+                                                    <p></p>
+                                                </div>
+                                                <div class="icon"></div>
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                           name="document"
+                                                           class="form-control"
+                                                           id="inputGroupFile04"
+                                                           aria-describedby="inputGroupFileAddon04"
+                                                           aria-label="Upload">
+                                                    <button class="btn bg-primary text-white"
+                                                            type="submit"
+                                                            id="inputGroupFileAddon04"
+                                                            title="Anexar o arquivo XML do site da ONR."
+                                                            data-bs-toggle="tooltip">
+                                                        Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i>
+                                                    </button>
+                                                </div>
+                                                <p></p>
+                                                <a class="btn bg-success text-white  mr-2"
+                                                   href="#"
+                                                   title="Importar do site da ONR."
+                                                   data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+                                            </center>
+                                        </div>
+                                        </div>
+<!-- FIM - GRAVAR EXPORTAR BDL ONR -->
+<!-- INICIO - GRAVAR DOCUMENTO PROTOCOLO
+    <div class="col-lg-5 col-6">
+
+        <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+            <center>
+                <p>
+                    <h5 class="text-white">Anexar Documento Protocolo<br><h3 class="text-white">
+                    <a class="text-white" style="background-color: #507CA5" href="https://oficioeletronico.com.br/" target="_blank" title="Acessar site do Ofício Eletrônico." data-bs-toggle="tooltip">Protocolo</a>
+                    </h3></a>
+                    </h5>
+                </p>
+
+                <div class="inner">
+
+                </div>
+
+                <div class="icon"></div>
+
+                <div class="input-group">
+                    <input type="file" name="document" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" multiple>
+                    <button class="btn bg-primary text-white" type="submit" id="inputGroupFileAddon04" title="Anexar o arquivo XML do site da ONR. Caso exista alguma intimação." data-bs-toggle="tooltip">Anexar&nbsp;<i class="icon feather icon-paperclip auth-icon"></i></button>
+                </div>
+
+                <p></p>
+
+                <a class="btn bg-success text-white  mr-2"   href="#" title="Importar do site da ONR." data-bs-toggle="tooltip">&nbsp;WebService&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon feather icon-download-cloud auth-icon"></i> </a>
+            </center>
+        </div>
+    </div>
+FIM - GRAVAR DOCUMENTO PROTOCOLO -->
+                                        </div>
+                                    {% endblock content %}
+                                    {% block javascripts %}
+                                        <script type="text/javascript"
+                                                src="{% static 'js/plugins/jquery.dataTables.min.js' %}"></script>
+                                        <script type="text/javascript"
+                                                src="{% static 'js/plugins/dataTables.bootstrap.min.js' %}"></script>
+                                        <script type="text/javascript">
+                                            $('#sampleTable').DataTable();
+                                        </script>
+    <!-- Essential javascripts for application to work-->
+                                        {% include 'base/js.html' %}
+                                    {% endblock javascripts %}
+<!--   #######     FIM DA FICHA DE CHECKLIST   #######     -->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

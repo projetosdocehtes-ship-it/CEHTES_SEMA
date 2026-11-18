@@ -1,0 +1,321 @@
+<a data-bs-toggle="modal"
+   href="javascript:"
+   data-bs-target="#editModalAdquirente{{ adquirente.pessoa.id }}"
+   title="Alterar dados da pessoa selecionada."
+   role="button">
+    <i class="fas fa-edit">
+    </i>Editar Pessoa
+</class =>
+{% load home_formatos %}
+    <!-- Modal -->
+<div class="modal"
+     id="editModalAdquirente{{ adquirente.pessoa.id }}"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="editModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-white fs-5" id="editModalLabel">
+                    <i class="icon feather icon-edit"></i>
+                    Editar Adquirente
+                </h5>
+                <button type="button"
+                        class="fas fa-window-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <form action="{% url 'home:editModalPessoa' %}"
+                  method="post"
+                  id="meu-form"
+                  class="needs-validation">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="text" name="parte_id" value="{{ adquirente.pessoa.id }}" />
+                    <input type="text"
+                           name="pedido_item_id"
+                           value="{{ adquirente.pedido_item_id }}" />
+                    <input type="hidden" name="opcao_parte"                value="A" />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-group input-group-sm mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Nome</span>
+                                </div>
+                                <input type="text"
+                                       class="form-control"
+                                       name="nome"
+                                       value="{{ adquirente.pessoa.nome }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group input-group-sm mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Documentos</span>
+                                </div>
+                                <input type="text"
+                                       class="form-control"
+                                       name="documento"
+                                       value="{{ adquirente.pessoa.documento }}" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-group input-group-sm mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Nascimento</span>
+                                </div>
+                                <input type="date"
+                                       class="form-control"
+                                       name="data_nascimento"
+                                       value="{{ adquirente.pessoa.data_nascimento }}" />
+                            </div>
+                        </div>
+                    </div>
+                        <!-- OBTER O COMBOBOX DE ESTADO_CIVIL -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group input-group-sm mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Estado Civil</span>
+                                </div>
+                                <select class="form-select" name="estado-civil" id="id-estado-civil">
+                                    <option value="{{ adquirente.estado_civil }}" selected>
+                                        {{ adquirente.estado_civil|get_descricao_estado_civil }}
+                                    </option>
+                                    {% if adquirente.estado_civil|lista_estado_civil %}
+                                        {% for estado_civil in adquirente.estado_civil|lista_estado_civil %}
+                                            <option value="{{ estado_civil.0 }}">{{ estado_civil.1 }}</option>
+                                        {% endfor %}
+                                    {% else %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                            <!-- OBTER O COMBOBOX DE TipoRegimeCasamento -->
+                        <div class="col-lg-6">
+                            <div class="input-group input-group-sm mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Regime de Bens</span>
+                                </div>
+                                <select class="form-select" name="regime" id="id-regime" required="required">
+                                    <option value=""></option>
+                                    {% if adquirente.estado_civil_regime_id %}
+                                        <option value="{{ adquirente.estado_civil_regime_id }}" selected>
+                                            {{ adquirente.estado_civil_regime_id|get_descricao_tipo_regime_casamento }}
+                                        </option>
+                                    {% endif %}
+                                    {% for tipo_regime_casamento in ''|lista_tipo_regime_casamento %}
+                                        {% if tipo_regime_casamento.0 > 0 %}
+                                            <option value="{{ tipo_regime_casamento.0 }}">{{ tipo_regime_casamento.1 }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">Por favor, selecione um regime de bens.</div>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- OBTER O COMBOBOX DE SEXO -->
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group input-group-sm mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Sexo</span>
+                                </div>
+                                <select class="form-select" name="sexo"  id="sexo" required>
+                                    <option value="{{ adquirente.pessoa.sexo }}" selected>{{ adquirente.pessoa.sexo|formato_sexo }}</option>
+                                    {% if adquirente.pessoa.sexo|lista_sexo %}
+                                        {% for item in adquirente.pessoa.sexo|lista_sexo %}<option value="{{ item.0 }}">{{ item.1 }}</option>{% endfor %}
+                                    {% else %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-group input-group-sm mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Endereço</span>
+                                </div>
+                                <input type="text"
+                                       class="form-control"
+                                       name="endereco"
+                                       value="{{ adquirente.pessoa.endereco }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group input-group-sm mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Nacionalidade</span>
+                                </div>
+                                <input type="text"
+                                       class="form-control"
+                                       name="nacionalidade"
+                                       value="{{ adquirente.pessoa.nacionalidade }}" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-group input-group-sm mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Naturalidade</span>
+                                </div>
+                                <input type="text"
+                                       class="form-control"
+                                       name="naturalidade"
+                                       value="{{ adquirente.pessoa.naturalidade }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group input-group-sm mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Profissão</span>
+                                </div>
+                                <input type="text"
+                                       class="form-control"
+                                       name="profissao"
+                                       value="{{ adquirente.pessoa.profissao }}" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-group input-group-sm mb-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">e-mail</span>
+                                </div>
+                                <input type="text"
+                                       class="form-control"
+                                       name="email"
+                                       value="{{ adquirente.pessoa.email }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-50">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-group input-group-sm mb-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Pai</span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="nome_pai"
+                                           value="{{ adquirente.pessoa.nome_pai }}" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="input-group input-group-sm mb-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Mãe</span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="nome_mae"
+                                           value="{{ adquirente.pessoa.nome_mae }}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <p>Última edição: {{ adquirente.pessoa.data_alteracao|date:"D, d M Y H:i" }}</p>
+                        <button type="button"
+                                class="btn btn-sm btn-primary"
+                                onclick="validarESubmeter()">
+                            <i class="icon feather icon-save"></i> Salvar
+                        </button>
+                        <button type="button"
+                                class="btn btn-sm btn-secondary"
+                                data-bs-dismiss="modal">
+                            <i class="btn-close"></i> Fechar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        {% comment %} /**
+ * Este script JavaScript é executado quando o documento está pronto,
+ * e gerencia a lógica de exigir ou não o campo "regime" baseado no
+ * estado civil selecionado pelo usuário.
+ *
+ * Funções:
+ * 1. verificarEstadoCivil: Esta função verifica o estado civil selecionado pelo usuário.
+ *    Se o estado civil for 'Casado', o campo "regime" é marcado como obrigatório.
+ *    Se o estado civil for qualquer outro, o campo "regime" é marcado como não obrigatório.
+ *
+ * Comportamento:
+ * 1. Na inicialização, a função verificarEstadoCivil é chamada para configurar o estado inicial
+ *    do campo "regime" baseado no estado civil inicial.
+ * 2. A função verificarEstadoCivil é chamada novamente toda vez que o valor do campo estado civil muda,
+ *    garantindo que o campo "regime" seja marcado como obrigatório ou não, conforme apropriado.
+ *
+ * Uso:
+ * 1. Este script assume que existem elementos de formulário com os IDs 'id-estado-civil' e 'id-regime'.
+ * 2. Este script deve ser incluído em uma página que contém os elementos de formulário acima mencionados
+ *    e que usa a biblioteca jQuery.
+        */ {% endcomment %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            function verificarEstadoCivil() {
+                var estadoCivilDescricao = $('#id-estado-civil option:selected').text();
+                console.log(estadoCivilDescricao); // Agora deve imprimir a descrição, não o ID
+                var campoRegime = $('#id-regime');
+                console.log(campoRegime.val());
+                if (estadoCivilDescricao == 'Casado') {
+                    campoRegime.prop('required', true);
+                } else {
+                    campoRegime.prop('required', false);
+                }
+            }
+
+                  // Chamada inicial
+            verificarEstadoCivil();
+
+                  // Chamada a cada mudança no campo estado_civil
+            $('#id-estado-civil').change(verificarEstadoCivil);
+        });
+    </script>
+        {% comment %}
+* Este script é responsável por validar formulários no lado do cliente antes de permitir que sejam submetidos.
+* Utiliza o método 'checkValidity' para verificar se todos os campos do formulário estão preenchidos corretamente conforme os critérios de validação especificados.
+* Caso um formulário não esteja válido, o evento de submissão é cancelado e uma classe 'was-validated' é adicionada ao formulário,
+* permitindo a estilização de campos inválidos para fornecer feedback visual ao usuário.
+*
+* O script é auto-executável e começa a funcionar assim que é carregado, sem necessidade de chamadas de função externas.
+        {% endcomment %}
+    <script>
+        (function() {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+        {% comment %} * Este script define uma função chamada 'validarESubmeter', que é designada para ser chamada quando um botão é clicado.
+* A função primeiro obtém uma referência ao formulário com o id 'meu-form', e então verifica a validade do formulário usando o método 'checkValidity'.
+* Se o formulário for válido, ele será submetido ao servidor. Se não, a classe 'was-validated' será adicionada ao formulário,
+* proporcionando feedback visual ao usuário sobre os campos que precisam ser corrigidos antes de o formulário poder ser submetido.
+        {% endcomment %}
+    <script type="text/javascript">
+        function validarESubmeter() {
+            var form = document.getElementById('meu-form');
+            if (form.checkValidity()) {
+                form.submit();
+            } else {
+                form.classList.add('was-validated');
+            }
+        }
+    </script>

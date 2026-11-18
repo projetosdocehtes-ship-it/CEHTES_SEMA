@@ -1,0 +1,53 @@
+INSERT INTO public.home_tipotransacaofinanceira
+(id, descricao)
+VALUES('d493b533-d9be-42db-af24-550c6f9efe29', 'Receita');
+
+INSERT INTO public.home_tipotransacaofinanceira
+(id, descricao)
+VALUES('d493b533-d9be-42db-af24-550c6f9efe28', 'Despesa');
+
+
+
+
+
+
+
+INSERT INTO public.home_tipocategoriafinanceira
+(id,  descricao) VALUES('d493b533-d9be-42db-af24-550c6f9efe29', 'Geral');
+
+
+INSERT INTO public.home_tipocategoriafinanceira
+(id, descricao) VALUES('d493b533-d9be-42db-af24-550c6f9efe28', 'Protocolo');
+
+
+INSERT INTO public.home_tipocategoriafinanceira
+(id, descricao) VALUES('d493b533-d9be-42db-af24-550c6f9efe27', 'Pedido de Certid�o');
+
+
+
+
+
+
+
+
+
+
+INSERT INTO public.home_tipooperacaofinanceira
+(id, descricao)
+VALUES('d493b533-d9be-42db-af24-550c6f9efe29', 'Dinheiro');
+
+INSERT INTO public.home_tipooperacaofinanceira
+(id, descricao)
+VALUES('d493b533-d9be-42db-af24-550c6f9efe28', 'Cart�o Cr�dito');
+
+INSERT INTO public.home_tipooperacaofinanceira
+(id, descricao)
+VALUES('d493b533-d9be-42db-af24-550c6f9efe27', 'Pix');
+
+INSERT INTO public.home_tipooperacaofinanceira
+(id, descricao)
+VALUES('d493b533-d9be-42db-af24-550c6f9efe26', 'Cart�o D�bito');
+
+INSERT INTO public.home_tipooperacaofinanceira
+(id, descricao)
+VALUES('d493b533-d9be-42db-af24-550c6f9efe25', 'Transfer�ncia Banc�ria');

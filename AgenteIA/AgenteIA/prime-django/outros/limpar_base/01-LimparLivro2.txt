@@ -1,0 +1,12 @@
+delete from public.home_imoveis_medidas ;
+delete from public.home_anteriores ;
+delete from public.home_contribuintes ;
+delete from public.home_ruas;
+delete from public.home_lotes;
+delete from public.home_fic_auxiliares;
+delete from public.home_unidades;
+delete from public.home_rurais;
+delete from public.home_rurais_nomes;
+delete from public.home_vinculos;
+delete from public.home_imovelmedida ;
+delete from public.home_imoveis ;

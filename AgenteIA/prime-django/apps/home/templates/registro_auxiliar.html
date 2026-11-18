@@ -1,0 +1,303 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    {% load humanize %}
+    <div class="card" id="card_real">
+        <div class="card-header">
+            <h5>{{ item|tipo_registro|get_descricao_tipo_registro }}:</h5>
+            <span class="text-white f-24">{{ item|get_numero_registro_por_pedido|formatar_numero_registro }}</span>
+            <p class="text-white f-16">
+                <a class="text-white f-16"
+                   href="{% url 'home:protocolo_search' %}?numero_protocolo={{ item|get_numero_protocolo_filter }}"
+                   title="Clique para Acessar o Protocolo"
+                   data-bs-toggle="tooltip">Protocolo: {{ item|get_numero_protocolo_filter|protocolo_formatado }}</a>
+            </p>
+        </div>
+        <div class="card-body">
+            <div class="card-body table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Registro</th>
+                            <th>Tipo de Cédula</th>
+                            <th>Datas</th>
+                            <th>Outro</th>
+                            <th>Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in item|get_detalhes_livro03_por_numero %}
+                            <tr>
+                                <td>
+                                    {% comment %} Muda a cor do registro de acordo com a data de cancelamento.{% endcomment %}
+                                    {% if item.6  == "" %}
+                                        <span class="badge bg-danger f-14">{{ item.0 }}</span>
+                                    {% else %}
+                                        <span class="badge bg-success f-14">{{ item.0 }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="cell-content">{{ item.1 }} - Nº {{ item.2 }}</div>
+                                    <div class="cell-content">{{ item.7 }}</div>
+                                    <div class="cell-content">{{ item.3 }} Grau.</div>
+                                </td>
+                                <td>
+                                    <div class="cell-content">Abertura: {{ item.4 }}</div>
+                                    <div class="cell-content">Vencimento: {{ item.5 }}</div>
+                                    <div class="cell-content">
+                                        Cancelamento: <b>{{ item.6 }}</b>
+                                    </div>
+                                </td>
+                                <td>{{ item.8|default:"" }}</td>
+                                <td>
+                                    <a class="label bg-info text-white"
+                                       href="{% url 'home:texto_lv2' pk=item.0 pedido_item_id=item.0 %}">
+                                        <i class="icon feather icon-file"></i> Texto
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a type="button"
+               href="#card_real_proprietario"
+               class="btn btn-sm btn-primary  text-white">
+            Credor(es)  <span class="badge bg-dark">{{ item|get_vinculos_de_proprietarios_atuais_com_percentual|length }}</span></a>
+            <a type="button"
+               href="#card_real_hipotecas"
+               class="btn btn-danger  text-white">
+            Devedor(es)  <span class="badge bg-dark">{{ item|get_hipotecas_por_pedido_item|length }}</span></a>
+            <a type="button"
+               href="#card_real_alienacoes"
+               class="btn btn-warning text-dark">
+            Avalista(s)  <span class="badge bg-dark">{{ item|get_alienacoes_por_pedido_item|length }}</span></a>
+            <a type="button"
+               href="#card_real_livro03"
+               class="btn btn-sm btn-secondary">
+            Envolvidos <span class="badge bg-dark">{{ item|get_detalhes_livro03_por_numero|length }}</span></a>
+            <!-- Dropdown Button -->
+            <a class="btn btn-sm btn-primary text-white dropdown-toggle"
+               type="button"
+               id="dropdownNumero"
+               data-bs-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false"><i class="icon feather icon-settings"></i> Opções </a>
+            <!-- Dropdown Menu -->
+            <div class="dropdown-menu" aria-labelledby="dropdownNumero">
+                <!-- Imagem Option -->
+                <a class="dropdown-item"
+                   href="{% url 'home:gerar_minuta_imagem' id=item|get_numero_registro_por_pedido tipo=item|tipo_registro %}"
+                   target="_blank">
+                    <i class="icon feather icon-image"></i>Imagem
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card" id="card_real_proprietario">
+        <div class="card-header">
+            <a type="button" class="btn btn-sm btn-primary  text-white">
+            Credor(es)  <span class="badge bg-dark">{{ item|get_vinculos_de_proprietarios_atuais_com_percentual|length }}</span></a>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ato</th>
+                        <th>CPF/CNPJ</th>
+                        <th>Nome</th>
+                        <th>Papel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in item|get_detalhes_livro03_por_numero %}
+                        <!-- Linhas adicionais para itens envolvidos -->
+                        {% for envolvidos in item.9 %}
+                            <tr class="envolvido">
+                                {% if envolvidos.2 == "Credor" %}
+                                    <td>R.1</td>
+                                    <td>{{ envolvidos.1|formatar_documento }}</td>
+                                    <td>{{ envolvidos.0 }}</td>
+                                    <td>
+                                        {% if item.6 == '' %}
+                                            {% if envolvidos.2 == "Credor" %}<span class="badge bg-primary f-12">{{ envolvidos.2 }}</span>{% endif %}
+                                        {% else %}
+                                            <div class="cell-content">{{ envolvidos.2 }}</div>
+                                            <div class="cell-content">(BAIXADO)</div>
+                                        {% endif %}
+                                    </td>
+                                    <!-- Adicione mais células vazias aqui se quiser alinhar com o resto da tabela -->
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="#card_real"
+               class="btn btn-sm btn-warning text-dark "
+               title="Retornar ao topo"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+    </div>
+    <!-- HIPOTECAS -->
+    <div class="card" id="card_real_hipotecas">
+        <div class="card-header">
+            <a type="button" class="btn btn-danger  text-white">
+            Devedor(es)  <span class="badge bg-dark">{{ item|get_hipotecas_por_pedido_item|length }}</span></a>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ato</th>
+                        <th>CPF/CNPJ</th>
+                        <th>Nome</th>
+                        <th>Papel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in item|get_detalhes_livro03_por_numero %}
+                        <!-- Linhas adicionais para itens envolvidos -->
+                        {% for envolvidos in item.9 %}
+                            <tr class="envolvido">
+                                {% if envolvidos.2 == "Devedor" %}
+                                    <td>R.1</td>
+                                    <td>{{ envolvidos.1|formatar_documento }}</td>
+                                    <td>{{ envolvidos.0 }}</td>
+                                    <td>
+                                        {% if item.6 == '' %}
+                                            {% if envolvidos.2 == "Devedor" %}<span class="badge bg-danger f-12">{{ envolvidos.2 }}</span>{% endif %}
+                                        {% else %}
+                                            {{ envolvidos.2 }} (BAIXADO)
+                                        {% endif %}
+                                    </td>
+                                    <!-- Adicione mais células vazias aqui se quiser alinhar com o resto da tabela -->
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="#card_real"
+               class="btn btn-sm btn-warning text-dark "
+               title="Retornar ao topo"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+    </div>
+    <!-- Alienação INICIO -->
+    <div class="card" id="card_real_alienacoes">
+        <div class="card-header">
+            <a type="button" class="btn btn-warning text-dark">
+            Avalista(s)  <span class="badge bg-dark">{{ item|get_alienacoes_por_pedido_item|length }}</span></a>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ato</th>
+                        <th>CPF/CNPJ</th>
+                        <th>Nome</th>
+                        <th>Papel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in item|get_detalhes_livro03_por_numero %}
+                        <!-- Linhas adicionais para itens envolvidos -->
+                        {% for envolvidos in item.9 %}
+                            <tr class="envolvido">
+                                {% if envolvidos.2 == "Avalista" %}
+                                    <td>R.1</td>
+                                    <td>{{ envolvidos.1|formatar_documento }}</td>
+                                    <td>{{ envolvidos.0 }}</td>
+                                    <td>
+                                        {% if item.6 == '' %}
+                                            {% if envolvidos.2 == "Avalista" %}
+                                                <span class="badge bg-warning f-12">{{ envolvidos.2 }}</span>
+                                            {% else %}
+                                                {{ envolvidos.2 }}
+                                            {% endif %}
+                                        {% else %}
+                                            {{ envolvidos.2 }} (BAIXADO)
+                                        {% endif %}
+                                    </td>
+                                    <!-- Adicione mais células vazias aqui se quiser alinhar com o resto da tabela -->
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="#card_real"
+               class="btn btn-sm btn-warning text-dark "
+               title="Retornar ao topo"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+    </div>
+    <div class="card" id="card_real_livro03">
+        <div class="card-header">
+            <a type="button" class="btn btn-sm btn-secondary text-white">
+            Envolvidos (Todos) <span class="badge bg-dark">{{ item|get_detalhes_livro03_por_numero|length }}</span></a>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ato</th>
+                        <th>CPF/CNPJ</th>
+                        <th>Nome</th>
+                        <th>Relacionamento</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in item|get_detalhes_livro03_por_numero %}
+                        <!-- Linhas adicionais para itens envolvidos -->
+                        {% for envolvidos in item.9 %}
+                            <tr class="envolvido">
+                                <td>R.1</td>
+                                <td>{{ envolvidos.1|formatar_documento }}</td>
+                                <td>{{ envolvidos.0 }}</td>
+                                <td>
+                                    {% if item.6 == '' %}
+                                        {% if envolvidos.2 == "Avalista" %}
+                                            <span class="badge bg-warning f-12">{{ envolvidos.2 }}</span>
+                                        {% elif envolvidos.2 == "Devedor" %}
+                                            <span class="badge bg-danger f-12">{{ envolvidos.2 }}</span>
+                                        {% elif envolvidos.2 == "Credor" %}
+                                            <span class="badge bg-primary f-12">{{ envolvidos.2 }}</span>
+                                        {% else %}
+                                            {{ envolvidos.2 }}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ envolvidos.2 }} (BAIXADO)
+                                    {% endif %}
+                                </td>
+                                <!-- Adicione mais células vazias aqui se quiser alinhar com o resto da tabela -->
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="#card_real"
+               class="btn btn-sm btn-warning text-dark "
+               title="Retornar ao topo"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+    </div>
+{% endblock %}

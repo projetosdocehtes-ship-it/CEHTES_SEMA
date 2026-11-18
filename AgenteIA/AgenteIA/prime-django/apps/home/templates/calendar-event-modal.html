@@ -1,0 +1,99 @@
+<!-- Apenas Bootstrap JS -->
+<div class="modal" id="eventModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white">Adicionar novo evento ou aviso para COLABORADOR</h5>
+            </button>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <!-- Título do Evento -->
+                        <div class="form-group">
+                            {{ form.title.label_tag }}
+                            {{ form.title }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Origem -->
+                        <div class="form-group">
+                            {{ form.origem.label_tag }}
+                            {{ form.origem }}
+                        </div>
+                        <!-- Data e Hora de Início -->
+                        <div class="form-group">
+                            {{ form.start_time.label_tag }}
+                            {{ form.start_time }}
+                        </div>
+                        <!-- Colaborador -->
+                        <div class="form-group">
+                            {{ form.auth_user.label_tag }}
+                            {{ form.auth_user }}
+                        </div>
+                        <!-- Descrição -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                {{ form.description.label_tag }}
+                                {{ form.description }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Número -->
+                        <div class="form-group">
+                            {{ form.numero.label_tag }}
+                            {{ form.numero }}
+                        </div>
+                        <!-- Data e Hora de Fim -->
+                        <div class="form-group">
+                            {{ form.end_time.label_tag }}
+                            {{ form.end_time }}
+                        </div>
+                        <!-- Caminho da Ação -->
+                        <div class="form-group">
+                            {{ form.url.label_tag }}
+                            {{ form.url }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="closeModalButton">Fechar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+            <script>
+                document.getElementById('closeModalButton').addEventListener('click', function() {
+                    var modal = document.getElementById('eventModal');
+                    modal.style.display = "none";
+                });
+            </script>
+        </form>
+        {% comment %} <form method="post">
+      {% csrf_token %}
+      <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+        {% for field in form %}
+          <div class="form-group">
+            <label for="{{ field.for_label_id }}" class="col-form-label">
+              <b>{{ field.label }}:</b>
+            </label>
+            {{ field }}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="closeModalButton">Fechar</button>
+        <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+      </div>
+      <script>
+           document.getElementById('closeModalButton').addEventListener('click', function() {
+                var modal = document.getElementById('eventModal');
+                modal.style.display = "none";
+           });
+</script>
+        </form> {% endcomment %}
+    </div>
+</div>
+</div>

@@ -1,0 +1,6 @@
+INSERT INTO public.comum_tiporegistro
+(id, nome)
+VALUES(1, 'Urbano');
+INSERT INTO public.comum_tiporegistro
+(id, nome)
+VALUES(2, 'Rural');

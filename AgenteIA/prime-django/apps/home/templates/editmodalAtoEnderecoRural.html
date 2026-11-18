@@ -1,0 +1,224 @@
+<div></div>
+<a class="label text-white f-12"
+   style="background-color: #466887"
+   data-bs-toggle="modal"
+   href="javascript:"
+   data-bs-target="#myModal{{ partes_imovel.id }}"
+   title="Alterar dados do imóvel selecionada"
+   data-bs-toggle="tooltip"
+   role="button">
+    <span class="font-weight-bold"><i class="icon feather icon-file-minus">
+    </i>  Alterar</span>
+</a>
+{% load home_formatos %}
+<!-- Modal -->
+<div class="modal"
+     id="myModal{{ partes_imovel.id }}"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#000">
+                <h4 class="modal-title text-white fs-5" id="myModalLabel">
+                    <i class="icon feather icon-edit"></i>  Alterando dados do Imóvel - Rural:
+                    <p>{{ partes_imovel.nome_fazenda }}</p>
+                </h4>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action={% url 'home:editModalAtoParteEndereco' %} method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <!-- Inicio - na mesma linha -->
+                        <input type="hidden" name="parte_id" value="{{ partes_imovel.id }}" />
+                        <!-- Inicio - na mesma linha -->
+                        <input type="hidden"
+                               name="pedido_item_id"
+                               value="{{ partes_imovel.pedido_item_id }}" />
+                        <!-- Inicio - na mesma linha -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Municipio</span>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   name="municipio"
+                                   id="municipio"
+                                   placeholder="municipio"
+                                   value="{{ partes_imovel.municipio }}" />
+                        </div>
+                        <!-- Inicio - na mesma linha -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nome da Fazenda</span>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   name="nome_fazenda"
+                                   id="nome_fazenda"
+                                   placeholder="nome_fazenda"
+                                   value="{{ partes_imovel.nome_fazenda }}" />
+                        </div>
+                        <!-- Inicio - na mesma linha -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Caracteristica da Fazenda</span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="caracteristica_fazenda"
+                                           id="caracteristica_fazenda"
+                                           placeholder="caracteristica_fazenda"
+                                           value="{{ partes_imovel.caracteristica_fazenda }}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Area da Fazenda</span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="area_fazenda"
+                                           id="area_fazenda"
+                                           placeholder="area_fazenda"
+                                           value="{{ partes_imovel.area_fazenda }}" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Residencial -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Número do CCIRR</span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="numero_ccirr"
+                                           id="numero_ccirr"
+                                           placeholder="numero_ccirr"
+                                           value="{{ partes_imovel.numero_ccirr }}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="input-group mb-3">
+                                    <!-- OBTER O COMBOBOX DE RESIDENCIAL -->
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Número do CAR</span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="numero_car"
+                                           id="numero_car"
+                                           placeholder="numero_car"
+                                           value="{{ partes_imovel.numero_car }}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="input-group mb-3">
+                                    <!-- OBTER O COMBOBOX DE RESIDENCIAL -->
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Número do INCRA</span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="numero_incra"
+                                           id="numero_incra"
+                                           placeholder="numero_incra"
+                                           value="{{ partes_imovel.numero_incra }}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-group mb-3">
+                                    <!-- OBTER O COMBOBOX DE RESIDENCIAL -->
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Número do NIRF</span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="numero_nirf"
+                                           id="numero_nirf"
+                                           placeholder="numero_nirf"
+                                           value="{{ partes_imovel.numero_nirf }}" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Data Validade do NIRF</span>
+                                    </div>
+                                    <input type="text"
+                                           class="form-control"
+                                           name="data_validade_itr"
+                                           id="data_validade_itr"
+                                           placeholder="data_validade_itr"
+                                           value="{{ partes_imovel.data_validade_itr }}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- RESERVA LEGAL -->
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <!-- OBTER O COMBOBOX DE reserva_legal -->
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Reserva Legal</span>
+                                        </div>
+                                        <select class="form-select" name="reserva_legal" id="reserva_legal" required>
+                                            <option value="{{ partes_imovel.reserva_legal }}" selected>{{ partes_imovel.reserva_legal|formatar_sim_nao }}</option>
+                                            <option value="N">Não</option>
+                                            <option value="S">Sim</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <!-- OBTER O COMBOBOX DE Georefenciada -->
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Georefenciada</span>
+                                        </div>
+                                        <select class="form-select" name="georefenciada" id="georefenciada" required>
+                                            <option value="{{ partes_imovel.georefenciada }}" selected>{{ partes_imovel.georefenciada|formatar_sim_nao }}</option>
+                                            <option value="N">Não</option>
+                                            <option value="S">Sim</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm btn-primary">
+                        <i class="icon feather icon-save"></i> Salvar
+                    </button>
+                    <button type="button"
+                            class="btn btn-sm btn-secondary"
+                            data-bs-dismiss="modal">
+                        <i class="btn-close"></i> Fechar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

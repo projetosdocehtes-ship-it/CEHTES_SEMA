@@ -1,0 +1,7 @@
+{% load django_tables2 %}
+<div class="container mt-5">
+    <!-- Renderiza a tabela -->
+    {% render_table table 'django_tables2/bootstrap.html' %}
+    <!-- Paginação com Bootstrap -->
+    {% include "meu_template_de_paginacao.html" %}
+</div>

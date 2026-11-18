@@ -1,0 +1,108 @@
+{% extends "layouts/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% load pedidos_formatos %}
+{% load django_tables2 %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        {% if ato.pedido.numero_protocolo_firebird %}
+                            Protocolo: {{ ato.pedido.numero_protocolo_firebird }} -
+                        {% else %}
+                            Pedido: {{ ato.pedido.numero_pedido }} -
+                        {% endif %}
+                        Detalhes do Ato: {{ ato }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <!-- Exibição dos detalhes do Ato -->
+                    {% include "pedidos/ato/include_ato_detail.html" %}
+                    <!-- Adicione mais campos conforme necessário -->
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <a href="{{ ato.get_listar_url }}"
+                           class="btn btn-sm btn-outline-secondary"><i class="icon feather icon-eye"> </i>Voltar aos Atos</a>
+                        {% if ato.pedido.numero_protocolo_firebird %}
+                            <a href="{% url 'home:abrir_livro01_por_numero_protocolo' numero_protocolo=ato.pedido.numero_protocolo_firebird %}"
+                               class="btn btn-sm btn-outline-secondary"><i class="icon feather icon-arrow-left"> </i>Protocolo
+                            </a>
+                        {% else %}
+                            <a href="{{ ato.get_pedido_url }}"
+                               class="btn btn-sm btn-outline-secondary"><i class="icon feather icon-arrow-left"> </i>Voltar ao Pedido</a>
+                        {% endif %}
+                        <a href="{{ ato.get_update_url }}" class="btn btn-sm btn-primary"><i class="icon feather icon-edit"> </i>Editar Ato</a>
+                        <a href="{{ ato.get_delete_url }}"
+                           class="btn btn-sm btn-danger d-none d-md-inline-block">
+                            <i class="icon feather icon-trash" title="Excluir"> </i>Excluir</a>
+                        <a class="btn btn-sm btn-outline-primary text-dark"
+                           href="{% url 'pedidos:ato_create' ato.pedido.pk %}">
+                            <i class="icon feather icon-plus d-none d-md-inline-block"></i> Adicionar Ato
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if ato and atos_complementares_agrupados_table %}
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Atos Complementares para {{ ato }}</h5>
+                    </div>
+                    <div class="card-block table-border-style">{% render_table atos_complementares_agrupados_table %}</div>
+                    <div class="card-footer">
+                        <a href="{{ ato.get_ato_complementar_create_url }}"
+                           class="btn btn-sm btn-primary"><i class="icon feather icon-plus"> </i>Adicionar Ato Complementar</a>
+                        <a href="{{ ato.get_listar_url }}"
+                           class="btn btn-sm btn-outline-secondary"><i class="icon feather icon-eye"> </i>Ver Todos os Atos</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Participantes no Ato</h5>
+                </div>
+                <div class="card-block table-border-style">
+                    {% if ato.titulo %}
+                        <p>
+                            Informe abaixo as partes que compoem o titulo: <b>{{ ato.titulo }}</b>
+                        </p>
+                    {% else %}
+                        <p>Informe abaixo as partes que compoem o ato</p>
+                    {% endif %}
+                    {% render_table participacao_table %}
+                    {% block table_footer %}
+                        <table class="table table-striped table-bordered no-footer nowrap">
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" style="text-align:right">
+                                        <strong>Total:</strong>
+                                    </td>
+                                    <td>{{ participacao_table.get_percentual_participacao_sum }}</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    {% endblock %}
+                </div>
+                <div class="card-footer">
+                    <a href="{{ ato.get_adicionar_parte_url }}"
+                       class="btn btn-sm btn-primary"><i class="icon feather icon-plus"> </i>Adicionar Participante</a>
+                    <a class="btn btn-sm text-white"
+                       style="background-color: #3d0c02"
+                       href="{% url 'home:minutas_view' pedido_item_id=ato.id ato_id=ato.ato_praticavel.home_atos_id %}"
+                       target="_blank"
+                       title="Acessar as minutas para o Ato."
+                       aria-pressed="true">
+                        &emsp;<i class="icon feather icon-file-text"></i>Minutas&emsp;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

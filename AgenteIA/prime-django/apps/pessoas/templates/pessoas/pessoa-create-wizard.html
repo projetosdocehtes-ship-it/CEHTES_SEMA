@@ -1,0 +1,33 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          {% if not object %}
+            <h5>Cadastrar Pessoa</h5>
+          {% else %}
+            <h5>Alterar Pessoa</h5>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <p>Etapa {{ wizard.steps.step1 }} de {{ wizard.steps.count }}</p>
+          <form method="post">
+            {% csrf_token %}
+            {{ wizard.management_form }}
+            {% if wizard.form.forms %}
+              {{ wizard.form.management_form }}
+              {% for form in wizard.form.forms %}
+                {% crispy form %}
+              {% endfor %}
+            {% else %}
+              {% crispy wizard.form %}
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

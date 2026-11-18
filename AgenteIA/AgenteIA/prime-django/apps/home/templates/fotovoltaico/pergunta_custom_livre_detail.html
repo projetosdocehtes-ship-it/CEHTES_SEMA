@@ -1,0 +1,48 @@
+{% extends "fotovoltaico/base.html" %}
+{% block title %}{{ pergunta }}{% endblock %}
+{% block content %}
+
+<h5 class="alert alert-warning">Pergunta: <b>{{ pergunta }}</b></h5>
+
+<div class="alert alert-info">
+  <b>{{ rendered|linebreaksbr|safe }}</b>
+</div>
+
+<div>
+    <form method="get" action="{% url 'home:pergunta_detail_livre' projeto_id=projeto.id %}" class="d-flex">
+        {% csrf_token %}
+        <input type="text"
+            name="texto"
+            class="form-control me-2"
+            placeholder="Digite sua pergunta..."
+            style="background-color: #fff3cd;"
+        >
+
+        <button type="submit" class="btn btn-sm btn-primary">
+            <i class="fas fa-paper-plane"></i> Perguntar
+        </button>
+    </form>
+</div>
+
+<br>
+
+<div>
+    <a class="btn btn-sm btn-warning text-dark"
+        href="{% url 'home:perguntas_list' pk=projeto.id %}"
+        title="Clique aqui para ver ou fazer perguntas para IA">
+        <i class="fas fa-robot"></i>Voltar Perguntas p/ IA
+    </a>
+
+    <a href="{% url 'home:quantas_placas' pk=projeto.id %}"
+        class="btn btn-sm btn-outline-success text-dark d-inline-flex align-items-center"
+        title="Clique aqui para CALCULAR a quantidade placas">
+        <i class="fas fa-solar-panel me-2"></i> Voltar Placas
+    </a>
+
+    <a href="{% url 'home:projeto_visualizar' pk=projeto.id %}"
+        class="btn btn-sm btn-outline-secondary text-dark d-inline-flex align-items-center">
+        <i class="fas fa-project-diagram me-2"></i> Voltar Projeto
+    </a>
+</div>
+
+{% endblock %}

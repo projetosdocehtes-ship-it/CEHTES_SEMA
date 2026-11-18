@@ -1,0 +1,15 @@
+[DADOS]
+IP      	= 192.168.1.195
+BANCO   	= E:\---\DB\RICS.gdb
+
+PORTA   	= 3050
+USUARIO 	= sysdba
+SENHA   	= masterkey
+CHARSET 	= ISO8859_1
+SOLICITAR_L01	= S
+
+[DESTINO]
+host		= 192.168.1.73
+database	= cartorio
+user		= postgres
+password	= cartorio4406

@@ -1,0 +1,365 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="checklist-header p-10 mb-10 bg-info text-black">
+            <h5>Checklist pelo Colaborador: {{ current_user }}</h5>
+            <p>
+                Protocolo:
+                <a class="btn btn-sm btn-primary text-white btn-lg"
+                   onclick="get_numero({{ protocolo }})"
+                   title="Clique para acessar os detalhes"
+                   data-bs-toggle="tooltip">{{ protocolo|protocolo_formatado }}</a>
+                - Ato Praticado: {{ ato_praticado }}
+            </p>
+            <p>
+                Número: {{ tipo_registro }}.{{ numero_matricula|formatar_numero_registro }}
+                - Número do Ato: {{ numero_ato|default:"" }}
+                - Código da Tabela: {{ codigo_tabela }}
+            </p>
+            <a class="btn btn-warning text-dark"
+               title="Voltar para a página anterior sem alterar os dados"
+               data-bs-toggle="tooltip"
+               onclick="getVoltar()">Voltar</a>
+        </div>
+        <input type="submit"
+               class="btn bg-success text-white"
+               title="Atualizar as respostas para o comparativo"
+               data-bs-toggle="tooltip"
+               value="           Salvar           "
+               id="b2"
+               onclick=".">
+        <!-- COMPARATIVO -->
+        <a class="btn text-white"
+           title="Comparar as respostas"
+           data-bs-toggle="tooltip"
+           style="background-color: #ac2bac"
+           href="{% url 'home:checklist_imovel' id=pedido_item_id %}"
+           aria-pressed="true"
+           role="button"><i class="icon feather icon-chart-bar"></i>Comparativo</a>
+        <!--        INICIO DA FICHA DE Checklist        -->
+        <div>
+            {% for i in perguntas_E %}
+                <table class="table">
+                    <tr>
+                        <td class="text-black">
+                            <strong style="font-size: 16px;">{{ i.questions }}</strong>
+                        </td>
+                    </tr>
+                    {% if i.option1 != '.' %}
+                        <tr>
+                            <td>
+                                <input type="radio" class="rb" name=O-{{ i.id }}-{{ i.id }}-{{ i.id }} id="option1" value="{{ i.option1 }}"> {{ i.option1 }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if i.option2 != '.' %}
+                        <tr>
+                            <td>
+                                <input type="radio" class="rb" name=O-{{ i.id }}-{{ i.id }}-{{ i.id }} id="option2" value="{{ i.option2 }}"> {{ i.option2 }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if i.option3 != '.' %}
+                        <tr>
+                            <td>
+                                <input type="radio" class="rb" name=O-{{ i.id }}-{{ i.id }}-{{ i.id }} id="option3" value="{{ i.option3 }}"> {{ i.option3 }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if i.option4 != '.' %}
+                        <tr>
+                            <td>
+                                <input type="radio" class="rb" name=O-{{ i.id }}-{{ i.id }}-{{ i.id }} id="option4" value="{{ i.option4 }}"> {{ i.option4 }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if i.option5 != '.' %}
+                        <tr>
+                            <td>
+                                <input type="radio" class="rb" name=O-{{ i.id }}-{{ i.id }}-{{ i.id }} id="option5" value="{{ i.option5 }}"> {{ i.option5 }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td>
+                            <label id="corans" class="rb" style="display:none ; color : green">
+                                <b>{{ i.Corrans }}</b>
+                            </label>
+                        </td>
+                    </tr>
+                    <br>
+                </table>
+            {% endfor %}
+            <br>
+            {% for it in perguntas_T %}
+                <table class="table">
+                    <tr>
+                        <td class="text-black">
+                            <strong style="font-size: 16px;">{{ it.questions }}</strong>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" class="rb" name=O-{{ it.id }}-{{ it.id }}-{{ it.id }} id="option1" value="{{ it.option1 }}" size="70">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label id="corans" class="rb" style="display:none ; color : green">
+                                    <b>{{ it.Corrans }}</b>
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+            {% endfor %}
+            <br>
+            <h1 class="p-10 mb-10 bg-secondary text-white">Adquirente(s):</h1>
+            {% for partes_A in partes_A %}
+                <table class="table">
+                    <tr>
+                        <td class="label p-12 mb-12 text-black" style="font-size: 18px;">
+                            Nome: <strong style="font-size: 18px;">{{ partes_A.pessoa.nome }}</strong> - {{ partes_A.pessoa.cpf|default:""|formatar_documento }}
+                        </td>
+                    </tr>
+                    {% for i in perguntas_A %}
+                        <table class="table">
+                            <tr>
+                                <td class="text-black">
+                                    <strong style="font-size: 16px;">{{ i.questions }}</strong>
+                                </tr>
+                                {% if i.option1 != '.' %}
+                                    <tr>
+                                        <td>
+                                            <input type="radio" class="rb" name=A-{{ partes_A.id }}-{{ i.id }}-{{ partes_A.pessoa }} id="option1" value="{{ i.option1 }}"> {{ i.option1 }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if i.option2 != '.' %}
+                                    <tr>
+                                        <td>
+                                            <input type="radio" class="rb" name=A-{{ partes_A.id }}-{{ i.id }}-{{ partes_A.pessoa }} id="option2" value="{{ i.option2 }}"> {{ i.option2 }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if i.option3 != '.' %}
+                                    <tr>
+                                        <td>
+                                            <input type="radio" class="rb" name=A-{{ partes_A.id }}-{{ i.id }}-{{ partes_A.pessoa }} id="option3" value="{{ i.option3 }}"> {{ i.option3 }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if i.option4 != '.' %}
+                                    <tr>
+                                        <td>
+                                            <input type="radio" class="rb" name=A-{{ partes_A.id }}-{{ i.id }}-{{ partes_A.pessoa }} id="option4" value="{{ i.option4 }}"> {{ i.option4 }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if i.option5 != '.' %}
+                                    <tr>
+                                        <td>
+                                            <input type="radio" class="rb" name=A-{{ partes_A.id }}-{{ i.id }}-{{ partes_A.pessoa }} id="option5" value="{{ i.option5 }}"> {{ i.option5 }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td>
+                                        <br>
+                                    </td>
+                                </tr>
+                            </table>
+                    {% endfor %}
+                    {% for i in perguntas_A_T %}
+                        <table class="table">
+                            <tr>
+                                <td class="text-black">
+                                    <strong style="font-size: 16px;">{{ i.questions }}</strong>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" class="rb" name=A-{{ partes_A.id }}-{{ i.id }}-{{ partes_A.pessoa }} id="option1" value="{{ i.option1 }}" size="70">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label id="corans" class="rb" style="display:none ; color : green">
+                                            <b>{{ i.Corrans }}</b>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </table>
+                    {% endfor %}
+                    <tr>
+                        <td>
+                            <br>
+                        </td>
+                    </tr>
+                </table>
+            {% endfor %}
+            <br>
+            <br>
+            <h1 class="p-10 mb-10 bg-secondary text-white">Transmitente(s):</h1>
+            {% for partes_T in partes_T %}
+                <table class="table">
+                    <tr>
+                        <td class="label p-12 mb-12 text-black" style="font-size: 18px;">
+                            Nome: <strong style="font-size: 18px;">{{ partes_T.pessoa.nome }}</strong> - {{ partes_T.pessoa.cpf|default:""|formatar_documento }}
+                        </td>
+                    </tr>
+                    {% for i in perguntas_R %}
+                        <table class="table">
+                            <tr>
+                                <td class="text-black">
+                                    <strong style="font-size: 16px;">{{ i.questions }}</strong>
+                                </tr>
+                                {% if i.option1 != '.' %}
+                                    <tr>
+                                        <td>
+                                            <input type="radio" class="rb" name=T-{{ partes_T.id }}-{{ i.id }}-{{ partes_T.pessoa }} id="option1" value="{{ i.option1 }}"> {{ i.option1 }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if i.option2 != '.' %}
+                                    <tr>
+                                        <td>
+                                            <input type="radio" class="rb" name=T-{{ partes_T.id }}-{{ i.id }}-{{ partes_T.pessoa }} id="option2" value="{{ i.option2 }}"> {{ i.option2 }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if i.option3 != '.' %}
+                                    <tr>
+                                        <td>
+                                            <input type="radio" class="rb" name=T-{{ partes_T.id }}-{{ i.id }}-{{ partes_T.pessoa }} id="option3" value="{{ i.option3 }}"> {{ i.option3 }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if i.option4 != '.' %}
+                                    <tr>
+                                        <td>
+                                            <input type="radio" class="rb" name=T-{{ partes_T.id }}-{{ i.id }}-{{ partes_T.pessoa }} id="option4" value="{{ i.option4 }}"> {{ i.option4 }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                {% if i.option5 != '.' %}
+                                    <tr>
+                                        <td>
+                                            <input type="radio" class="rb" name=T-{{ partes_T.id }}-{{ i.id }}-{{ partes_T.pessoa }} id="option5" value="{{ i.option5 }}"> {{ i.option5 }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td>
+                                        <br>
+                                    </td>
+                                </tr>
+                            </table>
+                    {% endfor %}
+                    {% for i in perguntas_R_T %}
+                        <table class="table">
+                            <tr>
+                                <td class="text-black">
+                                    <strong style="font-size: 16px;">{{ i.questions }}</strong>
+                                    <tr>
+                                        <td>
+                                            <input type="text" class="rb" name=T-{{ partes_T.id }}-{{ i.id }}-{{ partes_T.pessoa }} id="option1" value="{{ i.option1 }}" size="70">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label id="corans" class="rb" style="display:none ; color : green">
+                                                <b>{{ i.Corrans }}</b>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </table>
+                    {% endfor %}
+                    <br>
+                </table>
+            {% endfor %}
+            <hr>
+                                    <!--        CABECALHO -->
+                                    <!--
+                                                                    <input class="btn bg-warning text-black" value="Respostas"   id="b1" onclick="getanswers()">
+                                                                -->
+                                    <!--<a class="btn bg-primary text-white" href="{% url 'home:checkliste_correto_list_View' id=pedido_item_id  %}" aria-pressed="true" role="button">               Salvar               </a>  -->
+                                    <!-- SALVAR RESPOSTAS -->
+            <input type="submit"
+                   class="btn bg-success text-white"
+                   title="Atualizar as respostas para o comparativo"
+                   data-bs-toggle="tooltip"
+                   value="           Salvar           "
+                   id="b2"
+                   onclick=".">
+                                    <!-- COMPARATIVO -->
+            <a class="btn text-white"
+               title="Comparar as respostas"
+               data-bs-toggle="tooltip"
+               style="background-color: #ac2bac"
+               href="{% url 'home:checklist_imovel' id=pedido_item_id %}"
+               aria-pressed="true"
+               role="button"><i class="icon feather icon-chart-bar"></i>Comparativo</a>
+                                    <!--<a class="btn text-white f-12"
+   style="background-color: #ac2bac"
+   href="{% url 'home:checklist_resultado' pedido_item_id=pedido_item_id  %}"
+   aria-pressed="true"
+   role="button">  Checklist  </a> -->
+                                    <!--
+                                                                                                        <a class="btn text-white f-12" style="background-color: #ac2bac;" href="{% url 'home:checkliste_correto_list_View' id=pedido_item_id  %}" aria-pressed="true" role="button">     Exibir Resultado     </a>
+                                                                    -->
+                                    <!-- VOLTAR -->
+                                    <!--
+                                                                                                        <input class="btn bg-warning text-dark" value="Voltar"     id="b1" onclick="getVoltar()">
+                                                                    -->
+        </form>
+                                <!--        CABECALHO
+                                                                    -->
+        <br>
+        <b id="UserAnswers"></b>
+        <br>
+    </div>
+                            <!--   #######     FIM DA FICHA DE Checklist   #######     -->
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+{% endblock content %}
+<script>
+    $(document).ready(function() {
+        $("#b1").click(function() {
+            $(".rb").show();
+            $(".rb").attr("disabled", true);
+
+
+        });
+    });
+
+
+    function getanswers() {
+        document.getElementById("UserAnswers").innerHTML = "";
+        var e = document.getElementsByTagName("input");
+        for (i = 0; i <= e.length; i++) {
+            if (e[i].type == "radio") {
+                if (e[i].checked) {
+                    document.getElementById("UserAnswers").innerHTML += "Q " + e[i].name + " As respostas que você selecionou são : " + e[i].value + "<br>";
+                }
+            }
+
+            if (e[i].type == "text") {
+                document.getElementById("UserAnswers").innerHTML += "Q " + e[i].name + " As respostas que você selecionou são : " + e[i].value + "<br>";
+            }
+        }
+    }
+
+    function get_numero(numero) {
+        var conteudo = "/protocolos/?numero_protocolo=" + numero
+        window.location.href = conteudo;
+    }
+
+    function getVoltar() {
+        window.history.back()
+    }
+</script>

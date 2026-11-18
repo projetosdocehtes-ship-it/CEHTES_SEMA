@@ -1,0 +1,153 @@
+<!-- CARD TRANSMITENTES INICIO ] -->
+{% load home_formatos %}
+<div class="card ">
+    <div class="card-header" id="checklist_transmitenteadquirente">
+        <h5>2 - Transmitentes</h5>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="cell-content">Número do Ato</div>
+                        <div class="cell-content">(baixar)</div>
+                    </th>
+                    <th>
+                        <div class="cell-content">(%)</div>
+                        <div class="cell-content">DOI</div>
+                    </th>
+                    <th>
+                        <div class="cell-content">(%) Ato</div>
+                        <div class="cell-content">Transmitir</div>
+                    </th>
+                    <th>Dados Pessoa</th>
+                    <th>Estado Civil</th>
+                    <th>Conjugue</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            {% for transmitente in partes_transmitente %}
+                <tbody>
+                    <tr>
+                        {% if transmitente.vinculos.numero_ato >= 0 %}
+                            <th>{{ transmitente.vinculos.tipo_ato }}.{{ transmitente.vinculos.numero_ato|numero_inteiro|default:"" }}</th>
+                        {% else %}
+                            <th>{{ transmitente.vinculos.tipo_ato }}{{ transmitente.vinculos.numero_ato|default:"" }}</th>
+                        {% endif %}
+                        <th>{{ transmitente.percentual_ato|default:"" }}</th>
+                        <th>{{ transmitente.percentual_doi|default:"" }}</th>
+                        <th>
+                            <div class="cell-content">{{ transmitente.pessoa.cpf|formatar_documento }}</div>
+                            <div class="cell-content">{{ transmitente.pessoa.nome }}</div>
+                            <th>
+                                <div class="cell-content">{{ transmitente.estado_civil.descricao_estado_civil }}</div>
+                                <div class="cell-content">{{ transmitente.tipo_regime_casamento.descricao_regime }}</div>
+                            </th>
+                            <th>{{ adquirente.pessoa_conjuge.nome }}</th>
+                            <td>
+                                {% if transmitente.pessoa.nome != '' %}
+                                    <div class="cell-content">
+                                        <!-- Alterar os dados do Transmitente selecionado -->
+                                        <a class="btn btn-sm btn-outline-primary mx-1 my-1"
+                                           {% comment %}
+                                           style="background-color: #466887"
+                                           {% endcomment %}
+                                           data-bs-toggle="modal"
+                                           href="javascript:"
+                                           data-bs-target="#myModal{{ transmitente.id }}"
+                                           title="Alterar dados da pessoa selecionada"
+                                           data-bs-toggle="tooltip"
+                                           role="button">
+                                            <i class="icon feather icon-file-minus"></i>&emsp;Alterar Ato
+                                        </a>
+                                        {% include 'editmodalAtoTransmitente.html' %}
+                                        <div class="cell-content"></div>
+                                    </div>
+                                    <div class="cell-content">
+                                        <!-- Alterar os dados do Transmitente selecionado -->
+                                        <div></div>
+                                        <div></div>
+                                        {% comment %} <a class="label text-dark f-12" style="background-color: #b5c2cf" data-bs-toggle="modal" href="javascript:" data-bs-target="#editModalTransmitente{{ transmitente.pessoa.id }}" title="Alterar dados da pessoa selecionada." data-bs-toggle="tooltip" role="button">
+                                            <span class="font-weight-bold"><i class="fas fa-edit mx-1">
+                                            </i>Editar Pessoa</span>
+                                        </a> {% endcomment %}
+                                        <a class="btn btn-sm btn-outline-success mx-1 my-1 text-dark"
+                                           href="{% url 'home:update_pessoa' transmitente.pessoa.pk %}?pedido_item_id={{ pedido_item_id }}&ancora_origem=checklist_transmitenteadquirente "> <i class="fas fa-edit"></i>Editar Pessoa
+                                        </a>
+                                        {% include 'editmodalPessoaTransmitente.html' %}
+                                        <div class="cell-content"></div>
+                                    </div>
+                                    <!-- DESVINCULAR Transmitente -->
+                                    <div class="cell-content">
+                                        <div></div>
+                                        <div></div>
+                                        <a class="btn btn-sm btn-outline-danger mx-1 my-1"
+                                           data-bs-toggle="modal"
+                                           href="javascript:"
+                                           data-bs-target="#desvincularModalPessoaT{{ transmitente.id }}"
+                                           title="Retira a pessoa selecionada do vinculo de Transmitente"
+                                           role="button">
+                                            <i class="icon feather icon-trash"></i>&emsp;Remover&emsp;</a>
+                                        {% include 'desvincularModalPessoaTransmitente.html' %}
+                                    </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="card-footer">
+            <!-- Botão que irá abrir o modal -->
+            <button type="button"
+                    class="btn btn-sm btn-outline-primary text-dark "
+                    data-bs-toggle="modal"
+                    data-bs-target="#addTransmitenteModalAto"
+                    title="Cadastrar um novo Transmitente para o ato">
+                <i class="fas fa-user-plus"></i> Novo Transmitente
+            </button>
+            {% include 'inserir-transmitente-ato.html' %}
+            <!-- VINCULAR TRANSMITENTES -->
+            <button type="button"
+                    class="btn btn-sm btn-outline-info text-dark "
+                    data-bs-toggle="modal"
+                    data-bs-target="#addVincularTransmitenteModal"
+                    title="Adiciona um Transmitente já cadastrado">
+                <i class="icon feather icon-user-plus"></i> Vincular Transmitente
+            </button>
+            {% include 'form-vincular-transmitente-ato.html' %}
+            <!-- VINCULAR PROCURADOR -->
+            {% include 'form-vincular-procurador-transmitente-ato.html' %}
+            <button type="button"
+                    class="btn btn-sm btn-secondary "
+                    data-bs-toggle="modal"
+                    data-bs-target="#addVincularProcuradorTransmitenteModal"
+                    title="Adiciona Procurador a Transmitente já cadastrado">
+                <i class="icon feather icon-user-plus"></i> Vincular Procurador
+            </button>
+            <!-- IMPORTAR PROPRIETARIOS -->
+            <!--
+        <a class="btn text-white " style="background-color: #0000ff" href="{% url 'home:get_proprietarios_lv2' pedido_item_id=pedido_item_id %}" aria-pressed="true" role="button"><i class="icon feather icon-users"></i>Importar Proprietários</a>
+-->
+            <a class="btn btn-sm text-white "
+               style="background-color: #ac2bac"
+               href="{% url 'home:checklist_imovel' id=pedido_item_id %}"
+               aria-pressed="true"
+               role="button">
+                <i class="fas fa-chart-bar"></i> Comparativo
+            </a>
+            <div class="btn-group mb-2 mr-2">
+                <a href="#checklist_adquirente"
+                   class="btn btn-sm btn-outline-warning text-dark "
+                   title="Ítem anterior"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i> Voltar </a>
+                <a href="#checklist_imovel"
+                   class="btn btn-sm btn-outline-primary text-dark "
+                   title="Próximo ítem"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i> Próximo </a>
+            </div>
+        </div>
+    </div>
+    <!-- CARD TRANSMITENTES FIM ] -->

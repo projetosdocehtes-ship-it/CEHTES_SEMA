@@ -1,0 +1,310 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    {% load humanize %}
+    {% get_Rurais value item.imovel as rurais %}
+    {% get_Rurais_Nomes value item.imovel as rurais_nomes %}
+    <div class="card" id="card_real">
+        <div class="card-header">
+            <h5>Ficha Auxiliar do Condominio - {{ item.tipo|get_descricao_tipo_registro }}:</h5>
+            <span class="font-weight-bold f-26 {% if item.encerrado == 'F' %}text-white {% else %}text-white bg-danger{% endif %}">
+                {{ item.numero|formatar_numero_registro }}
+            </span>
+            <span class="font-weight f-18 text-light">CNM:</span>
+            <span class="font-weight-bold f-26 text-white">{{ item.cnm }}</span>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-4">
+                    Municipio: <b>{{ item.municipio }}</b>
+                </div>
+                <div class="col-4">
+                    Data Abertura: <b>{{ item.data_abertura|date:"d/m/y" }}</b>
+                </div>
+                <div class="col-4"></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4">
+                    Cadastro Municipal: <b>{{ item.imovel.numeros_contribuinte }}</b>
+                </div>
+                <div class="col-4">
+                    {% if item.classe == 'R' %}
+                        {% for lote in lotes %}
+                            <!-- VERIFICAR Tipo de Construcao -->
+                            {% get_tipo_construcao_lote value lote.residencial lote.comercial as tipo_construcao %}
+                            Tipo de Construção: <b> {{ tipo_construcao }} </b>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="col-4">
+                    Registro Encerrado:
+                    <span class="font-weight-bold {% if item.encerrado == 'F' %}text-dark{% else %}text-danger{% endif %}">
+                    {{ item.encerrado|formatar_tipo_encerramento }}</span>
+                </div>
+            </div>
+            {% if item.classe == 'R' %}
+                <div class="row mb-3">
+                    <div class="col-4">
+                        {% for rurais_nomes in rurais_nomes %}Fazenda: <b>{{ rurais_nomes.nome }}</b>{% endfor %}
+                    </div>
+                    <div class="col-4">
+                        {% for rurais in rurais %}Caracteristica: <b>{{ rurais.caracteristica }}</b>{% endfor %}
+                    </div>
+                    <div class="col-4"></div>
+                    <div class="col-4"></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-4">
+                        {% for rurais in rurais %}Área: <b>{{ rurais.area }}</b>{% endfor %}
+                    </div>
+                    <div class="col-4">
+                        NIRF: <b>{{ item.numero_nirf }}</b>
+                    </div>
+                    <div class="col-4">
+                        CCIR: <b>{{ item.numero_ccirr }}</b>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-4">
+                        CAR: <b>{{ item.numero_car }}</b>
+                    </div>
+                    <div class="col-4">
+                        GEO: <b>{{ item.numero_incra }}</b>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-4">
+                        ITR: <b>{{ item.numero_itr|default:"" }}</b>
+                    </div>
+                    <div class="col-4">
+                        Validade do ITR: <b>{{ item.data_validade_itr|naturalday }}</b>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+            {% else %}
+                {% for lote in lotes %}
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            Bairro: <b>{{ lote.setor }}</b>
+                        </div>
+                        <div class="col-4">
+                            Quadra: <b>{{ lote.quadra }}</b>
+                        </div>
+                        <div class="col-4">
+                            Lote: <b>{{ lote.numero_unidade }}</b>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-8">
+                            Rua: <b>{{ lote.unidade_id|get_nomes_das_ruas_pela_unidade }}</b>
+                        </div>
+                        <div class="col-4">
+                            Área: <b>{{ lote.area }}</b>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            Área Residencial: <b>{{ item.area_construida_residencial|default:"" }}</b>
+                        </div>
+                        <div class="col-4">
+                            Área de Construção: <b>{{ item.area_construida|default:"" }}</b>
+                        </div>
+                        <div class="col-4">
+                            Área Comercial: <b>{{ item.area_construida_comercial|default:"" }}</b>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="card" id="card_real_condominio_origem">
+        <div class="card-header text-white">
+            Condominio
+            <span class="badge bg-dark">1</span>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Número</th>
+                        <th>Condominio</th>
+                        <th>Número</th>
+                        <th>Incorporadora</th>
+                        <th>Data Incorporação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for condominio in condominio_de_origem %}
+                        <tr>
+                            <td>{{ condominio.0 }}</td>
+                            <td>
+                                <span class="badge bg-primary f-14">
+                                    <a class="text-white"
+                                       title="Clique para acessar o Indicador Real."
+                                       href="{% url 'home:livro04_detail' numero_registro=condominio.1|remover_pontuacao tipo_registro=condominio.0 cartorio_imovel=condominio.2 %}"
+                                       target="_blank">
+                                    {{ condominio.1|remover_pontuacao|formatar_numero_registro }}</span></a>
+                                </td>
+                                <td>{{ condominio.3 }} {{ item }}</td>
+                                <td>{{ condominio.6 }}</td>
+                                <td>{{ condominio.4 }}</td>
+                                <td>{{ condominio.5|date:"d/m/y" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a href="#card_real"
+                   class="btn btn-sm btn-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+        </div>
+        {% if item.classe == 'L' %}
+            <div class="card" id="card_real_ficha_unidades_condominio">
+                <div class="card-header text-white">
+                    Unidade (Condominio)
+                    <span class="badge bg-dark">{{ quantidade_de_unidades_no_condominio }}</span>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Edificio</th>
+                                <th>Tipo de Unidade</th>
+                                <th>Número da Unidade</th>
+                                <th>Matrícula</th>
+                                <th>Aréa</th>
+                                <th>Data Cadastro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in unidades_do_condominio %}
+                                <tr>
+                                    <td>{{ item.nome_edificio }}</td>
+                                    <td>{{ item.tipo|exibir_tipo_unidade_imovel }}</td>
+                                    <td>{{ item.numero_unidade }}</td>
+                                    <td>
+                                        <span class="badge bg-primary f-14">
+                                            <a class="text-white"
+                                               title="Clique para acessar o Indicador Real."
+                                               href="{% url 'home:livro04_detail' numero_registro=item.imovel.numero tipo_registro=item.imovel.tipo cartorio_imovel=item.imovel.cartorio %}"
+                                               target="_blank">
+                                            {{ item.imovel.numero|formatar_numero_registro }}</span></a>
+                                        </td>
+                                        <td>{{ item.area }}</td>
+                                        <td>{{ item.criado_em|date:"d/m/y" }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <a href="#card_real"
+                           class="btn btn-sm btn-warning text-dark "
+                           title="Retornar ao topo"
+                           type="button"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                    </div>
+                </div>
+            {% endif %}
+            {% if item.classe == 'C' %}
+                <div class="card" id="card_real_condominio">
+                    <div class="card-header text-white">
+                        Condominio
+                        <span class="badge bg-dark">1</span>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Número</th>
+                                    <th>Condominio</th>
+                                    <th>Número</th>
+                                    <th>Incorporadora</th>
+                                    <th>Data Incorporação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in item.registro_anterior|get_condominio_pelo_imovel %}
+                                    <tr>
+                                        <td>{{ item.0 }}</td>
+                                        <td>
+                                            <span class="badge bg-primary f-14">
+                                                <a class="text-white"
+                                                   title="Clique para acessar o Indicador Real."
+                                                   href="{% url 'home:livro04_detail' numero_registro=item.1|remover_pontuacao tipo_registro=item.0 cartorio_imovel=item.2 %}"
+                                                   target="_blank">
+                                                {{ item.1|remover_pontuacao|formatar_numero_registro }}</span></a>
+                                            </td>
+                                            <td>{{ item.3 }}</td>
+                                            <td>{{ item.6 }}</td>
+                                            <td>{{ item.4 }}</td>
+                                            <td>{{ item.5|date:"d/m/y" }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#card_real"
+                               class="btn btn-sm btn-warning text-dark "
+                               title="Retornar ao topo"
+                               type="button"
+                               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if item.tipo_unidade == 'L' %}
+                    <div class="card" id="card_real_loteamento">
+                        <div class="card-header text-white">
+                            Loteamento
+                            <span class="badge bg-dark">1</span>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Número</th>
+                                        <th>Nome do Loteamento</th>
+                                        <th>Nome Incorporadora</th>
+                                        <th>Data de Registro</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in item.registro_anterior|get_loteamento_pelo_imovel %}
+                                        <tr>
+                                            <td>{{ item.0 }}</td>
+                                            <td>
+                                                <span class="badge bg-primary f-14">
+                                                    <a class="text-white"
+                                                       title="Clique para acessar o Indicador Real."
+                                                       href="{% url 'home:livro04_detail' numero_registro=item.1|remover_pontuacao tipo_registro=item.0 cartorio_imovel=item.2 %}"
+                                                       target="_blank">
+                                                    {{ item.1|remover_pontuacao|formatar_numero_registro }}</span></a>
+                                                </td>
+                                                <td>{{ item.3 }}</td>
+                                                <td>{{ item.4 }}</td>
+                                                <td>{{ item.5|date:"d/m/y" }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer">
+                                <a href="#card_real"
+                                   class="btn btn-sm btn-warning text-dark "
+                                   title="Retornar ao topo"
+                                   type="button"
+                                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock content %}

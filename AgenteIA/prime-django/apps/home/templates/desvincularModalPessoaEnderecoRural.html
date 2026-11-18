@@ -1,0 +1,56 @@
+<a class="btn btn-sm"
+   data-bs-toggle="modal"
+   href="javascript:"
+   data-bs-target="#desvincularModalEnderecoR{{ partes_imovel.id }}"
+   title="Retira o endereço do imóvel"
+   role="button">
+    <i class="icon feather icon-trash"></i> Remover
+</a>
+{% load home_formatos %}
+<!-- Modal -->
+<div class="modal"
+     id="desvincularModalEnderecoR{{ partes_imovel.id }}"
+     tabindex="-1"
+     aria-labelledby="desvincularModalEnderecoRLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#000">
+                <h4 class="modal-title text-white fs-5"
+                    id="desvincularModalEnderecoRLabel">
+                    <i class="icon feather icon-times"></i>  Desvincular a Fazenda
+                    <p>{{ partes_imovel.nome_fazenda }}</p>
+                </h4>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form action="{% url 'home:desvincularModalEnderecoMinuta' %}"
+                  method="post">
+                {% csrf_token %}
+                <input type="hidden" name="parte_id" value="{{ partes_imovel.id }}" />
+                <div class="modal-body">
+                    <input type="hidden" name="parte_id" value="{{ partes_imovel.id }}" />
+                    <input type="hidden"
+                           name="pedido_item_id"
+                           value="{{ partes_imovel.pedido_item_id }}" />
+                    <h6>
+                        Tem certeza de que deseja desvincular ?
+                        <p>
+                            <h5>{{ partes_imovel.nome_fazenda }}</h5>
+                        </p>
+                    </h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Desvincular</button>
+                    <button type="button"
+                            class="btn btn-sm btn-secondary"
+                            data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

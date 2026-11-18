@@ -1,0 +1,37 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-14 col-8">
+            <div class="small-box p-2 mb-2 btn bg-secondary text-white">
+                <h5 class="text-white">Anexar documento para o Protocolo</h5>
+                <h3 class="text-white">
+                    <a class="text-white bg-dark"
+                       target="_blank"
+                       title="Anexar documentos para o protocolo."
+                       data-bs-toggle="tooltip">Protocolo: {{ Numero_Protocolo }}</a>
+                </h3>
+                <div class="inner"></div>
+                <div class="icon"></div>
+                <div class="input-group">
+                    <input type="file"
+                           name="files"
+                           class="form-control"
+                           id="name_arquivo"
+                           aria-describedby="inputGroupFileAddon04"
+                           aria-label="Upload"
+                           multiple
+                           required="required">
+                    <button class="btn bg-primary text-white"
+                            type="submit"
+                            id="inputGroupFileAddon04"
+                            title="Anexar documentos para o protocolo."
+                            data-bs-toggle="tooltip">
+                        Anexar <i class="icon feather icon-paperclip auth-icon ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

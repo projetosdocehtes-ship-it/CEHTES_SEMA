@@ -1,0 +1,92 @@
+<!-- CARD ADQUIRENTES INICIO ] -->
+{% load home_formatos %}
+<div class="card" id="checklist_adquirente">
+    <div class="card-header">
+        <h5>1 - Adquirentes</h5>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="cell-content">(%) Ato</div>
+                        <div class="cell-content">Adquirir</div>
+                    </th>
+                    <th>
+                        <div class="cell-content">(%)</div>
+                        <div class="cell-content">DOI</div>
+                    </th>
+                    <!-- <th>DOI (%)</th>-->
+                    <th>Dados Pessoa</th>
+                    <th>Estado Civil</th>
+                    <th>Conjugue</th>
+                    <th>Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for adquirente in partes_adquirente %}
+                    <tr>
+                        <th>{{ adquirente.percentual_ato|default:"" }}</th>
+                        <th>{{ adquirente.percentual_doi|default:"" }}</th>
+                        <th>
+                            <div class="cell-content">{{ adquirente.pessoa.cpf|formatar_documento }}</div>
+                            <div class="cell-content">{{ adquirente.pessoa.nome }}</div>
+                        </th>
+                        <th>
+                            <div class="cell-content">{{ adquirente.estado_civil.descricao_estado_civil }}</div>
+                            {% if adquirente.tipo_regime_casamento.descricao_regime != '' %}
+                                <div class="cell-content">{{ adquirente.tipo_regime_casamento.descricao_regime|truncatechars:45 }}</div>
+                            {% endif %}
+                        </th>
+                        <th>{{ adquirente.pessoa_conjuge.nome }}</th>
+                        <td>
+                            {% if adquirente.pessoa.nome %}
+                                <!-- Alterar os dados do Adquirente selecionado -->
+                                <div class="cell-content">{% include "editmodalAtoAdquirente.html" %}</div>
+                                <!-- Alterar os dados do Adquirente selecionado -->
+                                <a class="btn btn-sm btn-outline-success mx-1 my-1 text-dark"
+                                   href="{% url 'home:update_pessoa' adquirente.pessoa.pk %}?pedido_item_id={{ pedido_item_id }}&ancora_origem=checklist_adquirente ">
+                                    <i class="fas fa-edit"></i>Editar Pessoa
+                                </a>
+                                <div class="cell-content"></div>
+                                <!-- DESVINCULAR Adquirente -->
+                                <div class="cell-content">{% include "desvincularModalPessoaAdquirente.html" %}</div>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <button type="button"
+                    class="btn btn-sm btn-outline-primary text-dark "
+                    data-bs-toggle="modal"
+                    data-bs-target="#addAdquirenteModalAto"
+                    title="Cadastrar um novo Adquirente para o ato 2">
+                <i class="fas fa-user-plus"></i> Novo Adquirente
+            </button>
+            {% include 'inserir-adquirente-ato.html' %}
+            <!-- VINCULAR ADQUIRENTE -->
+            {% include 'form-vincular-adquirente-ato.html' %}
+            <!-- VINCULAR PROCURADOR -->
+            {% include 'form-vincular-procurador-adquirente-ato.html' %}
+            <!-- COMPARATIVO -->
+            <a class="btn btn-sm text-white "
+               style="background-color: #ac2bac"
+               href="{% url 'home:checklist_imovel' id=pedido_item_id %}"
+               aria-pressed="true"
+               role="button">
+                <i class="fas fa-chart-bar"></i> Comparativo
+            </a>
+            <a href="#checklist_livro02"
+               class="btn btn-sm btn-outline-warning text-dark "
+               title="Ítem anterior"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i> Voltar </a>
+            <a href="#checklist_transmitenteadquirente"
+               class="btn btn-sm btn-outline-primary text-dark "
+               title="Próximo ítem"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i> Próximo </a>
+            <!-- CARD ADQUIRENTES FIM ] -->
+        </div>

@@ -1,0 +1,32 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block content %}
+    <!-- [ Main Content ] start -->
+    <!--        INICIO DA FICHA        -->
+    <h3>Atualizar o registro:</h3>
+    <hr>
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <div class="col-6">
+                    {{ field.errors }}
+                    {{ field.label_tag }}
+                    {% render_field field class+="form-control  p-10 mb-10 btn-primary text-dark" %}
+                </div>
+            </div>
+        {% endfor %}
+        <button type="submit"
+                class="btn btn-sm btn-primary"
+                title="Salvar os dados da Pessoa Selecionada"
+                data-bs-toggle="tooltip">Salvar</button>
+        <button type="button"
+                class="btn btn-warning text-dark"
+                title="Voltar para a página anterior sem alterar os dados"
+                data-bs-toggle="tooltip"
+                onclick="window.history.back();">Cancelar</button>
+    </form>
+    <!--   #######     FIM DA FICHA   #######     -->
+    <!-- [ Main Content ] end -->
+{% endblock content %}

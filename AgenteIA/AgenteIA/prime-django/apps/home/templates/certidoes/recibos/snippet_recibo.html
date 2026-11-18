@@ -1,0 +1,171 @@
+{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load home_formatos %}
+{% load barcode_filters %}
+{% load static %}
+{% include "recibos/cabecalho_cartorio.html" %}
+<div class="titulo-recibo">
+    {% if pedido.valor_total_caixa > 0 %}
+        <h1>{{ titulo }}</h1>
+    {% else %}
+        <h1>{{ titulo_sem_pagamento }}</h1>
+    {% endif %}
+</div>
+<div class="recibo-body borda">
+    <table class="tabela-responsiva">
+        <tbody>
+            <tr>
+                <td>
+                    Pedido de Certidão nº.: <strong><span style="font-size: 18px;">{{ pedido.numero_pedido|protocolo_formatado }}</span></strong> | {{ pedido.origem }} {{ pedido.protocolo_onr_formatado }}
+                </td>
+                <td>Data: {{ pedido.data_entrada|date:"d/m/y" }} às {{ pedido.data_entrada|date:"H:i" }}</td>
+                <td>
+                    Previsão: <strong>{{ pedido.data_prazo_final|date:"d/m/y" }}</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ pedido.apresentante.tipo_apresentante }}: <strong>{{ pedido.apresentante.nome }}</strong>
+                </td>
+                <td>Telefone: {{ pedido.apresentante.telefone|formatar_telefone|default:"Não Informado" }}</td>
+                <td>email: {{ pedido.apresentante.email|default:"Não Informado" }}</td>
+            </tr>
+            {% if pedido.apresentante.interessado_nome %}
+                <tr>
+                    <td>
+                        {{ pedido.apresentante.interessado_tipo }}: <strong>{{ pedido.apresentante.interessado_nome }}</strong>
+                    </td>
+                </tr>
+            {% endif %}
+            {% if pedido.nome_pagador %}
+                <tr>
+                    <td>
+                        Pagador: <strong>{{ pedido.nome_pagador }}</strong>
+                    </td>
+                </tr>
+            {% endif %}
+            {% if pedido.apresentante.observacao %}
+                <tr>
+                    <td colspan="3">
+                        Observação: <strong>{{ pedido.apresentante.observacao|default:"Não informado" }}</strong>
+                    </td>
+                </tr>
+            {% endif %}
+            {% if pedido.finalidade %}
+                <tr>
+                    <td colspan="3">{{ pedido.finalidade_formatada }}</td>
+                </tr>
+            {% endif %}
+            <tr>
+                <td colspan="2">Senha consulta site: {{ pedido.senha_site|default:"" }}</td>
+                {% if request.user.cartorio.usar_selo_sql_server and pedido.selo_sqlserver %}
+                    <td colspan="1" class="center bold">
+                        Selo Eletrônico Nº:
+                        <p>
+                            <b>{{ pedido.selo_sqlserver.CODIGO_SEQUENCIAL_UNICO }}</b>
+                        </p>
+                    </td>
+                    <td colspan="2" class="center bold">
+                        Código de Segurança:
+                        <p>
+                            <b>{{ pedido.selo_sqlserver.CODIGO_DE_SEGURANCA|formatar_codigo_seguranca }}</b>
+                        </p>
+                    </td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+    <div class="my-8" style="height: 10px;"></div>
+    <!-- Tabela -->
+    {% if certidoes_agrupadas %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tipo</th>
+                    <th>Número</th>
+                    <th>Emol.</th>
+                    <th>TFJ</th>
+                    <th>ISSQN</th>
+                    <th>RECOMPE</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aqui você pode repetir essa linha para cada item que tiver -->
+                {% for chave, valores in certidoes_agrupadas.items %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <div style="margin-bottom: 4px;">{{ valores.quantidade|floatformat:0 }}x {{ chave.0 }}</div>
+                            <div>{{ chave.3 }}</div>
+                        </td>
+                        <td>
+                            <b><span style="font-size: 14px;">{{ chave.2 }}</span></b>
+                        </td>
+                        <td>{{ valores.emolumento_liquido_calculado|formatar_moeda:False }}</td>
+                        <td>{{ valores.taxa_fiscal_judiciaria_calculada|formatar_moeda:False }}</td>
+                        <td>{{ valores.issqn_calculado|formatar_moeda:False }}</td>
+                        <td>{{ valores.recompe_calculado|formatar_moeda:False }}</td>
+                        <td>{{ valores.total|formatar_moeda:False }}</td>
+                    </tr>
+                {% endfor %}
+                <!-- Fim da repetição -->
+            </tbody>
+            <tfoot style="font-weight: bold;">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right;">Total:</td>
+                    <td>{{ pedido.total_emolumentos_pedido|formatar_moeda:False }}</td>
+                    <td>{{ pedido.total_taxa_fiscal_judiciaria_pedido|formatar_moeda:False }}</td>
+                    <td>{{ pedido.total_issqn_pedido|formatar_moeda:False }}</td>
+                    <td>{{ pedido.total_recompe_pedido|formatar_moeda:False }}</td>
+                    <td>{{ pedido.total_pedido|formatar_moeda:False }}</td>
+                </tr>
+                <b>Anotações</b>: {{ pedido.descricao_certidoes_imovel_relacionadas }}. {{ pedido.descricao_certidoes_pessoas_relacionadas }}
+                <p>
+                </tfoot>
+            </table>
+        {% else %}
+            <p>-- Não há itens neste pedido. --</p>
+        {% endif %}
+    </div>
+    <!-- SEPARACAO ELEGANTE -- INICIO -->
+    <div class="my-8" style="height: 8px;"></div>
+    <!-- SEPARACAO ELEGANTE -- FIN -->
+    <div class="recibo-footer">
+        <p>
+            A retirada do(s) documento(s) deve ocorrer entre 9h00 ás 12:00 e 13:00 ás 17h00, com a apresentação do comprovante original. É obrigatório retirar os documentos em até 90 dias da data de disponibilidade, sob pena de incineração. <strong>Declaro que solicitei e li integralmente este pedido, concordando com seus termos.</strong>
+        </p>
+        <!-- SEPARACAO ELEGANTE -- INICIO -->
+        <div class="my-8" style="height: 8px;"></div>
+        <!-- SEPARACAO ELEGANTE -- FIN -->
+    </p>
+    <table>
+        <tbody>
+            <tr>
+                <td class="assinatura">
+                    <div class="linha-assinatura"></div>
+                    <p>Requerente: {{ pedido.apresentante.nome }}</p>
+                </td>
+                <td class="assinatura">
+                    <!-- <div class="linha-assinatura"></div> -->
+                    <p>
+                        Valor já pago:  <b>{{ pedido.valor_total_caixa|formatar_moeda:True }}</b>
+                    </p>
+                    <p>
+                        Forma de Pagamento: <b>{{ pedido.forma_de_pagamento|default:"Sem Pagamento" }}</b>
+                    </p>
+                    <p>Atendimento realizado por: {{ pedido.criado_por.username|title }}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p></p>
+</div>
+<div class="row">
+    {% include "etiquetas/etiqueta-selo.html" %}
+    {% include "etiquetas/etiqueta-protocolo.html" %}
+</div>

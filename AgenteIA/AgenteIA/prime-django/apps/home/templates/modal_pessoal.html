@@ -1,0 +1,117 @@
+<!-- INICIO DO Modal - INDICADOR PESSOAL -->
+{% load home_formatos %}
+<div id="modal_pessoal"
+     class="modal fade"
+     role="dialog"
+     title="Exibir todo o indicado pessoal."
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <!-- Conteúdo do modal-->
+        <div class="modal-content">
+            <!-- Cabeçalho do modal -->
+            <div class="modal-header" style="background:#000">
+                <h5 class="modal-title text-white fs-5">Dados do Indicador Pessoal:</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Corpo do modal -->
+            <div class="modal-body">
+                <table cellpadding="2" cellspacing="2" width="100%" height="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-left">{{ imoveis.tipo_registro|get_descricao_tipo_registro }}</th>
+                            <th class="text-left">Município</th>
+                            <th class="text-left">Data Abertura</th>
+                            <th class="text-left">Tipo de Imóvel</th>
+                            <th class="text-left">Tipo de Construção</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>
+                                <span class="badge bg-dark font-weight-bold text-white f-16">
+                                    {{ imoveis.numero_registro|formatar_numero_registro }}
+                                </span>
+                            </th>
+                            <th>
+                                <span class="badge bg-dark font-weight-bold text-white f-16">{{ imoveis.municipio_id }}</span>
+                            </th>
+                            <th>
+                                <span class="badge bg-dark font-weight-bold text-white f-16">{{ imoveis.data_abertura_id|date:"d/m/y" }}</span>
+                            </th>
+                            <th>
+                                <span class="badge bg-dark font-weight-bold text-white f-16">{{ imoveis.classe_id|formatar_classe_do_registro }}</span>
+                            </th>
+                            <th>
+                                <span class="badge bg-dark font-weight-bold text-white f-16">{{ imoveis.comercial_id }}</span>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table cellpadding="2" cellspacing="2">
+                    <thead>
+                        <tr>
+                            <th>Ato</th>
+                            <th>Percentual</th>
+                            <th></th>
+                            <th text-align:right">CPF/CNPJ
+                                                 </th>
+                                                 <th></th>
+                                                 <th>Nome</th>
+                                                 <th>Estado Civil</th>
+                                                 <th>Regime de Bens</th>
+                                                 <th>Vinculo</th>
+                                                 <th>Data Transferencia</th>
+                                                 </tr>
+                                                 </thead>
+                                                 {% for vinculo in vinculos %}
+                                                     <tbody>
+                                                     <tr>
+                                                     <th>{{ vinculo.tipo_ato }}-{{ vinculo.numero_ato|numero_inteiro }}</th>
+                                                     <th>{{ vinculo.area_pecentual }}</th>
+                                                     <th></th>
+                                                     <th>{{ vinculo.pessoa.cpf|formatar_documento }}</th>
+                                                     <th></th>
+                                                     <th>{{ vinculo.pessoa.nome }}</th>
+                                                     <th>{{ vinculo.estado_civil.descricao_estado_civil }}</th>
+                                                     <th>{{ vinculo.tipo_regime_casamento.descricao_regime }}</th>
+                                                     {% if vinculo.situacao == 'F' %}
+                                                         {% if vinculo.tipo_vinculo.id == 7 %}
+                                                             <th>
+                                                             <span class="badge bg-primary font-weight-bold text-white f-16">{{ vinculo.tipo_vinculo.descricao }}</span>
+                                                                                                                                                                        </th>
+                                                                                                                                                                    {% else %}
+                                                                                                                                                                        <th>{{ vinculo.tipo_vinculo.descricao }}</th>
+                                                                                                                                                                    {% endif %}
+                                                                                                                                                                {% endif %}
+                                                                                                                                                                {% if vinculo.situacao == 'T' %}<th>(*){{ vinculo.tipo_vinculo.descricao }}</th>{% endif %}
+                                                                                                                                                                <th>{{ vinculo.transferido_em|date:"d/m/y" }}</th>
+                                                                                                                                                                </tr>
+                                                                                                                                                                </tbody>
+                                                                                                                                                            {% endfor %}
+                                                                                                                                                            </table>
+                                                                                                                                                            <th>
+                                                                                                                                                            <button data-bs-toggle="button"
+                                                                                                                                                                                                                           aria-pressed="true"
+                                                   class="btn bg-secondary text-white btn-block"
+                                                                             type="button">Proprietário(s):</button>
+                                             </th>
+                                             {% for proprietario in proprietario_atual %}
+                                                 <table class="table">
+                                                                                                         <tbody>
+                                                                                                         <tr>
+                                                                                                         <span class="badge bg-dark font-weight-bold text-white f-16">{{ proprietario }}</span>
+                                                                                                                                                                                                         </tr>
+                                                                                                                                                                                                         </tbody>
+                                                                                                                                                                                                         </table>
+                                                                                                                                                                                                     {% endfor %}
+                                                                                                                                                                                                     </div>
+                                                                                                                                                                                                     <!-- Rodapé do modal-->
+                                                                                                                                                                                                     <div class="modal-footer">
+                                                                                                                                                                                                                                                              <button type="button"
+                                                                                                                                                                                                                                                                                                                   class="btn btn-sm btn-secondary"
+                                                                data-bs-dismiss="modal">Fechar</button>
+                                                       </div>
+                                                       </div>
+                                                       </div>
+                                                       </div>
+                                                       <!-- FIM DO Modal - INDICADOR PESSOAL  -->

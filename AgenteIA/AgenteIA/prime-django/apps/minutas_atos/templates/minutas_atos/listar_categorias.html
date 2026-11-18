@@ -1,0 +1,76 @@
+<!-- Primeiro, carregamos nosso filtro, logo após o extends -->
+{% extends "layouts/base.html" %}
+{% load static %}
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% load home_formatos %}
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        {% block content %}
+                            {% csrf_token %}
+                            <div class="card" id="card_membro">
+                                <div class="card-header">
+                                    <span class="font-weight f-20 text-light">Lista de EstadoCivil:</span>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Descrição</th>
+                                                {% comment %} <th>Tipo</th> {% endcomment %}
+                                                <th>Exibir</th>
+                                                <th>Texto</th>
+                                                <th>Ações</th>
+                                                {% comment %} <th class="text-center">Ações</th> {% endcomment %}
+                                            </tr>
+                                        </theads =>
+                                        <tbody>
+                                            {% for c in estado_civil %}
+                                                <tr>
+                                                        <!-- Aplicamos nosso filtro no atributo funcionario.nome -->
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ c.descricao_estado_civil }}</td>
+                                                        {% comment %} <td>{{ c.tipo }}</td> {% endcomment %}
+                                                    <td>{{ c.exibir|default:"" }}</td>
+                                                    <td>
+                                                        <div class="cell-content">{{ c.observacao|truncatechars:40 }}</div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a class="btn btn-sm btn-primary text-dark"
+                                                           href="{% url 'minutas_atos:editar_minuta_estado_civil' pk=c.id %}"
+                                                           title="Editar os dados do texto para a minuta."
+                                                           target="_blank">
+                                                            <i class="icon feather icon-edit"></i></a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <a class="btn btn-sm btn-info text-dark"
+                               title="Atualizar a página para visualizar os dados alterados."
+                               data-bs-toggle="tooltip"
+                               onclick="getAtualizarPagina()"><i class="icon feather icon-refresh-cw"></i>Atualizar</a>
+                            <a class="btn btn-sm btn-warning text-dark"
+                               title="Voltar para a página anterior sem alterar os dados."
+                               data-bs-toggle="tooltip"
+                               onclick="getVoltar()"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                            <script>
+                                function getVoltar() {
+                                    window.history.back()
+                                }
+
+                                function getAtualizarPagina() { window.location.reload(); }
+                            </script>
+                        {% endblock content %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

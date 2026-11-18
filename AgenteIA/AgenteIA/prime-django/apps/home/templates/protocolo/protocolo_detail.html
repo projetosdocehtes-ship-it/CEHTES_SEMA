@@ -1,0 +1,25 @@
+{% extends "layouts/base.html" %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    {% include "card_busca_protocolo.html" %}
+    {% if protocolo %}
+        {% include "card_protocolo_detail.html" %}
+        {% include "card_titulo_principal.html" %}
+        {% include "card_partes.html" %}
+        {% include "card_itens.html" %}
+        {% include "card_selos.html" %}
+        {% comment %} {% include "card_andamentos_list.html" %} {% endcomment %}
+        {% include "card_caixa.html" %}
+        {% include "card_livro02.html" %}
+        {% include "card_livro03.html" %}
+        {% comment %} {% include "anexos/anexos_list_include.html" %} {% endcomment %}
+        {% comment %} {% include "card_imagens.html" %} {% endcomment %}
+        {% include "card_indisponibilidade.html" %}
+        {% include "card_contraditorio.html" %}
+        {% include "card_pendencias.html" %}
+        {% comment %} {% include "card_imagens_nota_devolucao.html" %} {% endcomment %}
+    {% else %}
+        <h6>Nenhum protocolo correspondente ao número fornecido.</h6>
+    {% endif %}
+{% endblock content %}

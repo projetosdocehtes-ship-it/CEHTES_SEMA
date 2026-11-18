@@ -1,0 +1,186 @@
+{% load home_formatos %}
+<div id="modal_real" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-white fs-5">
+                    Indicador Real - {{ livro2.tipo_registro }}: <a class="label bg-primary   btn-lg  text-white f-18"
+    aria-pressed="true"
+    role="button">{{ livro2.numero_registro|formatar_numero_registro|default:"" }}</a>
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body modal-lg">
+                <div class="row">
+                    <div class="col-4 col-lg-3">
+                        Municipio:
+                        <h5>
+                            <a class="label bg-primary   btn-lg  text-white f-12"
+                               aria-pressed="true"
+                               role="button">
+                                <!-- {{ livro2.pedido_item|get_Municipio_Imovel_Lote }} -->
+                            </a>
+                        </h5>
+                    </div>
+                    <div class="col-4 col-lg-3">
+                        Data Abertura:
+                        <h5>
+                            <a class="label bg-primary   btn-lg  text-white f-12"
+                               aria-pressed="true"
+                               role="button">
+                                <!-- {{ livro2.pedido_item|get_DataAbertura_Imovel_Lote|date:"d/m/y" }} -->
+                            </a>
+                        </h5>
+                    </div>
+                    <div class="col-4 col-lg-3">
+                        Registro Anterior:
+                        <h5>
+                            <a class="label bg-primary   btn-lg  text-white f-12"
+                               aria-pressed="true"
+                               role="button">
+                                <!-- {{ livro2.pedido_item|get_RegistroAnterior_Imovel_Lote }} -->
+                            </a>
+                        </h5>
+                    </div>
+                    <div class="col-4 col-lg-3">
+                        Cadastro Municipal:
+                        <h5>
+                            <a class="label bg-primary   btn-lg  text-white f-12"
+                               aria-pressed="true"
+                               role="button">
+                                <!-- {{ livro2.pedido_item|get_CadastroMunicipal_Imovel_Lote }} -->
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4 col-lg-6">
+                        Tipo de Construção:
+                        <h5>
+                            <a class="label bg-primary   btn-lg  text-white f-12"
+                               aria-pressed="true"
+                               role="button">
+                                <!-- {{ livro2.pedido_item|get_TipoConstruicao_Imovel_Lote }} -->
+                            </a>
+                        </h5>
+                    </div>
+                    <div class="col-4 col-lg-6">
+                        Registro Encerrado:
+                        <h5>
+                            <a class="label bg-primary   btn-lg  text-white f-12"
+                               aria-pressed="true"
+                               role="button">
+                                <!-- {{ livro2.pedido_item|get_Encerrado_Imovel_Lote }} -->
+                            </a>
+                        </h5>
+                    </div>
+                </div>
+                <div class="col-lg-9"></div>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <h6 class="p-10 mb-10 bg-secondary text-white text-left">Endereço do Imóvel:</h6>
+                        <div class="row">
+                            {% if livro2.pk|get_classe_do_imovel_pelo_pedido_item_id == 'R' %}
+                                <div class="col-4 col-lg-6">Fazenda:</div>
+                                <div class="col-4 col-lg-12">
+                                    <h5>
+                                        <a class="label bg-primary   btn-lg  text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">
+                                            <!-- {{ livro2.pedido_item|get_Endereco_Imovel_Rural }}-->
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div class="col-4 col-lg-6">Caracteristica:</div>
+                                <div class="col-4 col-lg-12">
+                                    <h5>
+                                        <a class="label bg-primary   btn-lg  text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">
+                                            <!--{{ livro2.pedido_item|get_EnderecoCaracteristica_Imovel_Rural }} -->
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div class="col-4 col-lg-6">Área:</div>
+                                <div class="col-4 col-lg-12">
+                                    <h5>
+                                        <a class="label bg-primary   btn-lg  text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">
+                                            <!-- {{ livro2.pedido_item|get_EnderecoArea_Imovel_Rural }} -->
+                                        </a>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                            {% else %}
+                                <div class="col-8 col-lg-3">Bairro:</div>
+                                <h5>
+                                    <a class="label bg-primary   btn-lg  text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">{{ livro2.pedido_item|get_Setor_Imovel_Lote }}</a>
+                                </h5>
+                                <div class="col-8 col-lg-3">
+                                    Quadra:
+                                    <h5>
+                                        <a class="label bg-primary   btn-lg  text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">
+                                            <!-- {{ livro2.pedido_item|get_Quadra_Imovel_Lote }}-->
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div class="col-8 col-lg-3">
+                                    Lote:
+                                    <h5>
+                                        <a class="label bg-primary   btn-lg  text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">{{ livro2.pedido_item|get_lotes_pelo_imovel_Imovel_Lote }}</a>
+                                    </h5>
+                                </div>
+                                <div class="col-8 col-lg-3">
+                                    Área:
+                                    <h5>
+                                        <a class="label bg-primary   btn-lg  text-white f-12"
+                                           aria-pressed="true"
+                                           role="button">
+                                            <!--{{ livro2.pedido_item|get_Area_Imovel_Lote }} -->
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div class="col-8 col-lg-3"></div>
+                                <div class="col-8 col-lg-3">Rua:</div>
+                                <div class="col-8 col-lg-3"></div>
+                                <h5>
+                                    <a class="label bg-primary   btn-lg  text-white f-12"
+                                       aria-pressed="true"
+                                       role="button">
+                                        <!-- {{ livro2.pedido_item|get_Rua_Imovel_Lote }} -->
+                                    </a>
+                                </h5>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-lg-9"></div>
+                    <div class="col-8 col-lg-6"></div>
+                    <div class="col-lg-9">
+                        <h6 class="p-10 mb-10 bg-secondary text-white text-left">Proprietário(s):</h6>
+                        <h5>
+                            <a class="label bg-primary   btn-lg  text-white f-12"
+                               aria-pressed="true"
+                               role="button">{{ livro2.pedido_item|get_proprietarios_atuais_separados_por_virgula }}</a>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-sm btn-secondary "
+                        data-bs-dismiss="modal">
+                    <i class="btn-close"></i> Fechar
+                </button>
+                <button type="button" class="btn btn-sm btn-primary   ">Copiar Dados</button>
+            </div>
+        </div>
+    </div>
+</div>

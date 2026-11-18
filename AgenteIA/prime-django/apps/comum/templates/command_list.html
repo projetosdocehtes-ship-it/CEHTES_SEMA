@@ -1,0 +1,26 @@
+<!-- command_list.html -->
+{% if message %}
+  <h2>Resultado do Comando</h2>
+  <pre>{{ message }}</pre>
+  <br>
+  <a href="{% url 'comum:command_list' %}">
+    <button>Voltar</button>
+  </a>
+{% else %}
+  <h2>Management Commands</h2>
+  {% for app, commands in commands_by_app.items %}
+    <h3>App: {{ app }}</h3>
+    <ul>
+      {% for command in commands %}
+        <li>
+          <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="command" value="{{ command }}">
+            <!-- Adicione o campo de parâmetro conforme necessário -->
+            <button type="submit">{{ command }}</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+{% endif %}

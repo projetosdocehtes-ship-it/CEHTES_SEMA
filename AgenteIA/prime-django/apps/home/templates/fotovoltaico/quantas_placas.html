@@ -1,0 +1,64 @@
+{% extends "layouts/base.html" %}
+{% block title %}Quantas placas{% endblock %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="card-header bg-dark text-white">
+  <h5>Calcular a quantidade de placas para o Projeto: {{ projeto.nome_projeto }}</h5>
+</div>
+
+<div class="row">
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4 class="card-title"><b>Quantas placas para atingir a meta ?</b></h4><br>
+
+        <form method="post">
+          {% csrf_token %}
+          {{ form|crispy }}
+
+          <button class="btn btn-sm btn-success text-dark d-inline-flex align-items-center"
+                  title="Clique aqui para CALCULAR a quantidade placas">
+            <i class="fas fa-calculator me-4"></i><span class="ms-4">Calcular</span>
+          </button>
+
+          <a class="btn btn-sm btn-outline-primary text-dark"
+            href="{% url 'home:ranking_empresas' pk=projeto.id %}"
+            title="Clique aqui para ver a ORDEM DO Ranking das empresas">
+            <i class="fas fa-city"></i>Ranking Empresas
+          </a>
+
+          <a class="btn btn-sm btn-warning text-dark"
+            href="{% url 'home:perguntas_list' pk=projeto.id %}"
+            title="Clique aqui para ver ou fazer perguntas para IA">
+            <i class="fas fa-robot"></i>Perguntas p/ IA
+          </a>
+
+          <a href="{% url 'home:projeto_visualizar' pk=projeto.id %}"
+             class="btn btn-sm btn-outline-secondary text-dark d-inline-flex align-items-center">
+             <i class="fas fa-arrow-left"></i>Voltar Projeto
+          </a>
+        </form>
+      </div>
+    </div>
+  </div>
+  <br><br>
+  <div class="col-lg-7 mt-4 mt-lg-0">
+    {% if qnt %}
+    <div class="alert alert-info">
+      <h4 class="card-title"><b>Resultado:</b></h4><br>
+
+      Meta original: <b>{{ meta|floatformat:0 }}</b> kWh/mês<br>
+      Meta ajustada: <b>{{ meta_ajustada|floatformat:0 }}</b> kWh/mês<br>
+      Placas necessárias: <b>{{ qnt }}</b><br>
+      Produção prevista: <b>{{ producao|floatformat:1 }}</b> kWh/mês
+      (<span class="{% if sobra >= 0 %}text-success{% else %}text-danger{% endif %}">
+        {{ sobra|floatformat:1 }} kWh/mês
+      </span> em relação à meta)
+      <br>
+      Produção por placa: <b>{{ prod_por_placa|floatformat:1 }}</b> kWh/mês
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "recibos/base_recibo_a4.html" %}
+{% block content %}
+    {% for recibo in recibos_data %}
+        <div class="recibo">
+            <div class="via">
+                {% with recibo.pedido as pedido %}
+                    {% with recibo.agora as agora %}
+                        {% with recibo.titulo as titulo %}
+                            {% with recibo.certidoes_agrupadas as certidoes_agrupadas %}
+                                {% include "certidoes/recibos/snippet_recibo.html" %}
+                                <small>1º Via - Cliente - Impresso por: {{ request.user.username|title }} em {{ agora }}</small>
+                            {% endwith %}
+                        {% endwith %}
+                    {% endwith %}
+                {% endwith %}
+            </div>
+            <div class="via">
+                {% with recibo.pedido as pedido %}
+                    {% with recibo.agora as agora %}
+                        {% with recibo.titulo as titulo %}
+                            {% with recibo.certidoes_agrupadas as certidoes_agrupadas %}
+                                {% include "certidoes/recibos/snippet_recibo.html" %}
+                                <small>2º Via - Cartório - Impresso por: {{ request.user.username|title }} em {{ agora }}</small>
+                            {% endwith %}
+                        {% endwith %}
+                    {% endwith %}
+                {% endwith %}
+            </div>
+        </div>
+        <hr style="page-break-after: always;">
+        <!-- Adiciona uma quebra de página após cada recibo -->
+    {% endfor %}
+{% endblock %}

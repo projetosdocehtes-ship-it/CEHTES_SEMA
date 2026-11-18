@@ -1,0 +1,42 @@
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(1, '2024-01-01', '2024-12-31', 27.68, 9.78, 5.66, 3.00, 'd33cb9df-5087-46a2-a8fb-a7ea286a6bd7'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(2, '2024-01-01', '2024-12-31', 48.43, 9.78, 5.66, 3.00, '74d46120-dbe1-4685-944f-78e7cf130640'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(3, '2024-01-01', '2024-12-31', 48.43, 9.78, 5.66, 3.00, '41bec169-2daf-4b7c-b80c-451355f480ac'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(4, '2024-01-01', '2024-12-31', 48.43, 9.78, 5.66, 3.00, '11c7562d-e085-4a8a-bcb5-cd4af95819ff'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(5, '2024-01-01', '2024-12-31', 6.57, 2.04, 5.66, 3.00, '75babc5d-cdeb-48ce-b9ba-e890a3ac5e67'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(6, '2024-01-01', '2024-12-31', 6.57, 2.04, 5.66, 3.00, '9547acad-17bc-46ee-9fa6-16a43ae53792'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(7, '2024-01-01', '2024-12-31', 0.00, 0.00, 0.00, 0.00, '1814592e-8cce-4ddf-afd3-559eee057e51'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(8, '2024-01-01', '2024-12-31', 48.43, 9.78, 5.66, 3.00, '04acb3b6-982d-42aa-98df-378ecdaceb00'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(10, '2024-01-01', '2024-12-31', 48.43, 9.78, 5.66, 3.00, '99f7e73f-2243-46a7-b6f8-17f6b932eded'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(11, '2024-01-01', '2024-12-31', 25.17, 7.90, 5.66, 3.00, '51e513b9-8015-4687-a6a4-f008a3314943'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(12, '2024-01-01', '2024-12-31', 0.00, 0.00, 0.00, 0.00, '7ad4569a-c48a-4077-a162-e51f43729a2c'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(13, '2024-01-01', '2024-12-31', 0.00, 0.00, 0.00, 0.00, '9e1df8e3-f3cf-4dd8-8145-15783d5b8d92'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(9, '2024-01-01', '2024-12-31', 27.68, 9.78, 5.66, 3.00, '4d6e2a37-9210-4c90-bed8-f262b5755a98'::uuid);
+INSERT INTO public.certidoes_valorcertidao
+(id, data_inicio_validade, data_fim_validade, valor, taxa_fiscal_judiciaria, fundo_estado, issqn_percentual, tipo_certidao_id)
+VALUES(14, '2024-01-01', '2024-12-31', 27.68, 9.78, 5.66, 3.00, '10eb7915-733f-44be-bc6f-674d04666246'::uuid);

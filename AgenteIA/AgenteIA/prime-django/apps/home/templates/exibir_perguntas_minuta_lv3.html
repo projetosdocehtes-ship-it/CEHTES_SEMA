@@ -1,0 +1,78 @@
+{% extends "layouts/base.html" %}
+{% load django_tables2 %}
+{% load phone_filters %}
+{% load humanize %}
+{% load pedidos_formatos %}
+{% block title %}
+    Perguntas Auxiliares -  Livro 02 (Registros)
+{% endblock title %}
+{% block stylesheets %}
+{% endblock stylesheets %}
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <!--        CABECALHO        -->
+        <h5 class="p-10 mb-10 bg-info text-white">
+            {{ perguntas_auxiliares }} - Livro 03 - pelo Colaborador:  {{ current_user }}
+            <br>
+            <br>
+            Protocolo:  {{ protocolo|protocolo_formatado }}  -  Ato Praticado:  {{ ato_praticado }}
+            <br>
+            Número:  {{ tipo_registro }}.{{ numero_registro_auxiliar|formatar_numero_registro }}  -  Número do Ato: {{ numero_ato|default:"" }}
+            -  Código da Tabela: {{ codigo_tabela }}
+            <br>
+        </h5>
+        <!--        INICIO DA FICHA DE Checklist        -->
+        <div>
+            {% for it in perguntas_T %}
+                <table class="table">
+                    <tr>
+                        <td class="text-black">
+                            <strong style="font-size: 16px;">{{ it.questions }}</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" class="rb" name={{ it.id }} id="option1" value="{{ it.option1 }}" size="70">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label id="corans" class="rb" style="display:none ; color : green">
+                                <b>{{ it.Corrans }}</b>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+            {% endfor %}
+            <br>
+            <!--        CABECALHO           -->
+            <input class="btn bg-warning text-black "
+                   value="Voltar"
+                   id="b1"
+                   onclick="getVoltar()">
+            <input type="submit"
+                   class="btn bg-success text-white"
+                   value="Aplicar Dados"
+                   id="b2"
+                   onclick=".">
+            <a class="btn bg-primary    text-white f-12 "
+               href="{% url 'home:gerar_minuta_lv2' pedido_item_id=pedido_item_id %}"
+               aria-pressed="true"
+               role="button">Gerar Minuta</a>
+            <a class="btn bg-secondary    text-white f-12 "
+               href="{% url 'home:texto_lv2_update' pk=2 %}"
+               aria-pressed="true"
+               role="button">Visualizar Texto</a>
+        </form>
+        <!--        CABECALHO         -->
+    </div>
+    <!--   #######     FIM DA FICHA DE Checklist   #######     -->
+{% endblock content %}
+{% block scripts %}
+    <script>
+        function getVoltar() {
+            window.history.back();
+        }
+    </script>
+{% endblock scripts %}

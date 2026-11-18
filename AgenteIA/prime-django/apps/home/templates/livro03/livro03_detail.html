@@ -1,0 +1,474 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% load humanize %}
+{% block stylesheets %}
+    <style>
+         .card-body {
+              display: flex;
+              flex-direction: column;
+         }
+
+         .info-section {
+              display: grid;
+              grid-template-columns: auto 1fr;
+              gap: 10px;
+              align-items: start;
+         }
+
+         .info-label {
+              font-weight: bold;
+              padding-right: 20px;
+         }
+
+         .info-content {
+              padding: 5px 0;
+         }
+    </style>
+{% endblock stylesheets %}
+{% block content %}
+    {% if not registro_auxiliar %}
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Registro Auxiliar não encontrado!</h4>
+            <p>Por favor, verifique se o número do registro auxiliar foi digitado corretamente.</p>
+            <hr>
+            <p class="mb-0">Se o problema persistir, entre em contato com o suporte técnico.</p>
+        </div>
+    {% else %}
+        <div class="card" id="card_livro03">
+            <div class="card-header">
+                <h5>
+                    Registro Auxiliar: {{ registro_auxiliar.numero|formatar_numero_registro_inteiro }}
+                    <span class="text-white f-22">- CNM: {{ registro_auxiliar.cnm_formatada }}</span>
+                </h5>
+                {% comment %} <h5>Registro Auxiliar: {{ registro_auxiliar.numero_formatado }} | CNM: {{ registro_auxiliar.16 }}</h5> {% endcomment %}
+                <div class="btn-group">
+                    {% if registro_auxiliar.primeiro %}
+                        <a class="btn btn-secondary"
+                           href="{{ registro_auxiliar.primeiro.get_absolute_url }}">
+                            <i class="fas fa-angle-double-left"></i>Primeiro</a>
+                    {% endif %}
+                    {% if registro_auxiliar.anterior %}
+                        <a class="btn btn-secondary"
+                           href="{{ registro_auxiliar.anterior.get_absolute_url }}">
+                            <i class="fas fa-angle-left"></i>Anterior</a>
+                    {% endif %}
+                    {% if registro_auxiliar.seguinte %}
+                        <a class="btn btn-secondary"
+                           href="{{ registro_auxiliar.seguinte.get_absolute_url }}">Próximo
+                            <i class="fas fa-angle-right"></i></a>
+                    {% endif %}
+                    {% if registro_auxiliar.ultimo %}
+                        <a class="btn btn-secondary"
+                           href="{{ registro_auxiliar.ultimo.get_absolute_url }}">Último
+                            <i class="fas fa-angle-double-right"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="info-section">
+                    <div class="info-label">Número:</div>
+                    <div class="info-content">
+                        {% if registro_auxiliar.cancelado %}
+                            <span class="font-weight-bold text-success">{{ registro_auxiliar.numero|formatar_numero_registro_inteiro }}</span><i class="fas fa-external-link-alt ms-1"></i>
+                        {% else %}
+                            <span class="font-weight-bold text-danger">{{ registro_auxiliar.numero|formatar_numero_registro_inteiro }}</span><i class="fas fa-external-link-alt ms-1"></i>
+                        {% endif %}
+                    </div>
+                    <div class="info-label">Detalhes:</div>
+                    <div class="info-content">
+                        {{ registro_auxiliar.tipo_registro_auxiliar.nome }} - Nº <b>{{ registro_auxiliar.numero_cedula }}</b>
+                        <br>
+                        <b>{{ registro_auxiliar.descricao }}</b>
+                        <br>
+                        <b>{{ registro_auxiliar.grau_penhor }} Grau.</b>
+                    </div>
+                    <div class="info-label">Datas:</div>
+                    <div class="info-content">
+                        Abertura: <b>{{ registro_auxiliar.data_abertura_formatada }}</b>
+                        <br>
+                        Vencimento: <b>{{ registro_auxiliar.data_vencimento_formatada }}</b>
+                        <br>
+                        Cancelamento: <b>{{ registro_auxiliar.cancelado_em_formatada }}</b>
+                    </div>
+                    <div class="info-label">Área:</div>
+                    <div class="info-content">{{ registro_auxiliar.area }}</div>
+                </div>
+            </div>
+            <div class="card-footer">
+                {% comment %} <a type="button" href="{% url 'home:livro03_texto' pk=registro_auxiliar.16 %}" target="_blank" aria-pressed="true" class="btn btn-sm btn-primary activate text-white">
+                        <i class="icon feather icon-file"></i> Ver Texto
+                </a> {% endcomment %}
+                {% if registro_auxiliar.pk %}
+                    <a type="button"
+                       href="{% url 'home:livro03_texto' pk=registro_auxiliar.pk %}"
+                       target="_blank"
+                       aria-pressed="true"
+                       class="btn btn-sm btn-primary activate text-white">
+                        <i class="icon feather icon-file"></i> Ver Texto
+                    </a>
+                {% endif %}
+                <a type="button"
+                   href="#card_livro03_credor"
+                   class="btn btn-sm btn-outline-primary text-dark">
+                    Credor(es)
+                    <span class="badge bg-dark">{{ registro_auxiliar.quantidade_de_credores }}</span></a>
+                <a type="button"
+                   href="#card_livro03_devedor"
+                   class="btn btn-sm btn-outline-danger text-dark">
+                    Devedor(es)
+                    <span class="badge bg-dark">{{ registro_auxiliar.quantidade_de_devedores }}</span></a>
+                <a type="button"
+                   href="#card_livro03_avalista"
+                   class="btn btn-sm btn-outline-warning text-dark">
+                    Avalista(s)
+                    <span class="badge bg-dark">{{ registro_auxiliar.quantidade_de_avalistas }}</span></a>
+                <a type="button"
+                   href="#card_livro03_envolvidos"
+                   class="btn btn-sm btn-secondary">
+                    Envolvidos
+                    <span class="badge bg-dark">{{ registro_auxiliar.quantidade_de_envolvidos }}</span></a>
+                <a type="button"
+                   href="#card_livro03_garantias"
+                   class="btn btn-sm btn-secondary">
+                    Garantia(s)
+                    <span class="badge bg-dark">{{ registro_auxiliar.quantidade_de_garantias }}</span>
+                </a>
+                <a class="btn btn-sm btn-outline-primary text-dark dropdown-toggle"
+                   type="button"
+                   id="dropdownNumero"
+                   data-bs-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false"><i class="icon feather icon-settings"></i> Opções
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownNumero">
+                    <a class="dropdown-item" href="#">
+                        <i class="icon feather icon-image"></i>Exame Calculo
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        <i class="icon feather icon-image"></i>Livro01Protocolo
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        <i class="icon feather icon-image"></i>Pedidos de Certidão
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card" id="card_livro03_credor">
+            <div class="card-header text-white">
+                Credor(es)
+                <span class="badge bg-dark">{{ registro_auxiliar.quantidade_de_credores }}</span>
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ato</th>
+                            <th>CPF/CNPJ</th>
+                            <th>Nome</th>
+                            <th>Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Linhas adicionais para itens envolvidos -->
+                        {% for credor in registro_auxiliar.credores %}
+                            <tr>
+                                <td>{{ credor.tipo_ato }}.{{ credor.numero_ato }}</td>
+                                <td>{{ credor.pessoa.documento_formatado }}</td>
+                                <td>
+                                    {% comment %} {{ credor.pessoa.nome|upper }} {% endcomment %}
+                                    <a type="button"
+                                       href="{% url 'home:livro05_por_id' id=credor.pessoa.id %}"
+                                       target="_blank"
+                                       class="label">
+                                        <span class="badge bg-dark">{{ credor.pessoa.nome|upper }}</span>
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if registro_auxiliar.cancelado or credor.situacao == 'T' %}
+                                        {% comment %} <div class="cell-content">{{ credor.pessoa.documento_formatado }}</div> {% endcomment %}
+                                        <div class="cell-content">{{ credor.tipo_parte }}</div>
+                                        <div class="cell-content">{{ credor.regime }}</div>
+                                        <div class="cell-content">
+                                            <span class="badge bg-success f-12">(BAIXADO)</span>
+                                        </div>
+                                    {% else %}
+                                        <div class="cell-content">
+                                            <span class="badge bg-primary f-12">{{ credor.tipo_parte }}</span>
+                                        </div>
+                                        <div class="cell-content">{{ credor.regime }}</div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a href="#card_livro03"
+                   class="btn btn-sm btn-outline-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+        </div>
+        <!-- HIPOTECAS -->
+        <div class="card" id="card_livro03_devedor">
+            <div class="card-header text-white">
+                Devedor(es)
+                <span class="badge bg-dark">{{ registro_auxiliar.quantidade_de_devedores }}</span>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ato</th>
+                            <th>CPF/CNPJ</th>
+                            <th>Nome</th>
+                            <th>Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for devedor in registro_auxiliar.devedores %}
+                            <tr class="envolvido">
+                                <td>{{ devedor.tipo_ato }}.{{ devedor.numero_ato }}</td>
+                                <td>{{ devedor.pessoa.documento_formatado }}</td>
+                                <td>
+                                    <a type="button"
+                                       href="{% url 'home:livro05_por_id' id=devedor.pessoa.id %}"
+                                       target="_blank"
+                                       class="label">
+                                        <span class="badge bg-dark">{{ devedor.pessoa.nome|upper }}</span>
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if registro_auxiliar.cancelado or devedor.situacao == 'T' %}
+                                        <div class="cell-content">{{ devedor.tipo_parte }}</div>
+                                        <div class="cell-content">{{ devedor.regime }}</div>
+                                        <div class="cell-content">
+                                            <span class="badge bg-success f-12">(BAIXADO)</span>
+                                        </div>
+                                    {% else %}
+                                        <span class="badge bg-danger f-12">{{ devedor.tipo_parte }}</span>
+                                        <div class="cell-content">{{ devedor.regime }}</div>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a href="#card_livro03"
+                   class="btn btn-sm btn-outline-warning text-dark "
+                   title="Retornar ao topo"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            </div>
+        </div>
+        <!-- Alienação INICIO -->
+        <div class="card" id="card_livro03_avalista">
+            <div class="card-header text-white">
+                Avalista(s)
+                <span class="badge bg-dark">{{ registro_auxiliar.quantidade_de_avalistas }}</span>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Ato</th>
+                            <th>CPF/CNPJ</th>
+                            <th>Nome</th>
+                            <th>Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for avalista in registro_auxiliar.avalistas %}
+                            <tr>
+                                <td>{{ avalista.tipo_ato }}.{{ avalista.numero_ato }}</td>
+                                <td>{{ avalista.pessoa.documento_formatado }}</td>
+                                <td>
+                                    <a type="button"
+                                       href="{% url 'home:livro05_por_id' id=avalista.pessoa.id %}"
+                                       target="_blank"
+                                       class="label">
+                                        <span class="badge bg-dark">{{ avalista.pessoa.nome|upper }}</span>
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if registro_auxiliar.cancelado or avalista.situacao == 'T' %}
+                                        <div class="cell-content">{{ avalista.tipo_parte }}</div>
+                                        <div class="cell-content">{{ avalista.documento_formatado }}</div>
+                                        <div class="cell-content">
+                                            <span class="badge bg-success f-12">(BAIXADO)</span>
+                                        </div>
+                                    {% else %}
+                                        <span class="badge bg-warning f-12">{{ avalista.tipo_parte }}</span>
+                                    </div>
+                                    <div class="cell-content">{{ avalista.documento_formatado }}</div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="#card_livro03"
+               class="btn btn-sm btn-outline-warning text-dark "
+               title="Retornar ao topo"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+    </div>
+    <div class="card" id="card_livro03_envolvidos">
+        <div class="card-header text-white">
+            Envolvidos (Todos) <span class="badge bg-dark">{{ registro_auxiliar.quantidade_de_envolvidos }}</span>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ato</th>
+                        <th>CPF/CNPJ</th>
+                        <th>Nome</th>
+                        <th>Papel</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Linhas adicionais para itens envolvidos -->
+                    {% for envolvido in registro_auxiliar.envolvidos %}
+                        <tr>
+                            <td>{{ envolvido.tipo_ato }}.{{ envolvido.numero_ato }}</td>
+                            <td>{{ envolvido.pessoa.documento_formatado }}</td>
+                            <td>
+                                {% comment %} <a href="{{ envolvido.pessoa.get_absolute_url }}">{{ envolvido.pessoa.nome|upper }}</a> {% endcomment %}
+                                <a type="button"
+                                   href="{% url 'home:livro05_por_id' id=envolvido.pessoa.id %}"
+                                   target="_blank"
+                                   class="label">
+                                    <span class="badge bg-dark">{{ envolvido.pessoa.nome|upper }}</span>
+                                </a>
+                            </td>
+                            <td>
+                                {% if registro_auxiliar.cancelado or envolvido.situacao == 'T' %}
+                                    <div class="cell-content">{{ envolvido.tipo_parte }}</div>
+                                    <div class="cell-content">{{ envolvido.regime }}</div>
+                                    <div class="cell-content">
+                                        <span class="badge bg-success f-12">(BAIXADO)</span>
+                                    </div>
+                                {% else %}
+                                    {% if envolvido.tipo_parte == "Avalista" %}
+                                        <div class="cell-content">
+                                            <span class="badge bg-warning f-12">{{ envolvido.tipo_parte }}</span>
+                                        </div>
+                                        <div class="cell-content">{{ envolvido.regime }}</div>
+                                    {% elif envolvido.tipo_parte == "Devedor" %}
+                                        <div class="cell-content">
+                                            <span class="badge bg-danger f-12">{{ envolvido.tipo_parte }}</span>
+                                        </div>
+                                        <div class="cell-content">{{ envolvido.regime }}</div>
+                                    {% elif envolvido.tipo_parte == "Credor" %}
+                                        <div class="cell-content">
+                                            <span class="badge bg-primary f-12">{{ envolvido.tipo_parte }}</span>
+                                        </div>
+                                        <div class="cell-content">{{ envolvido.regime }}</div>
+                                    {% else %}
+                                        <div class="cell-content">{{ envolvido.tipo_parte }}</div>
+                                        <div class="cell-content">{{ envolvido.regime }}</div>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <!-- Adicione mais células vazias aqui se quiser alinhar com o resto da tabela -->
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="#card_livro03"
+               class="btn btn-sm btn-outline-warning text-dark "
+               title="Retornar ao topo"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+    </div>
+    <div class="card" id="card_livro03_garantias">
+        <div class="card-header text-white">
+            Garantia(s)
+            <span class="badge bg-dark">{{ registro_auxiliar.quantidade_de_garantias }}</span>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Dados da Cédula</th>
+                        <th>Quantidade</th>
+                        <th>Imóvel</th>
+                        <th>Descrição e Localidade dos Bens</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Linhas adicionais para itens envolvidos -->
+                    {% for garantia in registro_auxiliar.garantias %}
+                        <tr>
+                            <td>
+                                <div class="cell-content">
+                                    Espécie: <b>{{ garantia.especie }}</b>
+                                </div>
+                                <div class="cell-content">
+                                    Nro. Cédula: <b>{{ garantia.numero }}</b>
+                                </div>
+                                <div class="cell-content">
+                                    Grau: <b>{{ garantia.grau_penhor|default:"" }}</b>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="cell-content">
+                                    <b>{{ garantia.quantidade|default:"" }}</b>
+                                </div>
+                                <div class="cell-content">
+                                    Valor: <b>{{ garantia.valor|default:"" }}</b>
+                                </div>
+                                <div class="cell-content">
+                                    Área Plantada: <b>{{ garantia.area|default:"" }}</b>
+                                </div>
+                            </td>
+                            <td>
+                                {% if garantia.eh_matricula %}
+                                    <div class="cell-content">
+                                        <div class="cell-content">{{ garantia.tipo_registro_descrito }}:</div>
+                                        <div class="cell-content">{{ garantia.8 }}</div>
+                                        <span class="badge bg-primary f-14">
+                                            <a class="text-white"
+                                               title="Clique para acessar o Indicador Real."
+                                               href="{% url 'home:livro04_detail' numero_registro=garantia.numero_registro tipo_registro=garantia.tipo_registro cartorio_imovel='1' %}"
+                                               target="_blank">{{ garantia.numero_registro_formatado }}</a>
+                                        </span>
+                                    </div>
+                                    <div class="cell-content">{{ garantia.11|default:"" }}</div>
+                                </td>
+                                <td>
+                                    <div class="cell-content">{{ garantias.2|default:"" }}</div>
+                                    <div class="cell-content">
+                                        <small>{{ garantias.7|default:"" }}</small>
+                                    </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="#card_livro03"
+               class="btn btn-sm btn-outline-warning text-dark "
+               title="Retornar ao topo"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        </div>
+    </div>
+{% endif %}
+{% endblock content %}

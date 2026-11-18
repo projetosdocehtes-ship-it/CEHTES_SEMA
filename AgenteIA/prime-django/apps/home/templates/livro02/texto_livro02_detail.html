@@ -1,0 +1,377 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block title %}
+    Texto do Livro02
+{% endblock title %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+    <style>
+        .document-editor {
+            border: 1px solid var(--ck-color-base-border);
+            border-radius: var(--ck-border-radius);
+            max-height: 800px;
+            display: flex;
+            flex-flow: column nowrap;
+        }
+
+        .document-editor__toolbar {
+            z-index: 1;
+            box-shadow: 0 0 5px hsla(0, 0%, 0%, .2);
+            border-bottom: 1px solid var(--ck-color-toolbar-border);
+        }
+
+        .document-editor__toolbar .ck-toolbar {
+            border: 0;
+            border-radius: 0;
+        }
+
+        .document-editor__editable-container {
+            padding: calc(2 * var(--ck-spacing-large));
+            background: #eee;
+            overflow-y: scroll;
+        }
+
+        .document-editor__editable-container .ck-editor__editable.ck-editor__editable_inline {
+            width: 21cm;
+            min-height: 29.7cm;
+
+              /* Margem de configuracao da ficha em cm */
+            padding-left: 2.0cm;
+              /* Margem esquerda de 4cm */
+            padding-right: 2.0cm;
+              /* Margem direita de 2cm */
+            padding-top: 0.5cm;
+              /* Margem superior de 1cm */
+            padding-bottom: 2cm;
+              /* Margem inferior de 1cm */
+
+            font-family: "Courier New", Courier, monospace;
+              /* Definindo a fonte */
+            font-size: 10pt;
+              /* Definindo o tamanho da fonte */
+
+            border: 1px hsl(0, 0%, 82.7%) solid;
+            border-radius: var(--ck-border-radius);
+            background: white;
+            box-shadow: 0 0 5px hsla(0, 0%, 0%, .1);
+            margin: 0 auto;
+        }
+
+        .document-editor .ck-content,
+        .document-editor .ck-heading-dropdown .ck-list .ck-button__label {
+            font: 16px/1.6 "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .document-editor .ck-heading-dropdown .ck-list .ck-button__label {
+            line-height: calc(1.7 * var(--ck-line-height-base) * var(--ck-font-size-base));
+            min-width: 6em;
+        }
+
+        .document-editor .ck-heading-dropdown .ck-list .ck-button:not(.ck-heading_paragraph) .ck-button__label {
+            transform: scale(0.8);
+            transform-origin: left;
+        }
+
+        .document-editor .ck-content h2,
+        .document-editor .ck-heading-dropdown .ck-heading_heading1 .ck-button__label {
+            font-size: 2.18em;
+            font-weight: normal;
+        }
+
+        .document-editor .ck-content h2 {
+            line-height: 1.37em;
+            padding-top: .342em;
+            margin-bottom: .142em;
+        }
+
+        .document-editor .ck-content h3,
+        .document-editor .ck-heading-dropdown .ck-heading_heading2 .ck-button__label {
+            font-size: 1.75em;
+            font-weight: normal;
+            color: hsl(203, 100%, 50%);
+        }
+
+        .document-editor .ck-heading-dropdown .ck-heading_heading2.ck-on .ck-button__label {
+            color: var(--ck-color-list-button-on-text);
+        }
+
+        .document-editor .ck-content h3 {
+            line-height: 1.86em;
+            padding-top: .171em;
+            margin-bottom: .357em;
+        }
+
+        .document-editor .ck-content h4,
+        .document-editor .ck-heading-dropdown .ck-heading_heading3 .ck-button__label {
+            font-size: 1.31em;
+            font-weight: bold;
+        }
+
+        .document-editor .ck-content h4 {
+            line-height: 1.24em;
+            padding-top: .286em;
+            margin-bottom: .952em;
+        }
+
+        .document-editor .ck-content p {
+
+
+            padding-top: -.5em;
+            margin-bottom: -.5em;
+        }
+
+        .document-editor .ck-content blockquote {
+            font-family: Georgia, serif;
+            margin-left: calc(2 * var(--ck-spacing-large));
+            margin-right: calc(2 * var(--ck-spacing-large));
+        }
+
+        @media only screen and (max-width: 960px) {
+
+              /* Because on mobile 2cm paddings are to big. */
+            .document-editor__editable-container .document-editor__editable.ck-editor__editable {
+                padding: 1.5em;
+            }
+        }
+
+        @media only screen and (max-width: 1200px) {
+            .main__content-wide .document-editor__editable-container .document-editor__editable.ck-editor__editable {
+                width: 100%;
+            }
+        }
+
+         /* Style document editor a'ka Google Docs.*/
+        @media only screen and (min-width: 1360px) {
+            .main .main__content.main__content-wide {
+                padding-right: 0;
+            }
+        }
+
+        @media only screen and (min-width: 1600px) {
+            .main .main__content.main__content-wide {
+                width: 24cm;
+            }
+
+            .main .main__content.main__content-wide .main__content-inner {
+                width: auto;
+                margin: 0 50px;
+            }
+
+              /* Keep "page" look based on viewport width. */
+            .main__content-wide .document-editor__editable-container .document-editor__editable.ck-editor__editable {
+                width: 60%;
+            }
+        }
+    </style>
+{% endblock stylesheets %}
+{% block breadcrumbs %}
+    {% load replace_value %}
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Detalhes do Registro</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}"><i class="feather icon-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ object.get_absolute_url }}">Livros</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ object.get_absolute_url }}">Livro 02 (Registros)</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ object.get_absolute_url }}">Detalhes do Texto</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h5>
+                {{ object.tipo_registro_descricao }}: <span class="font-weight-bold f-16 text-white">{{ object.numero_formatado }}</span>
+            </h5>
+        </div>
+        <div class="document-editor">
+            <div class="document-editor__toolbar"></div>
+            <div class="document-editor__editable-container">
+                <div class="document-editor__editable" id="do_texto_id">{{ object.texto|safe }}</div>
+            </div>
+        </div>
+        <!-- Placeholder para exibir o resultado da análise -->
+        <div id="resultadoAnalise" class="m-3"></div>
+        <div class="spinner-border text-primary mx-auto mt-5 mb-5"
+             role="status"
+             id="loading"
+             style="display: none">
+            <span class="sr-only">Analisando Texto...</span>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'minutas_atos:falar_texto_minuta_ato' modelo_id=object.pk %}"
+               class="btn btn-sm btn-success text-dark "
+               title="Falar Texto"
+               type="button"
+               data-bs-toggle="tooltip"><i class="icon feather icon-mic"></i>Falar Texto</a>
+            <button class="btn btn-sm btn-primary" id="analiseTextoBtn">Analisar Texto</button>
+            <a class="btn btn-sm btn-warning text-dark"
+               title="Voltar para a página anterior sem alterar os dados."
+               data-bs-toggle="tooltip"
+               onclick="window.history.back()"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+            {% comment %} <i class="icon feather icon-headphone"> {% endcomment %}
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        document.getElementById("analiseTextoBtn").addEventListener("click", function() {
+            document.getElementById("loading").style.display = "block";
+            document.getElementById("resultadoAnalise").innerHTML = "";
+
+            var texto = document.querySelector('.document-editor__editable').innerHTML;
+            let fullText = ''; // Usada para acumular o texto completo
+
+            fetch("/analise-texto/", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken"),
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    texto: texto
+                }),
+            })
+                .then(response => response.body.getReader())
+                .then(reader => {
+                    const stream = new ReadableStream({
+                        start(controller) {
+                            function push() {
+                                reader.read().then(({
+                                    done,
+                                    value
+                                }) => {
+                                    if (done) {
+                                        controller.close();
+                                        return;
+                                    }
+
+                                    const chunk = new TextDecoder().decode(value);
+                                    fullText += chunk; // Acumula o texto completo
+
+                                            // Atualiza o DOM com o chunk atual para visualização em tempo real
+                                            // Note que aqui não aplicamos a formatação final
+                                    document.getElementById("resultadoAnalise").innerHTML += chunk.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+
+                                    push();
+                                });
+                            }
+                            push();
+                        }
+                    });
+                    return new Response(stream).text();
+                })
+                .then(() => {
+                        // Aplica a formatação final ao texto completo
+                    let formattedText = fullText.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+                        // Atualiza o DOM com o texto completo formatado
+                    document.getElementById("resultadoAnalise").innerHTML = formattedText;
+                    document.getElementById("loading").style.display = "none";
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById("loading").style.display = "none";
+                });
+        });
+    </script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+{% endblock content %}
+{% block javascripts %}
+    <!-- Ckeditor js -->
+    <script src="{% static 'assets/js/plugins/ckeditor5/document/ckeditor.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/ckeditor/document/pt-br.js' %}"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/multi-root/ckeditor.js"></script>
+    <script type="text/javascript">
+        (function() {
+            DecoupledEditor.create(document.querySelector('.document-editor__editable'))
+                .then(editor => {
+                    const toolbarContainer = document.querySelector('.document-editor__toolbar');
+                    toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+                })
+                .catch(error => {});
+        })();
+    </script>
+    <script>
+        MultiRootEditor
+            .create({
+                   // Define roots / editable areas:
+                header: document.getElementById('header'),
+                content: document.getElementById('content'),
+                leftSide: document.getElementById('left-side'),
+                rightSide: document.getElementById('right-side')
+            })
+            .then(editor => {
+                window.editor = editor;
+
+                   // Append toolbar to a proper container.
+                const toolbarContainer = document.getElementById('toolbar');
+                toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+
+                   // Make toolbar sticky when the editor is focused.
+                editor.ui.focusTracker.on('change:isFocused', () => {
+                    if (editor.ui.focusTracker.isFocused) {
+                        toolbarContainer.classList.add('sticky');
+                    } else {
+                        toolbarContainer.classList.remove('sticky');
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('There was a problem initializing the editor.', error);
+            });
+    </script>
+    <script>
+        document.getElementById("ttsBtn").addEventListener("click", function() {
+            var texto = document.querySelector('.document-editor__editable').innerHTML;
+            fetch("/tts/", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken"),
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: `texto=${encodeURIComponent(texto)}`,
+            })
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const audioPlayer = document.getElementById('audioPlayer');
+                    audioPlayer.src = url;
+                    audioPlayer.style.display = 'block'; // Mostra o player
+                    audioPlayer.play();
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+{% endblock javascripts %}

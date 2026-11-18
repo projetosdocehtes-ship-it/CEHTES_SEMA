@@ -1,0 +1,30 @@
+{% extends "layouts/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-06">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Detalhes do Ato</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Exibição dos detalhes do Ato -->
+                    <p>
+                        <strong>Nome:</strong> {{ object.nome }}
+                    </p>
+                    <p>
+                        <strong>Descrição:</strong> {{ object.descricao }}
+                    </p>
+                    <!-- Adicione mais campos conforme necessário -->
+                </div>
+                <div class="card-footer">
+                    <a href="{{ object.get_pedido_url }}" class="btn btn-sm btn-secondary"><i class="fas fa-newspaper d-none d-md-inline-block"></i> Voltar ao Pedido</a>
+                    <a href="{% url 'pedidos:ato_update' object.pk %}"
+                       class="btn btn-sm btn-primary">Editar</a>
+                </div>
+            </div>
+        </div>
+        <!-- Se houver informações relacionadas ou tabelas, adicione-as aqui -->
+    </div>
+{% endblock content %}

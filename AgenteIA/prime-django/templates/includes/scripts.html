@@ -1,0 +1,108 @@
+{% load static %}
+<!-- Required Js -->
+<script src="{% static 'assets/js/vendor-all.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/popper.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/lightbox.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins/perfect-scrollbar.min.js' %}"></script>
+<script src="{% static 'assets/js/pcoded.min.js' %}"></script>
+<script src="{% static 'assets/js/dark-mode.js' %}"></script>
+<script src="{% static 'assets/js/plugins/utils.js' %}"></script>
+<script src="{% static 'prime/modal-instrucoes.js' %}"></script>
+<script src="{% static 'assets/js/chart.umd.min.js' %}"></script>
+<script src="{% static 'prime/inactivity_checker.js' %}" async></script>
+<script src="{% static 'assets/js/plugins/notifier.js' %}"></script>
+<script src="{% static 'assets/js/pages/ac-notification.js' %}"></script>
+{% if messages %}
+    <script>
+        window.onload = function() {
+            {% if messages %}
+            {% for message in messages %}
+            new Notifier({
+                message: "{{ message|safe }}",
+                type: "{{ message.tags|default:'info' }}",
+                position: 'top-right',
+                duration: 5000
+            });
+            {% endfor %}
+            {% endif %}
+        };
+    </script>
+{% endif %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+        var toastList = toastElList.map(function (toastEl) {
+            return new bootstrap.Toast(toastEl, {
+                autohide: true,
+                delay: 5000
+            }).show()
+        })
+    });
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
+</script>
+<script src="{% static 'assets/js/plugins/cleave.min.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Seleciona todos os campos com a classe brlinput
+        const brlInputs = document.querySelectorAll('.brlinput');
+
+        brlInputs.forEach(function (input) {
+            const cleaveInstance = new Cleave(input, {
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand',
+                numeralDecimalMark: ',',
+                delimiter: '.',
+                numeralDecimalScale: 2, // Define o número de casas decimais
+                rawValueTrimPrefix: true
+            });
+
+            input.addEventListener('blur', function () {
+                let value = cleaveInstance.getRawValue();
+
+                // Se o valor for um número válido
+                if (!isNaN(value) && value !== '') {
+                    // Formata o valor com duas casas decimais
+                    const floatValue = parseFloat(value);
+                    const formattedValue = floatValue.toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                    event.target.value = formattedValue;
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('[data-bs-toggle="popover"]').popover({
+            html: true
+        });
+    });
+</script>
+<script>
+    // Inicializar Lightbox2
+    lightbox.option({
+        'resizeDuration': 200,
+        'wrapAround': true,
+        'alwaysShowNavOnTouchDevices': true,
+        'disableScrolling': true
+    });
+</script>

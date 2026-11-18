@@ -1,0 +1,378 @@
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% comment %} <!--   --> {% endcomment %}
+{% block content %}
+    <!-- Modal -->
+    <div class="modal"
+         id="addCheckListEnderecoUrbanoModal"
+         tabindex="-1"
+         aria-labelledby="addCheckListEnderecoUrbanoModalLabel"
+         aria-hidden="True">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title text-dark fs-5"
+                        id="addCheckListEnderecoUrbanoModalLabel">
+                        <i class="icon feather icon-check"></i>   Checklist - Criar - Endereço - Urbano
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- PASSANDO O ITEM DO PROTOCOLO - URBANO -->
+                <form action="{% url 'home:cadastra_ChecklistEndereco_Urbano' pedido_item_id=pedido_item_id opcao_imovel='U' %}"
+                      method="post">
+                    <!-- Não se esqueça dessa tag -->
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <!-- PASSANDO O pedido_item_id -->
+                        <input type="hidden" name="partes_imovel" id="partes_imovel" value={{ pedido_item_id }} />
+                        <!-- Municipio -->
+                        <div class="input-group mb-3">
+                            <!-- OBTER O COMBOBOX DO MUNICIPIO -->
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" for="municipio">Município</span>
+                            </div>
+                            <select class="form-select"
+                                    name="municipio"
+                                    id="municipio"
+                                    autofocus
+                                    required>
+                                {% for cidade in cidades %}
+                                    <option value={{ cidade.id }}>{{ cidade.nome }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Setor -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Bairro</span>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder=""
+                                   name="setor"
+                                   id="setor"
+                                   value=""
+                                   autofocus
+                                   required>
+                        </div>
+                        <!-- Quadra -->
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Quadra</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="quadra"
+                                               id="quadra"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Lote</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="lote"
+                                               id="lote"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Aréa</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="area"
+                                               id="area"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Aréa Construída</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="area_construida_residencial"
+                                               id="area_construida_residencial"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Residencial -->
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <!-- OBTER O COMBOBOX DE RESIDENCIAL -->
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Residencial</span>
+                                        </div>
+                                        <select class="form-select"
+                                                name="residencial"
+                                                id="residencial"
+                                                autofocus
+                                                required>
+                                            <option value="N" selected>Não</option>
+                                            <option value="S">Sim</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <!-- OBTER O COMBOBOX DE RESIDENCIAL -->
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Comercial</span>
+                                        </div>
+                                        <select class="form-select"
+                                                name="comercial"
+                                                id="comercial"
+                                                autofocus
+                                                required>
+                                            <option value="N" selected>Não</option>
+                                            <option value="S">Sim</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Nome da Rua -->
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Nome da Rua</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="nome_rua"
+                                               id="nome_rua"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Número da Rua</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="numero_casa"
+                                               id="numero_casa"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- LADOS -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Qual metros frente</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="m_frente_metros"
+                                               id="m_frente_metros"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Lado para frente</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="p_frente_metros"
+                                               id="p_frente_metros"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- LADOS -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Qual metros direito</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="m_direito_metros"
+                                               id="m_direito_metros"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Lado para direito</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="p_direito_metros"
+                                               id="p_direito_metros"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- LADOS -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Qual metros esquerdo</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="m_esquerdo_metros"
+                                               id="m_esquerdo_metros"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Lado esquerdo</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="p_esquerdo_metros"
+                                               id="p_esquerdo_metros"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- LADOS -->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Qual metros fundo</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="m_fundo_metros"
+                                               id="m_fundo_metros"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Lado para fundo</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder=""
+                                               name="p_fundo_metros"
+                                               id="p_fundo_metros"
+                                               value=""
+                                               autofocus
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- BOTOES -->
+                        <div class="modal-footer">
+                            <button type="submit"
+                                    class="btn btn-sm btn-primary "
+                                    aria-pressed="true"
+                                    role="button">
+                                <i class="icon feather icon-save"></i> Salvar
+                            </button>
+                            <button value=""
+                                    type="button"
+                                    class="btn btn-sm btn-secondary "
+                                    data-bs-dismiss="modal">
+                                <i class="btn-close"></i> Fechar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

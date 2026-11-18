@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>
+            {% block title %}Relatório{% endblock %}
+        </title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: Arial, sans-serif;
+                background-color: #333;
+            }
+
+            .page {
+                width: 210mm;
+                min-height: 297mm;
+                padding: 20mm;
+                margin: auto;
+                background: white;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            }
+
+            @page {
+                size: A4;
+                margin: 0;
+            }
+
+            @media print {
+                .page {
+                    box-shadow: none;
+                    margin: 0;
+                    border: none;
+                }
+            }
+
+            .recibo {
+                page-break-before: always;
+                  /* Inserir uma quebra de página antes de cada novo recibo */
+            }
+
+            .via {
+                height: 50%;
+                  /* Cada via ocupa 50% da altura da página */
+                width: 100%;
+                  /* Cada via ocupa 100% da largura da página */
+                border-bottom: 1px solid black;
+                  /* Adicionar uma borda entre as vias */
+            }
+
+            .via:last-child {
+                border-bottom: none;
+                  /* Remover a borda da última via */
+            }
+        </style>
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <div class="page">
+            <section>
+                {% block content %}<!-- Conteúdo do relatório -->{% endblock %}
+            </section>
+            <footer>
+                {% block footer %}<p>Informações de Rodapé</p>{% endblock %}
+            </footer>
+        </div>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

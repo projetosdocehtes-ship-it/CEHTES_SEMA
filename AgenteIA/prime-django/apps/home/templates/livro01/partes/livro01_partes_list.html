@@ -1,0 +1,124 @@
+{% load home_formatos %}
+{% extends "layouts/base.html" %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block title %}
+    Partes do Protocolo {{ protocolo }}
+{% endblock title %}
+{% block content %}
+    <div class="card" id="itens_pedido_partes">
+        <div class="card-header">
+            <h5>
+                <span class="font-weight-bold text-white">Partes do Protocolo {{ protocolo }}</span>
+            </h5>
+        </div>
+        <div class="card-body table-responsive">
+            {% if protocolo.partes_do_protocolo %}
+                <!-- Verifica se a query possui partes -->
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Papel</th>
+                            <th>Nome</th>
+                            <th>Estado Civil</th>
+                            <th style="text-align: center;">Indisp.</th>
+                            <th>Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% with counter=protocolo.partes_do_protocolo|length %}
+                            {% for adquirente in protocolo.partes_do_protocolo %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    {% comment %} <td>{{ adquirente.status|status_parte }}</td> {% endcomment %}
+                                    <td>{{ adquirente.papel|status_parte }}</td>
+                                    <td>
+                                        <b>{{ adquirente.pessoa.nome|upper }}</b>
+                                        <div class="cell-content">
+                                            {% if adquirente.pessoa.cpf > 11 %}
+                                                CNPJ: <b>{{ adquirente.pessoa.cpf|formatar_documento|default:"" }}</b>
+                                            {% else %}
+                                                CPF: <b>{{ adquirente.pessoa.cpf|formatar_documento|default:"" }}</b>
+                                            {% endif %}
+                                        </div>
+                                        <div class="cell-content">
+                                            Documento: <b>{{ adquirente.pessoa.documento|default:"(Não Consta)" }}</b>
+                                        </div>
+                                        <div class="cell-content">
+                                            {% if adquirente.pessoa_conjuge_id > 0 %}Cônjuge: {{ adquirente.pessoa_conjuge.nome|formatar_nome }}{% endif %}
+                                        </div>
+                                    </td>
+                                    <td>{{ adquirente.pessoa.estado_civil }}</td>
+                                    <td style="text-align: center;">
+                                        <span class="badge bg-danger">0</span>
+                                    </td>
+                                    <td>
+                                        <div class="cell-content">{% include "vincular_conjuge.html" %}</div>
+                                        <div class="cell-content"></div>
+                                        <div class="cell-content">
+                                            <a href="{% url 'home:livro05-update' pk=adquirente.pessoa.id %}?pedido_item_id={{ protocolo.pk }}&ancora_origem=itens_pedido_partes "
+                                               target="_blank"
+                                               class="btn-sm btn-outline-success active-blue text-dark"
+                                               title="Desvincular pessoa do ato">
+                                                <i class="icon feather icon-edit"></i> Editar
+                                            </a>
+                                        </div>
+                                        <div class="cell-content"></div>
+                                        <div class="cell-content">
+                                            <a href="{% url 'home:desvincularProtocoloPessoa' pessoa_id=adquirente.pessoa.id papel=adquirente.papel protocolo_id=protocolo.pk %} "
+                                               target="_blank"
+                                               class="btn-sm btn-outline-danger"
+                                               title="Desvincular pessoa do ato">
+                                                <i class="icon feather icon-trash-2"></i> Desvincular
+                                            </a>
+                                        </div>
+                                        <!-- Inclusões de modais e outras opções -->
+                                        {% comment %} {% include "modal_detalhes_pessoa.html" %} {% endcomment %}
+                                        {% comment %} {% include "desvincularModalPessoa.html" %} {% endcomment %}
+                                        {% comment %} <a class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal_detalhes_pessoa{{ adquirente.id }}" title="Exibe os dados da Parte Selecionada " data-bs-toggle="tooltip"><i class="icon feather icon-info"></i> Detalhes
+                  </a>
+                  <a class="btn btn-sm btn-danger style=" margin-right: -4px " " href="#!" data-bs-toggle="modal" data-bs-target="#desvincularModalPessoa{{ adquirente.id }}" title="Desvincular a parte envolvida" data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-trash"></i></a> {% endcomment %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endwith %}
+                        </tbody>
+                    </table>
+                {% endif %}
+                {% include "form-inserir-pessoa-adquirente.html" %}
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-sm btn-primary"
+                   href="{% url 'pessoas:pessoa-create-wizard' content_type_id=content_type.pk object_id=protocolo.pk %}"
+                   type="button"
+                   aria-haspopup="true"
+                   aria-expanded="false">
+                    <i class="icon feather icon-plus"></i>Adicionar Parte
+                </a>
+                <a class="btn btn-sm btn-secondary"
+                   href="#itens_pedido_titulo_principal"
+                   title="Acessar os dados do Título Principal."
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-check"></i>Título Principal
+                </a>
+                <a class="btn btn-sm btn-outline-info text-dark"
+                   title="Atualizar a página para visualizar os dados alterados"
+                   data-bs-toggle="tooltip"
+                   onclick="window.location.reload();"><i class="icon feather icon-refresh-ccw" id="theme-inlimpar"></i> Atualizar
+                </a>
+                <a href="#protocolo_detail"
+                   class="btn btn-sm btn-outline-warning text-dark"
+                   title="Clique para voltar ao topo da página"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+                <a href="#itens_pedido"
+                   class="btn btn-sm btn-outline-primary text-dark"
+                   title="Próximo ítem"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+            </div>
+        </div>
+        <!-- [ FIM - CARD ENVOLVIDOS ] -->
+    {% endblock content %}

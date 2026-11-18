@@ -1,0 +1,78 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>Sugestões de Equipamentos para: {{ projeto.nome_projeto }}</h4>
+    </div>
+    <div class="card-body">
+        {% if sem_precos %}
+            <div class="alert alert-warning">
+                <strong>Atenção:</strong> Nenhum preço foi informado nos painéis solares.
+                Os resultados abaixo são baseados apenas na potência (mp), sem considerar custo-benefício real.
+            </div>
+        {% endif %}
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Modelo</th>
+                    <th>Marca</th>
+                    <th>Potência (W)</th>
+                    <th>Qtd Painéis</th>
+                    <th>Preço Unitário (R$)</th>
+                    <th>Custo Total</th>
+                    <th>Custo por kWh (R$)</th>
+                    <th>Opção</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in sugestoes.itertuples %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.modelo }}</td>
+                    <td>{{ item.marca }}</td>
+                    <td>{{ item.mp }}</td>
+                    <td>{{ item.qtd_paineis }}</td>
+                    <td>{{ item.valor_total_onr }}</td>
+                    <td>{{ item.custo_total|floatformat:2 }}</td>
+                    <td>{{ item.custo_kwh|floatformat:4 }}</td>
+                    <td>
+                        <a href="http://localhost:8501/"
+                            target="_blank"
+                            class="btn btn-sm btn-outline-primary">
+                            <i class='icon feather icon-eye f-14'></i>Simular
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>                
+    </div>
+    <div class="card-footer">
+        <a href="{% url 'home:projeto_visualizar' pk=projeto.id %}"
+           class="btn btn-sm btn-outline-warning text-dark">Projeto</a>
+        
+        <a href="{% url 'home:projeto_editar' pk=projeto.id %}"
+           class="btn btn-sm btn-info">Alterar</a>   
+        
+        <a href="{% url 'home:exportar_sugestoes' projeto.id %}?formato=xlsx"
+            class="btn btn-sm btn-outline-success text-dark">Exportar para Excel</a>
+
+        {% comment %} <a href="{% url 'home:exportar_sugestoes_pdf' projeto.id %}?formato=pdf"
+            class="btn btn-sm btn-outline-danger">Exportar para PDF</a>     {% endcomment %}
+
+        <a href="{% url 'home:atualizar_precos_painel' %}"
+            class="btn btn-sm btn-warning text-dark"
+            onclick="return confirm('Deseja realmente atualizar os preços com base no Mercado Livre?');">
+            🔄 Atualizar preços dos painéis (ML)
+        </a>    
+        {% comment %} <a href="{% url 'home:grafico_custo_geracao' %}" 
+            class="btn btn-sm btn-outline-primary">📈 Ver Gráfico Custo x Geração
+        </a> {% endcomment %}
+        {% comment %} <a href="{% url 'home:grafico_interativo_geracao' %}" class="btn btn-sm btn-outline-success">📊 Gráfico Interativo Custo vs Geração</a>
+        <a href="{% url 'home:grafico_comparar_marcas' %}" class="btn btn-sm btn-outline-success">📊 Gráfico grafico_comparar_marcas {% endcomment %}
+        <a href="{% url 'home:grafico_interativo_geracao' projeto.id %}" class="btn btn-sm btn-success">Ver Gráfico Interativo</a>
+    </div>
+</div>
+{% endblock %}

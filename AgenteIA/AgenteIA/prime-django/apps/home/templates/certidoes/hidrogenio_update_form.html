@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+{% load static crispy_forms_tags %}
+{% block title %}
+    {{ title|default:"Editar Certidões" }}
+{% endblock title %}
+{% block stylesheets %}
+    <style>
+         .input-group-text {
+              display: flex;
+              align-items: center;
+         }
+
+         .input-group .form-control {
+              margin-bottom: 0 !important;
+         }
+    </style>
+{% endblock stylesheets %}
+{% block content %}
+    <div class="card">
+        <form method="post">
+            <div class="card-header">
+                <h5>Editar Hidrogenio</h5>
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+                {% crispy form %}
+                <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+                <a href="#"
+                   onclick="window.history.back();"
+                   class="btn btn-sm btn-outline-secondary">Cancelar</a>
+            </div>
+            <div class="card-footer"></div>
+        </form>
+    </div>
+{% endblock content %}
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fields = document.querySelectorAll('.quantidade-field');
+
+            fields.forEach(field => {
+                field.addEventListener('input', function() {
+                    if (parseInt(field.value) > 0) {
+                        field.style.backgroundColor = '#d4edda'; // Verde claro
+                    } else {
+                        field.style.backgroundColor = ''; // Reseta a cor
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock javascripts %}

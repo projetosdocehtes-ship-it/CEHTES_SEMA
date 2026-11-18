@@ -1,0 +1,8 @@
+{% extends 'base.html' %}  <!-- Substitua 'base.html' pelo seu template base -->
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ crispy form }}
+        <button type="submit">Assinar PDF</button>
+    </form>
+{% endblock %}

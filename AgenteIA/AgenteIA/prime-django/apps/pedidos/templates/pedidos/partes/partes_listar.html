@@ -1,0 +1,130 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load pedidos_formatos %}
+{% load django_tables2 %}
+{% block breadcrumbs %}
+    {% load replace_value %}
+    <div class="page-header">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                        <h5 class="m-b-10">Atos do Pedido de Protocolo</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'index' %}"><i class="feather icon-home"></i></a>
+                            <li class="breadcrumb-item">
+                                <a href="javascript:">Pedido de Protocolo</a>
+                                <li class="breadcrumb-item">
+                                    <a href="javascript:">Lista do Atos do Pedido</a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{% endblock breadcrumbs %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">Pedido de Protocolo {{ pedido }}</div>
+                <div class="card-footer">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <a class="btn btn-sm btn-secondary" href="{{ pedido.get_absolute_url }}">
+                            <i class="fas fa-newspaper d-none d-md-inline-block"></i> Ver Pedido
+                        </a>
+                        <a class="btn btn-sm btn-primary"
+                           href="{% url 'pedidos_protocolo:ato_criar' pedido.pk %}">
+                            <i class="icon feather icon-plus d-none d-md-inline-block"></i> Adicionar Ato
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-block">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Atos</th>
+                                    <th>Emolumento</th>
+                                    <th>Detalhes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if atos_orfaos %}
+                                    {% for ato in atos_orfaos %}
+                                        <tr>
+                                            <td>
+                                                {{ ato.nome }}
+                                                <br>
+                                                <small>{{ ato.titulo }}</small>
+                                                {% if ato.imovel_numero_registro %}
+                                                    <p>
+                                                        <b>{{ ato.imovel_tipo_registro|default:"Matrícula" }}:</b> {{ ato.imovel_numero_registro }} RI: {{ ato.imovel_cartorio|default:"1" }}
+                                                    </p>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {{ ato.tipo_emolumento }}
+                                                <br>
+                                                <small>{{ ato.valor_emolumento_calculado_com_desconto_tributacao|formatar_moeda }}</small>
+                                            </td>
+                                            <td>
+                                                <a href="{{ ato.get_absolute_url }}">Ver Detalhes</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                                {% for grupo in atos_agrupados %}
+                                    <tr>
+                                        <td>
+                                            <i class="fas fa-caret-square-right d-none d-md-inline-block"
+                                               title="Ato Principal"></i>
+                                            {{ grupo.principal.nome }}
+                                            <br>
+                                            <b> Titulo:</b> {{ grupo.principal.titulo }}
+                                            {% if grupo.principal.imovel_numero_registro %}
+                                                <br>
+                                                <b>{{ grupo.principal.imovel_tipo_registro|default:"Matrícula" }}:</b> {{ grupo.principal.imovel_numero_registro }} <b>Num. Ato:</b> {{ grupo.principal.numero_ato|default:"?" }} Cartório: {{ grupo.principal.imovel_cartorio|default:"1" }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ grupo.principal.tipo_emolumento }}
+                                            <br>
+                                            <small>{{ grupo.principal.valor_emolumento_calculado_com_desconto_tributacao|formatar_moeda }}</small>
+                                        </td>
+                                        <td>
+                                            <a href="{{ grupo.principal.get_absolute_url }}">Ver Detalhes</a>
+                                        </td>
+                                    </tr>
+                                    {% if grupo.complementares %}
+                                        {% for ato_complementar in grupo.complementares %}
+                                            <tr style="background-color: #ffffff;">
+                                                            <!-- Cor de fundo diferente para atos complementares -->
+                                                <td style="padding-left: 20px; font-style: italic;">
+                                                                <!-- Indentação e estilo para atos complementares -->
+                                                    <i class="fas fa-project-diagram d-none d-md-inline-block"
+                                                       title="Ato Complementar"></i> {{ ato_complementar.nome }}
+                                                </td>
+                                                <td>
+                                                    {{ ato_complementar.tipo_emolumento }}
+                                                    <br>
+                                                    <small>{{ ato_complementar.valor_emolumento_calculado_com_desconto_tributacao|formatar_moeda }}</small>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ ato_complementar.get_absolute_url }}">Ver Detalhes</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

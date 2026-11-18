@@ -1,0 +1,14 @@
+{
+  "fabricante": "Canadian Solar",
+  "modelo": "CS6.2-66TB-610",
+  "Pmp": 610,
+  "Isc": 215.97,
+  "Voc": 48,
+  "Imp": 14.96,
+  "Vmp": 40.8,
+  "Uisc": 0.05,
+  "Uvoc": -0.25,
+  "Upmp": -0.29,
+  "material": "Silicio",
+  "eficiencia": 22.6
+}

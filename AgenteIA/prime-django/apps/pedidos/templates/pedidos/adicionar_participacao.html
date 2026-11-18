@@ -1,0 +1,22 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>Adicionar/Alterar Evento</h5>
+          </div>
+          <div class="card-block table-border-style">
+            <form action=".", method="post">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button type="submit" class="btn btn-sm btn-primary">Adicionar Parte</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

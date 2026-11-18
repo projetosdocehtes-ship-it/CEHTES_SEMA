@@ -1,0 +1,71 @@
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Análise Financeira da Microrrede</h4>
+        </div>
+        <div class="card-body">
+
+            <h5 class="mb-3">Resumo Financeiro</h5>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                        <strong>Economia Anual</strong><br>
+                        R$ {{ relatorio.economia_anual|floatformat:2 }}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                        <strong>Redução Percentual</strong><br>
+                        {{ relatorio.percentual_reducao|floatformat:2 }}%
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                        <strong>VPL</strong><br>
+                        R$ {{ relatorio.vpl|floatformat:2 }}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                        <strong>TIR</strong><br>
+                        {{ relatorio.tir|floatformat:4 }}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                        <strong>Payback</strong><br>
+                        {{ relatorio.payback }}
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                        <strong>CAPEX Total</strong><br>
+                        R$ {{ relatorio.capex.capex_total|floatformat:2 }}
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <h5>Gráfico</h5>
+            <img src="{{ grafico_url }}" class="img-fluid rounded border" alt="Gráfico da análise financeira">
+
+            <hr class="my-4">
+
+            <h5>Cenário Base</h5>
+            <pre>{{ relatorio.custos_base }}</pre>
+
+            <h5>Cenário com Microrrede</h5>
+            <pre>{{ relatorio.custos_micro }}</pre>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

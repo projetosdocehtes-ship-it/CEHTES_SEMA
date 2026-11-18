@@ -1,0 +1,18 @@
+{% extends "fotovoltaico/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Nova pergunta{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h4 class="alert alert-warning card-title"><b>Cadastrar pergunta personalizada</b></h4>
+    <form method="post">
+      {% csrf_token %}
+      {{ form|crispy }}
+
+      <button class="btn btn-primary">💾 Salvar</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

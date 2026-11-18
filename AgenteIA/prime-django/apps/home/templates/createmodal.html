@@ -1,0 +1,51 @@
+<button type="button"
+        class="btn btn-sm btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#createModal">Novo</button>
+<!-- Modal -->
+<div class="modal"
+     id="createModal"
+     tabindex="-1"
+     aria-labelledby="createModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createModalLabel">Criar Dados</h1>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action={% url 'home:createModal' %} method="post">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <input type="text"
+                               class="form-control"
+                               id="floatingInput"
+                               name="name"
+                               placeholder="Nome" />
+                        <label for="floatingInput">Nome</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text"
+                               class="form-control"
+                               id="floatingInput"
+                               name="fist_name"
+                               placeholder="Primeiro nome" />
+                        <label for="floatingInput">Primeiro nome</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+                    <button type="button"
+                            class="btn btn-sm btn-secondary"
+                            data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

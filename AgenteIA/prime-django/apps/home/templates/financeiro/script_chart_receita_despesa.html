@@ -1,0 +1,62 @@
+{% if receitas %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+              // Pegue os dados passados para o template
+            var receitas = {
+                {
+                    receitas |
+                    default: 0 | safe
+                }
+            };
+            var despesas = {
+                {
+                    despesas |
+                    default: 0 | safe
+                }
+            };
+            var saidas = {
+                {
+                    saidas |
+                    default: 0 | safe
+                }
+            };
+            var devolucoes = {
+                {
+                    devolucoes |
+                    default: 0 | safe
+                }
+            };
+
+            var ctx = document.getElementById('myPieChart').getContext('2d');
+            var myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Receitas', 'Despesas', 'Saidas', 'Devolucoes'],
+                    datasets: [{
+                        data: [receitas, despesas, saidas, devolucoes],
+                        backgroundColor: ['#04a9f5', '#FF5733', '#FFC300', '#8E44AD'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw.toLocaleString('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+{% endif %}

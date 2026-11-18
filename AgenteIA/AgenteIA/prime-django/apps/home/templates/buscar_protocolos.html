@@ -1,0 +1,21 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block content %}
+    <h1>Buscar Protocolo</h1>
+    <form method="get" action="{% url 'home:get_protocolos' %}">
+        <input type="text"
+               name="q"
+               value="{{ query }}"
+               placeholder="Buscar Protocolo...">
+        <button type="submit">Buscar</button>
+    </form>
+    <ul>
+        {% for protocolo in protocolos %}
+            <li>
+                <a href="{% url 'home:protocolo_detalhes' protocolo.pk %}">{{ protocolo }}</a>
+            </li>
+        {% empty %}
+            <li>Nenhum protocolo encontrado.</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

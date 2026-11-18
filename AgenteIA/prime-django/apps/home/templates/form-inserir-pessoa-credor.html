@@ -1,0 +1,85 @@
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% comment %} <!--   --> {% endcomment %}
+{% block content %}
+    <!-- Modal -->
+    <div class="modal"
+         id="form-inserir-pessoa-credor"
+         tabindex="-1"
+         aria-labelledby="form-inserir-pessoa-credor"
+         aria-hidden="True">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCredorModalLabel">
+                        <i class="icon feather icon-plus"></i>   Cadastrar Pessoa - Credor
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- PASSANDO O PROTOCOLO DO Credor -->
+                <form action="{% url 'home:cadastra_pessoa' pedido_id=protocolo.numero_protocolo opcao_parte='C' %}"
+                      method="post">
+                    <!-- Não se esqueça dessa tag -->
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <!-- PASSANDO O PROTOCOLO -->
+                        <input type="hidden" name="parte_id" id="parte_id" value="{{ Protocolo }}" />
+                        <!-- CPF -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">CPF/CNPJ</span>
+                            </div>
+                            <input type="number"
+                                   class="form-control"
+                                   placeholder="digite o cpf/cnpj"
+                                   name="cpf"
+                                   id="cpf"
+                                   value=""
+                                   required>
+                        </div>
+                        <!-- Nome -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nome</span>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="digite o nome"
+                                   name="nome"
+                                   id="nome"
+                                   value=""
+                                   autofocus
+                                   required>
+                        </div>
+                        <!-- Documento -->
+                        <!--
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend"><span class="input-group-text">Documento</span></div>
+                        <input type="text" class="form-control" placeholder="digite o documento" name="documento" id="documento" value="">
+                    </div>
+-->
+                        <!-- BOTOES -->
+                        <div class="modal-footer">
+                            <button type="submit"
+                                    class="btn btn-sm btn-primary "
+                                    aria-pressed="true"
+                                    role="button">
+                                <i class="icon feather icon-save"></i> Salvar
+                            </button>
+                            <button value=""
+                                    type="button"
+                                    class="btn btn-sm btn-secondary "
+                                    data-bs-dismiss="modal">
+                                <i class="btn-close"></i> Fechar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

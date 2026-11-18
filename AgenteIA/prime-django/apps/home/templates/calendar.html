@@ -1,0 +1,93 @@
+﻿{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block title %}{% endblock %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+    <!-- Wysiwyg editor -->
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/main.css' %}">
+    <style>
+        .calendar-action-row {
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto 20px auto;
+            padding: 0 16px;
+        }
+
+        .solar-map-wrapper {
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 0 16px 40px 16px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .solar-map-image {
+            width: 100%;
+            max-width: 1450px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            object-fit: contain;
+            object-position: center center;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 991px) {
+            .calendar-action-row,
+            .solar-map-wrapper {
+                max-width: 100%;
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+        }
+    </style>
+{% endblock stylesheets %}
+{% block content %}
+    <div class="calendar-action-row">
+        <div class="text-right">
+            <a href="{% url 'home:criar_projeto' %}" class="btn btn-primary">
+                <i class="feather icon-list"></i> Ver Projeto(s)
+            </a>
+        </div>
+    </div>
+
+    <!-- Imagem com mapa vinculado -->
+    <div class="solar-map-wrapper">
+        <img class="solar-map-image"
+             src="{% static 'assets/images/energia-solar-calendar-nova.jpg' %}?v=20260617"
+             usemap="#solarMap"
+             alt="Funcionamento Energia Solar">
+    </div>
+
+    <!-- Mapa com areas clicaveis -->
+    <map name="solarMap">
+        <!-- Area do painel solar -->
+        <area shape="rect"
+              coords="80,180,390,680"
+              href="{% url 'home:criar_painel_solar' %}"
+              alt="Painel Solar"
+              title="Clique aqui para criar um Painel Solar">
+        <!-- Area do inversor -->
+        <area shape="rect"
+              coords="500,390,720,720"
+              href="{% url 'home:criar_inversor' %}"
+              alt="Inversor"
+              title="Clique aqui para criar um inversor">
+        <!-- Area do controle de carga -->
+        <area shape="rect"
+              coords="1380,110,1700,630"
+              href="{% url 'home:criar_controlador_carga' %}"
+              alt="Rede Eletrica"
+              title="Clique aqui para criar um controlador de Carga">
+        <!-- Area da bateria -->
+        <area shape="rect"
+              coords="1540,500,1760,820"
+              href="{% url 'home:criar_bateria' %}"
+              alt="Medidor de Energia"
+              title="Clique aqui para criar uma bateria">
+    </map>
+{% endblock content %}

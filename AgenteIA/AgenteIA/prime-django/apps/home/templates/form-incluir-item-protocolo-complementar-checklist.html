@@ -1,0 +1,128 @@
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% load home_formatos %}
+{% block content %}
+    <!-- Modal -->
+    <div class="modal"
+         id="addItemProtocoloComplementarchecklist"
+         tabindex="-1"
+         aria-labelledby="addItemProtocoloLabel"
+         aria-hidden="True">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-white fs-5" id="addItemProtocoloLabel">
+                        {% block modal-title %}
+                            <i class="fas fa-plus-square"></i>&nbsp;&nbsp;&nbsp;&nbsp; Adicionar - Protocolo: {{ pedido_item_id|get_numero_protocolo_filter|protocolo_formatado }}
+                        {% endblock modal-title %}
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Fechar">
+                        <span>x</span>
+                    </button>
+                </div>
+                <!-- PASSANDO O PROTOCOLO DO AQUIRENTE -->
+                <form action="{% url 'home:criar_item_protocolo_complementar' %}"
+                      method="post">
+                    <!-- Não se esqueça dessa tag -->
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <!-- PASSANDO O PROTOCOLO -->
+                        <input type="hidden"
+                               name="numero_id_protocolo"
+                               id="numero_id_protocolo"
+                               value="{{ pedido_item_id|get_numero_protocolo_filter }}" />
+                        <input type="hidden"
+                               name="pedido_item_id"
+                               id="pedido_item_id"
+                               value="{{ pedido_item_id }}" />
+                        <!-- 1 linha -->
+                        <div class="form-floating mb-1">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!-- Tabela de Emolumentos do Protocolo -->
+                                    <div class="input-group mb-3">
+                                        <!-- OBTER O COMBOBOX TABELA DE Emolumentos -->
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" for="tabela_emolumentos"><b>Tabela Emolumentos</b></span>
+                                        </div>
+                                        <select class="selectpicker form-control"
+                                                name="tabela_emolumentos"
+                                                id="tabela_emolumentos"
+                                                autofocus
+                                                required>
+                                            {% for tabela_emolumento in id|lista_emolumentos_complementares %}
+                                                <option value={{ tabela_emolumento.0 }}>{{ tabela_emolumento.1 }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!-- QUANTIDADE -->
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><b>Quantidade</b></span>
+                                            <input type="number"
+                                                   inputmode="decimal"
+                                                   class="form-control"
+                                                   placeholder="Quantidade"
+                                                   name="quantidade"
+                                                   id="quantidade"
+                                                   min="1"
+                                                   value="1"
+                                                   step="any"
+                                                   required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 2 linha -->
+                        <div class="form-floating mb-1">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!-- Tipo de Tribucao do Protocolo -->
+                                    <div class="input-group mb-3">
+                                        <!-- OBTER O COMBOBOX DO TIPO DE TRIBUCAO -->
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" for="tipo_tributacao_protocolo"><b>Tipo de Tributação </b></span>
+                                        </div>
+                                        <select class="selectpicker form-control"
+                                                name="tipo_tributacao_protocolo"
+                                                id="tipo_tributacao_protocolo"
+                                                autofocus
+                                                required>
+                                            {% for tipo_tributacao_protocolo in id|lista_tipo_tributacao %}
+                                                <option value={{ tipo_tributacao_protocolo.0 }}>{{ tipo_tributacao_protocolo.1 }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- BOTOES -->
+                        <div class="modal-footer">
+                            <button type="submit"
+                                    class="btn btn-sm btn-primary "
+                                    aria-pressed="true"
+                                    role="button">
+                                <i class="icon feather icon-save"></i> Salvar
+                            </button>
+                            <button value=""
+                                    type="button"
+                                    class="btn btn-sm btn-secondary "
+                                    data-bs-dismiss="modal">
+                                <i class="icon feather icon-window-close"></i> Fechar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

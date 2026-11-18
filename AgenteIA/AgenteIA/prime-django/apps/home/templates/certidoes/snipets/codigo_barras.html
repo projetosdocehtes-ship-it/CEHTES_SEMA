@@ -1,0 +1,5 @@
+<!-- snipets/codigo_barras.html -->
+{% load barcode_filters %}
+<img class="barcode-img"
+     src="{{ numero_pedido|gerar_codigo_barras }}"
+     alt="Código de Barras">

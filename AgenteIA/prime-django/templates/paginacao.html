@@ -1,0 +1,28 @@
+<!-- Paginação com Bootstrap -->
+<nav aria-label="Navegação de página">
+    <ul class="pagination justify-content-center">
+        {% if table.page %}
+            {% if table.page.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" tabindex="-1">Primeira</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ table.page.previous_page_number }}"
+                       tabindex="-1">Anterior</a>
+                </li>
+            {% endif %}
+            <li class="page-item disabled">
+                <span class="page-link">Página {{ table.page.number }} de {{ table.paginator.num_pages }}</span>
+            </li>
+            {% if table.page.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ table.page.next_page_number }}">Próxima</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ table.paginator.num_pages }}">Última</a>
+                </li>
+            {% endif %}
+        {% endif %}
+    </ul>
+</nav>

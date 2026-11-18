@@ -1,0 +1,34 @@
+{% extends "layouts/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load django_tables2 %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          {% if not object %}
+            <h5>Cadastrar Pessoa</h5>
+          {% else %}
+            <h5>Alterar Pessoa</h5>
+          {% endif %}
+        </div>
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% crispy form %}
+            <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+          </form>
+        </div>
+        <div class="card-footer">
+          {% if object.get_backward_url %}
+            <div class="d-flex flex-wrap align-items-center">
+              <a href="{{ object.get_backward_url }}" class="btn btn-sm btn-secondary"><i class="fas fa-newspaper d-none d-md-inline-block"></i> Voltar</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

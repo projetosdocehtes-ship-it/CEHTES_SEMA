@@ -1,0 +1,103 @@
+{% load home_formatos %}
+<div class="card" id="itens_pedido_livro3">
+    <div class="card-header">
+        <h5>
+            <span class="font-weight-bold text-white">Livro 03 (Registros Auxiliares): {{ protocolo }}</span>
+        </h5>
+    </div>
+    <div class="card-body table-responsive">
+        <table class="table">
+            <tr>
+                <thead>
+                    <th>#</th>
+                    <th>Ato Praticado</th>
+                    <th>Número</th>
+                    <th>Tipo de Cédula</th>
+                    <th>Nº Cédula</th>
+                    <th>Datas</th>
+                    <th>Produto</th>
+                    {% comment %} <th>Opções</th> {% endcomment %}
+                </thead>
+            </tr>
+            <tbody>
+                {% for livro3 in livro_3 %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>
+                            <div class="cell-content">{{ livro3.11 }}</div>
+                            <div class="cell-content">({{ livro3.0 }})</div>
+                        </td>
+                        <td>
+                            <a class="label btn-info activate text-black f-12"
+                               title="Exibe os dados do Registro Auxiliar ."
+                               href="{% url 'home:livro03_detail_pelo_numero' numero=livro3.2|apenas_numeros cartorio=livro3.3 %}"
+                               target="_blank">{{ livro3.2|formatar_numero_registro_inteiro }}</a>
+                            <td>{{ livro3.12 }}</td>
+                            <td>{{ livro3.13 }}</td>
+                            <td>
+                                <div class="cell-content">Abertura: {{ livro3.14|default_if_none:"" }}</div>
+                                <div class="cell-content">Vencimento: {{ livro3.15|default_if_none:"" }}</div>
+                                <div class="cell-content">Cancelamento: {{ livro3.15|default_if_none:"" }}</div>
+                            </td>
+                            <td>{{ livro3.16 }}</td>
+                            {% comment %} <td>
+                                <div class="cell-content">
+                                    <a class="label bg-info text-white f-12" title="Exibe os dados do Registro Auxiliar ." href="{% url 'home:livro03_detail_pelo_numero' pk=livro3.2|apenas_numeros %}" target="_blank">
+                                        <i class="icon feather icon-home"></i> Reg. Aux. </a>
+                                </div>
+                                <div class="cell-content">&nbsp;</div>
+                                <div class="cell-content">
+                                    <a class="label bg-danger text-white f-12" title="Exibe as imagens do registro." href="{% url 'home:gerar_minuta_imagem' id=livro3.2 tipo='A' %}" target="_blank">
+                                        <i class="icon feather icon-image"></i> &nbsp;&nbsp;Imagem</a>
+                                </div>
+                                <!--
+                            <table>
+                                <thead>
+                                    <th></th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div style="text-align: center">
+                                                <button class="btn bg-info  align-text-bottom dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="False">
+                                                    <i class="icon feather icon-list"></i> Opções;
+                                                </button>
+                                                <div class="dropdown-menu" style="text-align: center">
+                                                    <a class="dropdown-item" href="#!">Opcao 1</a>
+                                                    <a class="dropdown-item" href="#!">Opcao 2</a>
+                                                    <a class="dropdown-item" href="#!">Opcao 3</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a class="btn text-white " style="background-color: #3d0c02" href="{% url 'home:minuta_lv3' pedido_item_id=livro3.10 %}" aria-pressed="true" role="button"><i class="icon feather icon-file-text"></i> Minutas</a>
+                                        </td>
+                                        <td>
+                                            <a class="btn text-white bg-danger  " href="{% url 'home:gerar_minuta_imagem' id=livro3.2 tipo='A' %}" aria-pressed="true" role="button"><i class="icon feather icon-image"></i> Imagem</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            -->
+                            </td> {% endcomment %}
+                        </tr>
+                        <tr>
+                            <!-- AQUI INFORMAR AS PARTES ENVOLVIDAS NO LIVRO 3   -->
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <a href="#protocolo_detail"
+           class="btn btn-sm btn-outline-warning text-dark "
+           title="Clique para voltar ao topo da página"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        <a href="#itens_pedido_card_imagem"
+           class="btn btn-sm btn-outline-primary text-dark "
+           title="Próximo ítem"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+    </div>
+</div>

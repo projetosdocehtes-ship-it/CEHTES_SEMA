@@ -1,0 +1,233 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block title %}Painel de Eventos{% endblock %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+{% endblock stylesheets %}
+{% block content %}
+    <form action="" method="post">
+        <div class="card">
+            <div class="card-header">
+                <h5>
+                    Eventos do Colaborador: <span class="text-white">{{ current_user }}</span>
+                </h5>
+                <div class="icon">
+                <a style="color:white"
+                   href="{% url 'home:all_events' %}"
+                   class="bg-dark text-white"
+                   title="Clique aqui para exibir todos os eventos"
+                   data-toggle="tooltip">Todos os eventos <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="card" id="itens_pedido_partes">
+    <div class="row">
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box p-1 mb-2 bg-danger text-white">
+                <center>
+                    <p>
+                        <h5>
+                            <a style="color:white;">Atrasados:</a>
+                        </h5>
+                    </p>
+                    <div class="inner">
+                        <h5>Protocolos: {{ total_event }}</h5>
+                        <h5>Ped. Certidão: {{ total_event }}</h5>
+                    </div>
+                    <div class="icon"></div>
+                <a style="color:white"
+                   href="#"
+                   class="bg-dark text-white"
+                   title="Clique aqui para exibir os protocolos/pedidos de certidão ATRASADOS"
+                   data-toggle="tooltip">Mais Informações <i class="fas fa-arrow-circle-right"></i>
+            </a>
+            <br>
+        </center>
+    </div>
+</div>
+<div class="col-lg-3 col-6">
+    <!-- small box -->
+    <div class="small-box p-1 mb-2 bg-warning text-white">
+        <center>
+            <p>
+                <h5>
+                    <a style="color:white;">Vencendo:</a>
+                </h5>
+            </p>
+            <div class="inner">
+                <h5>Protocolos: {{ running_events.count }}</h5>
+                <h5>Ped. Certidão: {{ running_events.count }}</h5>
+            </div>
+            <div class="icon"></div>
+            <a style="color:white"
+               href="#"
+               class="bg-dark text-white"
+               title="Clique aqui para exibir os protocolos/pedidos de certidão VENCENDO"
+               data-toggle="tooltip">Mais Informações <i class="fas fa-arrow-circle-right"></i></a>
+            <br>
+        </center>
+    </div>
+</div>
+<div class="col-lg-3 col-6">
+    <!-- small box -->
+    <div class="small-box p-1 mb-2 bg-success text-white">
+        <center>
+            <p>
+                <h5>
+                    <a style="color:white;">Concluídos:</a>
+                </h5>
+            </p>
+            <div class="inner">
+                <h5>Protocolos: {{ running_events.count }}</h5>
+                <h5>Ped. Certidão: {{ running_events.count }}</h5>
+            </div>
+            <div class="icon"></div>
+            <a style="color:white"
+               href="#"
+               class="bg-dark text-white"
+               title="Clique aqui para exibir os protocolos/pedidos de certidão CONCUÍDOS"
+               data-toggle="tooltip">Mais Informações <i class="fas fa-arrow-circle-right"></i></a>
+            <br>
+        </center>
+    </div>
+</div>
+<div class="col-lg-3 col-6">
+    <!-- small box -->
+    <div class="small-box p-1 mb-2 bg-info text-white">
+        <center>
+            <p>
+                <h5>
+                    <a style="color:white;">Em Andamento:</a>
+                </h5>
+            </p>
+            <div class="inner">
+                <h5>Protocolos: {{ running_events.count }}</h5>
+                <h5>Ped. Certidão: {{ running_events.count }}</h5>
+            </div>
+            <div class="icon"></div>
+            <a style="color:white"
+               href="#"
+               class="bg-dark text-white"
+               title="Clique aqui para exibir os protocolos/pedidos de certidão EM ANDAMENTO"
+               data-toggle="tooltip">Mais Informações <i class="fas fa-arrow-circle-right"></i></a>
+            <br>
+        </center>
+    </div>
+</div>
+</div>
+<div class="col-md-12">
+    <div class="tile">
+        <div class="tile-body">
+            <div class="table-responsive">
+                <div id="sampleTable_wrapper"
+                     class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-hover table-bordered dataTable no-footer"
+                                   id="sampleTable"
+                                   role="grid"
+                                   aria-describedby="sampleTable_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc"
+                                            tabindex="0"
+                                            aria-controls="sampleTable"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-sort="ascending"
+                                            aria-label="Name: activate to sort column descending">SL</th>
+                                        <th class="sorting"
+                                            tabindex="0"
+                                            aria-controls="sampleTable"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-label="Position: activate to sort column ascending"
+                                            style="width: 417.312px">Nome do evento</th>
+                                        <th class="sorting"
+                                            tabindex="0"
+                                            aria-controls="sampleTable"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-label="Office: activate to sort column ascending"
+                                            style="width: 189.281px">Previsão Início</th>
+                                        <th class="sorting"
+                                            tabindex="0"
+                                            aria-controls="sampleTable"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-label="Age: activate to sort column ascending"
+                                            style="width: 102.141px">Previsão Fim</th>
+                                        <th class="sorting"
+                                            tabindex="0"
+                                            aria-controls="sampleTable"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-label="Age: activate to sort column ascending"
+                                            style="width: 102.141px">Início</th>
+                                        <th class="sorting"
+                                            tabindex="0"
+                                            aria-controls="sampleTable"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-label="Age: activate to sort column ascending"
+                                            style="width: 102.141px">Fim</th>
+                                        <th class="sorting"
+                                            tabindex="0"
+                                            aria-controls="sampleTable"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-label="Age: activate to sort column ascending"
+                                            style="width: 102.141px">Colaborador</th>
+                                        <th class="sorting"
+                                            tabindex="0"
+                                            aria-controls="sampleTable"
+                                            rowspan="1"
+                                            colspan="1"
+                                            aria-label="Age: activate to sort column ascending"
+                                            style="width: 102.141px">Opções</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for event in latest_events %}
+                                        <tr role="row" class="odd">
+                                            <td class="sorting_1">{{ forloop.counter }}</td>
+                                            <td>{{ event.title }}</td>
+                                            <td>{{ event.start_time|date:"DATETIME_FORMAT" }}</td>
+                                            <td>{{ event.end_time|date:"DATETIME_FORMAT" }}</td>
+                                            <td>{{ event.start_time_checked|date:"DATETIME_FORMAT" }}</td>
+                                            <td>{{ event.end_time_checked|date:"DATETIME_FORMAT" }}</td>
+                                            <td>
+                                                <a title="Exibe os eventos do Colaborador."
+                                                   class="font-weight-bold text-white f-16"
+                                                   href="{% url 'home:painel_eventos_id_colaborador' colaborador_id=event.user_id %}"
+                                                   target="_blank">
+                                                    <span class="badge bg-secondary f-12 font-weight-bold text-white">{{ event.user_id|get_usuario_autenticado }}</span>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-sm btn-primary active btn-sm"
+                                                   href="{% url 'home:event-detail' event.pk %}"
+                                                   target="_blank"
+                                                   title="Clique para visualizar os detalhes"
+                                                   data-toggle="tooltip">
+                                                    <i class="icon feather icon-info"></i>Acessar</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</form>
+{% endblock content %}
+{% block javascripts %}
+{% endblock javascripts %}

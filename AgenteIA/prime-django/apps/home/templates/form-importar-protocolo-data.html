@@ -1,0 +1,77 @@
+{% block content %}
+    <!-- Modal -->
+    <div class="modal"
+         id="addImportarProtocoloData"
+         tabindex="-1"
+         aria-labelledby="addAdquirenteModalLabel"
+         aria-hidden="True">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAdquirenteModalLabel">
+                        <i class="icon feather icon-plus"></i>     Importar Protocolo pela Data
+                    </h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <!-- PASSANDO O PROTOCOLO DO AQUIRENTE -->
+                <form action="{% url 'home:importar_protocolo_data_view' %}"
+                      method="post"
+                      href=".">
+                    <!-- Não se esqueça dessa tag -->
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <!-- PASSANDO O PROTOCOLO -->
+                        <input type="hidden" name="parte_id" id="parte_id" value="{{ Protocolo }}" />
+                        <!-- NÚMERO -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Data</span>
+                            </div>
+                            <input type="date"
+                                   class="form-control"
+                                   placeholder="digite a data do protocolo"
+                                   name="data_protocolo_i"
+                                   id="data_protocolo_i"
+                                   value=""
+                                   required>
+                            <input type="date"
+                                   class="form-control"
+                                   placeholder="digite a data do protocolo"
+                                   name="data_protocolo_f"
+                                   id="data_protocolo_f"
+                                   value=""
+                                   required>
+                        </div>
+                        <!-- BOTOES -->
+                        <div class="modal-footer">
+                            <button type="submit"
+                                    class="btn btn-sm btn-primary "
+                                    aria-pressed="true"
+                                    role="button">
+                                <i class="icon feather icon-save"></i> Importar
+                            </button>
+                            <button value=""
+                                    type="button"
+                                    class="btn btn-sm btn-secondary "
+                                    data-bs-dismiss="modal">
+                                <i class="btn-close"></i> Fechar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#addImportarProtocoloData").on('shown.bs.modal', function() {
+                $(this).find('#data_protocolo_i').focus();
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,214 @@
+{% load home_formatos %}
+<div class="card" id="itens_pedido_partes">
+    <div class="card-header">
+        <h5>
+            <span class="font-weight-bold text-white">Partes do Protocolo {{ protocolo }}</span>
+        </h5>
+    </div>
+    <div class="card-body table-responsive">
+        {% if protocolo.adquirentes %}
+            <!-- Verifica se a query possui partes -->
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Papel</th>
+                        <th>Nome</th>
+                        <th>Documento</th>
+                        <th>Estado Civil</th>
+                        <th>Indisp.</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% with counter=protocolo.adquirentes|length %}
+                        {% for adquirente in protocolo.adquirentes %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>Adquirente</td>
+                                <td>
+                                    {{ adquirente.pessoa.nome|formatar_nome }}
+                                    <div class="cell-content">{{ adquirente.pessoa.cpf|formatar_documento|default:"" }}</div>
+                                </td>
+                                <td>{{ adquirente.pessoa.documento|default:"(Não Consta)" }}</td>
+                                <td>{{ adquirente.pessoa.estado_civil }}</td>
+                                <td>
+                                    <span class="badge bg-danger">1</span>
+                                </td>
+                                <td>
+                                    <!-- Inclusões de modais e outras opções -->
+                                    {% include "modal_detalhes_pessoa.html" %}
+                                    {% comment %} {% include "desvincularModalPessoa.html" %} {% endcomment %}
+                                    <a class="btn btn-sm btn-primary"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#modal_detalhes_pessoa{{ credor.id }}"
+                                       title="Exibe os dados do Credor selecionado "
+                                       data-bs-toggle="tooltip"><i class="icon feather icon-info"></i> Detalhes
+                                    </a>
+                                    <a class="btn btn-sm btn-danger style="
+                                       margin-right:
+                                       -4px
+                                        "
+                                       "
+                                       href="#!"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#desvincularModalPessoa{{ partes.id }}"
+                                       title="Remover Adquirente"
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        <!-- Lista de Transmitentes - INICIO -->
+                        {% for transmitente in protocolo.transmitentes %}
+                            <tr>
+                                <td>{{ counter|add:forloop.counter }}</td>
+                                {# Adiciona a contagem atual ao valor inicial #}
+                                <td>Transmitente</td>
+                                <td>
+                                    {{ transmitente.pessoa.nome|capitalizar }}
+                                    <div class="cell-content">{{ transmitente.pessoa.cpf|default:""|formatar_documento }}</div>
+                                </td>
+                                <td>{{ transmitente.pessoa.documento|default:"" }}</td>
+                                <td>{{ transmitente.pessoa.estado_civil|get_descricao_estado_civil }}</td>
+                                <td>
+                                    <span class="badge bg-success">0</span>
+                                </td>
+                                <td>
+                                    <a class="label bg-info text-white f-12"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#modal_detalhes_pessoa_T{{ transmitente.pessoa.id }}"
+                                       title="Dados do Transmitente"
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-info"></i> Detalhes
+                                    </a>
+                                    <a class="btn btn-sm"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#desvincularModalPessoa{{ transmitente.id }}"
+                                       title="Remover Transmitente"
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-trash"></i> Remover </a>
+                                    {% include "editmodalAtoTransmitentePartesProtocolo.html" %}
+                                    {% include "modal_detalhes_pessoa_T.html" %}
+                                    {% include "desvincularModalPessoaT.html" %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        <!-- Lista de Transmitentes - FIM -->
+                        <!-- Lista de Devedores - INICIO -->
+                        {% for devedor in protocolo.devedores %}
+                            <tr>
+                                <td>{{ counter|add:forloop.counter }}</td>
+                                <td>Devedor</td>
+                                <td>{{ devedor.pessoa.nome }}</td>
+                                <div class="cell-content">{{ devedor.pessoa.cpf|default:""|formatar_documento }}</div>
+                                <td>{{ devedor.pessoa.documento|default:"" }}</td>
+                                <td>{{ devedor.pessoa.estado_civil|get_descricao_estado_civil }}</td>
+                                <td></td>
+                                <td class="btn-group">
+                                    <a class="label bg-info text-white f-12"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#modal_detalhes_pessoa{{ devedor.id }}"
+                                       title="Ver detalhes do devedor"
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-info"></i> Detalhes
+                                    </a>
+                                    <!-- Botão que irá abrir o modal TRANSMITENTE - Detalhes dos dados do Adquirente selecionado -->
+                                    {% include "modal_detalhes_pessoa_D.html" %}
+                                    <a class="label bg-danger text-white f-12"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#desvincularModalPessoa{{ devedor.id }}"
+                                       title="Remover Devedor"
+                                       data-bs-toggle="tooltip">
+                                        <i class="icon feather icon-trash"></i> Remover
+                                    </a>
+                                    <!-- DESVINCULAR Transmitente -->
+                                    {% comment %} <li>{% include "desvincularModalPessoaD.html" %}</li> {% endcomment %}
+                                </td>
+                                <td class="text-right"></td>
+                            </tr>
+                        {% endfor %}
+                        <!-- Lista de Devedores - FIM -->
+                        <!-- Lista de Credores - INICIO -->
+                        {% for credor in protocolo.credores %}
+                            <tr>
+                                <td>{{ counter|add:forloop.counter }}</td>
+                                <td>Credor</td>
+                                <td>{{ credor.pessoa.cpf|default:""|formatar_documento }}</td>
+                                <td>{{ credor.pessoa.nome }}</td>
+                                <td>{{ credor.pessoa.documento|default:"" }}</td>
+                                <td>{{ credor.pessoa.estado_civil|get_descricao_estado_civil }}</td>
+                                <td></td>
+                                <td>
+                                    <!-- EDITAR Credor -->
+                                    <a class="btn btn-sm btn-primary"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#modal_detalhes_pessoa{{ credor.id }}"
+                                       title="Exibe os dados do Credor selecionado "
+                                       data-bs-toggle="tooltip"><i class="icon feather icon-info"></i> Detalhes
+                                    </a>
+                                    {% include 'modal_detalhes_pessoa_C.html' %}
+                                    <!-- EDITAR Credor FIM -->
+                                    <!-- DESVINCULAR Credor INICIO -->
+                                    <a class="label bg-info text-white f-12"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#desvincularModalPessoa{{ credor.id }}"
+                                       title="Retira a pessoa selecionada do vinculo do Credor"
+                                       data-bs-toggle="tooltip"><i class="icon feather icon-share-square"></i> Desvincular
+                                    </a>
+                                    {% include 'desvincularModalPessoaC.html' %}
+                                    <!-- DESVINCULAR Credor FIM -->
+                                </td>
+                                <th class="text-right"></th>
+                            </tr>
+                        {% endfor %}
+                        <!-- Lista de Credores - FIM -->
+                    {% endwith %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% include "form-inserir-pessoa-adquirente.html" %}
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-sm btn-primary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+            <i class="icon feather icon-plus"></i>Adicionar
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item"
+               data-bs-toggle="modal"
+               data-bs-target="#form-inserir-pessoa-adquirente"
+               href="#!">Adquirente</a>
+            <a class="dropdown-item"
+               data-bs-toggle="modal"
+               data-bs-target="#form-inserir-pessoa-transmitente"
+               href="#!">Transmitente</a>
+            <a class="dropdown-item"
+               data-bs-toggle="modal"
+               data-bs-target="#form-inserir-pessoa-credor"
+               href="#!">Credor</a>
+            <a class="dropdown-item"
+               data-bs-toggle="modal"
+               data-bs-target="#form-inserir-pessoa-devedor"
+               href="#!">Devedor</a>
+            <a class="dropdown-item"
+               data-bs-toggle="modal"
+               data-bs-target="#form-inserir-pessoa-outro"
+               href="#!">Outro</a>
+        </div>
+        <a href="#protocolo_detail"
+           class="btn btn-sm btn-warning text-dark"
+           title="Clique para voltar ao topo da página"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-left-up"></i>Voltar</a>
+        <a href="#itens_pedido"
+           class="btn btn-sm btn-primary text-dark"
+           title="Próximo ítem"
+           type="button"
+           data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+    </div>
+</div>
+<!-- [ FIM - CARD ADQUIRENTES ] -->

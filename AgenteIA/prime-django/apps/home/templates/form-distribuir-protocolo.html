@@ -1,0 +1,128 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% load home_formatos %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    <form class="form"
+          action="{% url 'home:encaminhar_protocolo_ao_colaborador_view' protocolo.numero_protocolo %}"
+          method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="card_distribuir_protocolo_numero">
+                    <div class="card-header">
+                        <h5>
+                            <span class="text-white">Distribuição de Protocolo</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>
+                                        <b>Protocolo:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           name="input_numero_protocolo_id"
+                                           id="input_numero_protocolo_id"
+                                           type="text"
+                                           value="{{ protocolo.numero_protocolo }}"
+                                           readonly>
+                                </div>
+                                <div class="col-md-10">
+                                    <label>
+                                        <b>Observações:</b>
+                                    </label>
+                                    <input class="form-control"
+                                           type="text"
+                                           value="{{ protocolo.pedido.observacao|formatar_nome }}"
+                                           readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tipo de Ato do Protocolo -->
+                        <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="data_distribuicao_i">
+                                        <b>Data para Distribuir</b>
+                                    </label>
+                                    <input type="date" class="form-control" placeholder="digite a data do protocolo" name="data_distribuicao_i" id="data_distribuicao_i" value={{ data_distribuir }} autofocus required>
+                                </div>
+                                <!-- Tipo de Ato do Protocolo -->
+                                <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                                <div class="col-md-10">
+                                    <label for="tipo_ato_protocolo">
+                                        <b>Título Principal</b>
+                                    </label>
+                                    <select class="form-select"
+                                            name="titulo_protocolo_id"
+                                            id="titulo_protocolo_id"
+                                            autofocus
+                                            required>
+                                        <option value="">- Selecione -</option>
+                                        {% for titulo in titulos %}
+                                            <option value={{ titulo.id }}>{{ titulo }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tipo de Ato do Protocolo -->
+                        <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="setor_enviar_id">
+                                        <b>Setor a enviar</b>
+                                    </label>
+                                    <select class="form-select" name="fase_id" id="fase_id" required>
+                                        <option value="5">Conferência</option>
+                                        {% for fase in fases %}
+                                            <option value={{ fase.id }}>{{ fase }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <!-- Tipo de Ato do Protocolo -->
+                                <!-- OBTER O COMBOBOX DO TIPO DE ATO -->
+                                <div class="col-md-10">
+                                    <label for="colaborador_id">
+                                        <b>Encaminhar Para:</b>
+                                    </label>
+                                    <select class="form-select"
+                                            name="colaborador_id"
+                                            id="colaborador_id"
+                                            required>
+                                        <option value="">- Selecione -</option>
+                                        {% for colaborador in colaboradores %}
+                                            <option value={{ colaborador.pk }}>{{ colaborador.nome_com_quantidade_de_protocolo }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <!-- Voltar Button -->
+                        <a onclick="window.history.back()"
+                           class="btn btn-secondary text-white "
+                           title="Retornar ao topo"
+                           type="button"
+                           data-bs-toggle="tooltip"><i class="icon feather icon-arrow-left"></i>Voltar</a>
+                        <button type="submit"
+                                class="btn btn-primary"
+                                aria-pressed="true"
+                                role="button">
+                            <i class="fas fa-angle-double-up"></i> Encaminhar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

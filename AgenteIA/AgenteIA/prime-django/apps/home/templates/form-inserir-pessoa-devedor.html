@@ -1,0 +1,81 @@
+{% comment %} {% load widget_tweaks %} {% endcomment %}
+{% block content %}
+    <!-- Modal -->
+    <div class="modal"
+         id="form-inserir-pessoa-devedor"
+         tabindex="-1"
+         aria-labelledby="form-inserir-pessoa-devedor"
+         aria-hidden="True">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDevedorModalLabel">
+                        <i class="icon feather icon-plus"></i> Criar Devedor
+                    </h5>
+                    <button type="button" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="btn-close"></i>
+                    </button>
+                </div>
+                <!-- PASSANDO O PROTOCOLO DO Devedor -->
+                <form action="{% url 'home:cadastra_pessoa' pedido_id=protocolo.numero_protocolo opcao_parte='D' %}"
+                      method="post">
+                    <!-- Não se esqueça dessa tag -->
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <!-- PASSANDO O PROTOCOLO -->
+                        <input type="hidden" name="parte_id" id="parte_id" value="{{ Protocolo }}" />
+                        <!-- CPF -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">CPF/CNPJ</span>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Informe um cpf/cnpj"
+                                   name="cpf"
+                                   id="cpf"
+                                   value=""
+                                   required>
+                        </div>
+                        <!-- Nome -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nome</span>
+                            </div>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="digite o nome"
+                                   name="nome"
+                                   id="nome"
+                                   value=""
+                                   autofocus
+                                   required>
+                        </div>
+                        <!-- Documento -->
+                        <!--
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend"><span class="input-group-text">Documento</span></div>
+                        <input type="text" class="form-control" placeholder="digite o documento" name="documento" id="documento" value="">
+                    </div>
+-->
+                        <!-- BOTOES -->
+                        <div class="modal-footer">
+                            <button type="submit"
+                                    class="btn btn-sm btn-primary "
+                                    aria-pressed="true"
+                                    role="button">
+                                <i class="icon feather icon-save"></i> Salvar
+                            </button>
+                            <button value=""
+                                    type="button"
+                                    class="btn btn-sm btn-secondary "
+                                    data-bs-dismiss="modal">
+                                <i class="btn-close"></i> Fechar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,548 @@
+{% extends "layouts/base.html" %}
+{% load home_formatos %}
+{% load humanize %}
+{% block stylesheets %}
+    <script>
+    function getAtualizarPagina() {
+        window.location.reload();
+    }
+
+    function openNewTab() {
+
+    }
+    </script>
+    <style>
+         .icon-text-container {
+              display: flex;
+              align-items: center;
+         }
+
+         .icon {
+              margin-right: 10px;
+         }
+
+         .text-container {
+              display: flex;
+              flex-direction: column;
+         }
+    </style>
+{% endblock stylesheets %}
+{% block breadcrumbs %}
+{% endblock breadcrumbs %}
+{% block content %}
+    {% include "card_busca_protocolo.html" %}
+    {% if protocolo %}
+        <div class="card" id="protocolo_detail">
+            <div class="card-header">
+                <a href="{{ protocolo.get_absolute_url }}">
+                    <h5 class="font-weight-bold text-white">Protocolo: {{ protocolo }}</h5>
+                </a>
+                <span title="Atualmente o protocolo esta:"
+                      class="{% if protocolo.status_protocolo_descricao == 'Em Andamento' %} bg-success {% elif protocolo.status_protocolo_descricao == 'Registrado' %} bg-primary {% elif protocolo.status_protocolo_descricao == 'Cancelado' %} bg-danger {% elif protocolo.status_protocolo_descricao == 'Subjudice' %} bg-secondary {% elif protocolo.status_protocolo_descricao == 'Exigência' %} btn-warning text-dark {% elif protocolo.status_protocolo_descricao == 'Em Análise' %} btn-info {% endif %}">
+                    <span class="font-weight-bold mx-5 text-white f-18">({{ protocolo.status_protocolo_descricao }})</span>
+                </span>
+                &emsp;
+                {% if protocolo.valor_diferenca < 0 %}
+                    <a>
+                        <span title="" class="bg-warning f-20 text-dark">
+                            <span class="font-weight-bold text-dark">&emsp;Diferença: {{ protocolo.valor_diferenca|formatar_moeda }}&emsp;</span>
+                        </span>
+                    </a>
+                {% elif protocolo.valor_diferenca > 0 %}
+                    <a>
+                        <span title="" class="bg-danger f-20 text-white">
+                            <span class="font-weight-bold f-16 text-white">
+                                &emsp;Diferença: {{ protocolo.valor_diferenca|formatar_moeda }}&emsp;
+                            </span>
+                        </span>
+                    </a>
+                {% endif %}
+                &emsp;&emsp;&emsp;
+                {% if existem_protocolos_em_andamento %}
+                    <span title="Visualizar outros protocolo(s):" class="bg-danger">
+                        <span class="font-weight-bold mx-4 text-white">Outros protocolos em andamento: {{ total_protocolos_em_andamento }}</span>
+                    </span>
+                {% endif %}
+                <a class="text-white f-18 mx-4"
+                   href="{% url 'home:importar_protocolo' numero_protocolo=protocolo.numero_protocolo %}"
+                   title="Sincronizar Protocolo: {{ protocolo }}"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   aria-pressed="true"
+                   role="button">
+                    <i class="fas fa-sync-alt"></i>
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-md-2">
+                        <div class="icon-text-container">
+                            <i class="icon feather icon-calendar f-22  m-r-10"></i>
+                            <div class="text-container">
+                                <small>Entrada</small>
+                                <a href="#" class="ml-1">{{ protocolo.data_protocolo|date:"DATETIME_FORMAT" }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="icon-text-container">
+                            <i class="icon feather icon-calendar f-22  m-r-10"></i>
+                            <div class="text-container">
+                                <small>Reentrada</small>
+                                <a href="#" class="ml-1">{{ protocolo.data_reentrada|date:"DATETIME_FORMAT"|default:"--" }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="icon-text-container">
+                            <i class="icon feather icon-calendar f-22  m-r-10"></i>
+                            <div class="text-container">
+                                <small>Registro</small>
+                                <a href="#" class="ml-1">{{ protocolo.data_registro|date:"DATETIME_FORMAT"|default:"--" }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="icon-text-container">
+                            <i class="icon feather icon-calendar f-22  m-r-10"></i>
+                            <div class="text-container">
+                                <small>Previsão</small>
+                                <a href="#" class="ml-1">{{ protocolo.pedido_id|proxima_data_prevista|date:"d/m/y" }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="icon-text-container">
+                            <i class="icon feather icon-calendar f-22  m-r-10"></i>
+                            <div class="text-container">
+                                <small>Validade</small>
+                                <a href="#" class="ml-1">{{ protocolo.pedido_id|proxima_data_valida|date:"d/m/y" }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="icon-text-container">
+                            <i class="icon feather icon-calendar f-22  m-r-10"></i>
+                            <div class="text-container">
+                                <small>Exigência</small>
+                                <a href="#" class="ml-1">
+                                    {% if exigencia|length < 1 and exigencia_positivas|length < 1 %}
+                                        {% if protocolo.pedido_id|primeira_data_exigencia|verificar_data_fase == 0 %}
+                                            Qualif. Positiva ou Negativa: <b> {{ protocolo.pedido_id|primeira_data_exigencia|date:"d/m/y" }}</b>
+                                        {% elif protocolo.pedido_id|primeira_data_exigencia|verificar_data_fase == 1 %}
+                                            Qualif. Positiva ou Negativa: <b><span class="badge bg-warning f-12">Vencendo: {{ protocolo.pedido_id|primeira_data_exigencia|date:"d/m/y" }}</span></b>
+                                        {% elif protocolo.pedido_id|primeira_data_exigencia|verificar_data_fase == 2 %}
+                                            Qualif. Positiva ou Negativa: <b><span class="badge bg-danger f-12">Atrasado: {{ protocolo.pedido_id|primeira_data_exigencia|date:"d/m/y" }}</span></b>
+                                        {% else %}
+                                            Qualif. Positiva ou Negativa: <b><span class="badge bg-warning f-12">{{ protocolo.pedido_id|primeira_data_exigencia|date:"d/m/y" }}</span></b>
+                                        {% endif %}
+                                    {% else %}
+                                        Qualif. Positiva ou Negativa: <b>{{ protocolo.pedido_id|primeira_data_exigencia|date:"d/m/y" }}</b>
+                                    {% endif %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row mb-3 ">
+                    <div class="col-md-4 m-b-20">
+                        <div class="icon-text-container">
+                            <i class="icon feather icon-user f-22  m-r-10"></i>
+                            <div class="text-container">
+                                <small>Apresentante</small>
+                                {% if protocolo.dados_do_pedido.apresentante_id %}
+                                    <a href="{% url 'pedidos:apresentante_update' pk=protocolo.dados_do_pedido.apresentante_id %}"
+                                       class="ml-1">{{ protocolo.nome_apresentante|default:""|upper }}</a>
+                                {% else %}
+                                    <a href="#" class="ml-1">{{ protocolo.nome_apresentante|default:""|upper }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="icon-text-container">
+                            <i class="icon feather icon-credit-card f-22"></i>
+                            <div class="text-container">
+                                <small>Documento</small>
+                                {% if protocolo.dados_do_pedido %}
+                                    <a href="#" class="ml-1">
+                                        {% if protocolo.dados_do_pedido.documento_solicitante %}
+                                            {{ pedido.apresentante.sigla_tipo_documento }} {{ protocolo.dados_do_pedido.documento_solicitante|default:"" }}
+                                        {% endif %}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 ">
+                        <div class="icon-text-container">
+                            <i class="fab fa-whatsapp f-22 m-r-10"></i>
+                            <div class="text-container">
+                                <small>Contato(s)</small>
+                                <div class="text-container">
+                                    <a href="https://wa.me/{{ protocolo.dados_do_pedido.telefone_solicitante|formatar_telefone|internacionalizar_telefone|default:'' }}"
+                                       class="ml-1"
+                                       target="_blank">{{ protocolo.dados_do_pedido.telefone_solicitante|formatar_telefone|default:'Não Informado' }}</a>
+                                    <a href="https://wa.me/{{ protocolo.dados_do_pedido.telefone_solicitante_2|formatar_telefone|internacionalizar_telefone|default:'' }}"
+                                       class="ml-1"
+                                       target="_blank">{{ protocolo.dados_do_pedido.telefone_solicitante_2|formatar_telefone|default:'' }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-12 m-b-20">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-file-text f-22  m-r-10"></i>
+                                <div class="text-container">
+                                    <small>Observações</small>
+                                    <a href="#" class="ml-1">{{ protocolo.observacao_pedido|default:"Sem Observações" }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <hr />
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <i class="icon feather icon-activity f-22  m-r-10"></i>
+                                Colaborador Atual: <b><span class="font-weight-bold">{{ protocolo.colaborador }}</span></b>
+                            </div>
+                            <div class="col-md-9">
+                                Ultimo Andamento: <b><span class="font-weight-bold">{{ protocolo.ultimo_andamento_formatado }}</span></b>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} <div class="row mb-2">
+                        <div class="col">
+                            <a href="{% url 'home:financeiro_listar' %}?numero_protocolo={{ protocolo.numero_protocolo_inteiro }}" title="Exibir os valores enviados/confirmados no caixa."><span class="badge bg-secondary f-12">Financeiro:</span></a> <span class="font-weight-bold">{{ protocolo.valor_total_caixa|formatar_moeda }}</span>
+                        </div>
+                        <div class="col">
+                            <span class="font-weight-bold f-22 {% if protocolo.valor_diferenca > 0 %}text-danger{% else %}text-success{% endif %}">
+                                Diferença:
+                            {{ protocolo.valor_diferenca|formatar_moeda }}</span>
+                        </div>
+                        <div class="col"></div>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-sm btn-outline-secondary"
+                   href="{{ protocolo.get_recibo_de_protocolo_url }}"
+                   target="_blank">
+                    <i class=" icon feather icon-printer">
+                    </i>Comprovante
+                </a>
+                <a type="button"
+                   href="{{ protocolo.get_recibo_url }}"
+                   class="btn btn-sm btn-outline-secondary">
+                    <i class="icon feather icon-printer"></i> Relatório
+                </a>
+                {% comment %} <a type="button" href="#itens_pedido_pendencias" class="btn {% if pendencias|length == 0 %}btn-secondary{% else %}btn-danger{% endif %}">Pendências <span class="badge bg-dark">{{ pendencias|length }}</span></a> {% endcomment %}
+                {% comment %} <a type="button" href="#indisponib" class="btn btn-sm btn-secondary">Indisponibilidades <span class="badge bg-dark">{{ protocolo.pessoas_com_indisponibilidade|length }}</span></a> {% endcomment %}
+                {% comment %} class="btn btn-sm  {% if quantidade_lri == 0 %}btn-secondary{% else %}btn-danger{% endif %}">Indisponibilidades <span class="badge bg-dark">{{ protocolo.pessoas_com_indisponibilidade|length }}</span></a> {% endcomment %}
+                {% comment %} <a type="button" href="#itens_pedido_contraditorio" class="btn btn-sm btn-secondary">
+                    Contraditório <span class="badge bg-dark">0</span>
+                </a> {% endcomment %}
+                {% comment %} <a type="button" href="{% url 'home:reprotocolar_protocolo_numero' numero_protocolo=protocolo.numero_protocolo %}" target="_blank" class="btn btn-sm btn-secondary">
+                    <i class="fas fa-angle-double-up" aria-hidden="true"></i> Reprotocolar
+                </a> {% endcomment %}
+                {% if is_reprotocolable %}
+                    <a href="{% url 'home:reprotocolar_protocolo_numero' numero_protocolo=protocolo.numero_protocolo %}"
+                       target="_blank"
+                       class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-angle-double-up" aria-hidden="true"></i> Reprotocolar
+                    </a>
+                {% else %}
+                    {% if protocolo.numero_protocolo_anterior_id %}
+                        <a href="{% url 'home:protocolo_detail' protocolo.numero_protocolo_anterior_id %}"
+                           class="btn btn-sm btn-outline-danger text-dark">
+                            Protocolo Anterior: {{ protocolo.numero_protocolo_anterior }}
+                        </a>
+                    {% elif protocolo.numero_protocolo_posterior_id %}
+                        <a href="{% url 'home:protocolo_detail' protocolo.numero_protocolo_posterior_id %}"
+                           class="btn btn-sm btn-outline-primary text-dark">
+                            Protocolo Posterior: {{ protocolo.numero_protocolo_posterior }}
+                        </a>
+                    {% endif %}
+                {% endif %}
+                <a type="button"
+                   href="{% url 'home:agenda_protocolo' protocolos=protocolo.numero_protocolo %}"
+                   target="_blank"
+                   class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-calendar-alt" aria-hidden="true"></i> Agenda
+                </a>
+                {% if protocolo.valor_diferenca == 0 %}
+                    <a {% if protocolo.andamento_protocolo_entregue %} class="btn btn-sm btn-info text-dark font-weight-bold" {% comment %} href="{% url 'home:protocolo_andamentos' pk=protocolo.pk %}" {% endcomment %} {% else %} class="btn btn-sm btn-outline-info text-dark font-weight-bold" href="{% url 'home:protocolo_confirmar_entrega' pk=protocolo.pk %}" {% endif %}
+                       data-bs-toggle="tooltip">
+                        {% if protocolo.andamento_protocolo_entregue %}
+                            <i class="icon feather icon-check-circle"></i>
+                            Já Entregue
+                        {% else %}
+                            <i class="icon feather icon-pocket"></i>
+                            Entregar
+                        {% endif %}
+                    </a>
+                {% endif %}
+                <a type="button"
+                   class="btn btn-sm btn-success text-dark"
+                   href="{% url 'home:caixa_verificar_diferenca_direto_sistema_antigo' numero_protocolo=protocolo.numero_protocolo mensagem='0' %}"
+                   data-bs-toggle="tooltip">
+                    <i class="fas fa-dollar-sign"></i>Caixa (diferença)
+                </a>
+                {% for livro2_Titulo in titulo_principal %}
+                    {% if forloop.first %}
+                        <a type="button"
+                           href="{% url 'home:base_conhecimento_protocolo' pedido_item_id=livro2_Titulo.pk ato_id=livro2_Titulo.ato.id numero_protocolo_pesquisar=protocolo.numero_protocolo numero_registro_id=livro2_Titulo.numero_registro tipo_registro_id=livro2_Titulo.tipo_registro cartorio_imovel_id=livro2_Titulo.numero_ri classe_id=livro2_Titulo.pedido_item|get_classe_do_imovel_pelo_pedido_item_id %}"
+                           class="btn btn-sm btn-secondary">Check-List Balcão</a>
+                    {% endif %}
+                {% endfor %}
+                <a class="btn btn-sm btn-outline-info text-dark "
+                   href="{% url 'home:financeiro_listar' %}?numero_protocolo={{ protocolo.numero_protocolo_inteiro }}">
+                    Ver Caixa
+                </a>
+                <a href="#itens_pedido_apresentante"
+                   class="btn btn-sm btn-outline-primary text-dark "
+                   title="Próximo ítem"
+                   type="button"
+                   data-bs-toggle="tooltip"><i class="icon feather icon-corner-right-down"></i>Próximo</a>
+                <!-- Dropdown Opções -->
+                <a class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                   type="button"
+                   id="dropdownMenuButton"
+                   data-bs-toggle="dropdown"
+                   aria-haspopup="true"
+                   aria-expanded="false"><i class=" icon feather icon-sliders">
+                </i>Opções</a>
+                <!-- Opções do dropdown -->
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{{ protocolo.get_pedido_url }}">
+                        <i class=" icon feather icon-upload">
+                        </i>Abrir Pedido
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card" id="protocolo_detail">
+            <div class="card-header">
+                <a href="{{ protocolo.get_absolute_url }}">
+                    <h5 class="font-weight-bold text-white">Dados do Protocolo: {{ protocolo }}</h5>
+                </a>
+                &emsp;&emsp;&emsp;
+                <h5>
+                    Total Atual: <span class="font-weight-bold f-22"><b>{{ protocolo.valor_atual_protocolo_sistema_antigo|formatar_moeda }}</b></span>
+                    &emsp;&emsp;&emsp;
+                    Pago: <span class="font-weight-bold f-22"><b>{{ protocolo.valor_pago_protocolo_sistema_antigo|formatar_moeda }}</b></span>
+                </h5>
+                &emsp;
+                {% if protocolo.valor_diferenca < 0 %}
+                    <a>
+                        <span title="" class="bg-white f-20">
+                            <span class="font-weight-bold f-20 text-dark">&emsp;Diferença: {{ protocolo.valor_diferenca|formatar_moeda }}&emsp;</span>
+                        </span>
+                    </a>
+                {% elif protocolo.valor_diferenca > 0 %}
+                    <a>
+                        <span title="" class="bg-white f-20">
+                            <span class="font-weight-bold f-20 text-dark">
+                                &emsp;Diferença: {{ protocolo.valor_diferenca|formatar_moeda }}&emsp;
+                            </span>
+                        </span>
+                    </a>
+                &emsp;
+                {% endif %}
+
+                {% if protocolo.valor_atual_protocolo_sistema_antigo != protocolo.valor_pago_protocolo_sistema_antigo %}
+                    <a type="button"
+                       class="btn btn-sm btn-outline-success text-white"
+                       href="{% url 'home:recolhido_sistema_antigo_protocolo' numero_protocolo=protocolo.numero_protocolo %}"
+                       data-bs-toggle="tooltip">
+                        <i class="fas fa-dollar-sign"></i>Confirmar recolhimento no sistema anterior
+                    </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="row mb-3 ">
+                    <div class="row mb-3">
+                        <div class="col m-b-20"
+                             data-bs-toggle="tooltip"
+                             title="Clique para ver os atos deste protocolo">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-check-square f-22  m-r-10"></i>
+                                <div class="text-container">
+                                    Atos
+                                    {% if protocolo.quantidade_itens_pedido > 0 %}
+                                        <a href="{% url 'pedidos:atos_list_protocolo' numero_protocolo=protocolo.numero_protocolo %}"
+                                           class="ml-1 f-18">{{ protocolo.quantidade_itens_pedido|default:0 }}</a>
+                                    {% else %}
+                                        <a class="ml-1 f-18">{{ protocolo.quantidade_itens_pedido|default:0 }}</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col m-b-20">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-file-minus f-22  m-r-10"></i>
+                                <div class="text-container">
+                                    Título Principal
+                                    <a href="#itens_pedido_titulo_principal" class="ml-1 f-18">{{ quantidade_titulo_principal }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col m-b-20"
+                             data-bs-toggle="tooltip"
+                             title="Clique para ver as pessoas deste protocolo">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-users f-22  m-r-10"></i>
+                                <div class="text-container">
+                                    Partes
+                                    <a {% comment %}
+                                       href="#partes_do_protocolo"
+                                       {% endcomment %}
+                                       href="{% url 'pedidos:pedido_partes_list_protocolo' numero_protocolo=protocolo.numero_protocolo %}?next={{ request.path }}"
+                                       class="ml-1 f-18">{{ protocolo.quantidade_partes_protocolo }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col m-b-20 "
+                             data-bs-toggle="tooltip"
+                             title="Clique para ver os selos deste protocolo">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-award f-22  m-r-10"></i>
+                                <div class="text-container">
+                                    Selos Eletrônicos
+                                    <a href="#selos" class="ml-1 f-18">{{ protocolo.selos|length }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col m-b-20"
+                             data-bs-toggle="tooltip"
+                             title="Clique para ver os anexos deste protocolo">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-paperclip f-18 m-r-10"></i>
+                                <div class="text-container">
+                                    <a href="{% url 'home:anexos_list' protocolo.pk %}" class="ml-1 f-18">Anexos</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col m-b-20"
+                             data-bs-toggle="tooltip"
+                             title="Clique para ver os atos deste protocolo">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-book f-22 m-r-10"></i>
+                                <div class="text-container">
+                                    Registros (Livro02)
+                                    <a href="#itens_pedido_livro2" class="ml-1 f-18">{{ livro_2|length|default:0 }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col m-b-20"
+                             data-bs-toggle="tooltip"
+                             title="Clique para ver os atos deste protocolo">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-book f-22  m-r-10"></i>
+                                <div class="text-container">
+                                    Registros Auxiliares (Livro03)
+                                    <a href="#itens_pedido_livro3" class="ml-1 f-18">{{ livro_3|length|default:0 }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col m-b-20"
+                             data-bs-toggle="tooltip"
+                             title="Clique para ver os atos deste protocolo">
+                            <div class="icon-text-container">
+                                <i class="icon feather icon-alert-octagon f-22  m-r-10"></i>
+                                <div class="text-container">
+                                    {% if protocolo.quantidade_de_andamentos_de_exigencia > 0 %}
+                                        <b><span class="badge bg-warning f-12 text-dark">Exigência(s)</b></span>
+                                {% else %}
+                                    Exigência(s)
+                                {% endif %}
+                                <a href="{{ protocolo.get_andamentos_url }}" class="ml-1 f-18">{{ protocolo.quantidade_de_andamentos_de_exigencia|default:0 }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col m-b-20"
+                         data-bs-toggle="tooltip"
+                         title="Clique para ver os contraditórios">
+                        <div class="icon-text-container">
+                            <i class="icon feather icon-triangle f-22  m-r-10"></i>
+                            <div class="text-container">
+                                {% if existem_protocolos_em_andamento %}
+                                    <b><span class="badge bg-danger f-12 text-white">Contraditório(s)</b></span>
+                            {% else %}
+                                Contraditório(s)
+                            {% endif %}
+                            <a href="#itens_pedido_contraditorio" class="ml-1 f-18">{{ protocolo.quantidade_de_andamentos_de_exigencia|default:0 }}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col m-b-20"
+                     data-bs-toggle="tooltip"
+                     title="Clique para ver os andamentos deste protocolo">
+                    <div class="icon-text-container">
+                        <i class="icon feather icon-activity f-22  m-r-10"></i>
+                        <div class="text-container">
+                            Andamento(s)
+                            <a href="{{ protocolo.get_andamentos_url }}" class="ml-1 f-18">{{ protocolo.andamentos|length|default:0 }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if not protocolo.numero_protocolo_posterior_id %}
+        <div class="card-footer">
+            <div class="row mb-3">
+                <div class="col">
+                    Emolumentos: <span class="font-weight-bold f-22"><b>{{ protocolo.valor_emolumentos|formatar_moeda }}</b></span>
+                </div>
+                <div class="col">
+                    Recompe: <span class="font-weight-bold f-22"><b>{{ protocolo.valor_fundo_estado|formatar_moeda }}</b></span>
+                </div>
+                <div class="col">
+                    TFJ: <span class="font-weight-bold f-22"><b>{{ protocolo.valor_tfj|formatar_moeda }}</b></span>
+                </div>
+                <div class="col">
+                    ISSQN: <span class="font-weight-bold f-22"><b>{{ protocolo.valor_issqn|formatar_moeda }}</b></span>
+                </div>
+                <div class="col">
+                    Total: <span class="font-weight-bold f-22"><b>{{ protocolo.valor_total_protocolo|formatar_moeda }}</b></span>
+                </div>
+            </div>
+            {% comment %} <div class="row mb-2">
+                            <div class="col">
+                                <a href="{% url 'home:financeiro_listar' %}?numero_protocolo={{ protocolo.numero_protocolo_inteiro }}" title="Exibir os valores enviados/confirmados no caixa."><span class="badge bg-secondary f-12">Financeiro:</span></a> <span class="font-weight-bold">{{ protocolo.valor_total_caixa|formatar_moeda }}</span>
+                            </div>
+                            <div class="col">
+                                <span class="font-weight-bold f-22 {% if protocolo.valor_diferenca > 0 %}text-danger{% else %}text-success{% endif %}">
+                                    Diferença:
+                                {{ protocolo.valor_diferenca|formatar_moeda }}</span>
+                            </div>
+                            <div class="col"></div>
+            </div> {% endcomment %}
+        </div>
+    {% endif %}
+</div>
+{% include "card_titulo_principal.html" %}
+{% include "card_partes.html" %}
+{% include "card_itens.html" %}
+{% include "card_selos.html" %}
+{% comment %} {% include "card_andamentos_list.html" %} {% endcomment %}
+{% include "card_caixa.html" %}
+{% include "card_livro02.html" %}
+{% include "card_livro03.html" %}
+{% comment %} {% include "anexos/anexos_list_include.html" %} {% endcomment %}
+{% comment %} {% include "card_imagens.html" %} {% endcomment %}
+{% include "card_indisponibilidade.html" %}
+{% include "card_contraditorio.html" %}
+{% include "card_pendencias.html" %}
+{% comment %} {% include "card_imagens_nota_devolucao.html" %} {% endcomment %}
+{% else %}
+<h6>Nenhum protocolo correspondente ao número fornecido.</h6>
+{% endif %}
+{% endblock content %}

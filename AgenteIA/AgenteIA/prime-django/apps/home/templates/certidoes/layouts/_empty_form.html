@@ -1,0 +1,28 @@
+{# layouts/_empty_form.html #}
+{% if formset and prefix %}
+    <div class="card-block table-border-style">
+        <div class="form-group">
+            {% for form in formset %}
+                <fieldset>
+                    <legend>{{ prefix }} #{{ forloop.counter }}</legend>
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.for_label_id }}" class="form-label">{{ field.label|capfirst }}</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                </fieldset>
+            {% endfor %}
+        </div>
+    </div>
+    <button id="add-more-{{ prefix }}"
+            type="button"
+            class="btn btn-sm btn-primary">Adicionar mais {{ prefix|capfirst }}</button>
+    <script type="text/javascript">
+        $('#add-more-{{ prefix }}').click(function() {
+            let formIndex = $('#id_{{ prefix }}-TOTAL_FORMS').val();
+            $('#form-set-{{ prefix }}').append($('#empty-form-{{ prefix }}').html().replace(/__prefix__/g, formIndex));
+            $('#id_{{ prefix }}-TOTAL_FORMS').val(parseInt(formIndex) + 1);
+        });
+    </script>
+{% endif %}
