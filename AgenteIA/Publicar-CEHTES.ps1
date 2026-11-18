@@ -39,7 +39,7 @@ $sourcePrefix = $Origem.TrimEnd('\') + '\'
 if ([IO.Path]::GetFullPath($Destino).StartsWith($sourcePrefix, [StringComparison]::OrdinalIgnoreCase)) {
     throw 'A pasta temporaria nao pode ficar dentro da origem.'
 }
-$cloneArgs = @('clone', $Repositorio, $Destino)
+$cloneArgs = @('clone', '-c', 'core.longpaths=true', $Repositorio, $Destino)
 if ($config.GITHUB_USUARIO) { $cloneArgs = @('-c', "credential.username=$($config.GITHUB_USUARIO)") + $cloneArgs }
 Invoke-Git -GitArgs $cloneArgs
 Invoke-Git -GitArgs @('-C', $Destino, 'config', 'core.longpaths', 'true')
@@ -70,7 +70,11 @@ $ignore = if (Test-Path -LiteralPath $ignorePath) { [IO.File]::ReadAllText($igno
 $regras = @('', '# Arquivos locais excluidos da publicacao CEHTES') +
     ($pastasExcluidas | Where-Object { $_ -ne '.git' } | ForEach-Object { "$_/" }) +
     ($arquivosExcluidos | Where-Object { $_ -ne '.git' })
-[IO.File]::WriteAllText($ignorePath, $ignore + "`n" + ($regras -join "`n") + "`n", [Text.UTF8Encoding]::new($false))
+$existentes = @($ignore -split '\r?\n')
+$novasRegras = @($regras | Where-Object { $_ -and $_ -notin $existentes })
+if ($novasRegras.Count) {
+    [IO.File]::WriteAllText($ignorePath, $ignore.TrimEnd("`r", "`n") + "`n" + ($novasRegras -join "`n") + "`n", [Text.UTF8Encoding]::new($false))
+}
 
 & (Join-Path $PSScriptRoot 'Sanitizar-Publicacao.ps1') -Destino $Destino
 # .gitignore nao remove arquivos que o remoto ja rastreava.
