@@ -41,6 +41,12 @@ Mantenha `GrafosBess`, `prime-django` e `microrredes` lado a lado. A integraçã
 
 ## Como instalar
 
+### Instalador para outro computador Windows
+
+Baixe [Instalar-CEHTES.bat](AgenteIA/Instalar-CEHTES.bat) e [Instalar-CEHTES.ps1](AgenteIA/Instalar-CEHTES.ps1) para a **mesma pasta**. Com Git, Python 3.12 (reconhecido por `py -3.12`) e Node.js com npm instalados, execute o BAT e escolha uma pasta nova de destino. Ele baixa a `main`, mantém as subpastas, prepara os ambientes Python, o banco do GrafosBess e o frontend. O PostgreSQL e o `.env` do Prime Django precisam ser configurados separadamente.
+
+Consulte [COMO-INSTALAR-CEHTES.txt](AgenteIA/COMO-INSTALAR-CEHTES.txt) para exemplos, instalação opcional de microrredes e configuração do banco. A instalação completa em uma máquina limpa ainda precisa ser validada; falhas de dependências são exibidas e interrompem o instalador.
+
 ### 1. Pré-requisitos e obtenção do código
 
 O roteiro abaixo usa **Windows e Prompt de Comando (CMD)**. Instale Git, Python com o inicializador `py` e Node.js com npm. Para reproduzir o ambiente do Prime Django, use Python **3.12** (o ambiente local consultado usa 3.12.8). O frontend usa Vite 5; sua faixa de Node declarada é 18 ou 20+, devendo ser escolhida uma versão ainda mantida e compatível.

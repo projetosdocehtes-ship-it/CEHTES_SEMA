@@ -1,0 +1,56 @@
+INSTALACAO CEHTES SEMA EM OUTRO COMPUTADOR (WINDOWS)
+
+1. Instale Git para Windows, Python 3.12 com o inicializador py e Node.js
+   com npm (versao mantida, 20 ou superior). Reabra o terminal.
+   Para a aplicacao Prime Django completa, instale tambem PostgreSQL.
+
+2. Baixe Instalar-CEHTES.bat e Instalar-CEHTES.ps1 para a MESMA pasta.
+   Execute Instalar-CEHTES.bat e escolha uma pasta nova para o projeto.
+   Nao use como destino a pasta que contem os arquivos baixados.
+   Nao e preciso executar o BAT como administrador.
+
+3. O instalador baixa a main, preserva as subpastas e os dois READMEs,
+   cria prime-django/venv e GrafosBess/backend/.venv usando Python 3.12,
+   instala os requirements, prepara o SQLite do GrafosBess, executa o
+   seed e instala e compila o frontend. Ambientes existentes nao sao apagados.
+   Se houver falha, ele para e retorna erro; corrija a causa e execute de novo.
+   Um clone existente so e atualizado se for deste repositorio, estiver na
+   main e nao tiver alteracoes locais pendentes. O pull nunca usa force.
+
+4. Para Prime Django, crie no PostgreSQL o banco cehtes_sema e um usuario
+   com permissao nesse banco. Edite AgenteIA/prime-django/.env e preencha
+   DB_USERNAME, DB_PASS, DB_HOST, DB_PORT e DB_NAME. O instalador gera uma
+   SECRET_KEY aleatoria e nunca sobrescreve um .env existente.
+   Banco, usuarios da aplicacao e dados privados nao acompanham o clone.
+   Nao publique o .env. A configuracao atual do Prime Django imprime a URL
+   do banco no terminal; nao compartilhe esse trecho com a senha.
+
+5. Execute AgenteIA/prime-django/start_cehtes.bat. Ele aplica as migracoes,
+   coleta arquivos estaticos e inicia http://127.0.0.1:8001/calendar/.
+   Se precisar de administrador, apos as migracoes use na pasta prime-django:
+   venv\Scripts\python.exe manage.py createsuperuser
+
+6. Na pasta AgenteIA/GrafosBess, execute iniciar.bat.
+   Interface: http://127.0.0.1:5173; API: http://127.0.0.1:8000.
+   Mantenha as janelas dos servicos abertas. Ctrl+C encerra cada servico.
+   Equipamentos - Projeto usa o venv do Prime Django sem precisar abrir
+   o servidor web da porta 8001. Mantenha as pastas irmas no mesmo lugar.
+
+EXEMPLOS NO CMD (na pasta dos dois arquivos de instalacao)
+
+Somente verificar Git, Python e Node, sem baixar ou instalar:
+Instalar-CEHTES.bat -VerificarRequisitos
+
+Instalar em caminho escolhido, incluindo os motores de microrredes:
+Instalar-CEHTES.bat -Destino "C:\Projetos\CEHTES_SEMA" -IncluirMicrorredes
+
+Depois de configurar o PostgreSQL, preparar tambem o banco do Prime Django:
+Instalar-CEHTES.bat -Destino "C:\Projetos\CEHTES_SEMA" -PrepararBancoPrime
+
+LIMITACOES
+O requirements.txt do Prime Django contem dependencias nativas e versoes
+nao fixadas. Uma maquina nova pode exigir ferramentas de compilacao ou
+ajustes de compatibilidade indicados pelo pip. O instalador nao oculta
+essas falhas e nao afirma que o Prime Django esta pronto sem configurar
+o PostgreSQL. A verificacao de requisitos nao testa a instalacao completa.
+Os servidores dos BATs sao para uso local/desenvolvimento.
